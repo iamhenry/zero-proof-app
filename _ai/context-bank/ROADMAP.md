@@ -7,11 +7,11 @@ This roadmap outlines the development plan for the Zero Proof sobriety tracking 
 Focus on building the core UI components without functionality.
 
 ### Milestone 1: Basic App Structure
-- [ ] Set up project with Expo and required dependencies 
-- [ ] Implement basic navigation structure using Expo Router 
-- [ ] Create placeholder screens for main features :
-  - [ ] Home (Calendar View)
-  - [ ] Authentication screens
+- [x] Set up project with Expo and required dependencies 
+- [x] Implement basic navigation structure using Expo Router 
+- [x] Create placeholder screens for main features :
+  - [x] Home (Calendar View)
+  - [x] Authentication screens
 
 ### Milestone 2: Core UI Components
 - [ ] Design and implement calendar activity grid component 
@@ -32,10 +32,10 @@ Focus on building the core UI components without functionality.
 Add functionality to the static UI components.
 
 ### Milestone 3: State Management & Data Handling
-- [ ] Implement form handling with React Hook Form and Zod 
-  - [ ] User registration
-  - [ ] Login
-  - [ ] Settings forms
+- [x] Implement form handling with React Hook Form and Zod 
+  - [x] User registration
+  - [x] Login
+  - [x] Settings forms
 - [ ] Set up local storage architecture 
   - [ ] AsyncStorage configuration
   - [ ] Secure storage for sensitive data
