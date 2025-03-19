@@ -180,6 +180,14 @@ erDiagram
    - Background Service → Local Cache → UI Update
    - Periodic sync with server
 
+```mermaid
+graph LR
+    BS[Background Service] --> LC[Local Cache]
+    LC --> UI[User Interface]
+    LC --> API[API Gateway]
+    API --> DB[(Supabase Database)]
+```
+
 ---
 
 ## 6. Interface Definitions
