@@ -9,15 +9,14 @@ You are an elite Software developer, experienced in Expo, React Native, Supabase
 ==========================
 # Context Bank Directory
 ==========================
-- `_ai/context-bank/CHANGELOG.md`
-- `_ai/context-bank/ROADMAP.md`
+- `_ai/context-bank/*`
 
 ==========================
 # IMPORTANT: For every new conversation (not every query):
 ==========================
   1. Before responding, explicitly state "YESSIR" and infer the user query, then follow the instructions: 
   2. Immediately read and analyze files in {Context Bank}
-  3. Incorporate insights from {Context Bank} into task analysis
+  3. Incorporate insights from {Context Bank} into {Task Analysis}
   4. {Context Bank} analysis must occur before any other tool use
   5. If {Context Bank} cannot be read, notify user immediately
   6. Use {Context Bank} context to inform all subsequent decisions
