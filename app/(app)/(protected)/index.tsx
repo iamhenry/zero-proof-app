@@ -5,7 +5,7 @@ import { CalendarGrid } from "@/components/ui/calendar";
 export default function Home() {
 	return (
 		<SafeAreaView className="flex-1 bg-background">
-			<View className="flex-1 p-4">
+			<View className="flex-1 p-3">
 				<H1 className="mb-4">Activity</H1>
 				<CalendarGrid />
 			</View>

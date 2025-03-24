@@ -7,16 +7,16 @@ export const getIntensityColor = (intensity: number): string => {
   // Map intensity to a shade of green
   switch (intensity) {
     case 0: return ''; // Not sober - will be white
-    case 1: return 'bg-green-100'; // First day of streak
-    case 2: return 'bg-emerald-100'; // 2 days
-    case 3: return 'bg-emerald-200'; // 3 days
-    case 4: return 'bg-green-600'; // 4 days
-    case 5: return 'bg-green-600'; // 5 days
-    case 6: return 'bg-green-700'; // 6 days
-    case 7: return 'bg-green-700'; // 7 days
-    case 8: return 'bg-green-800'; // 8 days
-    case 9: return 'bg-green-900'; // 9 days
-    case 10: return 'bg-green-950'; // 10+ days (max intensity)
+    case 1: return 'bg-green-50'; // First day of streak
+    case 2: return 'bg-green-100'; // 2 days
+    case 3: return 'bg-green-200'; // 3 days
+    case 4: return 'bg-green-300'; // 4 days
+    case 5: return 'bg-green-400'; // 5 days
+    case 6: return 'bg-green-500'; // 6 days
+    case 7: return 'bg-green-600'; // 7 days
+    case 8: return 'bg-green-700'; // 8 days
+    case 9: return 'bg-green-800'; // 9 days
+    case 10: return 'bg-green-900'; // 10+ days (max intensity)
     default: return ''; // Fallback
   }
 };
@@ -24,7 +24,7 @@ export const getIntensityColor = (intensity: number): string => {
 // Get text color based on intensity
 export const getTextColorClass = (intensity: number): string => {
   // For higher intensities (darker backgrounds), use light text
-  if (intensity >= 4) {
+  if (intensity >= 5) {
     return 'text-green-100';
   }
   // For lower intensities (lighter backgrounds), use dark text
