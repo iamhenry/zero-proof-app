@@ -14,11 +14,11 @@ Focus on building the core UI components without functionality.
   - [x] Authentication screens
 
 ### Milestone 2: Core UI Components
-- [ ] Design and implement calendar activity grid component 
-  - [ ] Grid layout structure
-  - [ ] Day tile components
-  - [ ] Color intensity system placeholder
-  - [ ] Scrollable container
+- [x] Design and implement calendar activity grid component 
+  - [x] Grid layout structure
+  - [x] Day tile components
+  - [x] Color intensity system placeholder
+  - [x] Scrollable container
 - [ ] Create statistics display components 
   - [ ] Streak counter cards
   - [ ] Financial savings display
@@ -74,11 +74,11 @@ Connect frontend with Supabase backend services.
 
 ### Milestone 6: Authentication & Database
 - [ ] Set up Supabase project configuration 
-- [ ] Implement authentication flow 
-  - [ ] User registration
-  - [ ] Login/logout
-  - [ ] Password reset
-  - [ ] Session management
+- [x] Implement authentication flow 
+  - [x] User registration
+  - [x] Login/logout
+  - [x] Password reset
+  - [x] Session management
 - [ ] Create database schema and tables 
   - [ ] User profiles
   - [ ] Sobriety records

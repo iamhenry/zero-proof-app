@@ -1,30 +1,55 @@
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Text } from "@/components/ui/text";
 import { DayData } from "./types";
-import { getIntensityColor, getMonthName } from "./utils";
+import {
+	getIntensityColor,
+	getMonthName,
+	getTextColorClass,
+	getDayStatus,
+	getStatusTextColor,
+} from "./utils";
 
 interface DayCellProps {
 	day: DayData;
+	onToggleSober?: (dayId: string) => void;
 }
 
-export function DayCell({ day }: DayCellProps) {
+export function DayCell({ day, onToggleSober }: DayCellProps) {
 	const intensityColor = getIntensityColor(day.intensity);
+	const dayStatus = getDayStatus(day.date);
 
-	// Add a background class for days with no intensity (white cells)
-	const bgClass = day.intensity === 0 ? "bg-white" : intensityColor;
+	// Get text color based on sober status and intensity
+	const textColorClass = day.sober
+		? getTextColorClass(day.intensity)
+		: getStatusTextColor(dayStatus);
+
+	// Cell style based on sober status
+	const cellClass = day.sober
+		? `${intensityColor} rounded-lg outline outline-1 outline-offset-[-1px]`
+		: `rounded-lg outline outline-1 outline-offset-[-1px]`;
+
+	const handlePress = () => {
+		if (onToggleSober) {
+			onToggleSober(day.id);
+		}
+	};
 
 	return (
-		<View className="flex-1 aspect-square p-0.5">
-			<View
-				className={`${bgClass} rounded-md flex-1 justify-end items-center pb-1`}
+		<View className="flex-1 p-0.5">
+			<TouchableOpacity
+				onPress={handlePress}
+				activeOpacity={0.7}
+				className={`${cellClass} flex-1 px-2.5 pt-7 pb-2 flex-col justify-end items-center h-[60px]`}
 			>
-				<Text className="text-xs text-foreground font-medium">
+				<Text
+					className={`${textColorClass} text-center text-[10px] font-extrabold leading-tight`}
+				>
 					{day.isFirstOfMonth
 						? `${getMonthName(day.month)} ${day.day}`
 						: day.day}
 				</Text>
-			</View>
+			</TouchableOpacity>
 		</View>
 	);
 }

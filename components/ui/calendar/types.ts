@@ -4,6 +4,7 @@ export interface DayData {
   day: number;
   month: number;
   year: number;
+  sober: boolean;
   intensity: number;
   isFirstOfMonth: boolean;
 }

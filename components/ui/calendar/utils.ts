@@ -1,22 +1,68 @@
 import { DayData, WeekData, CalendarData } from './types';
 
-// Function to get color based on intensity (1-10)
+// Function to get color based on intensity (0-10)
+// Intensity 0 means not sober (white background)
+// Intensity 1-10 represents the streak length, with higher values for longer streaks
 export const getIntensityColor = (intensity: number): string => {
-  // Map intensity (1-10) to a shade of green
-  // Return empty string for intensity 0 (no color/white)
+  // Map intensity to a shade of green
   switch (intensity) {
-    case 0: return '';
-    case 1: return 'bg-green-50';
-    case 2: return 'bg-green-100';
-    case 3: return 'bg-green-200';
-    case 4: return 'bg-green-300';
-    case 5: return 'bg-green-400';
-    case 6: return 'bg-green-500';
-    case 7: return 'bg-green-600';
-    case 8: return 'bg-green-700';
-    case 9: return 'bg-green-800';
-    case 10: return 'bg-green-900';
-    default: return '';
+    case 0: return ''; // Not sober - will be white
+    case 1: return 'bg-green-100'; // First day of streak
+    case 2: return 'bg-emerald-100'; // 2 days
+    case 3: return 'bg-emerald-200'; // 3 days
+    case 4: return 'bg-green-600'; // 4 days
+    case 5: return 'bg-green-600'; // 5 days
+    case 6: return 'bg-green-700'; // 6 days
+    case 7: return 'bg-green-700'; // 7 days
+    case 8: return 'bg-green-800'; // 8 days
+    case 9: return 'bg-green-900'; // 9 days
+    case 10: return 'bg-green-950'; // 10+ days (max intensity)
+    default: return ''; // Fallback
+  }
+};
+
+// Get text color based on intensity
+export const getTextColorClass = (intensity: number): string => {
+  // For higher intensities (darker backgrounds), use light text
+  if (intensity >= 4) {
+    return 'text-green-100';
+  }
+  // For lower intensities (lighter backgrounds), use dark text
+  else if (intensity >= 1) {
+    return 'text-green-600';
+  }
+  // For non-sober days, use different text colors based on status
+  return 'text-stone-300'; // Default for past days
+};
+
+// Determine if a day is today, past, or future
+export const getDayStatus = (date: string): 'today' | 'past' | 'future' => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const dayDate = new Date(date);
+  dayDate.setHours(0, 0, 0, 0);
+  
+  if (dayDate.getTime() === today.getTime()) {
+    return 'today';
+  } else if (dayDate < today) {
+    return 'past';
+  } else {
+    return 'future';
+  }
+};
+
+// Get text color based on day status (for non-sober days)
+export const getStatusTextColor = (status: 'today' | 'past' | 'future'): string => {
+  switch (status) {
+    case 'today':
+      return 'text-sky-500';
+    case 'past':
+      return 'text-stone-300';
+    case 'future':
+      return 'text-neutral-700';
+    default:
+      return 'text-stone-300';
   }
 };
 
@@ -44,6 +90,7 @@ export const generateStaticCalendarData = (): CalendarData => {
     const isFirstOfMonth = day === 1;
     
     let intensity = 0; // Default is no intensity (white)
+    let sober = false; // Default is not sober
     
     // Randomly determine if this day should start or continue a streak
     if (!inStreak) {
@@ -53,6 +100,7 @@ export const generateStaticCalendarData = (): CalendarData => {
         currentStreakLength = 1;
         maxStreakLength = Math.floor(Math.random() * 12) + 3; // Random streak of 3-14 days
         intensity = 1; // Always start with intensity 1
+        sober = true; // Mark as sober
       }
     } else {
       // Continue the streak
@@ -60,6 +108,7 @@ export const generateStaticCalendarData = (): CalendarData => {
       // Increase intensity with streak length, capped at 10
       intensity = Math.min(currentStreakLength, 10);
       
+      sober = true; // Mark as sober
       // End streak if we've reached max length
       if (currentStreakLength >= maxStreakLength) {
         inStreak = false;
@@ -73,6 +122,7 @@ export const generateStaticCalendarData = (): CalendarData => {
       month,
       year,
       intensity,
+      sober,
       isFirstOfMonth
     });
   }
