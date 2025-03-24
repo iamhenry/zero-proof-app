@@ -11,20 +11,19 @@ interface DayCellProps {
 export function DayCell({ day }: DayCellProps) {
 	const intensityColor = getIntensityColor(day.intensity);
 
+	// Add a background class for days with no intensity (white cells)
+	const bgClass = day.intensity === 0 ? "bg-white" : intensityColor;
+
 	return (
 		<View className="flex-1 aspect-square p-0.5">
 			<View
-				className={`${intensityColor} rounded-md flex-1 justify-center items-center`}
+				className={`${bgClass} rounded-md flex-1 justify-end items-center pb-1`}
 			>
-				{day.isFirstOfMonth ? (
-					<View className="absolute top-1 left-1">
-						<Text className="text-[10px] text-foreground font-medium">
-							{`${getMonthName(day.month)} ${day.day}`}
-						</Text>
-					</View>
-				) : null}
-
-				<Text className="text-xs text-foreground font-medium">{day.day}</Text>
+				<Text className="text-xs text-foreground font-medium">
+					{day.isFirstOfMonth
+						? `${getMonthName(day.month)} ${day.day}`
+						: day.day}
+				</Text>
 			</View>
 		</View>
 	);

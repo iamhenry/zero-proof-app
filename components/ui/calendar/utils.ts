@@ -3,7 +3,9 @@ import { DayData, WeekData, CalendarData } from './types';
 // Function to get color based on intensity (1-10)
 export const getIntensityColor = (intensity: number): string => {
   // Map intensity (1-10) to a shade of green
+  // Return empty string for intensity 0 (no color/white)
   switch (intensity) {
+    case 0: return '';
     case 1: return 'bg-green-50';
     case 2: return 'bg-green-100';
     case 3: return 'bg-green-200';
@@ -14,7 +16,7 @@ export const getIntensityColor = (intensity: number): string => {
     case 8: return 'bg-green-700';
     case 9: return 'bg-green-800';
     case 10: return 'bg-green-900';
-    default: return 'bg-gray-100';
+    default: return '';
   }
 };
 
@@ -23,6 +25,11 @@ export const generateStaticCalendarData = (): CalendarData => {
   // Set start date to January 1, 2024
   const startDate = new Date(2024, 0, 1);
   const days: DayData[] = [];
+  
+  // Streak management variables
+  let inStreak = false;
+  let currentStreakLength = 0;
+  let maxStreakLength = 0;
   
   // Generate 5 months of days (approx 150 days)
   for (let i = 0; i < 150; i++) {
@@ -36,8 +43,28 @@ export const generateStaticCalendarData = (): CalendarData => {
     // Check if it's the first day of the month
     const isFirstOfMonth = day === 1;
     
-    // Generate random intensity value between 1 and 10
-    const intensity = Math.floor(Math.random() * 10) + 1;
+    let intensity = 0; // Default is no intensity (white)
+    
+    // Randomly determine if this day should start or continue a streak
+    if (!inStreak) {
+      // 25% chance to start a new streak (increased from 15% to get more streaks)
+      if (Math.random() < 0.25) {
+        inStreak = true;
+        currentStreakLength = 1;
+        maxStreakLength = Math.floor(Math.random() * 12) + 3; // Random streak of 3-14 days
+        intensity = 1; // Always start with intensity 1
+      }
+    } else {
+      // Continue the streak
+      currentStreakLength++;
+      // Increase intensity with streak length, capped at 10
+      intensity = Math.min(currentStreakLength, 10);
+      
+      // End streak if we've reached max length
+      if (currentStreakLength >= maxStreakLength) {
+        inStreak = false;
+      }
+    }
     
     days.push({
       id: `${year}-${month + 1}-${day}`,
