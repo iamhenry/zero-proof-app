@@ -72,6 +72,7 @@ export function CalendarGrid() {
 
 			{/* Scrollable calendar grid */}
 			<FlatList
+				testID="calendar-grid-list"
 				renderItem={({ item }: { item: WeekData }) => (
 					<View className="flex-row gap-1 mb-1">
 						{item.days.map((day) => (

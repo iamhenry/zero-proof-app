@@ -38,6 +38,7 @@ export function DayCell({ day, onToggleSober }: DayCellProps) {
 	return (
 		<View className="flex-1 p-0.5">
 			<TouchableOpacity
+				testID="day-cell-touchable"
 				onPress={handlePress}
 				activeOpacity={0.7}
 				className={`${cellClass} flex-1 px-2.5 pt-7 pb-2 flex-col justify-end items-center h-[60px]`}
