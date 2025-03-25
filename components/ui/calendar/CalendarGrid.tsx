@@ -8,7 +8,7 @@ import {
 import { WeekdayHeader } from "./WeekdayHeader";
 import { DayCell } from "./DayCell";
 import { generateCalendarData, loadMoreWeeks } from "./utils";
-import { WeekData } from "./types";
+import { WeekData, DayData } from "./types";
 import dayjs from "dayjs";
 
 export function CalendarGrid() {
@@ -27,20 +27,29 @@ export function CalendarGrid() {
 	// Function to toggle sober state and recalculate streaks
 	const toggleSoberDay = useCallback((dayId: string) => {
 		setCalendarData((prevData) => {
-			// Create a deep copy of the calendar data
-			const newData = JSON.parse(JSON.stringify(prevData));
+			// Only clone the structure we need to modify
+			const newData = {
+				weeks: [...prevData.weeks],
+			};
 
 			// Find the day to toggle
-			let targetDay = null;
+			let targetDay: DayData | null = null;
 			let targetWeekIndex = -1;
 			let targetDayIndex = -1;
 
 			// Find the day in the weeks array
 			for (let i = 0; i < newData.weeks.length; i++) {
 				const dayIndex = newData.weeks[i].days.findIndex(
-					(day: any) => day.id === dayId,
+					(day) => day.id === dayId,
 				);
 				if (dayIndex !== -1) {
+					// Create a copy of this week before modifying
+					newData.weeks[i] = {
+						...newData.weeks[i],
+						days: [...newData.weeks[i].days],
+					};
+
+					// Reference to the day (we'll replace it later)
 					targetDay = newData.weeks[i].days[dayIndex];
 					targetWeekIndex = i;
 					targetDayIndex = dayIndex;
@@ -48,26 +57,80 @@ export function CalendarGrid() {
 				}
 			}
 
-			if (targetDay) {
-				// Toggle the sober state
-				targetDay.sober = !targetDay.sober;
+			if (targetDay && targetWeekIndex !== -1 && targetDayIndex !== -1) {
+				// Create a new day object with toggled state
+				const updatedDay = {
+					...targetDay,
+					sober: !targetDay.sober,
+					intensity: !targetDay.sober ? 1 : 0, // Initial intensity when toggled to sober
+				};
 
-				// Recalculate intensities based on consecutive sober days
-				// Start from the current day and go backwards to find the beginning of the streak
+				// Replace the day with our updated version
+				newData.weeks[targetWeekIndex].days[targetDayIndex] = updatedDay;
+
+				// Only recalculate streaks for days on or after this one
+				// to improve performance
 				let currentStreak = 0;
 
-				// Process all days from the beginning to update streaks
+				// Process days from beginning to end, but only update those on or after the toggled day
+				const dateToggledDay = dayjs(dayId);
+				let needToUpdateStreak = false;
+
 				for (let w = 0; w < newData.weeks.length; w++) {
+					// Create a copy of the week's days array if we're going to modify it
+					let weekDaysCopied = false;
+
 					for (let d = 0; d < newData.weeks[w].days.length; d++) {
 						const currentDay = newData.weeks[w].days[d];
+						const currentDayDate = dayjs(currentDay.date);
 
+						// Only process days chronologically on or before the toggled day
+						if (!needToUpdateStreak && currentDayDate.isAfter(dateToggledDay)) {
+							continue;
+						}
+
+						// Mark that we've reached the toggled day
+						if (currentDay.id === dayId) {
+							needToUpdateStreak = true;
+						}
+
+						// Skip days we don't need to process (those before the toggled day)
+						if (!needToUpdateStreak) {
+							if (currentDay.sober) {
+								// Just count the streak for prior days without modifying them
+								currentStreak++;
+							} else {
+								currentStreak = 0;
+							}
+							continue;
+						}
+
+						// Create a copy of the week's days array if we haven't already
+						if (!weekDaysCopied) {
+							newData.weeks[w] = {
+								...newData.weeks[w],
+								days: [...newData.weeks[w].days],
+							};
+							weekDaysCopied = true;
+						}
+
+						// Now process days that need streak recalculation
 						if (currentDay.sober) {
 							currentStreak++;
-							// Cap intensity at 10
-							currentDay.intensity = Math.min(currentStreak, 10);
+							// Create a new day object with updated intensity
+							newData.weeks[w].days[d] = {
+								...currentDay,
+								intensity: Math.min(currentStreak, 10), // Cap intensity at 10
+							};
 						} else {
 							currentStreak = 0;
-							currentDay.intensity = 0;
+							// Create a new day object with intensity 0
+							if (currentDay.intensity !== 0) {
+								newData.weeks[w].days[d] = {
+									...currentDay,
+									intensity: 0,
+								};
+							}
 						}
 					}
 				}

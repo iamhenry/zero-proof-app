@@ -1,6 +1,25 @@
 import { DayData, WeekData, CalendarData } from './types';
 import dayjs from 'dayjs';
 
+// Cache for today's date to avoid recalculating it repeatedly
+let _todayCache: { date: dayjs.Dayjs, lastCalculated: number } = {
+  date: dayjs().startOf('day'),
+  lastCalculated: Date.now()
+};
+
+// Get today's date with caching (recalculate only once per minute)
+const getToday = (): dayjs.Dayjs => {
+  const now = Date.now();
+  // If cache is older than 1 minute, refresh it
+  if ((now - _todayCache.lastCalculated) > 60000) {
+    _todayCache = {
+      date: dayjs().startOf('day'),
+      lastCalculated: now
+    };
+  }
+  return _todayCache.date;
+};
+
 // Function to get color based on intensity (0-10)
 // Intensity 0 means not sober (white background)
 // Intensity 1-10 represents the streak length, with higher values for longer streaks
@@ -36,18 +55,33 @@ export const getTextColorClass = (intensity: number): string => {
   return 'text-stone-300'; // Default for past days
 };
 
+// Cache for day status results
+const dayStatusCache: Record<string, 'today' | 'past' | 'future'> = {};
+
 // Determine if a day is today, past, or future
 export const getDayStatus = (date: string): 'today' | 'past' | 'future' => {
-  const today = dayjs().startOf('day');
+  // Check cache first
+  if (dayStatusCache[date]) {
+    return dayStatusCache[date];
+  }
+  
+  const today = getToday();
   const dayDate = dayjs(date).startOf('day');
   
+  let status: 'today' | 'past' | 'future';
+  
   if (dayDate.isSame(today)) {
-    return 'today';
+    status = 'today';
   } else if (dayDate.isBefore(today)) {
-    return 'past';
+    status = 'past';
   } else {
-    return 'future';
+    status = 'future';
   }
+  
+  // Store in cache
+  dayStatusCache[date] = status;
+  
+  return status;
 };
 
 // Get text color based on day status (for non-sober days)
