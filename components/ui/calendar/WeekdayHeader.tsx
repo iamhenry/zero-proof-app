@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 
 export function WeekdayHeader() {
+	// Define weekday labels (Sunday first)
 	const weekdays = ["S", "M", "T", "W", "Th", "F", "S"];
 
 	return (

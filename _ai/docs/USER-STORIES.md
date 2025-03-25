@@ -27,7 +27,6 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 ## Calendar Display and Navigation
 - [ ] As a user, I want to view a calendar grid with days of the week as columns and consecutive days without gaps, so that I can easily understand the layout of time.
 - [ ] As a user, I want to see weekday headers (e.g., M, T, W, Th, F, S, S) at the top of the calendar, so that I can identify the days of the week.
-- [ ] As a user, I want to see month markers indicating the start of each month, so that I can easily locate specific months.
 - [ ] As a user, I want to scroll vertically through the calendar to view different months and years, with the calendar loading more data automatically as I scroll, so that I can access any date range seamlessly.
 
 ## Timer Functionality

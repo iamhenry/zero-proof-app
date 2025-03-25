@@ -1,4 +1,5 @@
 import { DayData, WeekData, CalendarData } from './types';
+import dayjs from 'dayjs';
 
 // Function to get color based on intensity (0-10)
 // Intensity 0 means not sober (white background)
@@ -37,15 +38,12 @@ export const getTextColorClass = (intensity: number): string => {
 
 // Determine if a day is today, past, or future
 export const getDayStatus = (date: string): 'today' | 'past' | 'future' => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = dayjs().startOf('day');
+  const dayDate = dayjs(date).startOf('day');
   
-  const dayDate = new Date(date);
-  dayDate.setHours(0, 0, 0, 0);
-  
-  if (dayDate.getTime() === today.getTime()) {
+  if (dayDate.isSame(today)) {
     return 'today';
-  } else if (dayDate < today) {
+  } else if (dayDate.isBefore(today)) {
     return 'past';
   } else {
     return 'future';
@@ -66,88 +64,217 @@ export const getStatusTextColor = (status: 'today' | 'past' | 'future'): string 
   }
 };
 
-// Generate 5 months of static data
-export const generateStaticCalendarData = (): CalendarData => {
-  // Set start date to January 1, 2024
-  const startDate = new Date(2024, 0, 1);
-  const days: DayData[] = [];
+// Function to generate a single day data
+export const generateDayData = (date: dayjs.Dayjs, streakInfo?: {inStreak: boolean, currentStreakLength: number}): DayData => {
+  const day = date.date();
+  const month = date.month();
+  const year = date.year();
+  const isFirstOfMonth = day === 1;
+  
+  let intensity = 0;
+  let sober = false;
+  
+  // If streak info is provided, use it
+  if (streakInfo && streakInfo.inStreak) {
+    sober = true;
+    intensity = Math.min(streakInfo.currentStreakLength, 10);
+  }
+  
+  return {
+    id: date.format('YYYY-MM-DD'),
+    date: date.format('YYYY-MM-DD'),
+    day,
+    month,
+    year,
+    intensity,
+    sober,
+    isFirstOfMonth
+  };
+};
+
+// Ensure startDate is aligned to the first day of the week (Sunday = 0)
+const alignToWeekStart = (date: dayjs.Dayjs): dayjs.Dayjs => {
+  const dayOfWeek = date.day(); // 0 is Sunday, 6 is Saturday
+  return date.subtract(dayOfWeek, 'day');
+};
+
+// Generate calendar data with dynamic dates properly aligned to weeks
+export const generateCalendarData = (
+  startDate = dayjs().subtract(3, 'month'), 
+  months = 5
+): CalendarData => {
+  // Align the start date to the beginning of the week (Sunday)
+  const alignedStartDate = alignToWeekStart(startDate);
+  
+  // Calculate approximate number of days (ensure we have complete weeks)
+  const totalDays = months * 31; // Slightly more than months * 30 to ensure we have enough days
+  const totalWeeks = Math.ceil(totalDays / 7);
+  
+  // Generate weeks directly instead of days first
+  const weeks: WeekData[] = [];
   
   // Streak management variables
   let inStreak = false;
   let currentStreakLength = 0;
   let maxStreakLength = 0;
   
-  // Generate 5 months of days (approx 150 days)
-  for (let i = 0; i < 150; i++) {
-    const currentDate = new Date(startDate);
-    currentDate.setDate(startDate.getDate() + i);
+  for (let weekIndex = 0; weekIndex < totalWeeks; weekIndex++) {
+    const weekDays: DayData[] = [];
     
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
-    
-    // Check if it's the first day of the month
-    const isFirstOfMonth = day === 1;
-    
-    let intensity = 0; // Default is no intensity (white)
-    let sober = false; // Default is not sober
-    
-    // Randomly determine if this day should start or continue a streak
-    if (!inStreak) {
-      // 25% chance to start a new streak (increased from 15% to get more streaks)
-      if (Math.random() < 0.25) {
-        inStreak = true;
-        currentStreakLength = 1;
-        maxStreakLength = Math.floor(Math.random() * 12) + 3; // Random streak of 3-14 days
-        intensity = 1; // Always start with intensity 1
-        sober = true; // Mark as sober
-      }
-    } else {
-      // Continue the streak
-      currentStreakLength++;
-      // Increase intensity with streak length, capped at 10
-      intensity = Math.min(currentStreakLength, 10);
+    // Generate 7 days for each week
+    for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+      const dayOffset = weekIndex * 7 + dayIndex;
+      const currentDate = alignedStartDate.add(dayOffset, 'day');
       
-      sober = true; // Mark as sober
-      // End streak if we've reached max length
-      if (currentStreakLength >= maxStreakLength) {
-        inStreak = false;
+      // Randomly determine if this day should start or continue a streak
+      if (!inStreak) {
+        // 25% chance to start a new streak
+        if (Math.random() < 0.25) {
+          inStreak = true;
+          currentStreakLength = 1;
+          maxStreakLength = Math.floor(Math.random() * 12) + 3; // Random streak of 3-14 days
+        }
+      } else {
+        // Continue the streak
+        currentStreakLength++;
+        
+        // End streak if we've reached max length
+        if (currentStreakLength >= maxStreakLength) {
+          inStreak = false;
+        }
       }
+      
+      weekDays.push(generateDayData(currentDate, { inStreak, currentStreakLength }));
     }
     
-    days.push({
-      id: `${year}-${month + 1}-${day}`,
-      date: `${year}-${month + 1}-${day}`,
-      day,
-      month,
-      year,
-      intensity,
-      sober,
-      isFirstOfMonth
+    weeks.push({
+      id: `week-${weekIndex}`,
+      days: weekDays
     });
   }
   
-  // Group days into weeks (7 days per week) aligned to Sunday as the first day of the week
-  const weeks: WeekData[] = [];
-  
-  // Process days in chunks of 7
-  for (let i = 0; i < days.length; i += 7) {
-    const weekDays = days.slice(i, i + 7);
-    
-    // If we have less than 7 days in the last week, it's fine for the static demo
-    if (weekDays.length > 0) {
-      weeks.push({
-        id: `week-${Math.floor(i / 7)}`,
-        days: weekDays
-      });
-    }
-  }
-  
   return { weeks };
+};
+
+// Legacy function for backward compatibility
+export const generateStaticCalendarData = (): CalendarData => {
+  return generateCalendarData();
 };
 
 // Get month name for display
 export const getMonthName = (month: number): string => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return months[month];
+};
+
+// Load more weeks to the calendar data (for infinite scrolling)
+export const loadMoreWeeks = (
+  existingData: CalendarData, 
+  direction: 'past' | 'future' = 'future', 
+  weeksToLoad: number = 4
+): CalendarData => {
+  const newData = { ...existingData };
+  const weeks = [...newData.weeks];
+  
+  if (direction === 'future') {
+    // Get the last day from the last week
+    const lastWeek = weeks[weeks.length - 1];
+    const lastDay = lastWeek.days[lastWeek.days.length - 1];
+    const lastDate = dayjs(lastDay.date);
+    
+    // Start date is the day after the last day
+    const startDate = lastDate.add(1, 'day');
+    
+    // Ensure we're generating weeks aligned properly
+    // We already know the next day should be the first day of the week (Sunday)
+    // since the last day of previous week should be Saturday
+    for (let weekIndex = 0; weekIndex < weeksToLoad; weekIndex++) {
+      const weekDays: DayData[] = [];
+      
+      // Generate 7 days for the week
+      for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+        const dayOffset = weekIndex * 7 + dayIndex;
+        const currentDate = startDate.add(dayOffset, 'day');
+        
+        // Random streak generation
+        const shouldBeSober = Math.random() < 0.3;
+        let intensity = 0;
+        
+        if (shouldBeSober) {
+          // Random intensity between 1-10
+          intensity = Math.floor(Math.random() * 10) + 1;
+        }
+        
+        weekDays.push({
+          id: currentDate.format('YYYY-MM-DD'),
+          date: currentDate.format('YYYY-MM-DD'),
+          day: currentDate.date(),
+          month: currentDate.month(),
+          year: currentDate.year(),
+          intensity,
+          sober: intensity > 0,
+          isFirstOfMonth: currentDate.date() === 1
+        });
+      }
+      
+      weeks.push({
+        id: `week-${weeks.length}`,
+        days: weekDays
+      });
+    }
+  } else if (direction === 'past') {
+    // Get the first day from the first week
+    const firstWeek = weeks[0];
+    const firstDay = firstWeek.days[0];
+    const firstDate = dayjs(firstDay.date);
+    
+    // End date is the day before the first day (which should be a Sunday)
+    const endDate = firstDate.subtract(1, 'day'); // This should be a Saturday
+    
+    for (let weekIndex = 0; weekIndex < weeksToLoad; weekIndex++) {
+      const weekDays: DayData[] = [];
+      
+      // Generate 7 days for the week (going backwards)
+      for (let dayIndex = 6; dayIndex >= 0; dayIndex--) {
+        // Calculate offset: we're going backwards from endDate
+        // For first new week: 6 days before endDate to endDate 
+        // For second new week: 13 days before endDate to 7 days before endDate
+        const dayOffset = weekIndex * 7 + (6 - dayIndex);
+        const currentDate = endDate.subtract(dayOffset, 'day');
+        
+        // Random streak generation
+        const shouldBeSober = Math.random() < 0.3;
+        let intensity = 0;
+        
+        if (shouldBeSober) {
+          // Random intensity between 1-10
+          intensity = Math.floor(Math.random() * 10) + 1;
+        }
+        
+        weekDays.unshift({
+          id: currentDate.format('YYYY-MM-DD'),
+          date: currentDate.format('YYYY-MM-DD'),
+          day: currentDate.date(),
+          month: currentDate.month(),
+          year: currentDate.year(),
+          intensity,
+          sober: intensity > 0,
+          isFirstOfMonth: currentDate.date() === 1
+        });
+      }
+      
+      // Ensure weekDays has 7 days
+      if (weekDays.length !== 7) {
+        console.warn(`Week does not have 7 days! It has ${weekDays.length} days.`);
+      }
+      
+      weeks.unshift({
+        id: `week-${-1 * (weekIndex + 1)}`,
+        days: weekDays
+      });
+    }
+  }
+  
+  newData.weeks = weeks;
+  return newData;
 }; 
