@@ -20,6 +20,15 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 - [ ] As a user, I want to be able to undo or correct a mistaken entry by tapping a day again, ensuring the calendar accurately reflects my progress.
 - [ ] As a user, I want the current day to be visually distinguished (e.g., outlined or labeled), so I can easily identify and update today's status.
 - [ ] As a user, I want to scroll vertically through a continuous calendar grid that seamlessly merges weeks from different months without any gaps, so that I can effortlessly review my past, current, and upcoming days in a coherent, uninterrupted view.
+- [ ] As a user, I want each day cell to be color-coded based on my activity or data for that day, so that I can visually identify patterns or trends.
+- [ ] As a user, I want the color intensity of the day cells to reflect the level of activity or data frequency, so that I can quickly see which days had more or less activity.
+- [ ] As a user, I want to tap on a day cell to view more detailed information about the data for that day, so that I can get specific insights when needed.
+
+## Calendar Display and Navigation
+- [ ] As a user, I want to view a calendar grid with days of the week as columns and consecutive days without gaps, so that I can easily understand the layout of time.
+- [ ] As a user, I want to see weekday headers (e.g., M, T, W, Th, F, S, S) at the top of the calendar, so that I can identify the days of the week.
+- [ ] As a user, I want to see month markers indicating the start of each month, so that I can easily locate specific months.
+- [ ] As a user, I want to scroll vertically through the calendar to view different months and years, with the calendar loading more data automatically as I scroll, so that I can access any date range seamlessly.
 
 ## Timer Functionality
 - [ ] As a user, I want to view an active timer showing how long I've been sober in days, hours, and minutes so I can see my real-time progress.
@@ -36,3 +45,7 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 
 ## Social Features
 - [ ] As a user, I want to be able to share my current streak what will be shown as a graphic of the calendar activity of the sober days so I can share my progress with my close friends and family.
+
+
+
+

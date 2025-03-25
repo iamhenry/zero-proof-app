@@ -43,9 +43,9 @@ Add functionality to the static UI components.
 
 ### Milestone 4: Core Feature Implementation
 - [ ] Develop calendar interaction logic 
-  - [ ] Day status toggling
-  - [ ] Streak calculation
-  - [ ] Color intensity updates
+  - [x] Day status toggling
+  - [x] Streak calculation
+  - [x] Color intensity updates
   - [ ] Continuous scroll behavior
 - [ ] Create sobriety timer functionality 
   - [ ] Real-time updates
