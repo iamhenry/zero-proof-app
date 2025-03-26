@@ -5,34 +5,37 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 # User Stories
 
 ## Account Management
-- [ ] As a user, I want to create an account so that my sobriety data can be preserved if I delete and reinstall the app.
-- [ ] As a user, I want to log in with my credentials so I can access my sobriety data in case I need to reinstall the app.
+- [x] As a user, I want to create an account so that my sobriety data can be preserved if I delete and reinstall the app.
+- [x] As a user, I want to log in with my credentials so I can access my sobriety data in case I need to reinstall the app.
 
 ## Calendar Interaction and Visualization
-- [ ] As a user, I want to view a calendar-style activity graph (like github activity graph) on the main screen so I can visualize my sobriety progress at a glance.
-- [ ] As a user, I should see consecutive sober days become a darker color in the UI indicating my sober streak.
-- [ ] As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it.
-- [ ] As a user I want to see a single stat showing the current streak count.
-- [ ] As a user I want to see another stat showing my longest streak count.
-- [ ] As a user, I want to mark each day as either sober or not sober by tapping on calendar tiles so I can track my progress.
-- [ ] As a user, I want to tap on a calendar day to mark it as "sober" and have the day's color update immediately on a scale from 1–10, so I receive instant visual confirmation of my progress.
-- [ ] As a user, I want the darkness of the day to reflect my consecutive streak (with a darker shade indicating a longer streak), so I can quickly assess my ongoing progress.
-- [ ] As a user, I want to be able to undo or correct a mistaken entry by tapping a day again, ensuring the calendar accurately reflects my progress.
-- [ ] As a user, I want the current day to be visually distinguished (e.g., outlined or labeled), so I can easily identify and update today's status.
-- [ ] As a user, I want to scroll vertically through a continuous calendar grid that seamlessly merges weeks from different months without any gaps, so that I can effortlessly review my past, current, and upcoming days in a coherent, uninterrupted view.
-- [ ] As a user, I want each day cell to be color-coded based on my activity or data for that day, so that I can visually identify patterns or trends.
-- [ ] As a user, I want the color intensity of the day cells to reflect the level of activity or data frequency, so that I can quickly see which days had more or less activity.
-- [ ] As a user, I want to tap on a day cell to view more detailed information about the data for that day, so that I can get specific insights when needed.
+- [x] As a user, I want to view a calendar-style activity graph (like github activity graph) on the main screen so I can visualize my sobriety progress at a glance.
+- [x] As a user, I should see consecutive sober days become a darker color in the UI indicating my sober streak.
+- [x] As a user, I want to mark each day as either sober or not sober by tapping on calendar tiles so I can track my progress.
+- [x] As a user, I want to tap on a calendar day to mark it as "sober" and have the day's color update immediately on a scale from 1–10, so I receive instant visual confirmation of my progress.
+- [x] As a user, I want the darkness of the day to reflect my consecutive streak (with a darker shade indicating a longer streak), so I can quickly assess my ongoing progress.
+- [x] As a user, I want to be able to undo or correct a mistaken entry by tapping a day again, ensuring the calendar accurately reflects my progress.
+- [x] As a user, I want the current day to be visually distinguished, so I can easily identify and update today's status.
+- [x] As a user, I want to scroll vertically through a continuous calendar grid that seamlessly merges weeks from different months without any gaps, so that I can effortlessly review my past, current, and upcoming days in a coherent, uninterrupted view.
+- [x] As a user, I want the color intensity of the day cells to reflect the level of activity or data frequency, so that I can quickly see which days had more or less activity.
 
 ## Calendar Display and Navigation
-- [ ] As a user, I want to view a calendar grid with days of the week as columns and consecutive days without gaps, so that I can easily understand the layout of time.
-- [ ] As a user, I want to see weekday headers (e.g., M, T, W, Th, F, S, S) at the top of the calendar, so that I can identify the days of the week.
-- [ ] As a user, I want to scroll vertically through the calendar to view different months and years, with the calendar loading more data automatically as I scroll, so that I can access any date range seamlessly.
+- [x] As a user, I want to view a calendar grid with days of the week as columns and consecutive days without gaps, so that I can easily understand the layout of time.
+- [x] As a user, I want to see weekday headers (e.g., M, T, W, Th, F, S, S) at the top of the calendar, so that I can identify the days of the week.
+- [x] As a user, I want to scroll vertically through the calendar to view different months and years, with the calendar loading more data automatically as I scroll, so that I can access any date range seamlessly.
+- [ ] as a user i want to see a button that shows when i've scrolled past the current month that when pressed will take me back to the currrent day (centered to the viewport) so that i can easily get back to the current day without having to manually scroll back
 
 ## Timer Functionality
 - [ ] As a user, I want to view an active timer showing how long I've been sober in days, hours, and minutes so I can see my real-time progress.
 - [ ] As a user, I want to see the timer reset if I'm not sober that day which breaks the streak.
 - [ ] As a user, I want the app to continue tracking my timer in the background so that the timer remains accurate even when I'm not using the app.
+
+## Streak Tracker
+- [ ] As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it.
+- [ ] As a user I want to see another stat showing my longest streak count.
+
+## Calorie Tracker
+- [ ] As a user I want to see a single stat showing how many calories i've prevented from being sober so I can stay motivated to maintain it.
 
 ## Financial Tracking
 - [ ] As a user, I want to input the cost of my typical drink so the app can calculate my financial savings.
