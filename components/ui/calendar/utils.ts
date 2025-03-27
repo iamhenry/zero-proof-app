@@ -1,3 +1,19 @@
+/**
+ * FILE: utils.ts
+ * CREATED: 2024-07-18 16:32:05
+ *
+ * PURPOSE:
+ * This file provides utility functions for calendar data generation, styling, and manipulation.
+ *
+ * METHODS:
+ * - getToday(): Returns current date with caching for performance
+ * - getIntensityColor(): Returns style class based on sobriety streak intensity
+ * - getTextColorClass(): Returns text color class based on intensity
+ * - getDayStatus(): Determines if a day is today, past, or future
+ * - generateCalendarData(): Creates structured calendar data with random streaks
+ * - loadMoreWeeks(): Adds additional weeks to existing calendar data
+ */
+
 import { DayData, WeekData, CalendarData } from './types';
 import dayjs from 'dayjs';
 

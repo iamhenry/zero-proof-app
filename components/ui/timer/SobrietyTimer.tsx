@@ -1,3 +1,15 @@
+/**
+ * FILE: SobrietyTimer.tsx
+ * CREATED: 2024-07-18 16:32:05
+ *
+ * PURPOSE:
+ * This file implements an animated sobriety timer component that displays elapsed days, hours, minutes, and seconds in a sober state.
+ *
+ * METHODS:
+ * - SobrietyTimer(): Renders a timer with customizable initial values and animated seconds display
+ * - formatUnitValue(): Formats numeric values for consistent display
+ */
+
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text } from "react-native";
 import Animated, {

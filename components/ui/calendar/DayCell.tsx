@@ -1,3 +1,15 @@
+/**
+ * FILE: DayCell.tsx
+ * CREATED: 2024-07-18 16:32:05
+ *
+ * PURPOSE:
+ * This file implements an optimized day cell component for the calendar grid with memoization for performance.
+ *
+ * METHODS:
+ * - DayCell(): Renders a single day cell with appropriate styling based on sobriety status
+ * - handlePress(): Handles press events to toggle sobriety status
+ */
+
 import React, { useCallback, useMemo } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Text } from "@/components/ui/text";

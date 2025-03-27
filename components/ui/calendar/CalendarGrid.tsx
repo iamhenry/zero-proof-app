@@ -1,3 +1,17 @@
+/**
+ * FILE: CalendarGrid.tsx
+ * CREATED: 2024-07-18 16:32:05
+ *
+ * PURPOSE:
+ * This file implements a scrollable calendar grid component that displays and manages sobriety tracking data.
+ *
+ * METHODS:
+ * - CalendarGrid(): Renders the main calendar component with interactive day cells
+ * - toggleSoberDay(): Toggles a day's sobriety status and recalculates streaks
+ * - handleEndReached(): Loads more future weeks when scrolling down
+ * - handleScroll(): Handles calendar scrolling and loads past weeks when needed
+ */
+
 import React, { useMemo, useState, useCallback, useRef } from "react";
 import {
 	View,

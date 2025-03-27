@@ -1,3 +1,14 @@
+/**
+ * FILE: WeekdayHeader.tsx
+ * CREATED: 2024-07-18 16:32:05
+ *
+ * PURPOSE:
+ * This file implements a fixed header component displaying weekday abbreviations for the calendar grid.
+ *
+ * METHODS:
+ * - WeekdayHeader(): Renders a row of weekday abbreviation labels
+ */
+
 import React from "react";
 import { View } from "react-native";
 import { Text } from "@/components/ui/text";
