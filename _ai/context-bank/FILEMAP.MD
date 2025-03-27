@@ -1,6 +1,67 @@
-# Component Documentation Map
+# Documentation Map
 
 This file contains documentation headers extracted from component files to provide a quick reference for the codebase structure.
+
+## Statistics Components
+
+### StreakCounter.tsx
+```
+/**
+ * FILE: components/ui/statistics/StreakCounter.tsx
+ * CREATED: 2025-03-27 14:30:00
+ *
+ * PURPOSE:
+ * This file implements a streak counter component that displays the current sobriety streak count.
+ *
+ * COMPONENTS:
+ * - StreakCounter(props: StreakCounterProps): Renders the streak display with a streak icon.
+ *   - props: { count: number, className?: string }
+ */
+```
+
+### SavingsCounter.tsx
+```
+/**
+ * FILE: components/ui/statistics/SavingsCounter.tsx
+ * CREATED: 2025-03-27 14:30:00
+ *
+ * PURPOSE:
+ * This file implements a savings counter component that displays the total monetary savings from sobriety.
+ *
+ * COMPONENTS:
+ * - SavingsCounter(props: SavingsCounterProps): Renders the savings display with a money icon.
+ *   - props: { amount: string, className?: string }
+ */
+```
+
+### MoneyIcon.tsx
+```
+/**
+ * FILE: components/ui/statistics/MoneyIcon.tsx
+ * CREATED: 2025-03-27 14:30:00
+ *
+ * PURPOSE:
+ * This file implements an SVG icon component for money/savings visualization.
+ *
+ * COMPONENTS:
+ * - MoneyIcon(props: MoneyIconProps): Renders an SVG money icon.
+ *   - props: { width?: number, height?: number }
+ */
+```
+
+### index.ts (statistics)
+```
+/**
+ * FILE: components/ui/statistics/index.ts
+ * CREATED: 2025-03-27 14:30:00
+ *
+ * PURPOSE:
+ * This file exports statistics-related components for use throughout the application.
+ *
+ * METHODS:
+ * - N/A (export-only file)
+ */
+```
 
 ## Timer Components
 

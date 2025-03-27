@@ -2,25 +2,52 @@
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: March 26, 2025, 11:42 AM
+- Last Update: March 27, 2025, 2:32 PM
 - Current Phase: Phase 1 - Static UI Development
-- Overall Progress: ~35%
+- Overall Progress: ~40%
+- Completed Milestones: 1/7
+- Completed Phase: 0/4
 - Next Milestone: Milestone 2 - Core UI Components (in progress)
 - Current Branch: feat/timer-component
 - Latest Release: Version 0.1.0
 
 ## Key Metrics
-- Features Completed: 12/35 (34%)
+- Features Completed: 14/35 (40%)
 - Open Issues: Multiple test failures in CalendarGrid component
 - Test Coverage: 38% (based on Jest coverage report)
-- Completed Milestones: 1/7
-- Current Focus: SobrietyTimer component implementation
+- Current Focus: Statistics components implementation (SavingsCounter, StreakCounter)
 
 ---
 
 # Change Log for Zero Proof App
 
 This document tracks all modifications, organized by version and release date, to maintain a clear development history.
+
+---
+
+## Version 0.1.1 - March 27, 2025 2:32 PM
+
+### Added
+
+- Statistics Components
+  - Description: Implemented statistics tracking components including StreakCounter and SavingsCounter.
+  - Reference: Commits 1116242, 5b280cc.
+
+- Money Icon Component 
+  - Description: Added MoneyIcon SVG component for visual representation in the SavingsCounter.
+  - Reference: Commit 1116242.
+
+### Changed
+
+- Home Screen Layout
+  - Description: Updated home screen to integrate statistics components (StreakCounter and SavingsCounter).
+  - Impact: Improved user interface with clear visualization of progress metrics.
+  - Reference: Commit 1116242.
+
+- StreakCounter Styling
+  - Description: Enhanced visual styling of the StreakCounter component with better integration within the Home screen.
+  - Impact: Improved user interface consistency and readability.
+  - Reference: Commit 1116242.
 
 ---
 
