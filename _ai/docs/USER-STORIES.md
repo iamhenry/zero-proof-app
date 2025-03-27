@@ -27,8 +27,11 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 
 ## Timer Functionality
 - [ ] As a user, I want to view an active timer showing how long I've been sober in days, hours, and minutes so I can see my real-time progress.
-- [ ] As a user, I want to see the timer reset if I'm not sober that day which breaks the streak.
+- [ ] As a user, I want to sync the timer so that it reset if I'm not sober that day which breaks the streak. (eg. 5 day sober streak and i missed the 6th day by not tapping the day cell to activate it, the timer show reset)
 - [ ] As a user, I want the app to continue tracking my timer in the background so that the timer remains accurate even when I'm not using the app.
+- [ ] As a user, the timer should display and track how many days, hours, minutes, and seconds i've been sober and be synced with the calendar component to show the streaks (eg. calendar day cell show 5 day streak, the timer should show 5 days).
+- [ ] as a user i should see the timer dispay "Sober 0" if the current day cell is not marked as sober to ensure accuracy
+- [ ] as a user i should not see the timer if there are no current streaks or the current day is not marked as sober. Only display the timer if there's an active sober day/s
 
 ## Streak Tracker
 - [ ] As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it.
