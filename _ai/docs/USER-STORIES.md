@@ -34,7 +34,7 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 - [ ] US-21: As a user, I should not see the timer if there are no current streaks or the current day is not marked as sober. Only display the timer if there's an active sober day/s
 
 ## Streak Tracker
-- [ ] US-22: As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it.
+- [ ] US-22: As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it floating above the calendar.
 - [ ] US-23: As a user, I want to see another stat showing my longest streak count.
 
 ## Calorie Tracker
