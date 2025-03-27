@@ -34,16 +34,15 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 - [ ] US-21: As a user, I should not see the timer if there are no current streaks or the current day is not marked as sober. Only display the timer if there's an active sober day/s
 
 ## Streak Tracker
-- [ ] US-22: As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it floating above the calendar.
-- [ ] US-23: As a user, I want to see another stat showing my longest streak count.
+- [x] US-22: As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it floating above the calendar.
+- [x] US-23: As a user, I want to see another stat showing my longest streak count.
 
 ## Calorie Tracker
 - [ ] US-24: As a user, I want to see a single stat showing how many calories I've prevented from being sober so I can stay motivated to maintain it.
 
 ## Financial Tracking
-- [ ] US-25: As a user, I want to input the cost of my typical drink so the app can calculate my financial savings.
-- [ ] US-26: As a user, I want to see how much money I've saved by not drinking so I can be motivated by the financial benefits.
-- [ ] US-27: As a user, I want to see a single stat to show how much money I've saved based on a calculation of how much a single drink costs and an average of how drinks I have per week.
+- [x] US-25: As a user, I want to see a single stat to show how much money I've saved based on a calculation of how much a single drink costs and an average of how drinks I have per week.
+- [ ] US-26: As a user, I want to input the cost of my typical drink so the app can calculate my financial savings.
 
 ## Consumption Tracking
 - [ ] US-28: As a user, I want to log the number of drinks I consumed on non-sober days so I can track my consumption patterns.

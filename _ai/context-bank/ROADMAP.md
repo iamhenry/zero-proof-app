@@ -66,10 +66,10 @@ Step-by-Step Tasks:
     - File: `components/ui/calendar/WeekdayHeader.tsx`
     - File: `components/ui/calendar/types.ts`
 - [ ] 5. Create statistics display components 
-  - [ ] 5.1. Implement streak counter cards with current and best streak metrics
+  - [x] 5.1. Implement streak counter component with current and best streak metrics
     - File: `components/ui/statistics/StreakCounter.tsx` (to be created)
-  - [ ] 5.2. Design financial savings display that shows money saved based on drink costs
-    - File: `components/ui/statistics/SavingsDisplay.tsx` (to be created)
+  - [x] 5.2. Create financial savings component that shows money saved based on drink costs
+    - File: `components/ui/statistics/SavingsCounter.tsx` (to be created)
   - [x] 5.3. Create timer display showing days/hours/minutes since last drink
     - File: `components/ui/timer/SobrietyTimer.tsx` (partially implemented)
 - [ ] 6. Build settings interface components 
