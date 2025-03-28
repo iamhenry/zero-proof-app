@@ -72,14 +72,7 @@ Step-by-Step Tasks:
     - File: `components/ui/statistics/SavingsCounter.tsx`
   - [x] 5.3. Create timer display showing days/hours/minutes since last drink
     - File: `components/ui/timer/SobrietyTimer.tsx`
-- [ ] 6. Build settings interface components 
-  - [ ] 6.1. Create drink cost configuration form with price inputs and frequency
-    - File: `components/ui/settings/DrinkCostForm.tsx` (to be created)
-  - [ ] 6.2. Design account management UI with profile edit and password reset
-    - File: `components/ui/settings/AccountSection.tsx` (to be created)
-  - [ ] 6.3. Implement preferences section for app theme and notification settings
-    - File: `components/ui/settings/PreferencesSection.tsx` (to be created)
-    - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
+
 
 ## Phase 2: Frontend Implementation
 Add functionality to the static UI components.
@@ -137,7 +130,7 @@ Step-by-Step Tasks:
   - [ ] 9.4. Create continuous scroll behavior for calendar with efficient rendering
     - File: `lib/hooks/useInfiniteScroll.ts` (to be created)
 - [ ] 10. Create sobriety timer functionality 
-  - [ ] 10.1. Implement real-time timer updates that tick every second
+  - [x] 10.1. Implement real-time timer updates that tick every second
     - File: `components/ui/timer/SobrietyTimer.tsx` (partially implemented)
   - [ ] 10.2. Add background processing to keep timer running when app is closed
     - File: `lib/services/timer-service.ts` (to be created)
@@ -350,3 +343,16 @@ Step-by-Step Tasks:
     - File: `docs/app-store/description.md` (to be created)
   - [ ] 25.3. Prepare promotional graphics and videos for store listings
     - File: `assets/store/promotional/` (to be created)
+
+---
+
+## Backlog
+
+- [ ] 6. Build settings interface components 
+  - [ ] 6.1. Create drink cost configuration form with price inputs and frequency
+    - File: `components/ui/settings/DrinkCostForm.tsx` (to be created)
+  - [ ] 6.2. Design account management UI with profile edit and password reset
+    - File: `components/ui/settings/AccountSection.tsx` (to be created)
+  - [ ] 6.3. Implement preferences section for app notification settings
+    - File: `components/ui/settings/PreferencesSection.tsx` (to be created)
+    - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
