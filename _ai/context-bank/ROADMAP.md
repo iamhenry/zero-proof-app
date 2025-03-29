@@ -45,7 +45,7 @@ Step-by-Step Tasks:
 Objective: Design and implement the essential UI components that form the core of the user experience.
 
 Data Flow:
-- Calendar data is managed within the CalendarGrid component
+- Calendar data is managed within the CalendarGrid component (now via useCalendarData hook)
 - Statistics data is displayed through component-specific props
 - Settings data is managed through form components
 
@@ -110,7 +110,7 @@ Step-by-Step Tasks:
 Objective: Develop the main functionality of the application including calendar interaction, timer, and financial tracking.
 
 Data Flow:
-- Calendar interaction updates local state and storage
+- Calendar interaction updates local state and storage (managed via useCalendarData hook)
 - Timer data persists across app sessions
 - Financial data calculations flow through dedicated services
 
@@ -120,15 +120,19 @@ Acceptance Criteria:
 - Financial tracking system is implemented
 
 Step-by-Step Tasks:
-- [ ] 9. Develop calendar interaction logic 
-  - [x] 9.1. Implement day status toggling between sober/drinking states
-    - File: `components/ui/calendar/CalendarGrid.tsx`
+- [x] 9. Develop calendar interaction logic 
+  - [x] 9.1. Implement day status toggling between sober/drinking states (logic moved to hook)
+    - File: `components/ui/calendar/CalendarGrid.tsx`, `components/ui/calendar/hooks/useCalendarData.ts`
   - [x] 9.2. Add streak calculation that updates with calendar changes
     - File: `components/ui/calendar/utils.ts`
   - [x] 9.3. Implement color intensity updates based on streak length
     - File: `components/ui/calendar/DayCell.tsx`
-  - [ ] 9.4. Create continuous scroll behavior for calendar with efficient rendering
-    - File: `lib/hooks/useInfiniteScroll.ts` (to be created)
+  - [x] 9.4. Create continuous scroll behavior (past/future week loading)
+    - File: `components/ui/calendar/hooks/useCalendarData.ts`
+  - [x] 9.5 Create useCalendarData hook for state management and data loading
+    - File: `components/ui/calendar/hooks/useCalendarData.ts`
+  - [x] 9.6 Create BDD scenarios for useCalendarData hook
+    - File: `_ai/scenarios/bdd-useCalendarData-CalendarGrid.md`
 - [ ] 10. Create sobriety timer functionality 
   - [x] 10.1. Implement real-time timer updates that tick every second
     - File: `components/ui/timer/SobrietyTimer.tsx` (partially implemented)

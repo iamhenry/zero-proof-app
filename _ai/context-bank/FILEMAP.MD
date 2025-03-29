@@ -99,17 +99,21 @@ This file contains documentation headers extracted from component files to provi
 ### CalendarGrid.tsx
 ```
 /**
- * FILE: CalendarGrid.tsx
+ * FILE: components/ui/calendar/CalendarGrid.tsx
  * CREATED: 2024-07-18 16:32:05
+ * UPDATED: 2025-03-29 13:21:00
  *
  * PURPOSE:
- * This file implements a scrollable calendar grid component that displays and manages sobriety tracking data.
+ * This file implements a scrollable calendar grid component that displays sobriety tracking data.
+ * It utilizes the `useCalendarData` hook for state management and data fetching logic.
  *
- * METHODS:
- * - CalendarGrid(): Renders the main calendar component with interactive day cells
- * - toggleSoberDay(): Toggles a day's sobriety status and recalculates streaks
- * - handleEndReached(): Loads more future weeks when scrolling down
- * - handleScroll(): Handles calendar scrolling and loads past weeks when needed
+ * COMPONENTS:
+ * - CalendarGrid(): Renders the main calendar grid UI, including the weekday header and the scrollable list of weeks/days. Relies on `useCalendarData` for data and actions.
+ *
+ * DEPENDENCIES:
+ * - useCalendarData (Hook): Provides calendar state, data, and interaction logic.
+ * - DayCell (Component): Renders individual day cells within the grid.
+ * - WeekdayHeader (Component): Displays the header row with weekday names.
  */
 ```
 
@@ -187,4 +191,19 @@ This file contains documentation headers extracted from component files to provi
  * - generateCalendarData(): Creates structured calendar data with random streaks
  * - loadMoreWeeks(): Adds additional weeks to existing calendar data
  */
-``` 
+```
+
+### useCalendarData.ts
+```
+/**
+ * FILE: components/ui/calendar/hooks/useCalendarData.ts
+ * CREATED: 2025-03-29 13:21:00
+ *
+ * PURPOSE:
+ * This file implements a custom React hook (`useCalendarData`) to manage the state and logic for the calendar component.
+ * It handles fetching calendar data, managing the current view (month/year), selected date, and loading past/future weeks.
+ *
+ * HOOKS:
+ * - useCalendarData(): Provides calendar state (weeks, currentMonthLabel, selectedDate) and actions (setSelectedDate, loadPastWeeks, loadFutureWeeks).
+ *   - Returns: { weeks: CalendarWeek[], currentMonthLabel: string, selectedDate: Dayjs | null, setSelectedDate: (date: Dayjs | null) => void, loadPastWeeks: () => void, loadFutureWeeks: () => void, isLoadingPast: boolean, isLoadingFuture: boolean }
+ */

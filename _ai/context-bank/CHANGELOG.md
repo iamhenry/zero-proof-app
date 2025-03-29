@@ -1,29 +1,64 @@
-# Project Status Dashboard
-
-## Quick Status
-- Project Start Date: March 10, 2025
-- Last Update: March 27, 2025, 2:32 PM
-- Current Phase: Phase 1 - Static UI Development
-- Overall Progress: ~40%
-- Completed Milestones: 1/7
-- Completed Phase: 0/4
-- Next Milestone: Milestone 2 - Core UI Components (in progress)
-- Current Branch: feat/timer-component
-- Latest Release: Version 0.1.0
-
-## Key Metrics
-- Features Completed: 14/35 (40%)
-- Open Issues: Multiple test failures in CalendarGrid component
-- Test Coverage: 38% (based on Jest coverage report)
-- Current Focus: Statistics components implementation (SavingsCounter, StreakCounter)
-
----
-
 # Change Log for Zero Proof App
 
 This document tracks all modifications, organized by version and release date, to maintain a clear development history.
 
 ---
+
+# Project Status Dashboard
+
+## Quick Status
+- Project Start Date: March 10, 2025
+- Last Update: March 29, 2025, 1:21 PM
+- Current Phase: Phase 2 - Frontend Implementation
+- Overall Progress: ~45%
+- Completed Milestones: 2/7
+- Completed Phase: 1/4
+- Next Milestone: Milestone 3 - State Management & Data Handling
+- Current Branch: feat/calendar-hook
+- Latest Release: Version 0.1.2
+
+## Key Metrics
+- Features Completed: ~30/82 (~37% based on sub-tasks)
+- Open Issues: Verify CalendarGrid test results
+- Test Coverage: ~42% (estimated)
+- Current Focus: Implement Local Storage (Task 8) & Timer Persistence (Task 10)
+
+---
+
+
+## Version 0.1.2 - March 29, 2025 01:21 PM
+
+### Added
+
+- `useCalendarData` Hook
+  - Description: Introduced a custom hook to encapsulate calendar data fetching, state management (current month, selected date), and navigation logic (loading past/future weeks). This centralizes calendar logic, making the `CalendarGrid` component cleaner and more focused on presentation.
+  - Why: To improve code organization, testability, and reusability of calendar logic. Separating concerns enhances maintainability.
+  - Reference: Commit 48d43ef.
+
+- BDD Scenarios for `useCalendarData`
+  - Description: Created `_ai/scenarios/bdd-useCalendarData-CalendarGrid.md` outlining behavior-driven development scenarios for the new hook and its interaction with the grid.
+  - Why: To ensure the hook behaves as expected under various conditions and to guide testing efforts.
+  - Reference: Commit 48d43ef.
+
+- Testing Dependencies
+  - Description: Added `@testing-library/react-hooks` to support testing React hooks effectively.
+  - Why: Necessary tooling for isolating and testing the behavior of the `useCalendarData` hook.
+  - Reference: Commit 48d43ef.
+
+### Changed
+
+- Refactored `CalendarGrid` Component
+  - Description: Modified `CalendarGrid` to consume the `useCalendarData` hook, removing internal state management related to dates and loading logic.
+  - Impact: Simplifies the `CalendarGrid` component, making it primarily responsible for rendering the UI based on data provided by the hook. Improves separation of concerns.
+  - Reference: Commit 48d43ef.
+
+- Updated Unit Tests
+  - Description: Revised unit tests for `CalendarGrid` to reflect its new dependency on `useCalendarData` and updated tests for related utilities. Added new tests specifically for the `useCalendarData` hook.
+  - Impact: Ensures continued test coverage and verifies the correct integration between the hook and the component.
+  - Reference: Commit 48d43ef.
+
+---
+
 
 ## Version 0.1.1 - March 27, 2025 2:32 PM
 
