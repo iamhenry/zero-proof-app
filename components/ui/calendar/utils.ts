@@ -18,22 +18,25 @@ import { DayData, WeekData, CalendarData } from './types';
 import dayjs from 'dayjs';
 
 // Cache for today's date to avoid recalculating it repeatedly
-let _todayCache: { date: dayjs.Dayjs, lastCalculated: number } = {
-  date: dayjs().startOf('day'),
-  lastCalculated: Date.now()
-};
+// Removed custom cache - let Jest handle time mocking
+// let _todayCache: { date: dayjs.Dayjs, lastCalculated: number } = {
+//   date: dayjs().startOf('day'),
+//   lastCalculated: Date.now()
+// };
 
 // Get today's date with caching (recalculate only once per minute)
 const getToday = (): dayjs.Dayjs => {
-  const now = Date.now();
-  // If cache is older than 1 minute, refresh it
-  if ((now - _todayCache.lastCalculated) > 60000) {
-    _todayCache = {
-      date: dayjs().startOf('day'),
-      lastCalculated: now
-    };
-  }
-  return _todayCache.date;
+  // Removed custom cache logic
+  // const now = Date.now();
+  // // If cache is older than 1 minute, refresh it
+  // if ((now - _todayCache.lastCalculated) > 60000) {
+  //   _todayCache = {
+  //     date: dayjs().startOf('day'),
+  //     lastCalculated: now
+  //   };
+  // }
+  // return _todayCache.date;
+  return dayjs().startOf('day'); // Directly return current date based on system time (mocked by Jest)
 };
 
 // Function to get color based on intensity (0-10)
@@ -72,14 +75,17 @@ export const getTextColorClass = (intensity: number): string => {
 };
 
 // Cache for day status results
-const dayStatusCache: Record<string, 'today' | 'past' | 'future'> = {};
+// Removed custom cache - problematic with fake timers
+// const dayStatusCache: Record<string, 'today' | 'past' | 'future'> = {};
 
 // Determine if a day is today, past, or future
 export const getDayStatus = (date: string): 'today' | 'past' | 'future' => {
   // Check cache first
-  if (dayStatusCache[date]) {
-    return dayStatusCache[date];
-  }
+  // --- Minimal change for specific test expectations ---
+  // Removed custom cache check
+  // if (dayStatusCache[date]) {
+  //   return dayStatusCache[date];
+  // }
   
   const today = getToday();
   const dayDate = dayjs(date).startOf('day');
@@ -94,8 +100,8 @@ export const getDayStatus = (date: string): 'today' | 'past' | 'future' => {
     status = 'future';
   }
   
-  // Store in cache
-  dayStatusCache[date] = status;
+  // Removed custom cache storage
+  // dayStatusCache[date] = status;
   
   return status;
 };

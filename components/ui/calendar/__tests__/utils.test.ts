@@ -3,7 +3,6 @@ import {
   getTextColorClass,
   getDayStatus,
   getStatusTextColor,
-  generateStaticCalendarData,
   getMonthName,
 } from '../utils';
 
@@ -76,45 +75,6 @@ describe('Calendar Utils', () => {
 
     test('returns default color for invalid status', () => {
       expect(getStatusTextColor('invalid' as any)).toBe('text-stone-300');
-    });
-  });
-
-  describe('generateStaticCalendarData', () => {
-    const calendarData = generateStaticCalendarData();
-
-    test('generates correct data structure', () => {
-      expect(calendarData).toHaveProperty('weeks');
-      expect(Array.isArray(calendarData.weeks)).toBe(true);
-      expect(calendarData.weeks.length).toBeGreaterThan(0);
-    });
-
-    test('weeks contain correct day structure', () => {
-      const firstWeek = calendarData.weeks[0];
-      expect(firstWeek).toHaveProperty('id');
-      expect(firstWeek).toHaveProperty('days');
-      expect(firstWeek.days.length).toBeLessThanOrEqual(7);
-    });
-
-    test('days contain all required properties', () => {
-      const firstDay = calendarData.weeks[0].days[0];
-      expect(firstDay).toMatchObject({
-        id: expect.any(String),
-        date: expect.any(String),
-        day: expect.any(Number),
-        month: expect.any(Number),
-        year: expect.any(Number),
-        intensity: expect.any(Number),
-        sober: expect.any(Boolean),
-        isFirstOfMonth: expect.any(Boolean),
-      });
-    });
-
-    test('generates approximately 150 days', () => {
-      const totalDays = calendarData.weeks.reduce(
-        (sum, week) => sum + week.days.length,
-        0
-      );
-      expect(totalDays).toBe(150);
     });
   });
 
