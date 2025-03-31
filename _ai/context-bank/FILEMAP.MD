@@ -10,11 +10,10 @@ This file contains documentation headers extracted from component files to provi
  * FILE: components/ui/statistics/StreakCounter.tsx
  * CREATED: 2025-03-27 14:30:00
  *
- * PURPOSE:
- * This file implements a streak counter component that displays the current sobriety streak count.
+ * PURPOSE: Displays the current sobriety streak count with a streak icon.
  *
  * COMPONENTS:
- * - StreakCounter(props: StreakCounterProps): Renders the streak display with a streak icon.
+ * - StreakCounter(props: StreakCounterProps) → JSX.Element: Renders the streak display with current and best streak metrics.
  *   - props: { count: number, className?: string }
  */
 ```
@@ -25,11 +24,10 @@ This file contains documentation headers extracted from component files to provi
  * FILE: components/ui/statistics/SavingsCounter.tsx
  * CREATED: 2025-03-27 14:30:00
  *
- * PURPOSE:
- * This file implements a savings counter component that displays the total monetary savings from sobriety.
+ * PURPOSE: Displays the total monetary savings accumulated from sobriety.
  *
  * COMPONENTS:
- * - SavingsCounter(props: SavingsCounterProps): Renders the savings display with a money icon.
+ * - SavingsCounter(props: SavingsCounterProps) → JSX.Element: Renders the savings display with a money icon and formatted currency.
  *   - props: { amount: string, className?: string }
  */
 ```
@@ -40,11 +38,10 @@ This file contains documentation headers extracted from component files to provi
  * FILE: components/ui/statistics/MoneyIcon.tsx
  * CREATED: 2025-03-27 14:30:00
  *
- * PURPOSE:
- * This file implements an SVG icon component for money/savings visualization.
+ * PURPOSE: Provides an SVG icon component for money/savings visualization.
  *
  * COMPONENTS:
- * - MoneyIcon(props: MoneyIconProps): Renders an SVG money icon.
+ * - MoneyIcon(props: MoneyIconProps) → JSX.Element: Renders an SVG money icon with customizable dimensions.
  *   - props: { width?: number, height?: number }
  */
 ```
@@ -55,8 +52,7 @@ This file contains documentation headers extracted from component files to provi
  * FILE: components/ui/statistics/index.ts
  * CREATED: 2025-03-27 14:30:00
  *
- * PURPOSE:
- * This file exports statistics-related components for use throughout the application.
+ * PURPOSE: Exports statistics-related components for use throughout the application.
  *
  * METHODS:
  * - N/A (export-only file)
@@ -71,12 +67,11 @@ This file contains documentation headers extracted from component files to provi
  * FILE: SobrietyTimer.tsx
  * CREATED: 2024-07-18 16:32:05
  *
- * PURPOSE:
- * This file implements an animated sobriety timer component that displays elapsed days, hours, minutes, and seconds in a sober state.
+ * PURPOSE: Implements an animated sobriety timer component that displays elapsed days, hours, minutes, and seconds in a sober state.
  *
  * METHODS:
- * - SobrietyTimer(): Renders a timer with customizable initial values and animated seconds display
- * - formatUnitValue(): Formats numeric values for consistent display
+ * - SobrietyTimer() → JSX.Element: Renders a timer with customizable initial values and animated seconds display
+ * - formatUnitValue(value: number) → string: Formats numeric values with leading zeros for consistent display
  */
 ```
 
@@ -86,8 +81,7 @@ This file contains documentation headers extracted from component files to provi
  * FILE: index.ts
  * CREATED: 2024-07-18 16:32:05
  *
- * PURPOSE:
- * This file exports the SobrietyTimer component for use throughout the application.
+ * PURPOSE: Exports the SobrietyTimer component for use throughout the application.
  *
  * METHODS:
  * - N/A (export-only file)
@@ -101,14 +95,13 @@ This file contains documentation headers extracted from component files to provi
 /**
  * FILE: components/ui/calendar/CalendarGrid.tsx
  * CREATED: 2024-07-18 16:32:05
- * UPDATED: 2025-03-29 13:21:00
+ * UPDATED: 2025-03-31 13:18:00
  *
- * PURPOSE:
- * This file implements a scrollable calendar grid component that displays sobriety tracking data.
+ * PURPOSE: Implements a scrollable calendar grid component that displays sobriety tracking data.
  * It utilizes the `useCalendarData` hook for state management and data fetching logic.
  *
  * COMPONENTS:
- * - CalendarGrid(): Renders the main calendar grid UI, including the weekday header and the scrollable list of weeks/days. Relies on `useCalendarData` for data and actions.
+ * - CalendarGrid() → JSX.Element: Renders the main calendar grid UI, including the weekday header and the scrollable list of weeks/days. Relies on `useCalendarData` for data and actions.
  *
  * DEPENDENCIES:
  * - useCalendarData (Hook): Provides calendar state, data, and interaction logic.
@@ -123,12 +116,11 @@ This file contains documentation headers extracted from component files to provi
  * FILE: DayCell.tsx
  * CREATED: 2024-07-18 16:32:05
  *
- * PURPOSE:
- * This file implements an optimized day cell component for the calendar grid with memoization for performance.
+ * PURPOSE: Implements an optimized day cell component for the calendar grid with memoization for performance.
  *
  * METHODS:
- * - DayCell(): Renders a single day cell with appropriate styling based on sobriety status
- * - handlePress(): Handles press events to toggle sobriety status
+ * - DayCell(props: DayCellProps) → JSX.Element: Renders a single day cell with appropriate styling based on sobriety status
+ * - handlePress() → void: Handles press events to toggle sobriety status
  */
 ```
 
@@ -138,11 +130,10 @@ This file contains documentation headers extracted from component files to provi
  * FILE: WeekdayHeader.tsx
  * CREATED: 2024-07-18 16:32:05
  *
- * PURPOSE:
- * This file implements a fixed header component displaying weekday abbreviations for the calendar grid.
+ * PURPOSE: Implements a fixed header component displaying weekday abbreviations for the calendar grid.
  *
  * METHODS:
- * - WeekdayHeader(): Renders a row of weekday abbreviation labels
+ * - WeekdayHeader() → JSX.Element: Renders a row of weekday abbreviation labels
  */
 ```
 
@@ -152,8 +143,7 @@ This file contains documentation headers extracted from component files to provi
  * FILE: index.ts
  * CREATED: 2024-07-18 16:32:05
  *
- * PURPOSE:
- * This file exports the calendar-related components for use throughout the application.
+ * PURPOSE: Exports the calendar-related components for use throughout the application.
  *
  * METHODS:
  * - N/A (export-only file)
@@ -166,8 +156,7 @@ This file contains documentation headers extracted from component files to provi
  * FILE: types.ts
  * CREATED: 2024-07-18 16:32:05
  *
- * PURPOSE:
- * This file defines TypeScript interfaces for calendar data structures used throughout the calendar components.
+ * PURPOSE: Defines TypeScript interfaces for calendar data structures used throughout the calendar components.
  *
  * METHODS:
  * - N/A (type definitions only)
@@ -179,17 +168,17 @@ This file contains documentation headers extracted from component files to provi
 /**
  * FILE: utils.ts
  * CREATED: 2024-07-18 16:32:05
+ * UPDATED: 2025-03-31 13:18:00
  *
- * PURPOSE:
- * This file provides utility functions for calendar data generation, styling, and manipulation.
+ * PURPOSE: Provides utility functions for calendar data generation, styling, and manipulation.
  *
  * METHODS:
- * - getToday(): Returns current date with caching for performance
- * - getIntensityColor(): Returns style class based on sobriety streak intensity
- * - getTextColorClass(): Returns text color class based on intensity
- * - getDayStatus(): Determines if a day is today, past, or future
- * - generateCalendarData(): Creates structured calendar data with random streaks
- * - loadMoreWeeks(): Adds additional weeks to existing calendar data
+ * - getToday() → dayjs.Dayjs: Returns current date with caching for performance
+ * - getIntensityColor(intensity: number) → string: Returns style class based on sobriety streak intensity
+ * - getTextColorClass(intensity: number) → string: Returns text color class based on intensity
+ * - getDayStatus(date: string) → 'today' | 'past' | 'future': Determines if a day is today, past, or future
+ * - generateCalendarData() → CalendarData: Creates structured calendar data with random streaks
+ * - loadMoreWeeks(existingData: CalendarData, direction: 'past' | 'future', count: number) → CalendarData: Adds additional weeks to existing calendar data
  */
 ```
 
@@ -198,12 +187,16 @@ This file contains documentation headers extracted from component files to provi
 /**
  * FILE: components/ui/calendar/hooks/useCalendarData.ts
  * CREATED: 2025-03-29 13:21:00
+ * UPDATED: 2025-03-31 13:18:00
  *
- * PURPOSE:
- * This file implements a custom React hook (`useCalendarData`) to manage the state and logic for the calendar component.
- * It handles fetching calendar data, managing the current view (month/year), selected date, and loading past/future weeks.
+ * PURPOSE: Manages state and logic for the calendar, including data generation, sobriety tracking, streak calculation, and week loading.
  *
  * HOOKS:
- * - useCalendarData(): Provides calendar state (weeks, currentMonthLabel, selectedDate) and actions (setSelectedDate, loadPastWeeks, loadFutureWeeks).
- *   - Returns: { weeks: CalendarWeek[], currentMonthLabel: string, selectedDate: Dayjs | null, setSelectedDate: (date: Dayjs | null) => void, loadPastWeeks: () => void, loadFutureWeeks: () => void, isLoadingPast: boolean, isLoadingFuture: boolean }
+ * - useCalendarData() → { weeks: WeekData[], toggleSoberDay: (dayId: string) => void, loadPastWeeks: () => void, loadFutureWeeks: () => void, currentStreak: number, longestStreak: number, isLoadingInitial: boolean, isLoadingPast: boolean, isLoadingFuture: boolean }: Provides calendar state and interaction logic.
+ * 
+ * FUNCTIONS:
+ * - generateDeterministicInitialWeeks() → WeekData[]: Creates the initial visible weeks.
+ * - recalculateStreaksAndIntensity(weeks: WeekData[]) → { updatedWeeks: WeekData[], currentStreak: number, longestStreak: number }: Processes weeks to update day intensity and calculate streaks.
+ * 
+ * DEPENDENCIES: react, dayjs, ../types
  */

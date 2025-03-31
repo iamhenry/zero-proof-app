@@ -1,5 +1,22 @@
 # MEMORY.md
 
+## [Mar 31, 2025 01:18 PM] Documentation Standards Evolution: PURPOSE Over DESCRIPTION
+**Context:** Refactored documentation format across the codebase to standardize comment structure and improve clarity.
+**Lesson:**
+- Changing "DESCRIPTION" to "PURPOSE" in documentation comments provides clearer focus on a component's role rather than just what it does.
+- Adding return types to function descriptions (e.g., `functionName() → ReturnType`) improves developer understanding of component interfaces.
+- Consistently formatting documentation across components makes onboarding and maintenance more efficient.
+- These small changes have a significant impact on code readability and developer experience.
+**Related Methods/Concepts:**
+- Documentation standards
+- Code commenting best practices
+- Type annotations
+- Developer experience (DX)
+- Knowledge transfer
+**Future Improvements:**
+- Consider automating documentation format verification in the CI pipeline.
+- Add a documentation guide to the project README for consistent documentation in future components.
+
 ## [Mar 29, 2025 01:05 PM] Immutability in State Updates is Crucial for Visual Consistency
 **Context:** Debugging streak intensity visual bugs in the calendar. Tests passed, but visually, intensity didn't update correctly for "gap filling" or "streak breaking" scenarios after refactoring logic into the `useCalendarData` hook.
 **Lesson:**
