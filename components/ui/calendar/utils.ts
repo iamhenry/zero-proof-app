@@ -1,5 +1,4 @@
-/**
- * FILE: components/ui/calendar/utils.ts
+/** * FILE: components/ui/calendar/utils.ts
  * PURPOSE: Provides utility functions for calendar data generation, styling, date status checks, and week loading. Includes functions for handling sobriety streak visualization.
  * FUNCTIONS:
  *   - getToday() → dayjs.Dayjs: Returns the start of the current day.
@@ -9,9 +8,8 @@
  *   - getStatusTextColor(status: 'today' | 'past' | 'future') → string: Returns text color based on day status (for non-sober days).
  *   - generateDayData(date: dayjs.Dayjs, streakInfo?: {...}) → DayData: Creates a DayData object for a specific date.
  *   - generateCalendarData(startDate?, months?) → CalendarData: Creates structured calendar data with randomly generated streaks.
- *   - generateStaticCalendarData() → CalendarData: Legacy function calling generateCalendarData.
- *   - getMonthName(month: number) → string: Returns the abbreviated month name.
- *   - loadMoreWeeks(existingData: CalendarData, direction?, weeksToLoad?) → CalendarData: Adds more weeks (past/future) with random data to existing calendar data.
+ *   - loadMoreWeeks(existingData: CalendarData, direction?, weeksToLoad?) → CalendarData: Adds more weeks (past/future) with deterministic data to existing calendar data.
+*   - getMonthName(month: number) → string: Returns the abbreviated month name.
  * DEPENDENCIES: dayjs, ./types
  */
 
