@@ -1,17 +1,18 @@
 /**
- * FILE: utils.ts
- * CREATED: 2024-07-18 16:32:05
- *
- * PURPOSE:
- * This file provides utility functions for calendar data generation, styling, and manipulation.
- *
- * METHODS:
- * - getToday(): Returns current date with caching for performance
- * - getIntensityColor(): Returns style class based on sobriety streak intensity
- * - getTextColorClass(): Returns text color class based on intensity
- * - getDayStatus(): Determines if a day is today, past, or future
- * - generateCalendarData(): Creates structured calendar data with random streaks
- * - loadMoreWeeks(): Adds additional weeks to existing calendar data
+ * FILE: components/ui/calendar/utils.ts
+ * PURPOSE: Provides utility functions for calendar data generation, styling, date status checks, and week loading. Includes functions for handling sobriety streak visualization.
+ * FUNCTIONS:
+ *   - getToday() → dayjs.Dayjs: Returns the start of the current day.
+ *   - getIntensityColor(intensity: number) → string: Returns Tailwind background class based on streak intensity (0-10).
+ *   - getTextColorClass(intensity: number) → string: Returns Tailwind text color class based on streak intensity.
+ *   - getDayStatus(date: string) → 'today' | 'past' | 'future': Determines if a date string is today, past, or future.
+ *   - getStatusTextColor(status: 'today' | 'past' | 'future') → string: Returns text color based on day status (for non-sober days).
+ *   - generateDayData(date: dayjs.Dayjs, streakInfo?: {...}) → DayData: Creates a DayData object for a specific date.
+ *   - generateCalendarData(startDate?, months?) → CalendarData: Creates structured calendar data with randomly generated streaks.
+ *   - generateStaticCalendarData() → CalendarData: Legacy function calling generateCalendarData.
+ *   - getMonthName(month: number) → string: Returns the abbreviated month name.
+ *   - loadMoreWeeks(existingData: CalendarData, direction?, weeksToLoad?) → CalendarData: Adds more weeks (past/future) with random data to existing calendar data.
+ * DEPENDENCIES: dayjs, ./types
  */
 
 import { DayData, WeekData, CalendarData } from './types';

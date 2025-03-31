@@ -1,3 +1,13 @@
+/**
+ * FILE: components/ui/calendar/hooks/useCalendarData.ts
+ * PURPOSE: Manages state and logic for the calendar, including data generation, sobriety tracking, streak calculation, and week loading.
+ * HOOKS:
+ *   - useCalendarData() → { weeks: WeekData[], toggleSoberDay: (dayId: string) => void, loadPastWeeks: () => void, loadFutureWeeks: () => void, currentStreak: number, longestStreak: number, isLoadingInitial: boolean, isLoadingPast: boolean, isLoadingFuture: boolean }: Provides calendar state and interaction logic.
+ * FUNCTIONS:
+ *   - generateDeterministicInitialWeeks() → WeekData[]: Creates the initial visible weeks.
+ *   - recalculateStreaksAndIntensity(weeks: WeekData[]) → { updatedWeeks: WeekData[], currentStreak: number, longestStreak: number }: Processes weeks to update day intensity and calculate streaks.
+ * DEPENDENCIES: react, dayjs, ../types
+ */
 import { useState, useCallback, useMemo } from 'react';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'; // Import plugin
