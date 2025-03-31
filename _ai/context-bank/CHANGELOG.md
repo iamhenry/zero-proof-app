@@ -8,13 +8,13 @@ This document tracks all modifications, organized by version and release date, t
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: March 31, 2025, 1:18 PM
+- Last Update: March 31, 2025, 2:51 PM
 - Current Phase: Phase 2 - Frontend Implementation
 - Overall Progress: ~45%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
-- Current Branch: refactor/calendar-hook-real-data
+- Current Branch: feat/set-up-local-storage-architecture 
 - Latest Release: Version 0.1.3
 
 ## Key Metrics
@@ -22,6 +22,42 @@ This document tracks all modifications, organized by version and release date, t
 - Open Issues: Verify CalendarGrid test results
 - Test Coverage: ~42% (estimated)
 - Current Focus: Implement Local Storage (Task 8) & Timer Persistence (Task 10)
+
+---
+
+## Version 0.1.3 - March 31, 2025 02:51 PM
+
+### Changed
+
+- Standardized Documentation Format in Calendar Components
+  - Description: Updated documentation format across the codebase for better clarity and consistency, changing "DESCRIPTION" to "PURPOSE" in comments and adding return types to function descriptions.
+  - Why: To standardize documentation format and improve developer understanding of component interfaces.
+  - Impact: Improved code documentation readability and consistency across components and utilities.
+  - Reference: Commits b14b9fc, d0419bc, 3747da5.
+
+- Transitioned to Deterministic Calendar Data Generation
+  - Description: Replaced random streak generation in `loadMoreWeeks` with deterministic rules and re-enabled the functionality in `useCalendarData`.
+  - Why: To ensure consistent and predictable behavior when loading past and future weeks, addressing BUG-01.
+  - Impact: More reliable calendar data loading with default non-sober days and zero intensity for new weeks.
+  - Reference: Commit e790d7b.
+
+- Added Protection Against Future Date Modification
+  - Description: Implemented logic in `toggleSoberDay` to prevent modifying future dates.
+  - Why: To address BUG-02 by ensuring users can only mark past and present dates as sober.
+  - Impact: More logical user experience preventing changes to dates that haven't occurred yet.
+  - Reference: Commit e790d7b.
+
+- Enhanced Calendar Data Loading
+  - Description: Fixed the async handling of calendar data loading with proper state management and setTimeout for better UI responsiveness.
+  - Why: To improve UX during data loading and ensure correct streak calculation with loaded weeks.
+  - Impact: More responsive UI during loading operations and better state management.
+  - Reference: Commit e790d7b.
+
+- Expanded Test Coverage
+  - Description: Added tests for dynamic week loading and future date protection features.
+  - Why: To verify fixes for BUG-01 and BUG-02 and ensure reliable functionality.
+  - Impact: More comprehensive test coverage and better verification of critical features.
+  - Reference: Commit e790d7b.
 
 ---
 

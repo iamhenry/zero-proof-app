@@ -166,9 +166,9 @@ This file contains documentation headers extracted from component files to provi
 ### utils.ts
 ```
 /**
- * FILE: utils.ts
+ * FILE: components/ui/calendar/utils.ts
  * CREATED: 2024-07-18 16:32:05
- * UPDATED: 2025-03-31 13:18:00
+ * UPDATED: 2025-03-31 14:51:00
  *
  * PURPOSE: Provides utility functions for calendar data generation, styling, and manipulation.
  *
@@ -178,7 +178,10 @@ This file contains documentation headers extracted from component files to provi
  * - getTextColorClass(intensity: number) → string: Returns text color class based on intensity
  * - getDayStatus(date: string) → 'today' | 'past' | 'future': Determines if a day is today, past, or future
  * - generateCalendarData() → CalendarData: Creates structured calendar data with random streaks
- * - loadMoreWeeks(existingData: CalendarData, direction: 'past' | 'future', count: number) → CalendarData: Adds additional weeks to existing calendar data
+ * - loadMoreWeeks(existingData: CalendarData, direction: 'past' | 'future', count: number) → CalendarData: Adds additional weeks to existing calendar data with deterministic sobriety status
+ * - getMonthName(month: number) → string: Returns the abbreviated month name
+ *
+ * DEPENDENCIES: dayjs, ./types
  */
 ```
 
@@ -187,7 +190,7 @@ This file contains documentation headers extracted from component files to provi
 /**
  * FILE: components/ui/calendar/hooks/useCalendarData.ts
  * CREATED: 2025-03-29 13:21:00
- * UPDATED: 2025-03-31 13:18:00
+ * UPDATED: 2025-03-31 14:51:00
  *
  * PURPOSE: Manages state and logic for the calendar, including data generation, sobriety tracking, streak calculation, and week loading.
  *
@@ -198,5 +201,5 @@ This file contains documentation headers extracted from component files to provi
  * - generateDeterministicInitialWeeks() → WeekData[]: Creates the initial visible weeks.
  * - recalculateStreaksAndIntensity(weeks: WeekData[]) → { updatedWeeks: WeekData[], currentStreak: number, longestStreak: number }: Processes weeks to update day intensity and calculate streaks.
  * 
- * DEPENDENCIES: react, dayjs, ../types
+ * DEPENDENCIES: react, dayjs, ../types, ../utils
  */

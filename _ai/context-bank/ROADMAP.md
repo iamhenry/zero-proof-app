@@ -110,17 +110,17 @@ Step-by-Step Tasks:
 - [ ] 8.4. Address `useCalendarData` Hook Refinements (Post-Review)
   - [ ] 8.4.1. Optimize `recalculateStreaksAndIntensity` for performance: Avoid recalculating the entire dataset on every `toggleSoberDay` call to prevent slowdowns with more loaded data (addresses BUG-01 performance aspect).
     - File: `components/ui/calendar/hooks/useCalendarData.ts`
-  - [ ] 8.4.2. Fix data loading inconsistency: Remove `Math.random()` from `loadMoreWeeks` in `utils.ts` and implement loading logic in `useCalendarData` hook consistently with its deterministic streak calculation (critical for BUG-01 functionality).
+  - [x] 8.4.2. Fix data loading inconsistency: Remove `Math.random()` from `loadMoreWeeks` in `utils.ts` and implement loading logic in `useCalendarData` hook consistently with its deterministic streak calculation (critical for BUG-01 functionality).
     - File: `components/ui/calendar/utils.ts`, `components/ui/calendar/hooks/useCalendarData.ts`
-  - [ ] 8.4.3. Add missing tests for data generation/loading: Ensure `generateCalendarData` and `loadMoreWeeks` (once fixed) are tested, along with the hook's loading functions.
+  - [x] 8.4.3. Add missing tests for data generation/loading: Ensure `generateCalendarData` and `loadMoreWeeks` (once fixed) are tested, along with the hook's loading functions.
     - File: `components/ui/calendar/__tests__/utils.test.ts`, `components/ui/calendar/hooks/__tests__/useCalendarData.test.ts`
 
 ### Bugs
-<!-- FIXME -->
-- [ ] BUG-01. Implement dynamic and performant loading of past and future dates
-  - [ ] BUG-01.1. As a user, I want to be able to view past and future dates dynamically without performance issues.
-- [ ] BUG-02. Disable toggle sober day for future dates; only present and past are supported
-  - [ ] BUG-02.1. As a user, I want to be able to toggle sober days only for present and past dates, ensuring future dates are not editable.
+<!-- FIXED -->
+- [x] BUG-01. Implement dynamic and performant loading of past and future dates
+  - [x] BUG-01.1. As a user, I want to be able to view past and future dates dynamically without performance issues.
+- [x] BUG-02. Disable toggle sober day for future dates; only present and past are supported
+  - [x] BUG-02.1. As a user, I want to be able to toggle sober days only for present and past dates, ensuring future dates are not editable.
 
 ### Milestone 4: Core Feature Implementation
 Objective: Develop the main functionality of the application including calendar interaction, timer, and financial tracking.

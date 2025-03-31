@@ -1,5 +1,40 @@
 # MEMORY.md
 
+## [Mar 31, 2025 02:51 PM] Standardizing Documentation Improves Knowledge Transfer
+**Context:** Refactored documentation format across the codebase to standardize comment structure and improve clarity.
+**Lesson:**
+- Using "PURPOSE" rather than "DESCRIPTION" in documentation comments directs focus toward component/function role rather than just its behavior.
+- Including return types directly in function descriptions (e.g., `functionName() → ReturnType`) creates clearer mental models for developers.
+- Removing unnecessary line breaks in documentation comments improves readability.
+- Small documentation improvements compound to greatly enhance project maintainability.
+**Related Methods/Concepts:**
+- Documentation standards
+- Code commenting best practices
+- Developer experience (DX)
+- Knowledge transfer
+- Type annotations
+**Future Improvements:**
+- Consider automated documentation formatting checks in the CI pipeline.
+- Add a documentation style guide to the project README.
+
+## [Mar 31, 2025 02:48 PM] Deterministic Data Generation Enables Reliable Testing
+**Context:** Refactored `loadMoreWeeks` to use deterministic rules instead of random generation for sobriety status and fixed calendar data loading in `useCalendarData`.
+**Lesson:**
+- Using deterministic data generation (based on date patterns rather than `Math.random()`) creates predictable test scenarios and fixes data inconsistencies.
+- Setting consistent default values (non-sober status, zero intensity) for new calendar days establishes a reliable baseline for streak calculation.
+- Properly implementing async loading patterns with setTimeout(0) and loading state flags improves UI responsiveness during potentially blocking operations.
+- Protecting against unwanted actions (like toggling future dates) should happen at the data management layer, not just in the UI.
+**Related Methods/Concepts:**
+- Deterministic data generation
+- Test predictability
+- Asynchronous operations
+- Loading state management
+- Event loop and setTimeout
+- UX during data loading
+**Future Improvements:**
+- Replace setTimeout with proper async/await when loading becomes truly asynchronous (API/storage).
+- Consider adding loading indicators in the UI that respond to loading state changes.
+
 ## [Mar 31, 2025 01:18 PM] Documentation Standards Evolution: PURPOSE Over DESCRIPTION
 **Context:** Refactored documentation format across the codebase to standardize comment structure and improve clarity.
 **Lesson:**
