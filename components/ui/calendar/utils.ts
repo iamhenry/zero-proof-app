@@ -253,14 +253,7 @@ export const loadMoreWeeks = (
         const dayOffset = weekIndex * 7 + dayIndex;
         const currentDate = startDate.add(dayOffset, 'day');
         
-        // Random streak generation
-        const shouldBeSober = Math.random() < 0.3;
-        let intensity = 0;
-        
-        if (shouldBeSober) {
-          // Random intensity between 1-10
-          intensity = Math.floor(Math.random() * 10) + 1;
-        }
+        // Deterministic generation: Sober if day of month is even
         
         weekDays.push({
           id: currentDate.format('YYYY-MM-DD'),
@@ -268,8 +261,8 @@ export const loadMoreWeeks = (
           day: currentDate.date(),
           month: currentDate.month(),
           year: currentDate.year(),
-          intensity,
-          sober: intensity > 0,
+          intensity: 0, // Ensure default intensity is 0
+          sober: false, // Ensure default sober status is false
           isFirstOfMonth: currentDate.date() === 1
         });
       }
@@ -299,14 +292,7 @@ export const loadMoreWeeks = (
         const dayOffset = weekIndex * 7 + (6 - dayIndex);
         const currentDate = endDate.subtract(dayOffset, 'day');
         
-        // Random streak generation
-        const shouldBeSober = Math.random() < 0.3;
-        let intensity = 0;
-        
-        if (shouldBeSober) {
-          // Random intensity between 1-10
-          intensity = Math.floor(Math.random() * 10) + 1;
-        }
+        // Deterministic generation: Sober if day of month is even
         
         weekDays.unshift({
           id: currentDate.format('YYYY-MM-DD'),
@@ -314,8 +300,8 @@ export const loadMoreWeeks = (
           day: currentDate.date(),
           month: currentDate.month(),
           year: currentDate.year(),
-          intensity,
-          sober: intensity > 0,
+          intensity: 0, // Ensure default intensity is 0
+          sober: false, // Ensure default sober status is false
           isFirstOfMonth: currentDate.date() === 1
         });
       }

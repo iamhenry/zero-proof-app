@@ -19,6 +19,8 @@ import { WeekData, DayData, CalendarData } from '../types';
 // We'll need to import the actual utility or a shared utility later.
 // import { generateCalendarData, loadMoreWeeks } from '../utils'; // No longer using random generation
  
+import { loadMoreWeeks } from '../utils'; // Re-enable import for loading
+
 dayjs.extend(isSameOrBefore); // Extend dayjs with the plugin
  
 // --- Deterministic Initial State Generation ---
@@ -149,9 +151,9 @@ export const useCalendarData = () => {
         days: week.days.map(day => {
           if (day.id === dayId) {
             // Cannot change future days (optional rule, implement if needed)
-            // if (dayjs(day.date).isAfter(dayjs(), 'day')) {
-            //   return day;
-            // }
+            if (dayjs(day.date).isAfter(dayjs(), 'day')) {
+              return day; // Return unchanged day if it's in the future
+            }
             return { ...day, sober: !day.sober };
           }
           return day;
@@ -171,41 +173,58 @@ export const useCalendarData = () => {
   const loadPastWeeks = useCallback(() => {
     if (isLoadingPast) return; // Prevent multiple loads
     setIsLoadingPast(true);
-    // Simulate async loading if needed, e.g., fetching from backend
-    // For now, generate synchronously
-    try {
-      // const currentCalendarData: CalendarData = { weeks };
-      // const moreData = loadMoreWeeks(currentCalendarData, 'past', 4); // Load 4 more weeks (1 month) - COMMENTED OUT
-      // const { updatedWeeks, currentStreak: newCurrent, longestStreak: newLongest } = recalculateStreaksAndIntensity(moreData.weeks);
-      // setWeeks(updatedWeeks);
-      // // Streaks might change if past data affects them, update if necessary
-      // setCurrentStreak(newCurrent);
-      // setLongestStreak(newLongest);
-    } catch (error) {
-      console.error("Error loading past weeks:", error);
-      // Handle error appropriately
-    } finally {
-      setIsLoadingPast(false);
-    }
+    // Use setTimeout(0) to defer the synchronous data loading to the next event loop tick.
+    // This allows the isLoadingPast state update to render before the potentially blocking
+    // loadMoreWeeks and recalculateStreaksAndIntensity functions run.
+    // TODO: Replace this with proper async/await handling when loadMoreWeeks becomes asynchronous (e.g., fetching from storage/API).
+    setTimeout(() => {
+      try {
+        // Access weeks via a function argument in setWeeks to ensure fresh state
+        setWeeks(currentWeeks => {
+          const currentCalendarData: CalendarData = { weeks: currentWeeks };
+          const moreData = loadMoreWeeks(currentCalendarData, 'past', 4); // Load 4 more weeks (1 month)
+          const { updatedWeeks, currentStreak: newCurrent, longestStreak: newLongest } = recalculateStreaksAndIntensity(moreData.weeks);
+          
+          // Update streaks state *before* returning updatedWeeks
+          setCurrentStreak(newCurrent);
+          setLongestStreak(newLongest); // Consider potential race conditions if logic gets complex
+          
+          return updatedWeeks; // Return the new weeks array for setWeeks
+        });
+      } catch (error) {
+        console.error("Error loading past weeks:", error);
+        // Handle error appropriately
+      } finally {
+        setIsLoadingPast(false); // Set loading false after operations complete
+      }
+    }, 0); // Delay of 0 pushes execution to the next event loop tick
   }, [weeks, isLoadingPast]); // Add dependencies
 
   const loadFutureWeeks = useCallback(() => {
     if (isLoadingFuture) return; // Prevent multiple loads
     setIsLoadingFuture(true);
-    try {
-      // const currentCalendarData: CalendarData = { weeks };
-      // const moreData = loadMoreWeeks(currentCalendarData, 'future', 4); // Load 4 more weeks - COMMENTED OUT
-      // Recalculation might not be strictly needed if future doesn't affect past streaks,
-      // but let's keep it for consistency and potential future logic.
-      // const { updatedWeeks, currentStreak: newCurrent, longestStreak: newLongest } = recalculateStreaksAndIntensity(moreData.weeks);
-      // setWeeks(updatedWeeks);
-      // setCurrentStreak(newCurrent);
-      // setLongestStreak(newLongest);
-    } catch (error) {
-      console.error("Error loading future weeks:", error);
-    } finally {
-      setIsLoadingFuture(false);
-    }
+    // Use setTimeout(0) similar to loadPastWeeks to defer synchronous work and allow loading state to render.
+    // TODO: Replace with proper async/await when loadMoreWeeks becomes asynchronous.
+    setTimeout(() => {
+      try {
+        setWeeks(currentWeeks => {
+          const currentCalendarData: CalendarData = { weeks: currentWeeks };
+          const moreData = loadMoreWeeks(currentCalendarData, 'future', 4); // Load 4 more weeks
+          // Recalculation might not be strictly needed if future doesn't affect past streaks,
+          // but let's keep it for consistency and potential future logic.
+          const { updatedWeeks, currentStreak: newCurrent, longestStreak: newLongest } = recalculateStreaksAndIntensity(moreData.weeks);
+          
+          setCurrentStreak(newCurrent);
+          setLongestStreak(newLongest);
+          
+          return updatedWeeks;
+        });
+      } catch (error) {
+        console.error("Error loading future weeks:", error);
+      } finally {
+        setIsLoadingFuture(false); // Set loading false after operations complete
+      }
+    }, 0);
   }, [weeks, isLoadingFuture]); // Add dependencies
 
   return {
