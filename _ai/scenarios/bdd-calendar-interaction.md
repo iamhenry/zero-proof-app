@@ -32,6 +32,9 @@ Acceptance Criteria:
 - [ ] Single tap toggles day state
 - [ ] Visual feedback is immediate
 - [ ] Streak calculations update in real-time
+- [ ] Updated day state is saved locally.
+- [ ] Saved day state is loaded correctly on app restart.
+- [ ] Streak calculations use persisted data after restart.
 
 Scenario 4: Correcting mistaken entries
 Given: The user has marked a day incorrectly
@@ -44,6 +47,9 @@ Acceptance Criteria:
 - [ ] Tapping a day twice returns it to original state
 - [ ] All related calculations update correctly
 - [ ] Visual feedback is immediate
+- [ ] Corrected day state is saved locally.
+- [ ] Corrected day state is loaded correctly on app restart.
+- [ ] Adjusted streak calculations use persisted data after restart.
 
 Scenario 5: Identifying the current day
 Given: The user is viewing the calendar
