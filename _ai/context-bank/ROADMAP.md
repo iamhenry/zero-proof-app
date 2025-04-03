@@ -98,21 +98,23 @@ Step-by-Step Tasks:
     - File: `app/(app)/sign-in.tsx`
   - [x] 7.3. Create reusable form components for all settings inputs
     - File: `components/ui/form.tsx`
-- [ ] 8. Set up local storage architecture 
-  - [ ] 8.1. Configure AsyncStorage for storing non-sensitive user preferences
-    - File: `lib/storage/async-storage.ts` (to be created)
-  - [ ] 8.2. Implement secure storage for auth tokens and sensitive user data
-    - File: `lib/storage/secure-storage.ts` (to be created)
-  - [ ] 8.3. Create data persistence logic with proper error handling and fallbacks
-    - File: `lib/storage/persistence.ts` (to be created)
+- [x] 8. Set up local storage architecture 
+  - [x] 8.1. Configure AsyncStorage for storing non-sensitive user preferences
+    - File: `lib/storage/LocalStorageSobrietyRepository.ts`
+  - [x] 8.2. Implement secure storage for auth tokens and sensitive user data
+    - File: `lib/types/repositories.ts`
+  - [x] 8.3. Create data persistence logic with proper error handling and fallbacks
+    - File: `context/RepositoryContext.tsx`, `context/TimerStateContext.tsx`
+  - [x] 8.4. Implement mock AsyncStorage for testing
+    - File: `__mocks__/@react-native-async-storage/async-storage.js`
   
 #### Enhancements
-- [ ] 8.4. Address `useCalendarData` Hook Refinements (Post-Review)
-  - [ ] 8.4.1. Optimize `recalculateStreaksAndIntensity` for performance: Avoid recalculating the entire dataset on every `toggleSoberDay` call to prevent slowdowns with more loaded data (addresses BUG-01 performance aspect).
+- [ ] 8.5. Address `useCalendarData` Hook Refinements (Post-Review)
+  - [ ] 8.5.1. Optimize `recalculateStreaksAndIntensity` for performance: Avoid recalculating the entire dataset on every `toggleSoberDay` call to prevent slowdowns with more loaded data (addresses BUG-01 performance aspect).
     - File: `components/ui/calendar/hooks/useCalendarData.ts`
-  - [x] 8.4.2. Fix data loading inconsistency: Remove `Math.random()` from `loadMoreWeeks` in `utils.ts` and implement loading logic in `useCalendarData` hook consistently with its deterministic streak calculation (critical for BUG-01 functionality).
+  - [x] 8.5.2. Fix data loading inconsistency: Remove `Math.random()` from `loadMoreWeeks` in `utils.ts` and implement loading logic in `useCalendarData` hook consistently with its deterministic streak calculation (critical for BUG-01 functionality).
     - File: `components/ui/calendar/utils.ts`, `components/ui/calendar/hooks/useCalendarData.ts`
-  - [x] 8.4.3. Add missing tests for data generation/loading: Ensure `generateCalendarData` and `loadMoreWeeks` (once fixed) are tested, along with the hook's loading functions.
+  - [x] 8.5.3. Add missing tests for data generation/loading: Ensure `generateCalendarData` and `loadMoreWeeks` (once fixed) are tested, along with the hook's loading functions.
     - File: `components/ui/calendar/__tests__/utils.test.ts`, `components/ui/calendar/hooks/__tests__/useCalendarData.test.ts`
 
 ### Bugs
@@ -149,16 +151,16 @@ Step-by-Step Tasks:
     - File: `components/ui/calendar/hooks/useCalendarData.ts`
   - [x] 9.6 Create BDD scenarios for useCalendarData hook
     - File: `_ai/scenarios/bdd-useCalendarData-CalendarGrid.md`
-- [ ] 10. Create sobriety timer functionality 
+- [x] 10. Create sobriety timer functionality 
   - [x] 10.1. Implement real-time timer updates that tick every second
-    - File: `components/ui/timer/SobrietyTimer.tsx` (partially implemented)
+    - File: `components/ui/timer/SobrietyTimer.tsx`
   - [ ] 10.2. Add background processing to keep timer running when app is closed
     - File: `lib/services/timer-service.ts` (to be created)
-  - [ ] 10.3. Create timer persistence that survives app restarts
-    - Dependency: Task 8 (Local storage architecture)
+  - [x] 10.3. Create timer persistence that survives app restarts
+    - File: `context/TimerStateContext.tsx`, `lib/storage/LocalStorageSobrietyRepository.ts`
 - [ ] 11. Implement financial tracking system 
-  - [ ] 11.1. Create savings calculator based on days sober × drink cost
-    - File: `lib/services/financial-service.ts` (to be created)
+  - [x] 11.1. Create savings calculator based on days sober × drink cost
+    - File: `components/ui/settings/hooks/useFinancialSettings.ts`
   - [ ] 11.2. Implement drink cost management with different drink types and prices
     - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
   - [ ] 11.3. Add statistics aggregation to show total and average savings

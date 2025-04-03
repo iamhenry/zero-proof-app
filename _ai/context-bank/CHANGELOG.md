@@ -8,20 +8,64 @@ This document tracks all modifications, organized by version and release date, t
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: March 31, 2025, 2:51 PM
+- Last Update: April 3, 2025, 12:29 PM
 - Current Phase: Phase 2 - Frontend Implementation
-- Overall Progress: ~45%
+- Overall Progress: ~50%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
 - Current Branch: feat/set-up-local-storage-architecture 
-- Latest Release: Version 0.1.3
+- Latest Release: Version 0.1.4
 
 ## Key Metrics
-- Features Completed: ~30/82 (~37% based on sub-tasks)
-- Open Issues: Verify CalendarGrid test results
-- Test Coverage: ~42% (estimated)
-- Current Focus: Implement Local Storage (Task 8) & Timer Persistence (Task 10)
+- Features Completed: ~35/82 (~43% based on sub-tasks)
+- Open Issues: Testing persistence functionality
+- Test Coverage: ~48% (estimated)
+- Current Focus: Implement Local Storage & Timer Persistence
+
+---
+
+## Version 0.1.4 - April 3, 2025 12:29 PM
+
+### Added
+
+- Persistent Local Storage Architecture
+  - Description: Implemented AsyncStorage-based persistence for sobriety timer, calendar data, and financial settings with a repository pattern approach.
+  - Why: To ensure user data persists between app restarts and provide a consistent user experience.
+  - Impact: Users' sobriety data, streak information, timer state, and financial settings now persist between sessions.
+  - Reference: Commit 56104d8.
+
+- Context Providers for State Management
+  - Description: Added RepositoryContext and TimerStateContext to provide global access to the repository instance and timer state.
+  - Why: To facilitate data flow between components and centralize state management with persistence.
+  - Impact: Improved code organization and state management with clean separation of concerns.
+  - Reference: Commit 56104d8.
+
+- AsyncStorage Mock for Testing
+  - Description: Implemented a mock implementation of AsyncStorage to facilitate testing with Jest.
+  - Why: To enable proper unit testing of persistence-dependent components without real device storage.
+  - Impact: Improved test reliability and coverage for persistence-related functionality.
+  - Reference: Commit 56104d8.
+
+### Changed
+
+- SobrietyTimer Component
+  - Description: Refactored to use TimerStateContext instead of direct repository access.
+  - Why: To improve code organization and state management with centralized persistence handling.
+  - Impact: Cleaner component code with persistence managed by context providers.
+  - Reference: Commit 56104d8.
+
+- Calendar Hooks and Components
+  - Description: Updated useCalendarData hook to integrate with RepositoryContext for data persistence.
+  - Why: To store and retrieve user calendar data between sessions for a better user experience.
+  - Impact: Calendar sobriety status now persists between app restarts.
+  - Reference: Commit 56104d8.
+
+- App Layout Structure
+  - Description: Enhanced layout component to include new context providers for Repository and TimerState.
+  - Why: To make repository and timer state available throughout the app component tree.
+  - Impact: Improved state management architecture across the application.
+  - Reference: Commit 56104d8.
 
 ---
 

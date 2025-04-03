@@ -2,6 +2,74 @@
 
 This file contains documentation headers extracted from component files to provide a quick reference for the codebase structure.
 
+## Repository & Context Files
+
+### RepositoryContext.tsx
+```
+/**
+ * FILE: context/RepositoryContext.tsx
+ * PURPOSE: Provides a React context for accessing the sobriety data repository instance (LocalStorageSobrietyRepository).
+ * FUNCTIONS:
+ *   - RepositoryProvider(props: { children: ReactNode }) → JSX.Element: Context provider component.
+ *   - useRepository() → ISobrietyDataRepository: Hook to access the repository instance from context.
+ * DEPENDENCIES: react, ../lib/types/repositories, ../lib/storage/LocalStorageSobrietyRepository
+ */
+```
+
+### TimerStateContext.tsx
+```
+/**
+ * FILE: context/TimerStateContext.tsx
+ * PURPOSE: Provides a React context for managing the global sobriety timer state (start time, running status, loading status). Handles loading/saving state via RepositoryContext.
+ * FUNCTIONS:
+ *   - TimerStateProvider(props: { children: ReactNode }) → JSX.Element: Context provider component.
+ *   - useTimerState() → TimerStateContextProps: Hook to access timer state and control functions.
+ * DEPENDENCIES: react, ./RepositoryContext, ../lib/types/repositories
+ */
+```
+
+### LocalStorageSobrietyRepository.ts
+```
+/**
+ * FILE: lib/storage/LocalStorageSobrietyRepository.ts
+ * PURPOSE: Implements the ISobrietyDataRepository interface using AsyncStorage for persistence. Handles loading/saving day status, streak data, timer state, and drink cost. Includes backward compatibility for older day status format.
+ * FUNCTIONS:
+ *   - loadAllDayStatus() → Promise<DayDataMap>: Loads all day statuses, handling potential format migration.
+ *   - saveDayStatus(date, isSober, timestamp) → Promise<void>: Saves status for a specific day.
+ *   - loadDayStatus(date) → Promise<StoredDayData | null>: Loads status for a specific day.
+ *   - saveStreakData(data) → Promise<void>: Saves streak data.
+ *   - loadStreakData() → Promise<StreakData | null>: Loads streak data.
+ *   - saveTimerState(state) → Promise<void>: Saves timer state.
+ *   - loadTimerState() → Promise<TimerState | null>: Loads timer state.
+ *   - saveDrinkCost(cost) → Promise<void>: Saves drink cost setting.
+ *   - loadDrinkCost() → Promise<number | null>: Loads drink cost setting.
+ * DEPENDENCIES: @react-native-async-storage/async-storage, ../types/repositories
+ */
+```
+
+### repositories.ts
+```
+/**
+ * FILE: lib/types/repositories.ts
+ * PURPOSE: Defines core TypeScript interfaces and types for data structures used in sobriety tracking persistence (StoredDayData, DayDataMap, TimerState, StreakData) and the data repository contract (ISobrietyDataRepository).
+ * FUNCTIONS: N/A (Type definitions only)
+ * DEPENDENCIES: None
+ */
+```
+
+## Settings Components
+
+### useFinancialSettings.ts
+```
+/**
+ * FILE: components/ui/settings/hooks/useFinancialSettings.ts
+ * PURPOSE: Custom hook to manage financial settings (drink cost), loading/saving via RepositoryContext.
+ * FUNCTIONS:
+ *   - useFinancialSettings() → { drinkQuantity, setDrinkQuantity, saveSettings, isLoading }: Provides drink cost state and management functions.
+ * DEPENDENCIES: react, ../../../../lib/types/repositories, @/context/RepositoryContext
+ */
+```
+
 ## Statistics Components
 
 ### StreakCounter.tsx
@@ -64,14 +132,13 @@ This file contains documentation headers extracted from component files to provi
 ### SobrietyTimer.tsx
 ```
 /**
- * FILE: SobrietyTimer.tsx
- * CREATED: 2024-07-18 16:32:05
- *
- * PURPOSE: Implements an animated sobriety timer component that displays elapsed days, hours, minutes, and seconds in a sober state.
- *
- * METHODS:
- * - SobrietyTimer() → JSX.Element: Renders a timer with customizable initial values and animated seconds display
- * - formatUnitValue(value: number) → string: Formats numeric values with leading zeros for consistent display
+ * FILE: components/ui/timer/SobrietyTimer.tsx
+ * PURPOSE: Renders an animated sobriety timer displaying elapsed time (d/h/m/s), driven by TimerStateContext for start time and running state.
+ * FUNCTIONS:
+ *   - SobrietyTimer(props: { status?: string }) → JSX.Element: Main timer component.
+ *   - formatUnitValue(value: number) → string: Formats time unit numbers for display.
+ *   - calculateElapsedTime(startTime: number | null) → { d: number, h: number, m: number, s: number }: Calculates elapsed time components.
+ * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext
  */
 ```
 
@@ -153,13 +220,10 @@ This file contains documentation headers extracted from component files to provi
 ### types.ts
 ```
 /**
- * FILE: types.ts
- * CREATED: 2024-07-18 16:32:05
- *
- * PURPOSE: Defines TypeScript interfaces for calendar data structures used throughout the calendar components.
- *
- * METHODS:
- * - N/A (type definitions only)
+ * FILE: components/ui/calendar/types.ts
+ * PURPOSE: Defines TypeScript interfaces for calendar data structures (DayData, WeekData, CalendarData).
+ * FUNCTIONS: N/A (Type definitions only)
+ * DEPENDENCIES: None
  */
 ```
 
@@ -189,17 +253,46 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/calendar/hooks/useCalendarData.ts
- * CREATED: 2025-03-29 13:21:00
- * UPDATED: 2025-03-31 14:51:00
- *
- * PURPOSE: Manages state and logic for the calendar, including data generation, sobriety tracking, streak calculation, and week loading.
- *
- * HOOKS:
- * - useCalendarData() → { weeks: WeekData[], toggleSoberDay: (dayId: string) => void, loadPastWeeks: () => void, loadFutureWeeks: () => void, currentStreak: number, longestStreak: number, isLoadingInitial: boolean, isLoadingPast: boolean, isLoadingFuture: boolean }: Provides calendar state and interaction logic.
- * 
+ * PURPOSE: Custom hook managing calendar state, including data loading, sobriety toggling, streak calculation, and infinite scrolling (past/future weeks). Integrates with RepositoryContext and TimerStateContext.
  * FUNCTIONS:
- * - generateDeterministicInitialWeeks() → WeekData[]: Creates the initial visible weeks.
- * - recalculateStreaksAndIntensity(weeks: WeekData[]) → { updatedWeeks: WeekData[], currentStreak: number, longestStreak: number }: Processes weeks to update day intensity and calculate streaks.
- * 
- * DEPENDENCIES: react, dayjs, ../types, ../utils
+ *   - useCalendarData() → { weeks, toggleSoberDay, loadPastWeeks, loadFutureWeeks, currentStreak, longestStreak, isLoadingInitial, isLoadingPast, isLoadingFuture }: Provides calendar state and interaction functions.
+ *   - generateDeterministicInitialWeeks() → WeekData[]: Creates initial week structure.
+ *   - recalculateStreaksAndIntensity(weeks: WeekData[]) → { updatedWeeks, currentStreak, longestStreak, streakStartDayData }: Calculates streaks and day intensity.
+ * DEPENDENCIES: react, dayjs, ../types, ../utils, ../../../../lib/types/repositories, @/context/RepositoryContext, @/context/TimerStateContext
  */
+```
+
+## App Layout
+
+### _layout.tsx
+```
+import "../global.css";
+
+import { Slot } from "expo-router";
+
+import { SupabaseProvider } from "@/context/supabase-provider";
+import { RepositoryProvider } from "@/context/RepositoryContext"; // Import the new provider
+import { TimerStateProvider } from "@/context/TimerStateContext"; // Import TimerStateProvider
+
+export default function AppLayout() {
+	return (
+		<RepositoryProvider>
+			<TimerStateProvider>
+				<SupabaseProvider>
+					<Slot />
+				</SupabaseProvider>
+			</TimerStateProvider>
+		</RepositoryProvider>
+	);
+}
+```
+
+## Testing
+
+### async-storage.js
+```
+// __mocks__/@react-native-async-storage/async-storage.js
+
+// Basic mock implementation for AsyncStorage based on Jest documentation
+// https://react-native-async-storage.github.io/async-storage/docs/advanced/jest/
+```
