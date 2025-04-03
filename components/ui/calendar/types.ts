@@ -1,12 +1,8 @@
 /**
- * FILE: types.ts
- * CREATED: 2024-07-18 16:32:05
- *
- * PURPOSE:
- * This file defines TypeScript interfaces for calendar data structures used throughout the calendar components.
- *
- * METHODS:
- * - N/A (type definitions only)
+ * FILE: components/ui/calendar/types.ts
+ * PURPOSE: Defines TypeScript interfaces for calendar data structures (DayData, WeekData, CalendarData).
+ * FUNCTIONS: N/A (Type definitions only)
+ * DEPENDENCIES: None
  */
 
 export interface DayData {
@@ -17,6 +13,7 @@ export interface DayData {
   year: number;
   sober: boolean;
   intensity: number;
+  streakStartTimestampUTC: number | null;
   isFirstOfMonth: boolean;
 }
 
@@ -27,4 +24,4 @@ export interface WeekData {
 
 export interface CalendarData {
   weeks: WeekData[];
-} 
+}

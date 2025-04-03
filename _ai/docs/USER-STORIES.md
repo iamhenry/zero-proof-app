@@ -26,12 +26,13 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 - [ ] US-15: As a user, I want to see a button that shows when I've scrolled past the current month that when pressed will take me back to the current day (centered to the viewport) so that I can easily get back to the current day without having to manually scroll back
 
 ## Timer Functionality
-- [ ] US-16: As a user, I want to view an active timer showing how long I've been sober in days, hours, and minutes so I can see my real-time progress.
-- [ ] US-17: As a user, I want to sync the timer so that it reset if I'm not sober that day which breaks the streak. (eg. 5 day sober streak and i missed the 6th day by not tapping the day cell to activate it, the timer show reset)
-- [ ] US-18: As a user, I want the app to continue tracking my timer in the background so that the timer remains accurate even when I'm not using the app.
-- [ ] US-19: As a user, the timer should display and track how many days, hours, minutes, and seconds I've been sober and be synced with the calendar component to show the streaks (eg. calendar day cell show 5 day streak, the timer should show 5 days).
-- [ ] US-20: As a user, I should see the timer display "Sober 0" if the current day cell is not marked as sober to ensure accuracy
-- [ ] US-21: As a user, I should not see the timer if there are no current streaks or the current day is not marked as sober. Only display the timer if there's an active sober day/s
+- [ ] US-16: As a user, I want to view an active timer showing how long I've been sober in days, hours, minutes, and seconds so I can see my real-time progress.
+- [ ] US-18: As a user, I want the app to continue tracking my timer in the background so that the timer remains accurate even when I'm not using the app (via persistent state).
+- [ ] US-19: As a user, the timer should display and track how many days, hours, minutes, and seconds I've been sober, accurately reflecting the duration of the current continuous sober streak ending today.
+- [ ] US-T1 (Refines original Line 35): As a user, if I mark today as sober and the previous day was *not* sober, the timer should start counting elapsed time from the *exact moment* I marked today sober.
+ - [ ] US-T2 (New - Continuation): As a user, if I mark today as sober and the previous day *was* also sober, the timer should continue counting from the start time established by the current streak.
+ - [ ] US-T3 (Refines original Line 36): As a user, when I mark past days as sober (backfilling), the timer should recalculate based on the *new continuous streak* ending today. If the first day of this recalculated streak was backfilled (or doesn't have a specific start time recorded), the timer should calculate the duration from the *beginning of that day (midnight local time)*.
+- [ ] US-T4 (Refines original US-17/US-20/US-21): As a user, if the current day is *not* marked as sober, the timer reflecting the ongoing streak should reset all units to zero (0d, 0h, 0m, 0s), clearly indicating the streak is not active *today*.
 
 ## Streak Tracker
 - [x] US-22: As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it floating above the calendar.

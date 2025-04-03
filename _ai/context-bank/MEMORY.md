@@ -1,5 +1,29 @@
 # MEMORY.md
 
+## [Apr 1, 2025 02:33 PM] TDD & Test Refactoring Learnings
+**Context:** Reflecting on challenges encountered when refactoring tests after introducing shared state management (React Context) for repositories and timer state.
+**Lesson:**
+- Introducing shared state/dependency management (e.g., React Context) often necessitates refactoring test setups, even if the core behavior being tested hasn't changed.
+- Tests need to provide the necessary environment (e.g., wrapping with Context Providers using mock values) for the component/hook under test to function correctly.
+- Changes in how components interact (e.g., calling a context function vs. a direct repository method) require updating test mocks and assertions to match the new interaction patterns.
+- While aiming for behavior-focused tests, the test setup must accurately reflect how the unit under test interacts with its boundaries and dependencies.
+- Consider anticipating architectural needs (like Context) during the Red phase to make tests potentially more resilient, though this requires balancing foresight with YAGNI.
+- Complement unit tests with integration tests for broader validation less sensitive to internal refactoring.
+- Refactor tests promptly after the Green phase (or during refactoring) to keep them relevant, trustworthy, and maintainable.
+**Related Methods/Concepts:**
+- Test-Driven Development (TDD)
+- React Context API
+- Mocking (Jest Mocks, Spies)
+- Unit Testing (`@testing-library/react`, `@testing-library/react-hooks`)
+- Integration Testing
+- Test Setup/Environment
+- Dependency Injection (via Context)
+- Refactoring Tests
+**Future Improvements:**
+- Develop standardized test setup helpers/wrappers for common Context configurations.
+- Explore strategies for mocking context values more efficiently.
+- Ensure BDD scenarios adequately cover interactions involving context.
+
 ## [Mar 31, 2025 02:51 PM] Standardizing Documentation Improves Knowledge Transfer
 **Context:** Refactored documentation format across the codebase to standardize comment structure and improve clarity.
 **Lesson:**
