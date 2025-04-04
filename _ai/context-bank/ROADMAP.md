@@ -294,10 +294,30 @@ Step-by-Step Tasks:
   - [ ] 19.3. Create multi-device support with data merging
     - File: `lib/services/subscription-service.ts` (to be created)
 
+### Milestone 8: End-to-End Testing
+Objective: Implement E2E tests for critical user flows to ensure integrated functionality.
+
+Data Flow:
+- Test runner executes user scenarios against the application build.
+- Test results indicate pass/fail for integrated flows.
+
+Acceptance Criteria:
+- E2E testing framework (e.g., Maestro) is selected and configured.
+- Critical user flows (Auth, Core Sobriety Loop, Settings Persistence, Data Sync) have passing E2E tests.
+- E2E tests are integrated into the CI pipeline.
+
+Step-by-Step Tasks:
+- [ ] 20. Select and configure E2E testing framework
+- [ ] 21. Implement E2E tests for Authentication flow (Sign up, Sign in, Sign out, Persistence)
+- [ ] 22. Implement E2E tests for Core Sobriety Loop (Calendar interaction, Timer updates, Streak updates, Local Persistence)
+- [ ] 23. Implement E2E tests for Settings Persistence (Update drink cost, verify savings calculation)
+- [ ] 24. Implement E2E tests for Data Synchronization (Verify local/backend sync, including offline)
+- [ ] 25. Integrate E2E tests into CI pipeline
+
 ## Phase 4: UI Polish & Optimization
 Enhance user experience with animations and optimizations.
 
-### Milestone 8: Visual Enhancements
+### Milestone 9: Visual Enhancements
 Objective: Add visual polish and animations to improve user experience.
 
 Data Flow:
@@ -311,24 +331,24 @@ Acceptance Criteria:
 - UI is visually polished and consistent
 
 Step-by-Step Tasks:
-- [ ] 20. Add animations and transitions 
-  - [ ] 20.1. Implement smooth animations for calendar day selections
+- [ ] 26. Add animations and transitions
+  - [ ] 26.1. Implement smooth animations for calendar day selections
     - File: `components/ui/calendar/CalendarGrid.tsx` (to be expanded)
-  - [ ] 20.2. Add celebration animations when reaching streak milestones
+  - [ ] 26.2. Add celebration animations when reaching streak milestones
     - File: `lib/animations/index.ts` (to be created)
-  - [ ] 20.3. Create smooth timer countdown animations
+  - [ ] 26.3. Create smooth timer countdown animations
     - File: `components/ui/timer/SobrietyTimer.tsx` (to be expanded)
-  - [ ] 20.4. Implement fluid page transitions between screens
+  - [ ] 26.4. Implement fluid page transitions between screens
     - File: `app/(app)/_layout.tsx` (to be expanded)
-- [ ] 21. Implement loading states and error handling 
-  - [ ] 21.1. Create skeleton screens for data loading states
+- [ ] 27. Implement loading states and error handling
+  - [ ] 27.1. Create skeleton screens for data loading states
     - File: `components/ui/loading/Skeleton.tsx` (to be created)
-  - [ ] 21.2. Add user-friendly error messages with retry options
+  - [ ] 27.2. Add user-friendly error messages with retry options
     - File: `components/ui/feedback/ErrorMessage.tsx` (to be created)
-  - [ ] 21.3. Implement loading indicators for all async operations
+  - [ ] 27.3. Implement loading indicators for all async operations
     - File: `components/ui/loading/Spinner.tsx` (to be created)
 
-### Milestone 9: Performance Optimization
+### Milestone 10: Performance Optimization
 Objective: Optimize application performance for a smooth user experience.
 
 Data Flow:
@@ -342,29 +362,29 @@ Acceptance Criteria:
 - Crash reporting and analytics are added
 
 Step-by-Step Tasks:
-- [ ] 22. Optimize app performance 
-  - [ ] 22.1. Implement virtualized rendering for calendar to handle large date ranges
+- [ ] 28. Optimize app performance
+  - [ ] 28.1. Implement virtualized rendering for calendar to handle large date ranges
     - File: `components/ui/calendar/CalendarGrid.tsx` (to be optimized)
-  - [ ] 22.2. Improve timer efficiency by optimizing update intervals
+  - [ ] 28.2. Improve timer efficiency by optimizing update intervals
     - File: `lib/services/timer-service.ts` (to be created)
-  - [ ] 22.3. Create smart caching strategy for frequently accessed data
+  - [ ] 28.3. Create smart caching strategy for frequently accessed data
     - File: `lib/services/cache-service.ts` (to be created)
-- [ ] 23. Implement error boundary system 
-  - [ ] 23.1. Add global error boundary with crash recovery
+- [ ] 29. Implement error boundary system
+  - [ ] 29.1. Add global error boundary with crash recovery
     - File: `components/error-boundary.tsx` (to be created)
-  - [ ] 23.2. Implement component-level error boundaries for isolated failures
+  - [ ] 29.2. Implement component-level error boundaries for isolated failures
     - File: `components/error-boundary.tsx` (to be expanded)
-  - [ ] 23.3. Create user-friendly fallback UI components with recovery options
+  - [ ] 29.3. Create user-friendly fallback UI components with recovery options
     - File: `components/ui/feedback/ErrorFallback.tsx` (to be created)
-- [ ] 24. Add crash reporting and analytics 
-  - [ ] 24.1. Set up error logging to capture and report crashes
+- [ ] 30. Add crash reporting and analytics
+  - [ ] 30.1. Set up error logging to capture and report crashes
     - File: `lib/services/analytics-service.ts` (to be created)
-  - [ ] 24.2. Implement anonymous usage analytics to track feature usage
+  - [ ] 30.2. Implement anonymous usage analytics to track feature usage
     - File: `lib/services/analytics-service.ts` (to be expanded)
-  - [ ] 24.3. Add performance monitoring for slow operations
+  - [ ] 30.3. Add performance monitoring for slow operations
     - File: `lib/services/analytics-service.ts` (to be expanded)
 
-### Milestone 10: Final Testing & Launch Prep
+### Milestone 11: Final Testing & Launch Prep
 Objective: Prepare the application for launch on app stores.
 
 Data Flow:
@@ -378,12 +398,12 @@ Acceptance Criteria:
 - App is ready for submission
 
 Step-by-Step Tasks:
-- [ ] 25. App store preparation 
-  - [ ] 25.1. Create screenshots showing key features on various device sizes
+- [ ] 31. App store preparation
+  - [ ] 31.1. Create screenshots showing key features on various device sizes
     - File: `assets/store/screenshots/` (to be created)
-  - [ ] 25.2. Write compelling app description highlighting unique benefits
+  - [ ] 31.2. Write compelling app description highlighting unique benefits
     - File: `docs/app-store/description.md` (to be created)
-  - [ ] 25.3. Prepare promotional graphics and videos for store listings
+  - [ ] 31.3. Prepare promotional graphics and videos for store listings
     - File: `assets/store/promotional/` (to be created)
 
 ---
