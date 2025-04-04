@@ -1,9 +1,9 @@
 /**
  * FILE: context/TimerStateContext.tsx
- * PURPOSE: Provides a React context for managing the global sobriety timer state (start time, running status, loading status). Handles loading/saving state via RepositoryContext.
+ * PURPOSE: Manages global sobriety timer state (start time, running status, elapsed days) via React Context, handling persistence.
  * FUNCTIONS:
- *   - TimerStateProvider(props: { children: ReactNode }) → JSX.Element: Context provider component.
- *   - useTimerState() → TimerStateContextProps: Hook to access timer state and control functions.
+ *   - TimerStateProvider({ children: ReactNode }): JSX.Element -> Provides timer state context.
+ *   - useTimerState(): TimerStateContextProps -> Hook to consume timer state and controls { startTime, isRunning, elapsedDays, startTimer, stopTimer, isLoading }.
  * DEPENDENCIES: react, ./RepositoryContext, ../lib/types/repositories
  */
 import React, {
@@ -21,6 +21,7 @@ export interface TimerStateContextProps {
 	// Export this interface
 	startTime: number | null;
 	isRunning: boolean;
+	elapsedDays: number; // Added elapsedDays
 	startTimer: (time: number) => void;
 	stopTimer: () => void;
 	isLoading: boolean;
@@ -41,6 +42,7 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 	const [startTime, setStartTime] = useState<number | null>(null);
 	const [isRunning, setIsRunning] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [elapsedDays, setElapsedDays] = useState<number>(0); // Added state for elapsed days
 
 	// Load initial state
 	useEffect(() => {
@@ -95,9 +97,47 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 		persistState(newState);
 	}, [persistState]);
 
+	// Effect to calculate elapsed days
+	useEffect(() => {
+		let intervalId: NodeJS.Timeout | null = null;
+
+		const calculateDays = () => {
+			if (isRunning && startTime) {
+				const now = Date.now();
+				const diff = now - startTime;
+				const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+				setElapsedDays(days);
+			} else {
+				setElapsedDays(0);
+			}
+		};
+
+		// Calculate immediately on change
+		calculateDays();
+
+		if (isRunning && startTime) {
+			// Update every minute
+			intervalId = setInterval(calculateDays, 60 * 1000);
+		}
+
+		// Cleanup interval on unmount or when timer stops/resets
+		return () => {
+			if (intervalId) {
+				clearInterval(intervalId);
+			}
+		};
+	}, [isRunning, startTime]); // Re-run effect if isRunning or startTime changes
+
 	return (
 		<TimerStateContext.Provider
-			value={{ startTime, isRunning, startTimer, stopTimer, isLoading }}
+			value={{
+				startTime,
+				isRunning,
+				elapsedDays, // Expose elapsedDays
+				startTimer,
+				stopTimer,
+				isLoading,
+			}}
 		>
 			{children}
 		</TimerStateContext.Provider>

@@ -1,13 +1,9 @@
 /**
- * FILE: DayCell.tsx
- * CREATED: 2024-07-18 16:32:05
- *
- * PURPOSE:
- * This file implements an optimized day cell component for the calendar grid with memoization for performance.
- *
- * METHODS:
- * - DayCell(): Renders a single day cell with appropriate styling based on sobriety status
- * - handlePress(): Handles press events to toggle sobriety status
+ * FILE: components/ui/calendar/DayCell.tsx
+ * PURPOSE: Renders an optimized, memoized, interactive day cell for the calendar grid.
+ * FUNCTIONS:
+ *   - DayCell({ day: DayData, onToggleSober?: (dayId: string) => void }): JSX.Element -> Renders a single day cell, optimized with React.memo.
+ * DEPENDENCIES: react, react-native, @/components/ui/text, ./types, ./utils
  */
 
 import React, { useCallback, useMemo } from "react";
@@ -60,6 +56,9 @@ export const DayCell = React.memo(
 
 		// Memoize press handler
 		const handlePress = useCallback(() => {
+			console.log(
+				`[DayCell:handlePress] Called for day: ${day.id}. Has onToggleSober prop: ${!!onToggleSober}`,
+			);
 			if (onToggleSober) {
 				onToggleSober(day.id);
 			}

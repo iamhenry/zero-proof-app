@@ -123,19 +123,6 @@
 **Future Improvements:**
 - When refactoring logic into hooks/services, ensure tests are also refactored to target the correct unit and responsibility level, guided by BDD scenarios.
 
-## [Mar 28, 2025 07:59 PM] Tooling Issues: `apply_diff` vs. `write_to_file`
-**Context:** Repeated failures using `apply_diff` to modify test files (`.tsx`) and add logs, even with adjusted context or minimal diffs.
-**Lesson:**
-- The `apply_diff` tool can be sensitive to context matching, especially with larger changes, comments, or subtle file differences.
-- If it fails repeatedly, using `write_to_file` with the complete intended file content is a more reliable alternative, although it requires reading the file first to reconstruct the full content.
-**Related Methods/Concepts:**
-- Tool usage (`apply_diff`, `write_to_file`)
-- Diffing algorithms
-- File manipulation
-**Future Improvements:**
-- If `apply_diff` fails, try reducing context significantly first.
-- If it still fails, switch to `write_to_file` instead of multiple `apply_diff` attempts to save time.
-
 ## [Mar 28, 2025 07:43 PM] Mode File Editing Restrictions
 **Context:** Attempting to edit a `.test.tsx` file in a TDD mode restricted to `.test.js` or `.test.ts`.
 **Lesson:**

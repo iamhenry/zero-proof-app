@@ -1,10 +1,8 @@
 /**
  * FILE: components/ui/timer/SobrietyTimer.tsx
- * PURPOSE: Renders an animated sobriety timer displaying elapsed time (d/h/m/s), driven by TimerStateContext for start time and running state.
+ * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext.
  * FUNCTIONS:
- *   - SobrietyTimer(props: { status?: string }) → JSX.Element: Main timer component.
- *   - formatUnitValue(value: number) → string: Formats time unit numbers for display.
- *   - calculateElapsedTime(startTime: number | null) → { d: number, h: number, m: number, s: number }: Calculates elapsed time components.
+ *   - SobrietyTimer({ status?: string }): JSX.Element -> Renders the animated timer component.
  * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext
  */
 
@@ -58,11 +56,16 @@ const calculateElapsedTime = (
 };
 
 export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
-	// Get timer state from context
-	const { startTime, isRunning, isLoading: isTimerLoading } = useTimerState();
+	// Get timer state from context, including elapsedDays
+	const {
+		startTime,
+		isRunning,
+		elapsedDays,
+		isLoading: isTimerLoading,
+	} = useTimerState();
 
-	// Local state for display values only
-	const [days, setDays] = useState(0);
+	// Local state for display values only (days state removed)
+	// const [days, setDays] = useState(0); // Removed, using elapsedDays from context
 	const [hours, setHours] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 	const [seconds, setSeconds] = useState(0);
@@ -79,14 +82,14 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 			// Only run after context has loaded initial state
 			if (isRunning && startTime) {
 				const elapsed = calculateElapsedTime(startTime);
-				setDays(elapsed.d);
+				// setDays(elapsed.d); // Removed, using elapsedDays from context
 				setHours(elapsed.h);
 				setMinutes(elapsed.m);
 				setSeconds(elapsed.s);
 				prevSecondsRef.current = elapsed.s.toString().padStart(2, "0");
 			} else {
 				// Reset display if timer is not running or startTime is null
-				setDays(0);
+				// setDays(0); // Removed, using elapsedDays from context
 				setHours(0);
 				setMinutes(0);
 				setSeconds(0);
@@ -102,7 +105,7 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 		if (!isRunning || startTime === null || isTimerLoading) {
 			// Restored startTime === null check
 			// Clear interval if timer should not be running or is loading
-			setDays(0);
+			// setDays(0); // Removed, using elapsedDays from context
 			setHours(0);
 			setMinutes(0);
 			setSeconds(0);
@@ -119,7 +122,7 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 			setSeconds(elapsed.s);
 			setMinutes(elapsed.m);
 			setHours(elapsed.h);
-			setDays(elapsed.d);
+			// setDays(elapsed.d); // Removed, using elapsedDays from context
 
 			// Calculate next seconds value for animation
 			const nextFormattedSecs = elapsed.s.toString().padStart(2, "0");
@@ -175,7 +178,7 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 	});
 
 	const timerUnits: TimerUnit[] = [
-		{ value: formatUnitValue(days), label: "d" },
+		{ value: formatUnitValue(elapsedDays), label: "d" }, // Use elapsedDays from context
 		{ value: formatUnitValue(hours), label: "h" },
 		{ value: formatUnitValue(minutes), label: "m" },
 	];

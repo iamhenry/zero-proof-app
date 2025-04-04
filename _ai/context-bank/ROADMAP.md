@@ -118,6 +118,22 @@ Step-by-Step Tasks:
     - File: `components/ui/calendar/__tests__/utils.test.ts`, `components/ui/calendar/hooks/__tests__/useCalendarData.test.ts`
 
 ### Bugs
+- [ ] BUG-03. Resolve display discrepancy between StreakCounter (calendar days) and SobrietyTimer (elapsed time)
+  - [ ] BUG-03.1. As a user, I want the definition of a "day" used for the streak count to be consistent or clearly explained relative to the elapsed time timer.
+```
+Okay, here is a summary of the bug (BUG-03) logged in the roadmap:
+
+**Bug Summary: Streak Counter vs. Timer Day Discrepancy (BUG-03)**
+
+*   **Issue:** There's a difference in how "days" are counted between the `StreakCounter` and the `SobrietyTimer`.
+    *   The `StreakCounter` (currently) counts the number of *calendar days* marked as sober in the ongoing streak, including the current day even if it's not complete (e.g., shows "31").
+    *   The `SobrietyTimer` displays the precise *elapsed time* since the streak began, showing the number of *full 24-hour periods* completed (e.g., shows "30 D 15 H...").
+*   **Impact:** This leads to different numbers being displayed for the streak duration (e.g., 31 vs. 30), which can be confusing for the user.
+*   **Context:** This became apparent after fixing the bug where the streak counter wasn't updating correctly when a day within the streak was toggled off. The fix involved implementing a shared `CalendarDataContext`.
+*   **Goal:** To resolve this discrepancy by either aligning the calculation methods or clarifying the UI to ensure a consistent and understandable user experience regarding streak duration. The decision on *how* to resolve it (e.g., change counter logic or add UI text) is pending.
+```
+
+
 <!-- FIXED -->
 - [x] BUG-01. Implement dynamic and performant loading of past and future dates
   - [x] BUG-01.1. As a user, I want to be able to view past and future dates dynamically without performance issues.
@@ -378,3 +394,4 @@ Step-by-Step Tasks:
   - [ ] 6.3. Implement preferences section for app notification settings
     - File: `components/ui/settings/PreferencesSection.tsx` (to be created)
     - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
+- [ ] Tapping the timer will take you to the current day (quick way to get back to present day)

@@ -2,12 +2,10 @@
 
 /**
  * FILE: components/ui/calendar/hooks/useCalendarData.ts
- * PURPOSE: Custom hook managing calendar state, including data loading, sobriety toggling, streak calculation, and infinite scrolling (past/future weeks). Integrates with RepositoryContext and TimerStateContext.
+ * PURPOSE: Manages calendar state, sobriety tracking, streak calculation, and infinite scrolling, integrating with repository and timer contexts.
  * FUNCTIONS:
- *   - useCalendarData() → { weeks, toggleSoberDay, loadPastWeeks, loadFutureWeeks, currentStreak, longestStreak, isLoadingInitial, isLoadingPast, isLoadingFuture }: Provides calendar state and interaction functions.
- *   - generateDeterministicInitialWeeks() → WeekData[]: Creates initial week structure.
- *   - recalculateStreaksAndIntensity(weeks: WeekData[]) → { updatedWeeks, currentStreak, longestStreak, streakStartDayData }: Calculates streaks and day intensity.
- * DEPENDENCIES: react, dayjs, ../types, ../utils, ../../../../lib/types/repositories, @/context/RepositoryContext, @/context/TimerStateContext
+ *   - useCalendarData(): object -> Returns calendar state { weeks, currentStreak, longestStreak, ... } and functions { toggleSoberDay, loadPastWeeks, loadFutureWeeks }.
+ * DEPENDENCIES: react, dayjs, ../types, ../utils, @/context/RepositoryContext, @/context/TimerStateContext, @/lib/types/repositories
  */
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useRef } from 'react'; // Import useRef
@@ -71,6 +69,7 @@ const recalculateStreaksAndIntensity = (weeks: WeekData[]): {
     longestStreak: number,
     streakStartDayData: DayData | null // Return the DayData object instead of just the date string
 } => {
+    console.log(`[useCalendarData:recalculateStreaks] Recalculating for ${weeks.length} weeks.`);
   try {
     if (!weeks || weeks.length === 0) {
       return { updatedWeeks: [], currentStreak: 0, longestStreak: 0, streakStartDayData: null };
@@ -168,6 +167,7 @@ const recalculateStreaksAndIntensity = (weeks: WeekData[]): {
         longestStreak,
         streakStartDayData: finalStreakStartDayData // Return the correctly determined start day data
     };
+    console.log('[useCalendarData:recalculateStreaks] Result:', { currentStreak: finalCurrentStreak, longestStreak, streakStartDayId: finalStreakStartDayData?.id });
   } catch (error) {
     console.error("Error during streak/intensity recalculation:", error);
     return { updatedWeeks: weeks, currentStreak: 0, longestStreak: 0, streakStartDayData: null };
@@ -188,12 +188,14 @@ export const useCalendarData = () => {
   // Initial data loading effect
   useEffect(() => {
     const loadInitialData = async () => {
+      console.log('[useCalendarData:loadInitialData] Starting initial data load...');
       setIsLoadingInitial(true);
       try {
         const [loadedDayStatus, loadedStreakData] = await Promise.all([
           repository.loadAllDayStatus(),
           repository.loadStreakData(),
         ]);
+        console.log('[useCalendarData:loadInitialData] Loaded from repo:', { dayStatusCount: Object.keys(loadedDayStatus).length, streakData: loadedStreakData });
         
         // Start with deterministic base weeks
         const baseWeeks = generateDeterministicInitialWeeks();
@@ -230,6 +232,7 @@ export const useCalendarData = () => {
           longestStreak: calculatedLongest, 
           streakStartDayData 
         } = recalculateStreaksAndIntensity(weeksWithLoadedStatus);
+        console.log('[useCalendarData:loadInitialData] Initial calculation result:', { calculatedCurrent, calculatedLongest, streakStartDayId: streakStartDayData?.id });
 
         // Set the updated weeks with proper sober status and intensity
         setWeeks(updatedWeeks);
@@ -262,6 +265,7 @@ export const useCalendarData = () => {
         } else {
             stopTimer(); // Ensure timer is stopped if no initial streak
         }
+        console.log('[useCalendarData:loadInitialData] Finished initial data load.');
       } catch (error) {
         console.error("Failed to load initial calendar data:", error);
         // Fall back to deterministic default state
@@ -299,6 +303,7 @@ export const useCalendarData = () => {
   }, [currentStreak, longestStreak, repository]);
 
   const toggleSoberDay = useCallback(async (dayId: string) => {
+    console.log(`[useCalendarData:toggleSoberDay] Initiated for dayId: ${dayId}`);
     const actionTimestamp = dayjs().valueOf(); // Capture timestamp at the start
     // Find the day being toggled
     const allDays = weeks.flatMap(w => w.days).sort((a, b) => dayjs(a.date).diff(dayjs(b.date))); // Add sort ensure correct order
@@ -312,6 +317,7 @@ export const useCalendarData = () => {
     const currentDayData = allDays[dayIndex];
     const newSoberValue = !currentDayData.sober;
     let newStreakStartTimestampUTC: number | null = null;
+    console.log(`[useCalendarData:toggleSoberDay] Calculated initial values: newSoberValue=${newSoberValue}, newStreakStartTimestampUTC=${newStreakStartTimestampUTC}`);
 
     // Determine the new streakStartTimestampUTC based on the logic
     if (newSoberValue) {
@@ -342,6 +348,7 @@ export const useCalendarData = () => {
     try {
         // Save the initially calculated status and timestamp BEFORE updating state
         await repository.saveDayStatus(dayId, newSoberValue, newStreakStartTimestampUTC);
+        console.log(`[useCalendarData:toggleSoberDay] Saved to repo: dayId=${dayId}, sober=${newSoberValue}, timestamp=${newStreakStartTimestampUTC}`);
     } catch (error) {
       console.error("Failed to save day status:", error);
       // If save fails, should we proceed with state update? For now, yes.
@@ -362,14 +369,20 @@ export const useCalendarData = () => {
         })
       }));
 
+      console.log(`[toggleSoberDay] Toggling day ${dayId} to sober: ${newSoberValue}`);
+      // Add log before recalculation within setWeeks
       const calculationResult = recalculateStreaksAndIntensity(newWeeks);
+      console.log(`[useCalendarData:toggleSoberDay] Recalculating streaks after toggle...`);
       const streakStartDayData = calculationResult.streakStartDayData; // Use the new name
+      console.log('[toggleSoberDay] Recalculation Result:', calculationResult);
       const newCurrent = calculationResult.currentStreak;
       const newLongest = Math.max(longestStreak, calculationResult.longestStreak);
 
       setCurrentStreak(newCurrent);
       setLongestStreak(newLongest);
 
+      console.log(`[toggleSoberDay] Setting currentStreak: ${newCurrent}, longestStreak: ${newLongest}`);
+      console.log(`[useCalendarData:toggleSoberDay] Timer state before update: isRunning=${isTimerRunning}`); // Log current timer state
       // --- Timer Start/Stop Logic ---
       stopTimer(); // Always stop first
 
@@ -407,13 +420,16 @@ export const useCalendarData = () => {
           }
       } else {
       }
+      console.log(`[useCalendarData:toggleSoberDay] Timer state after update: isRunning=${newCurrent > 0}`); // Log intended timer state
       // If newCurrent is 0, the timer remains stopped
       
       return calculationResult.updatedWeeks;
     });
+      console.log(`[useCalendarData:toggleSoberDay] Completed for dayId: ${dayId}`);
   }, [weeks, longestStreak, startTimer, stopTimer, repository]);
 
   const loadPastWeeks = useCallback(() => {
+    console.log('[useCalendarData:loadPastWeeks] Called.');
     if (isLoadingPast) return;
     setIsLoadingPast(true);
     setTimeout(() => {
@@ -422,6 +438,7 @@ export const useCalendarData = () => {
           const currentCalendarData: CalendarData = { weeks: currentWeeks };
           const moreData = loadMoreWeeks(currentCalendarData, 'past', 4);
           // TODO: Integrate loaded data for new weeks
+          console.log(`[useCalendarData:loadPastWeeks] Loaded ${moreData.weeks.length - currentWeeks.length} more past weeks.`);
           const { updatedWeeks, currentStreak: newCurrent, longestStreak: newLongest } = recalculateStreaksAndIntensity(moreData.weeks);
           setCurrentStreak(newCurrent);
           setLongestStreak(prevLongest => Math.max(prevLongest, newLongest));
@@ -436,6 +453,7 @@ export const useCalendarData = () => {
   }, [weeks, isLoadingPast]);
 
   const loadFutureWeeks = useCallback(() => {
+    console.log('[useCalendarData:loadFutureWeeks] Called.');
     if (isLoadingFuture) return;
     setIsLoadingFuture(true);
     setTimeout(() => {
@@ -444,6 +462,7 @@ export const useCalendarData = () => {
           const currentCalendarData: CalendarData = { weeks: currentWeeks };
           const moreData = loadMoreWeeks(currentCalendarData, 'future', 4);
           // TODO: Integrate loaded data for new weeks
+          console.log(`[useCalendarData:loadFutureWeeks] Loaded ${moreData.weeks.length - currentWeeks.length} more future weeks.`);
           const { updatedWeeks, currentStreak: newCurrent, longestStreak: newLongest } = recalculateStreaksAndIntensity(moreData.weeks);
           setCurrentStreak(newCurrent);
           setLongestStreak(prevLongest => Math.max(prevLongest, newLongest));

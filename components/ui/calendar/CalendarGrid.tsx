@@ -1,15 +1,11 @@
 /**
- * FILE: CalendarGrid.tsx
- * CREATED: 2024-07-18 16:32:05
- *
- * PURPOSE:
- * This file implements a scrollable calendar grid component that displays and manages sobriety tracking data.
- *
- * METHODS:
- * - CalendarGrid(): Renders the main calendar component with interactive day cells
- * - toggleSoberDay(): Toggles a day's sobriety status and recalculates streaks
- * - handleEndReached(): Loads more future weeks when scrolling down
- * - handleScroll(): Handles calendar scrolling and loads past weeks when needed
+ * FILE: components/ui/calendar/CalendarGrid.tsx
+ * PURPOSE: Renders a scrollable calendar grid for tracking sobriety, supporting infinite scroll.
+ * FUNCTIONS:
+ *   - CalendarGrid(): JSX.Element -> Renders the main calendar grid with weekday header and scrollable weeks.
+ *   - handleEndReached(): void -> Loads more future weeks when scrolling down.
+ *   - handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>): void -> Loads past weeks when scrolling near the top.
+ * DEPENDENCIES: react, react-native, ./WeekdayHeader, ./DayCell, @/context/CalendarDataContext
  */
 
 import React, { useCallback, useRef } from "react";
@@ -22,7 +18,7 @@ import {
 import { WeekdayHeader } from "./WeekdayHeader";
 import { DayCell } from "./DayCell";
 import { WeekData } from "./types";
-import { useCalendarData } from "./hooks/useCalendarData"; // Import the hook
+import { useCalendarContext } from "@/context/CalendarDataContext"; // Import the context hook
 
 export function CalendarGrid() {
 	// Use the hook to get calendar data and functions
@@ -33,7 +29,7 @@ export function CalendarGrid() {
 		loadFutureWeeks,
 		isLoadingPast, // Use loading states from hook
 		isLoadingFuture, // Use loading states from hook
-	} = useCalendarData();
+	} = useCalendarContext(); // Use the context hook
 
 	const flatlistRef = useRef<FlatList>(null);
 
@@ -60,9 +56,10 @@ export function CalendarGrid() {
 
 	// Render a day cell with consistent width
 	const renderDayCell = useCallback(
-		(day: any, index: number) => (
-			<DayCell key={day.id} day={day} onToggleSober={toggleSoberDay} />
-		),
+		(day: any, index: number) => {
+			// console.log(`[CalendarGrid:renderDayCell] Rendering day ${day.id}`); // Log rendering if needed
+			return <DayCell key={day.id} day={day} onToggleSober={toggleSoberDay} />;
+		},
 		[toggleSoberDay],
 	);
 
@@ -81,6 +78,10 @@ export function CalendarGrid() {
 	// For on-error recovery when scrolling to index
 	const handleScrollToIndexFailed = useCallback(
 		(info: any) => {
+			console.warn(
+				"[CalendarGrid:handleScrollToIndexFailed] Scroll failed:",
+				info,
+			);
 			setTimeout(() => {
 				// Use weeks from hook
 				flatlistRef.current?.scrollToIndex({

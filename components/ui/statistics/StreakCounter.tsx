@@ -1,14 +1,8 @@
 /**
  * FILE: components/ui/statistics/StreakCounter.tsx
- * CREATED: 2025-03-27 14:30:00
- *
- * PURPOSE:
- * Displays the current sobriety streak count (number of consecutive sober days).
- * Includes a visual streak icon.
- *
- * COMPONENTS:
- * - StreakCounter(props: StreakCounterProps): Renders the streak display.
- *   - props: { count: number, className?: string }
+ * PURPOSE: Displays the current sobriety streak count with a visual icon.
+ * FUNCTIONS:
+ *   - StreakCounter({ count: number, className?: string }): JSX.Element -> Renders the streak counter component.
  * DEPENDENCIES: react, react-native, ./StreakIcon
  */
 
@@ -31,7 +25,8 @@ export const StreakCounter: React.FC<StreakCounterProps> = ({
 				className={`px-4 py-3 bg-orange-50 rounded-full shadow-[0px_1px_4px_0px_rgba(0,0,0,0.10)] outline outline-1 outline-offset border border-orange-400 flex-row items-center gap-2 ${className}`}
 			>
 				<View className="flex items-center justify-center">
-					<StreakIcon />
+					{/* Explicitly passing default props as a potential workaround for test environment issues */}
+					<StreakIcon width={18} height={21} />
 				</View>
 				<Text className="text-center text-black text-xl font-extrabold font-['Rounded_Mplus_1c']">
 					{count}
