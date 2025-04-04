@@ -171,8 +171,9 @@ Step-by-Step Tasks:
 - [x] 10. Create sobriety timer functionality 
   - [x] 10.1. Implement real-time timer updates that tick every second
     - File: `components/ui/timer/SobrietyTimer.tsx`
-  - [ ] 10.2. Add background processing to keep timer running when app is closed
-    - File: `lib/services/timer-service.ts` (to be created)
+  - [-] 10.2. ~~Add background processing to keep timer running when app is closed~~ (Decision: Won't Implement)
+    - Rationale: Current persistence method (saving start time, calculating elapsed on open) is sufficient, simpler, battery-efficient, and meets the core requirement of showing total time sober. Background processing adds unnecessary complexity.
+    - File: `lib/services/timer-service.ts` (will not be created)
   - [x] 10.3. Create timer persistence that survives app restarts
     - File: `context/TimerStateContext.tsx`, `lib/storage/LocalStorageSobrietyRepository.ts`
   - [x] 10.4. Add elapsedDays calculation to TimerStateContext

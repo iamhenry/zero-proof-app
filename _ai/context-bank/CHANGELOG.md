@@ -69,6 +69,19 @@ This document tracks all modifications, organized by version and release date, t
 
 ---
 
+## Decision Log - April 4, 2025 01:55 PM
+
+### Changed
+
+- Roadmap Task 10.2 (Background Timer Processing)
+  - Description: Decided *not* to implement background processing for the sobriety timer.
+  - Why: The current persistence method (saving start time, calculating elapsed time on app open) is sufficient, simpler, more battery-efficient, and accurately meets the core requirement of displaying total time sober. Background processing would add unnecessary complexity for the current goals.
+  - Impact: Task 10.2 marked as 'Won't Implement' in the roadmap. No `timer-service.ts` file will be created for this purpose.
+  - Reference: Roadmap Task 10.2.
+
+---
+
+
 ## Version 0.1.4 - April 3, 2025 12:29 PM
 
 ### Added
