@@ -1,5 +1,26 @@
 # MEMORY.md
 
+## [Apr 4, 2025 12:10 PM] Context-Based State Management Improves Reliability and Reduces Duplication
+**Context:** Refactored calendar and streak tracking to use a centralized CalendarDataContext instead of isolated component state or hooks.
+**Lesson:**
+- Using a shared context for related data (calendar state, weeks, streaks) creates a single source of truth that prevents inconsistencies between components.
+- Moving calculation logic from hooks into a context provider simplifies component logic and reduces duplication of state updates.
+- Exposing derived values (currentStreak, longestStreak) through context avoids redundant calculations in multiple components.
+- Pairing context-based state management with proper persistence (via repository pattern) ensures data consistency between app sessions.
+- BDD scenarios help define and validate the expected behavior of components that depend on shared state.
+**Related Methods/Concepts:**
+- React Context API
+- Context Providers and Consumers
+- Repository Pattern
+- Derived State
+- Separation of Concerns
+- Behavior-Driven Development (BDD)
+- Unit Testing (React Testing Library)
+**Future Improvements:**
+- Consider implementing context selectors to optimize renders when only specific parts of context are used.
+- Add more comprehensive integration tests to verify coordination between multiple contexts (e.g., TimerStateContext and CalendarDataContext).
+- Explore state management libraries (Redux, Zustand) if context complexity increases.
+
 ## [Apr 1, 2025 02:33 PM] TDD & Test Refactoring Learnings
 **Context:** Reflecting on challenges encountered when refactoring tests after introducing shared state management (React Context) for repositories and timer state.
 **Lesson:**

@@ -4,6 +4,18 @@ This file contains documentation headers extracted from component files to provi
 
 ## Repository & Context Files
 
+### CalendarDataContext.tsx
+```
+/**
+ * FILE: context/CalendarDataContext.tsx
+ * PURPOSE: Provides shared calendar state (weeks, streaks, loading) and interaction logic via React Context.
+ * FUNCTIONS:
+ *   - CalendarDataProvider({ children: ReactNode }): JSX.Element -> Context provider managing calendar state.
+ *   - useCalendarContext(): CalendarContextProps -> Hook to consume the calendar context.
+ * DEPENDENCIES: react, dayjs, @/components/ui/calendar/types, @/lib/types/repositories, @/context/*, @/components/ui/calendar/utils
+ */
+```
+
 ### RepositoryContext.tsx
 ```
 /**
@@ -20,10 +32,10 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: context/TimerStateContext.tsx
- * PURPOSE: Provides a React context for managing the global sobriety timer state (start time, running status, loading status). Handles loading/saving state via RepositoryContext.
+ * PURPOSE: Manages global sobriety timer state (start time, running status, elapsed days) via React Context, handling persistence.
  * FUNCTIONS:
- *   - TimerStateProvider(props: { children: ReactNode }) → JSX.Element: Context provider component.
- *   - useTimerState() → TimerStateContextProps: Hook to access timer state and control functions.
+ *   - TimerStateProvider({ children: ReactNode }): JSX.Element -> Provides timer state context.
+ *   - useTimerState(): TimerStateContextProps -> Hook to consume timer state and controls { startTime, isRunning, elapsedDays, startTimer, stopTimer, isLoading }.
  * DEPENDENCIES: react, ./RepositoryContext, ../lib/types/repositories
  */
 ```
@@ -76,13 +88,10 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/statistics/StreakCounter.tsx
- * CREATED: 2025-03-27 14:30:00
- *
- * PURPOSE: Displays the current sobriety streak count with a streak icon.
- *
- * COMPONENTS:
- * - StreakCounter(props: StreakCounterProps) → JSX.Element: Renders the streak display with current and best streak metrics.
- *   - props: { count: number, className?: string }
+ * PURPOSE: Displays the current sobriety streak count with a visual icon.
+ * FUNCTIONS:
+ *   - StreakCounter({ count: number, className?: string }): JSX.Element -> Renders the streak counter component.
+ * DEPENDENCIES: react, react-native, ./StreakIcon
  */
 ```
 
@@ -133,7 +142,7 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/timer/SobrietyTimer.tsx
- * PURPOSE: Renders an animated sobriety timer displaying elapsed time (d/h/m/s), driven by TimerStateContext for start time and running state.
+ * PURPOSE: Renders an animated sobriety timer displaying elapsed time (d/h/m/s), using elapsed days from TimerStateContext.
  * FUNCTIONS:
  *   - SobrietyTimer(props: { status?: string }) → JSX.Element: Main timer component.
  *   - formatUnitValue(value: number) → string: Formats time unit numbers for display.

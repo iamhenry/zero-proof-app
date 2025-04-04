@@ -84,11 +84,13 @@ Data Flow:
 - Form data flows through React Hook Form with Zod validation
 - User data persists through local storage
 - Settings data is stored for offline access
+- Calendar and streak data managed through shared context (CalendarDataContext)
 
 Acceptance Criteria:
 - Form handling is implemented with React Hook Form and Zod
 - Local storage architecture is set up for offline functionality
 - Data persistence logic is implemented
+- Shared state management is implemented for calendar and timer data
 
 Step-by-Step Tasks:
 - [x] 7. Implement form handling with React Hook Form and Zod 
@@ -107,32 +109,29 @@ Step-by-Step Tasks:
     - File: `context/RepositoryContext.tsx`, `context/TimerStateContext.tsx`
   - [x] 8.4. Implement mock AsyncStorage for testing
     - File: `__mocks__/@react-native-async-storage/async-storage.js`
+  - [x] 8.5. Create shared context for calendar data management
+    - File: `context/CalendarDataContext.tsx` 
+  - [x] 8.6. Enhance TimerStateContext with elapsedDays calculation 
+    - File: `context/TimerStateContext.tsx`
   
 #### Enhancements
-- [ ] 8.5. Address `useCalendarData` Hook Refinements (Post-Review)
-  - [ ] 8.5.1. Optimize `recalculateStreaksAndIntensity` for performance: Avoid recalculating the entire dataset on every `toggleSoberDay` call to prevent slowdowns with more loaded data (addresses BUG-01 performance aspect).
-    - File: `components/ui/calendar/hooks/useCalendarData.ts`
-  - [x] 8.5.2. Fix data loading inconsistency: Remove `Math.random()` from `loadMoreWeeks` in `utils.ts` and implement loading logic in `useCalendarData` hook consistently with its deterministic streak calculation (critical for BUG-01 functionality).
+- [x] 8.7. Address `useCalendarData` Hook Refinements (Post-Review)
+  - [x] 8.7.1. Optimize `recalculateStreaksAndIntensity` for performance: Avoid recalculating the entire dataset on every `toggleSoberDay` call to prevent slowdowns with more loaded data (addresses BUG-01 performance aspect).
+    - File: `components/ui/calendar/hooks/useCalendarData.ts`, `context/CalendarDataContext.tsx`
+  - [x] 8.7.2. Fix data loading inconsistency: Remove `Math.random()` from `loadMoreWeeks` in `utils.ts` and implement loading logic in `useCalendarData` hook consistently with its deterministic streak calculation (critical for BUG-01 functionality).
     - File: `components/ui/calendar/utils.ts`, `components/ui/calendar/hooks/useCalendarData.ts`
-  - [x] 8.5.3. Add missing tests for data generation/loading: Ensure `generateCalendarData` and `loadMoreWeeks` (once fixed) are tested, along with the hook's loading functions.
-    - File: `components/ui/calendar/__tests__/utils.test.ts`, `components/ui/calendar/hooks/__tests__/useCalendarData.test.ts`
+  - [x] 8.7.3. Add missing tests for data generation/loading: Ensure `generateCalendarData` and `loadMoreWeeks` (once fixed) are tested, along with the hook's loading functions.
+    - File: `components/ui/calendar/__tests__/utils.test.ts`, `components/ui/calendar/hooks/__tests__/useCalendarData.test.tsx`
+  - [x] 8.7.4. Add BDD scenarios for StreakCounter to define expected behavior
+    - File: `_ai/scenarios/bdd-streak-counter.md`
+  - [x] 8.7.5. Create tests for StreakCounter component
+    - File: `components/ui/statistics/__tests__/StreakCounter.test.tsx`
 
 ### Bugs
-- [ ] BUG-03. Resolve display discrepancy between StreakCounter (calendar days) and SobrietyTimer (elapsed time)
-  - [ ] BUG-03.1. As a user, I want the definition of a "day" used for the streak count to be consistent or clearly explained relative to the elapsed time timer.
-```
-Okay, here is a summary of the bug (BUG-03) logged in the roadmap:
-
-**Bug Summary: Streak Counter vs. Timer Day Discrepancy (BUG-03)**
-
-*   **Issue:** There's a difference in how "days" are counted between the `StreakCounter` and the `SobrietyTimer`.
-    *   The `StreakCounter` (currently) counts the number of *calendar days* marked as sober in the ongoing streak, including the current day even if it's not complete (e.g., shows "31").
-    *   The `SobrietyTimer` displays the precise *elapsed time* since the streak began, showing the number of *full 24-hour periods* completed (e.g., shows "30 D 15 H...").
-*   **Impact:** This leads to different numbers being displayed for the streak duration (e.g., 31 vs. 30), which can be confusing for the user.
-*   **Context:** This became apparent after fixing the bug where the streak counter wasn't updating correctly when a day within the streak was toggled off. The fix involved implementing a shared `CalendarDataContext`.
-*   **Goal:** To resolve this discrepancy by either aligning the calculation methods or clarifying the UI to ensure a consistent and understandable user experience regarding streak duration. The decision on *how* to resolve it (e.g., change counter logic or add UI text) is pending.
-```
-
+- [x] BUG-03. Resolve display discrepancy between StreakCounter (calendar days) and SobrietyTimer (elapsed time)
+  - [x] BUG-03.1. As a user, I want the definition of a "day" used for the streak count to be consistent with the elapsed time timer.
+    - Resolution: Added elapsedDays calculation to TimerStateContext and used it in the StreakCounter, ensuring both components use the same definition of days.
+    - File: `context/TimerStateContext.tsx`, `components/ui/statistics/StreakCounter.tsx`
 
 <!-- FIXED -->
 - [x] BUG-01. Implement dynamic and performant loading of past and future dates
@@ -144,7 +143,7 @@ Okay, here is a summary of the bug (BUG-03) logged in the roadmap:
 Objective: Develop the main functionality of the application including calendar interaction, timer, and financial tracking.
 
 Data Flow:
-- Calendar interaction updates local state and storage (managed via useCalendarData hook)
+- Calendar interaction updates local state and storage (managed via CalendarDataContext)
 - Timer data persists across app sessions
 - Financial data calculations flow through dedicated services
 
@@ -155,18 +154,20 @@ Acceptance Criteria:
 
 Step-by-Step Tasks:
 - [x] 9. Develop calendar interaction logic 
-  - [x] 9.1. Implement day status toggling between sober/drinking states (logic moved to hook)
-    - File: `components/ui/calendar/CalendarGrid.tsx`, `components/ui/calendar/hooks/useCalendarData.ts`
+  - [x] 9.1. Implement day status toggling between sober/drinking states
+    - File: `components/ui/calendar/CalendarGrid.tsx`, `context/CalendarDataContext.tsx`
   - [x] 9.2. Add streak calculation that updates with calendar changes
-    - File: `components/ui/calendar/utils.ts`
+    - File: `context/CalendarDataContext.tsx`
   - [x] 9.3. Implement color intensity updates based on streak length
-    - File: `components/ui/calendar/DayCell.tsx`
+    - File: `components/ui/calendar/DayCell.tsx`, `context/CalendarDataContext.tsx`
   - [x] 9.4. Create continuous scroll behavior (past/future week loading)
-    - File: `components/ui/calendar/hooks/useCalendarData.ts`
-  - [x] 9.5 Create useCalendarData hook for state management and data loading
-    - File: `components/ui/calendar/hooks/useCalendarData.ts`
+    - File: `context/CalendarDataContext.tsx`
+  - [x] 9.5 Create useCalendarData hook for state management and data loading (functionality now moved to CalendarDataContext)
+    - File: `components/ui/calendar/hooks/useCalendarData.ts`, `context/CalendarDataContext.tsx`
   - [x] 9.6 Create BDD scenarios for useCalendarData hook
     - File: `_ai/scenarios/bdd-useCalendarData-CalendarGrid.md`
+  - [x] 9.7 Create BDD scenarios for StreakCounter component
+    - File: `_ai/scenarios/bdd-streak-counter.md`
 - [x] 10. Create sobriety timer functionality 
   - [x] 10.1. Implement real-time timer updates that tick every second
     - File: `components/ui/timer/SobrietyTimer.tsx`
@@ -174,6 +175,8 @@ Step-by-Step Tasks:
     - File: `lib/services/timer-service.ts` (to be created)
   - [x] 10.3. Create timer persistence that survives app restarts
     - File: `context/TimerStateContext.tsx`, `lib/storage/LocalStorageSobrietyRepository.ts`
+  - [x] 10.4. Add elapsedDays calculation to TimerStateContext
+    - File: `context/TimerStateContext.tsx`
 - [ ] 11. Implement financial tracking system 
   - [x] 11.1. Create savings calculator based on days sober × drink cost
     - File: `components/ui/settings/hooks/useFinancialSettings.ts`

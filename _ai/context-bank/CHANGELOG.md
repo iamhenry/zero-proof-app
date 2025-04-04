@@ -8,20 +8,64 @@ This document tracks all modifications, organized by version and release date, t
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: April 3, 2025, 12:29 PM
+- Last Update: April 4, 2025, 12:10 PM
 - Current Phase: Phase 2 - Frontend Implementation
-- Overall Progress: ~50%
+- Overall Progress: ~55%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
-- Current Branch: feat/set-up-local-storage-architecture 
-- Latest Release: Version 0.1.4
+- Current Branch: feature/update-streak-counter-to-persistent-data
+- Latest Release: Version 0.1.5
 
 ## Key Metrics
-- Features Completed: ~35/82 (~43% based on sub-tasks)
-- Open Issues: Testing persistence functionality
-- Test Coverage: ~48% (estimated)
-- Current Focus: Implement Local Storage & Timer Persistence
+- Features Completed: ~40/82 (~49% based on sub-tasks)
+- Open Issues: Testing streak counter persistence across app restarts
+- Test Coverage: ~52% (estimated)
+- Current Focus: Implement persistent streak counter with context-based state management
+
+---
+
+## Version 0.1.5 - April 4, 2025 12:10 PM
+
+### Added
+
+- Calendar Data Context for Shared State
+  - Description: Introduced a new `CalendarDataContext` to centralize management of calendar state, including weeks, streaks, and loading states.
+  - Why: To provide a single source of truth for calendar data across components and improve state management.
+  - Impact: Improved reliability for streak tracking and better separation of concerns between data management and UI.
+  - Reference: Commit 680f250.
+
+- BDD Scenarios for StreakCounter
+  - Description: Added behavior-driven development scenarios for `StreakCounter` to define expected behavior for streak display.
+  - Why: To ensure the streak counter accurately reflects user progress in different scenarios and guide testing efforts.
+  - Impact: Clearer requirements for the streak counter component and improved test coverage.
+  - Reference: Commit 680f250.
+
+- Unit Tests for StreakCounter and CalendarData
+  - Description: Created new tests for `StreakCounter` component and updated tests for `useCalendarData` to verify persistence functionality.
+  - Why: To validate component behavior against BDD scenarios and ensure reliable functionality.
+  - Impact: Increased test coverage and confidence in streak tracking functionality.
+  - Reference: Commit 680f250.
+
+### Changed
+
+- Timer State Context Enhancement
+  - Description: Updated `TimerStateContext` to include `elapsedDays` for improved timer functionality.
+  - Why: To make day calculations accessible across components without recalculating.
+  - Impact: More efficient day tracking and improved integration with streak functionality.
+  - Reference: Commit 680f250.
+
+- Refactored SobrietyTimer and StreakCounter Components
+  - Description: Modified components to utilize context for state management instead of managing state internally.
+  - Why: To centralize state management and ensure consistent display of streak data.
+  - Impact: More reliable streak tracking with persistence between app sessions.
+  - Reference: Commit 680f250.
+
+- Calendar Components and Hooks Refactoring
+  - Description: Moved data management logic from `useCalendarData` into `CalendarDataContext`.
+  - Why: To centralize calendar data management and provide shared access to streak information.
+  - Impact: Improved code organization with clearer separation of concerns.
+  - Reference: Commit 680f250.
 
 ---
 
