@@ -183,8 +183,10 @@ Step-by-Step Tasks:
     - File: `components/ui/settings/hooks/useFinancialSettings.ts`
   - [ ] 11.2. Implement drink cost management with different drink types and prices
     - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
+    - Branch Name: `feat/settings-drink-cost-management`
   - [ ] 11.3. Add statistics aggregation to show total and average savings
     - File: `lib/services/statistics-service.ts` (to be created)
+    - Branch Name: `feat/stats-savings-aggregation`
 
 ### Milestone 5: Progress Tracking Features
 Objective: Build features to track and visualize user progress over time.
@@ -203,24 +205,32 @@ Step-by-Step Tasks:
 - [ ] 12. Build streak management system 
   - [ ] 12.1. Implement current streak counter with daily updates
     - File: `lib/services/streak-service.ts` (to be created)
+    - Branch Name: `feat/streak-daily-updates`
   - [ ] 12.2. Add longest streak recording that persists across resets
     - File: `lib/services/streak-service.ts` (to be created)
+    - Branch Name: `feat/streak-longest-persistent`
   - [ ] 12.3. Create streak reset handling with optional notes for relapse
     - File: `lib/services/streak-service.ts` (to be created)
+    - Branch Name: `feat/streak-reset-handling`
 - [ ] 13. Develop drink logging system 
   - [ ] 13.1. Create daily drink counter with type and amount tracking
     - File: `components/ui/drink-log/DrinkCounter.tsx` (to be created)
+    - Branch Name: `feat/drink-log-daily-counter`
   - [ ] 13.2. Implement consumption pattern tracking to identify trends
     - File: `lib/services/analytics-service.ts` (to be created)
+    - Branch Name: `feat/analytics-consumption-patterns`
   - [ ] 13.3. Add entry correction/undo functionality to fix mistakes
     - File: `components/ui/drink-log/LogEditor.tsx` (to be created)
     - File: `lib/services/drink-log-service.ts` (to be created)
+    - Branch Name: `feat/drink-log-correction-undo`
 - [ ] 14. Create progress sharing feature 
   - [ ] 14.1. Implement calendar graphics generator for social media sharing
     - File: `lib/services/share-service.ts` (to be created)
+    - Branch Name: `feat/share-calendar-graphics`
   - [ ] 14.2. Add share functionality with customizable messages and privacy options
     - File: `components/ui/share/ShareButton.tsx` (to be created)
     - File: `components/ui/share/ShareModal.tsx` (to be created)
+    - Branch Name: `feat/share-customizable-messages`
 
 ## Phase 3: Backend Integration
 Connect frontend with Supabase backend services.
@@ -242,10 +252,13 @@ Step-by-Step Tasks:
 - [ ] 15. Set up Supabase project configuration 
   - [ ] 15.1. Create Supabase project with proper region and settings
     - File: `config/supabase.ts` (partially implemented)
+    - Branch Name: `chore/config-supabase-project-setup`
   - [ ] 15.2. Configure database rules and policies for secure data access
     - File: `config/supabase.ts` (to be expanded)
+    - Branch Name: `chore/config-supabase-db-rules`
   - [ ] 15.3. Set up environment variables for API keys and URLs
     - File: `.env` (to be expanded)
+    - Branch Name: `chore/config-env-vars`
 - [x] 16. Implement authentication flow 
   - [x] 16.1. Create user registration with email verification
     - File: `context/supabase-provider.tsx`
@@ -258,12 +271,16 @@ Step-by-Step Tasks:
 - [ ] 17. Create database schema and tables 
   - [ ] 17.1. Design user profiles table with necessary fields
     - File: `lib/types/user-profile.ts` (to be created)
+    - Branch Name: `feat/db-schema-user-profiles`
   - [ ] 17.2. Create sobriety records table with date and status fields
     - File: `lib/types/sobriety-record.ts` (to be created)
+    - Branch Name: `feat/db-schema-sobriety-records`
   - [ ] 17.3. Implement streak data table for tracking current and historical streaks
     - File: `lib/types/streak-data.ts` (to be created)
+    - Branch Name: `feat/db-schema-streak-data`
   - [ ] 17.4. Design financial tracking table with drink costs and savings
     - File: `lib/types/financial-data.ts` (to be created)
+    - Branch Name: `feat/db-schema-financial-data`
 
 ### Milestone 7: Data Synchronization
 Objective: Implement robust data synchronization between local storage and Supabase backend.
@@ -282,17 +299,23 @@ Step-by-Step Tasks:
 - [ ] 18. Implement data sync system 
   - [ ] 18.1. Create bidirectional sync between local storage and Supabase
     - File: `lib/services/sync-service.ts` (to be created)
+    - Branch Name: `feat/sync-bidirectional-local-supabase`
   - [ ] 18.2. Implement conflict resolution with timestamp-based strategy
     - File: `lib/services/conflict-resolution.ts` (to be created)
+    - Branch Name: `feat/sync-conflict-resolution`
   - [ ] 18.3. Add offline support with change queue and retry mechanism
     - File: `lib/hooks/useOfflineStatus.ts` (to be created)
+    - Branch Name: `feat/sync-offline-queue`
 - [ ] 19. Set up real-time subscriptions 
   - [ ] 19.1. Implement live updates for streak changes across devices
     - File: `lib/services/subscription-service.ts` (to be created)
+    - Branch Name: `feat/sync-realtime-streaks`
   - [ ] 19.2. Add timer synchronization to ensure consistent timing
     - File: `lib/services/subscription-service.ts` (to be created)
+    - Branch Name: `feat/sync-realtime-timer`
   - [ ] 19.3. Create multi-device support with data merging
     - File: `lib/services/subscription-service.ts` (to be created)
+    - Branch Name: `feat/sync-realtime-multi-device`
 
 ### Milestone 8: End-to-End Testing
 Objective: Implement E2E tests for critical user flows to ensure integrated functionality.
@@ -308,11 +331,17 @@ Acceptance Criteria:
 
 Step-by-Step Tasks:
 - [ ] 20. Select and configure E2E testing framework
+    - Branch Name: `chore/test-e2e-setup`
 - [ ] 21. Implement E2E tests for Authentication flow (Sign up, Sign in, Sign out, Persistence)
+    - Branch Name: `test/e2e-auth-flow`
 - [ ] 22. Implement E2E tests for Core Sobriety Loop (Calendar interaction, Timer updates, Streak updates, Local Persistence)
+    - Branch Name: `test/e2e-core-sobriety-loop`
 - [ ] 23. Implement E2E tests for Settings Persistence (Update drink cost, verify savings calculation)
+    - Branch Name: `test/e2e-settings-persistence`
 - [ ] 24. Implement E2E tests for Data Synchronization (Verify local/backend sync, including offline)
+    - Branch Name: `test/e2e-data-sync`
 - [ ] 25. Integrate E2E tests into CI pipeline
+    - Branch Name: `ci/integrate-e2e-tests`
 
 ## Phase 4: UI Polish & Optimization
 Enhance user experience with animations and optimizations.
@@ -334,19 +363,26 @@ Step-by-Step Tasks:
 - [ ] 26. Add animations and transitions
   - [ ] 26.1. Implement smooth animations for calendar day selections
     - File: `components/ui/calendar/CalendarGrid.tsx` (to be expanded)
+    - Branch Name: `feat/ui-calendar-animations`
   - [ ] 26.2. Add celebration animations when reaching streak milestones
     - File: `lib/animations/index.ts` (to be created)
+    - Branch Name: `feat/ui-streak-celebration-animations`
   - [ ] 26.3. Create smooth timer countdown animations
     - File: `components/ui/timer/SobrietyTimer.tsx` (to be expanded)
+    - Branch Name: `feat/ui-timer-animations`
   - [ ] 26.4. Implement fluid page transitions between screens
     - File: `app/(app)/_layout.tsx` (to be expanded)
+    - Branch Name: `feat/ui-page-transitions`
 - [ ] 27. Implement loading states and error handling
   - [ ] 27.1. Create skeleton screens for data loading states
     - File: `components/ui/loading/Skeleton.tsx` (to be created)
+    - Branch Name: `feat/ui-skeleton-loaders`
   - [ ] 27.2. Add user-friendly error messages with retry options
     - File: `components/ui/feedback/ErrorMessage.tsx` (to be created)
+    - Branch Name: `feat/ui-error-messages`
   - [ ] 27.3. Implement loading indicators for all async operations
     - File: `components/ui/loading/Spinner.tsx` (to be created)
+    - Branch Name: `feat/ui-loading-spinners`
 
 ### Milestone 10: Performance Optimization
 Objective: Optimize application performance for a smooth user experience.
@@ -365,24 +401,33 @@ Step-by-Step Tasks:
 - [ ] 28. Optimize app performance
   - [ ] 28.1. Implement virtualized rendering for calendar to handle large date ranges
     - File: `components/ui/calendar/CalendarGrid.tsx` (to be optimized)
+    - Branch Name: `perf/calendar-virtualization`
   - [ ] 28.2. Improve timer efficiency by optimizing update intervals
     - File: `lib/services/timer-service.ts` (to be created)
+    - Branch Name: `perf/timer-efficiency`
   - [ ] 28.3. Create smart caching strategy for frequently accessed data
     - File: `lib/services/cache-service.ts` (to be created)
+    - Branch Name: `perf/caching-strategy`
 - [ ] 29. Implement error boundary system
   - [ ] 29.1. Add global error boundary with crash recovery
     - File: `components/error-boundary.tsx` (to be created)
+    - Branch Name: `feat/error-global-boundary`
   - [ ] 29.2. Implement component-level error boundaries for isolated failures
     - File: `components/error-boundary.tsx` (to be expanded)
+    - Branch Name: `feat/error-component-boundaries`
   - [ ] 29.3. Create user-friendly fallback UI components with recovery options
     - File: `components/ui/feedback/ErrorFallback.tsx` (to be created)
+    - Branch Name: `feat/ui-error-fallback`
 - [ ] 30. Add crash reporting and analytics
   - [ ] 30.1. Set up error logging to capture and report crashes
     - File: `lib/services/analytics-service.ts` (to be created)
+    - Branch Name: `feat/analytics-crash-reporting`
   - [ ] 30.2. Implement anonymous usage analytics to track feature usage
     - File: `lib/services/analytics-service.ts` (to be expanded)
+    - Branch Name: `feat/analytics-usage-tracking`
   - [ ] 30.3. Add performance monitoring for slow operations
     - File: `lib/services/analytics-service.ts` (to be expanded)
+    - Branch Name: `feat/analytics-performance-monitoring`
 
 ### Milestone 11: Final Testing & Launch Prep
 Objective: Prepare the application for launch on app stores.
@@ -401,10 +446,13 @@ Step-by-Step Tasks:
 - [ ] 31. App store preparation
   - [ ] 31.1. Create screenshots showing key features on various device sizes
     - File: `assets/store/screenshots/` (to be created)
+    - Branch Name: `chore/release-screenshots`
   - [ ] 31.2. Write compelling app description highlighting unique benefits
     - File: `docs/app-store/description.md` (to be created)
+    - Branch Name: `docs/release-app-description`
   - [ ] 31.3. Prepare promotional graphics and videos for store listings
     - File: `assets/store/promotional/` (to be created)
+    - Branch Name: `chore/release-promo-assets`
 
 ---
 
@@ -413,9 +461,13 @@ Step-by-Step Tasks:
 - [ ] 6. Build settings interface components 
   - [ ] 6.1. Create drink cost configuration form with price inputs and frequency
     - File: `components/ui/settings/DrinkCostForm.tsx` (to be created)
+    - Branch Name: `feat/settings-drink-cost-form`
   - [ ] 6.2. Design account management UI with profile edit and password reset
     - File: `components/ui/settings/AccountSection.tsx` (to be created)
+    - Branch Name: `feat/settings-account-management-ui`
   - [ ] 6.3. Implement preferences section for app notification settings
     - File: `components/ui/settings/PreferencesSection.tsx` (to be created)
     - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
+    - Branch Name: `feat/settings-preferences-notifications`
 - [ ] Tapping the timer will take you to the current day (quick way to get back to present day)
+    - Branch Name: `feat/timer-tap-to-today`
