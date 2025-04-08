@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, ActivityIndicator } from "react-native"; // Added ActivityIndicator
+import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native"; // Added TouchableOpacity
 import Animated, {
 	useSharedValue,
 	useAnimatedStyle,
@@ -20,6 +20,7 @@ import Animated, {
 
 import { useTimerState } from "@/context/TimerStateContext"; // Import timer state context hook
 
+import { useCalendarContext } from "@/context/CalendarDataContext"; // Import calendar context hook
 type TimerUnit = {
 	value: number | string;
 	label: string;
@@ -64,6 +65,7 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 		isLoading: isTimerLoading,
 	} = useTimerState();
 
+	const { scrollToToday } = useCalendarContext(); // Get scroll function from calendar context
 	// Local state for display values only (days state removed)
 	// const [days, setDays] = useState(0); // Removed, using elapsedDays from context
 	const [hours, setHours] = useState(0);
@@ -196,55 +198,62 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 	}
 
 	return (
-		<View className="absolute bottom-8 left-0 right-0 items-center z-10">
-			<View className="w-72 px-4 py-3 bg-neutral-800 rounded-full shadow-lg border border-black flex-row justify-between items-center">
-				<Text className="text-white text-xs font-extrabold">{status}</Text>
-				<View className="flex-row justify-start items-center gap-2">
-					{timerUnits.map((unit, index) => (
-						<View
-							key={index}
-							className="flex-row justify-center items-end gap-0.5"
-						>
-							<View style={{ minWidth: 12, alignItems: "flex-end" }}>
-								<Text className="text-white text-xs font-extrabold">
-									{unit.value}
+		// Wrap the entire timer display in a TouchableOpacity
+		<TouchableOpacity
+			onPress={scrollToToday}
+			activeOpacity={0.8}
+			className="absolute bottom-8 left-0 right-0 items-center z-10"
+		>
+			<View>
+				<View className="w-72 px-4 py-3 bg-neutral-800 rounded-full shadow-lg border border-black flex-row justify-between items-center">
+					<Text className="text-white text-xs font-extrabold">{status}</Text>
+					<View className="flex-row justify-start items-center gap-2">
+						{timerUnits.map((unit, index) => (
+							<View
+								key={index}
+								className="flex-row justify-center items-end gap-0.5"
+							>
+								<View style={{ minWidth: 12, alignItems: "flex-end" }}>
+									<Text className="text-white text-xs font-extrabold">
+										{unit.value}
+									</Text>
+								</View>
+								<Text className="text-neutral-500 text-xs font-extrabold uppercase">
+									{unit.label}
 								</Text>
 							</View>
+						))}
+
+						{/* Seconds with animation */}
+						<View className="flex-row justify-center items-end gap-0.5">
+							<View
+								style={{
+									minWidth: 16,
+									flexDirection: "row",
+									justifyContent: "flex-end",
+									alignItems: "flex-end",
+								}}
+							>
+								<Animated.Text
+									style={animStyleTens}
+									className="text-white text-xs font-extrabold"
+								>
+									{secondsTens}
+								</Animated.Text>
+								<Animated.Text
+									style={animStyleOnes}
+									className="text-white text-xs font-extrabold"
+								>
+									{secondsOnes}
+								</Animated.Text>
+							</View>
 							<Text className="text-neutral-500 text-xs font-extrabold uppercase">
-								{unit.label}
+								s
 							</Text>
 						</View>
-					))}
-
-					{/* Seconds with animation */}
-					<View className="flex-row justify-center items-end gap-0.5">
-						<View
-							style={{
-								minWidth: 16,
-								flexDirection: "row",
-								justifyContent: "flex-end",
-								alignItems: "flex-end",
-							}}
-						>
-							<Animated.Text
-								style={animStyleTens}
-								className="text-white text-xs font-extrabold"
-							>
-								{secondsTens}
-							</Animated.Text>
-							<Animated.Text
-								style={animStyleOnes}
-								className="text-white text-xs font-extrabold"
-							>
-								{secondsOnes}
-							</Animated.Text>
-						</View>
-						<Text className="text-neutral-500 text-xs font-extrabold uppercase">
-							s
-						</Text>
 					</View>
 				</View>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 }

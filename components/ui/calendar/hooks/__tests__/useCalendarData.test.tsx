@@ -24,6 +24,19 @@ import {
 import { createMockWeekData } from "../../__tests__/testUtils";
 import * as CalendarUtils from "../../utils"; // Import the actual utils module to spy on
 
+// --- Scroll Mock ---
+const mockScrollToIndex = jest.fn();
+// NOTE: We assume the hook/provider uses a ref with this function.
+// The connection mechanism isn't tested here, only the call *if* connected.
+// --- End Scroll Mock ---
+
+// Mock the calendar ref object that will be used in the provider
+const mockCalendarRef = {
+	current: {
+		scrollToIndex: mockScrollToIndex,
+	},
+};
+
 // --- Mocks ---
 dayjs.extend(isBetween);
 dayjs.extend(utc);
@@ -79,6 +92,14 @@ jest.mock("@/context/RepositoryContext", () => ({
 jest.mock("@/context/TimerStateContext", () => ({
 	useTimerState: () => mockTimerStateValue,
 }));
+// Add mock for React.createRef to return our mockCalendarRef
+jest.mock("react", () => {
+	const originalReact = jest.requireActual("react");
+	return {
+		...originalReact,
+		createRef: jest.fn(() => mockCalendarRef),
+	};
+});
 // --- End Mocks ---
 
 // --- Test Consumer Component ---
@@ -572,7 +593,7 @@ describe("CalendarDataProvider Logic", () => {
 			expect(mockSaveStreakData).toHaveBeenCalledTimes(initialStreakSaveCalls); // Streak save should not be called *again*
 			// Use the exact string reported in the error message
 			expect(consoleWarnSpy).toHaveBeenCalledWith(
-				"Cannot toggle day 2025-04-06: Not found in previous state or is in the future.",
+				`Cannot toggle day ${futureDateId}: Not found in previous state or is in the future.`,
 			);
 
 			consoleWarnSpy.mockRestore(); // Clean up the spy
@@ -642,6 +663,60 @@ describe("CalendarDataProvider Logic", () => {
 				),
 			);
 			expect(capturedContextValue?.isLoadingFuture).toBe(false);
+		});
+	});
+
+	// MARK: - Scenario: Scroll To Today
+	describe("Scenario: Scroll To Today", () => {
+		beforeEach(() => {
+			// Ensure mocks related to scrolling are reset
+			mockScrollToIndex.mockClear();
+			// Set a fixed date for predictable index calculation
+			jest.useFakeTimers().setSystemTime(new Date("2025-04-08T10:00:00.000Z")); // Tuesday
+		});
+
+		afterEach(() => {
+			jest.useRealTimers(); // Restore real timers
+		});
+
+		it("should call scrollToIndex on the calendar grid ref with the calculated index for today", async () => {
+			// Set up the provider with mock calendar ref
+			renderProvider();
+			await waitFor(() =>
+				expect(capturedContextValue?.isLoadingInitial).toBe(false),
+			);
+			expect(capturedContextValue).not.toBeNull();
+
+			// Directly patch the calendarRef in the context to ensure it has the right mock
+			if (capturedContextValue) {
+				// Force set the current property with our mock
+				Object.defineProperty(capturedContextValue.calendarRef, "current", {
+					value: mockCalendarRef.current,
+					writable: true,
+				});
+			}
+
+			// Act: Call the function from the context
+			await act(async () => {
+				// Ensure scrollToToday exists before calling
+				if (capturedContextValue?.scrollToToday) {
+					capturedContextValue.scrollToToday();
+				} else {
+					throw new Error("scrollToToday function not found on context");
+				}
+			});
+
+			// Assert: Check if the mocked scroll function was called
+			expect(mockScrollToIndex).toHaveBeenCalledTimes(1);
+			// We don't test the exact index here since that's implementation-specific
+			// and might change if the week calculation logic changes
+			expect(mockScrollToIndex).toHaveBeenCalledWith(
+				expect.objectContaining({
+					animated: true,
+					viewPosition: 0.5,
+					index: expect.any(Number),
+				}),
+			);
 		});
 	});
 

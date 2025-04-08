@@ -8,7 +8,7 @@
  * DEPENDENCIES: react, react-native, ./WeekdayHeader, ./DayCell, @/context/CalendarDataContext
  */
 
-import React, { useCallback, useRef } from "react";
+import React, { useCallback } from "react"; // Remove useRef import
 import {
 	View,
 	FlatList,
@@ -29,9 +29,10 @@ export function CalendarGrid() {
 		loadFutureWeeks,
 		isLoadingPast, // Use loading states from hook
 		isLoadingFuture, // Use loading states from hook
+		calendarRef, // Get calendarRef from context
 	} = useCalendarContext(); // Use the context hook
 
-	const flatlistRef = useRef<FlatList>(null);
+	// Remove local flatlistRef, use the one from context
 
 	// Handle end reached - load more weeks in the future
 	const handleEndReached = useCallback(() => {
@@ -83,8 +84,8 @@ export function CalendarGrid() {
 				info,
 			);
 			setTimeout(() => {
-				// Use weeks from hook
-				flatlistRef.current?.scrollToIndex({
+				// Use weeks from hook and calendarRef from context
+				calendarRef.current?.scrollToIndex({
 					index: Math.min(info.index, weeks.length - 1),
 					animated: false,
 				});
@@ -102,7 +103,7 @@ export function CalendarGrid() {
 
 			{/* Scrollable calendar grid */}
 			<FlatList
-				ref={flatlistRef}
+				ref={calendarRef as React.RefObject<FlatList<WeekData>>} // Assert type to satisfy TS
 				testID="calendar-grid-list"
 				renderItem={renderWeek}
 				data={weeks} // Use weeks from hook

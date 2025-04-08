@@ -476,6 +476,11 @@ export const useCalendarData = () => {
     }, 0);
   }, [weeks, isLoadingFuture]);
 
+  // Placeholder function for scrolling to today
+  const scrollToToday = () => {
+    console.log('[useCalendarData] scrollToToday called (placeholder)');
+  };
+
   return {
     weeks,
     toggleSoberDay,
@@ -486,6 +491,7 @@ export const useCalendarData = () => {
     isLoadingInitial,
     isLoadingPast,
     isLoadingFuture,
+    scrollToToday, // Add the new function here
     // timerDurationDetails, // Removed timerDurationDetails from return
   };
 };
