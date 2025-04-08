@@ -12,6 +12,7 @@ This file contains documentation headers extracted from component files to provi
  * FUNCTIONS:
  *   - CalendarDataProvider({ children: ReactNode }): JSX.Element -> Context provider managing calendar state.
  *   - useCalendarContext(): CalendarContextProps -> Hook to consume the calendar context.
+ *   - scrollToToday(): void -> Function to scroll the calendar grid to the current day.
  * DEPENDENCIES: react, dayjs, @/components/ui/calendar/types, @/lib/types/repositories, @/context/*, @/components/ui/calendar/utils
  */
 ```
@@ -144,10 +145,10 @@ This file contains documentation headers extracted from component files to provi
  * FILE: components/ui/timer/SobrietyTimer.tsx
  * PURPOSE: Renders an animated sobriety timer displaying elapsed time (d/h/m/s), using elapsed days from TimerStateContext.
  * FUNCTIONS:
- *   - SobrietyTimer(props: { status?: string }) → JSX.Element: Main timer component.
+ *   - SobrietyTimer(props: { status?: string }) → JSX.Element: Main timer component with tap interaction to scroll calendar.
  *   - formatUnitValue(value: number) → string: Formats time unit numbers for display.
  *   - calculateElapsedTime(startTime: number | null) → { d: number, h: number, m: number, s: number }: Calculates elapsed time components.
- * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext
+ * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext, @/context/CalendarDataContext
  */
 ```
 
@@ -171,16 +172,17 @@ This file contains documentation headers extracted from component files to provi
 /**
  * FILE: components/ui/calendar/CalendarGrid.tsx
  * CREATED: 2024-07-18 16:32:05
- * UPDATED: 2025-03-31 13:18:00
+ * UPDATED: 2025-04-08 11:37:00
  *
  * PURPOSE: Implements a scrollable calendar grid component that displays sobriety tracking data.
- * It utilizes the `useCalendarData` hook for state management and data fetching logic.
+ * It utilizes CalendarDataContext for state management, data, and interaction logic including scrolling.
  *
  * COMPONENTS:
- * - CalendarGrid() → JSX.Element: Renders the main calendar grid UI, including the weekday header and the scrollable list of weeks/days. Relies on `useCalendarData` for data and actions.
+ * - CalendarGrid() → JSX.Element: Renders the main calendar grid UI, including the weekday header and the scrollable list of weeks/days.
+ *   Exposes calendarRef via context to enable external scrolling functionality.
  *
  * DEPENDENCIES:
- * - useCalendarData (Hook): Provides calendar state, data, and interaction logic.
+ * - CalendarDataContext: Provides calendar state, data, and interaction logic.
  * - DayCell (Component): Renders individual day cells within the grid.
  * - WeekdayHeader (Component): Displays the header row with weekday names.
  */

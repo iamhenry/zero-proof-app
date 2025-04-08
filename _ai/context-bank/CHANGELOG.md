@@ -8,20 +8,64 @@ This document tracks all modifications, organized by version and release date, t
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: April 4, 2025, 12:10 PM
+- Last Update: April 8, 2025, 11:37 AM
 - Current Phase: Phase 2 - Frontend Implementation
-- Overall Progress: ~55%
+- Overall Progress: ~60%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
-- Current Branch: feature/update-streak-counter-to-persistent-data
-- Latest Release: Version 0.1.5
+- Current Branch: feat/US-15-calendar-scroll-to-today
+- Latest Release: Version 0.1.6
 
 ## Key Metrics
-- Features Completed: ~40/82 (~49% based on sub-tasks)
-- Open Issues: Testing streak counter persistence across app restarts
-- Test Coverage: ~52% (estimated)
-- Current Focus: Implement persistent streak counter with context-based state management
+- Features Completed: ~45/82 (~55% based on sub-tasks)
+- Open Issues: Implementing expanded statistics and financial tracking
+- Test Coverage: ~58% (estimated)
+- Current Focus: Enhanced calendar interaction with timer integration
+
+---
+
+## Version 0.1.6 - April 8, 2025 11:37 AM
+
+### Added
+
+- Calendar Scroll to Today Functionality
+  - Description: Added a new `scrollToToday` function in `CalendarDataContext` and integrated it with the `SobrietyTimer` component.
+  - Why: To improve user experience by allowing quick navigation to the current day in the calendar by tapping the timer.
+  - Impact: Enhanced navigation and interaction between timer and calendar components.
+  - Reference: Commit 557d5b3.
+
+- Timer Integration with Calendar
+  - Description: Updated `SobrietyTimer` component to utilize the calendar context for scrolling functionality.
+  - Why: To create a seamless user experience between tracking time and viewing calendar data.
+  - Impact: Improved usability by connecting related UI components functionally.
+  - Reference: Commit 557d5b3.
+
+- Interaction Tests for Timer Tapping
+  - Description: Created tests to verify that the scroll to today functionality works correctly when the timer is tapped.
+  - Why: To ensure reliability of the new interaction pattern between components.
+  - Impact: Increased test coverage and confidence in UI interaction paths.
+  - Reference: Commit 557d5b3.
+
+### Updated
+
+- User Stories Documentation
+  - Description: Revised and updated user stories related to timer functionality and navigation (US-15, US-16, US-18, US-19, US-T1, US-T2, US-T3, US-T4).
+  - Why: To clarify requirements and mark completed stories for better project tracking.
+  - Impact: Improved documentation and clearer development path for timer-related features.
+  - Reference: Commit 01b2f68.
+
+- Documentation and BDD Scenario Format
+  - Description: Changed BDD scenario header format from "Scenario 1:" to "## Scenario 1:" for better Markdown rendering.
+  - Why: To improve readability and consistency in documentation.
+  - Impact: More accessible and structured BDD scenarios for easier reference.
+  - Reference: Commit 9cff8ba.
+
+- CalendarGrid Component
+  - Description: Updated `CalendarGrid` to utilize a shared `calendarRef` for scrolling functionality.
+  - Why: To enable external components to trigger calendar scrolling to specific dates.
+  - Impact: Enhanced calendar interaction capabilities and improved component integration.
+  - Reference: Commit 557d5b3.
 
 ---
 

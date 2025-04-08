@@ -168,6 +168,10 @@ Step-by-Step Tasks:
     - File: `_ai/scenarios/bdd-useCalendarData-CalendarGrid.md`
   - [x] 9.7 Create BDD scenarios for StreakCounter component
     - File: `_ai/scenarios/bdd-streak-counter.md`
+  - [x] 9.8 Implement scrollToToday functionality in CalendarDataContext
+    - File: `context/CalendarDataContext.tsx`
+  - [x] 9.9 Integrate timer with calendar scroll functionality
+    - File: `components/ui/timer/SobrietyTimer.tsx`
 - [x] 10. Create sobriety timer functionality 
   - [x] 10.1. Implement real-time timer updates that tick every second
     - File: `components/ui/timer/SobrietyTimer.tsx`
@@ -178,6 +182,8 @@ Step-by-Step Tasks:
     - File: `context/TimerStateContext.tsx`, `lib/storage/LocalStorageSobrietyRepository.ts`
   - [x] 10.4. Add elapsedDays calculation to TimerStateContext
     - File: `context/TimerStateContext.tsx`
+  - [x] 10.5. Enhance timer with interactive features (tap to scroll calendar)
+    - File: `components/ui/timer/SobrietyTimer.tsx`, `context/CalendarDataContext.tsx`
 - [ ] 11. Implement financial tracking system 
   - [x] 11.1. Create savings calculator based on days sober × drink cost
     - File: `components/ui/settings/hooks/useFinancialSettings.ts`

@@ -1,5 +1,23 @@
 # MEMORY.md
 
+## [Apr 8, 2025 11:37 AM] Component Integration Enhances User Experience
+**Context:** Implemented scroll to today functionality in the calendar and integrated it with the SobrietyTimer component.
+**Lesson:**
+- Creating connections between related UI components (timer and calendar) improves overall user experience by establishing natural interaction patterns.
+- Exposing component references (like FlatList refs) through context allows for external control without compromising component encapsulation.
+- Touch interactions on informational components (like tapping a timer) can provide intuitive navigation shortcuts without cluttering the UI with additional buttons.
+- Tests for user interactions should verify both the technical implementation and the user-facing behavior to ensure reliable functionality.
+**Related Methods/Concepts:**
+- React Context API for shared state and functionality
+- React's useRef and RefObject for component references
+- TouchableOpacity for interaction handling
+- FlatList scrollToIndex for programmatic scrolling
+- Integration testing for component interactions
+**Future Improvements:**
+- Consider adding visual feedback (animation, haptic feedback) when timer is tapped to reinforce the interaction.
+- Implement additional gesture-based interactions that follow this pattern of intuitive connections between related components.
+- Add accessibility features to ensure interactions are discoverable by all users.
+
 ## [Apr 4, 2025 12:10 PM] Context-Based State Management Improves Reliability and Reduces Duplication
 **Context:** Refactored calendar and streak tracking to use a centralized CalendarDataContext instead of isolated component state or hooks.
 **Lesson:**
