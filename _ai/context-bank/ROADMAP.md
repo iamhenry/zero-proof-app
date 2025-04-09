@@ -136,6 +136,13 @@ Step-by-Step Tasks:
     - File: `lib/storage/LocalStorageSobrietyRepository.ts`
 
 ### Bugs
+- [ ] bug-06. scrolling way back in the past dates (enough to load date not initially loaded on app start or refresh. eg. 0ct 2024), tapping the timer component does is broken and does not scroll you to current date as expected.
+
+<!-- FIXED -->
+- [x] BUG-01. Implement dynamic and performant loading of past and future dates
+  - [x] BUG-01.1. As a user, I want to be able to view past and future dates dynamically without performance issues.
+- [x] BUG-02. Disable toggle sober day for future dates; only present and past are supported
+  - [x] BUG-02.1. As a user, I want to be able to toggle sober days only for present and past dates, ensuring future dates are not editable.
 - [x] BUG-03. Resolve display discrepancy between StreakCounter (calendar days) and SobrietyTimer (elapsed time)
   - [x] BUG-03.1. As a user, I want the definition of a "day" used for the streak count to be consistent with the elapsed time timer.
     - Resolution: Added elapsedDays calculation to TimerStateContext and used it in the StreakCounter, ensuring both components use the same definition of days.
@@ -148,12 +155,6 @@ Step-by-Step Tasks:
   - [x] BUG-05.1. As a user, I want all my marked calendar days to persist correctly when the app is refreshed.
     - Resolution: Updated CalendarDataContext to dynamically calculate date ranges for loaded data based on persisted entries.
     - File: `context/CalendarDataContext.tsx`
-
-<!-- FIXED -->
-- [x] BUG-01. Implement dynamic and performant loading of past and future dates
-  - [x] BUG-01.1. As a user, I want to be able to view past and future dates dynamically without performance issues.
-- [x] BUG-02. Disable toggle sober day for future dates; only present and past are supported
-  - [x] BUG-02.1. As a user, I want to be able to toggle sober days only for present and past dates, ensuring future dates are not editable.
 
 ### Milestone 4: Core Feature Implementation
 Objective: Develop the main functionality of the application including calendar interaction, timer, and financial tracking.
