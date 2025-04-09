@@ -2,8 +2,19 @@
  * FILE: components/ui/timer/SobrietyTimer.tsx
  * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext.
  * FUNCTIONS:
- *   - SobrietyTimer({ status?: string }): JSX.Element -> Renders the animated timer component.
- * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext
+ *   - SobrietyTimer({ status?: string }): JSX.Element -> Renders the animated timer component with customizable status text.
+ *   - formatUnitValue(value: number): string -> Formats time unit numbers for display.
+ *   - calculateElapsedTime(startTime: number | null): { d, h, m, s } -> Calculates time components from a start timestamp.
+ * KEY FEATURES:
+ *   - Real-time animated display of elapsed sobriety time
+ *   - Smooth digit transitions using React Native Reanimated
+ *   - Interactive functionality - tapping the timer scrolls calendar to today
+ *   - Integration with TimerStateContext for timer state management
+ *   - Integration with CalendarDataContext for scrolling functionality
+ *   - Intelligent handling of loading states
+ *   - Efficient interval-based updates
+ *   - Debug logging for state change tracking
+ * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext, @/context/CalendarDataContext
  */
 
 import React, { useState, useEffect, useRef } from "react";

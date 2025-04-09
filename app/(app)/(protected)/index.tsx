@@ -2,8 +2,14 @@
  * FILE: app/(app)/(protected)/index.tsx
  * PURPOSE: Renders the main home screen for authenticated users, displaying sobriety statistics and the calendar.
  * FUNCTIONS:
- *   - Home(): JSX.Element -> Renders the main screen layout and components.
- * DEPENDENCIES: react-native, @/components/ui/*, @/context/TimerStateContext
+ *   - Home(): JSX.Element -> Renders the main screen layout with sobriety timer, streak counter, savings counter and calendar grid.
+ *   - logStoredData(): Promise<void> -> Debug utility that logs stored day status and streak data on component mount.
+ * KEY FEATURES:
+ *   - Automatic scroll to current day when calendar data finishes loading
+ *   - Integration with TimerStateContext to display elapsed days in streak counter
+ *   - Integration with CalendarDataContext for calendar data and scrolling functionality
+ *   - Diagnostic logging for persistent data debugging
+ * DEPENDENCIES: react, react-native, @/components/ui/calendar, @/components/ui/timer, @/components/ui/statistics, @/context/TimerStateContext, @/context/RepositoryContext, @/context/CalendarDataContext
  */
 
 import React, { useEffect, useRef } from "react"; // Import useRef

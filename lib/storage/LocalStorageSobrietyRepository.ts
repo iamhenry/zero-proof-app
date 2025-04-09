@@ -11,6 +11,14 @@
  *   - loadTimerState() → Promise<TimerState | null>: Loads timer state.
  *   - saveDrinkCost(cost) → Promise<void>: Saves drink cost setting.
  *   - loadDrinkCost() → Promise<number | null>: Loads drink cost setting.
+ * KEY FEATURES:
+ *   - Robust error handling for all storage operations
+ *   - Data migration support for backward compatibility
+ *   - Comprehensive debug logging for all storage operations
+ *   - Consistent storage key naming convention
+ *   - Type safety with proper interface implementation
+ *   - Optimized storage operations with minimal data transformations
+ *   - Support for structured data with JSON serialization
  * DEPENDENCIES: @react-native-async-storage/async-storage, ../types/repositories
  */
 // lib/storage/LocalStorageSobrietyRepository.ts

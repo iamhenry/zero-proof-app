@@ -2,7 +2,14 @@
  * FILE: components/ui/statistics/StreakCounter.tsx
  * PURPOSE: Displays the current sobriety streak count with a visual icon.
  * FUNCTIONS:
- *   - StreakCounter({ count: number, className?: string }): JSX.Element -> Renders the streak counter component.
+ *   - StreakCounter({ count: number, className?: string }): JSX.Element -> Renders the streak counter component with customizable styling.
+ * KEY FEATURES:
+ *   - Visual representation of the current sobriety streak count
+ *   - Integration with TimerStateContext for accurate day counting
+ *   - Responsive styling with customizable appearance via className prop
+ *   - Enhanced debug logging for state change tracking
+ *   - Optimized rendering with consistent visual design
+ *   - Accessible text display with proper contrast and sizing
  * DEPENDENCIES: react, react-native, ./StreakIcon
  */
 

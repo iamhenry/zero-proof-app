@@ -1,5 +1,38 @@
 # MEMORY.md
 
+## [Apr 9, 2025 11:17 AM] Removing Obsolete Tests Reduces Technical Debt
+**Context:** Removed outdated and unimplemented placeholder tests in `SobrietyTimer.persistence.test.ts` as they were no longer relevant to the application's current state.
+**Lesson:**
+- Maintaining placeholder tests that are not implemented creates technical debt and confusion for other developers.
+- Tests should be removed or updated when they no longer align with current implementation plans or are deferred to future tasks.
+- Keeping test suites clean and relevant improves the overall codebase health and ensures that test failures represent genuine issues.
+**Related Methods/Concepts:**
+- Test lifecycle management
+- Technical debt reduction
+- Clean code practices
+- Jest test suite organization
+**Future Improvements:**
+- Regularly review and clean up obsolete test files during sprint retrospectives.
+- Document test coverage gaps in ROADMAP for future implementation rather than keeping placeholder tests.
+- Consider using skipped tests (`test.skip()`) for planned but not yet implemented tests with clear TODOs.
+
+## [Apr 9, 2025 10:57 AM] Strategic Logging Enhances Debugging of State Management Issues
+**Context:** Added detailed debug logs throughout components (`SobrietyTimer`, `StreakCounter`, `DayCell`) to trace state changes and component interactions.
+**Lesson:**
+- Strategic placement of debug logs at key state transition points helps identify the sequence of events leading to bugs.
+- Logging both the conditions (why a state change occurred) and the results (what changed) provides a complete picture of component behavior.
+- When multiple contexts interact (`CalendarDataContext`, `TimerStateContext`), logging the flow between them clarifies complex interactions.
+- Conditional log activation (via feature flags or environment variables) allows for detailed debugging without cluttering production logs.
+**Related Methods/Concepts:**
+- Debug logging patterns
+- React Context API interaction tracing
+- State transition debugging
+- Cross-component communication tracing
+**Future Improvements:**
+- Implement a centralized logging service with configurable log levels for different parts of the application.
+- Consider adding performance metrics to logs for state transitions that might affect performance.
+- Create visual debug mode that renders state transitions as UI overlays for faster debugging.
+
 ## [Apr 9, 2025 10:52 AM] Conditional Timer Control Prevents UI Resets
 **Context:** Debugged an issue where the `SobrietyTimer` and `StreakCounter` UI components incorrectly reset (showing 0 or an unrelated value like 5) when a past calendar date (not part of the current streak) was toggled as 'sober'.
 **Lesson:**

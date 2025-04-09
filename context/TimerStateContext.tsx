@@ -4,6 +4,17 @@
  * FUNCTIONS:
  *   - TimerStateProvider({ children: ReactNode }): JSX.Element -> Provides timer state context.
  *   - useTimerState(): TimerStateContextProps -> Hook to consume timer state and controls { startTime, isRunning, elapsedDays, startTimer, stopTimer, isLoading }.
+ *   - startTimer(time: number): void -> Starts or restarts the timer with persistence.
+ *   - stopTimer(): void -> Stops the timer with persistence.
+ *   - calculateDays(): void -> Calculates elapsed days since timer start.
+ * KEY FEATURES:
+ *   - Persistent timer state across app restarts
+ *   - Automatic elapsed days calculation from timer start time
+ *   - Regular interval updates for elapsed time display
+ *   - Comprehensive debug logging
+ *   - Loading state management during initial data retrieval
+ *   - Clean interval management to prevent memory leaks
+ *   - Optimized performance with proper effect dependencies
  * DEPENDENCIES: react, ./RepositoryContext, ../lib/types/repositories
  */
 import React, {

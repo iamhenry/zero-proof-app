@@ -4,7 +4,19 @@
  * FUNCTIONS:
  *   - CalendarDataProvider({ children: ReactNode }): JSX.Element -> Context provider managing calendar state.
  *   - useCalendarContext(): CalendarContextProps -> Hook to consume the calendar context.
- * DEPENDENCIES: react, dayjs, @/components/ui/calendar/types, @/lib/types/repositories, @/context/*, @/components/ui/calendar/utils
+ *   - scrollToToday(): void -> Function to scroll the calendar grid to the current day.
+ *   - toggleSoberDay(date: string): Promise<void> -> Toggles sobriety status for a day with conditional timer effects.
+ *   - recalculateStreaksAndIntensity(): { updatedWeeks, currentStreak, longestStreak, streakStartDayData } -> Recalculates streak data with data integrity checks.
+ * KEY FEATURES:
+ *   - Dynamic calendar data generation and loading
+ *   - Persistent storage of sobriety status
+ *   - Optimized streak calculation with proper streak intensity visualization
+ *   - Intelligent timer state management based on calendar interactions
+ *   - Infinite scrolling with dynamic past/future week loading
+ *   - Reference to the calendar FlatList for programmatic scrolling
+ *   - Comprehensive debug logging
+ *   - Error handling with graceful fallbacks
+ * DEPENDENCIES: react, dayjs, @/components/ui/calendar/types, @/lib/types/repositories, @/context/RepositoryContext, @/context/TimerStateContext, @/components/ui/calendar/utils
  */
 import React, {
 	createContext,

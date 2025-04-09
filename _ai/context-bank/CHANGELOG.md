@@ -8,22 +8,62 @@ This document tracks all modifications, organized by version and release date, t
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: April 8, 2025, 11:37 AM
+- Last Update: April 9, 2025, 11:17 AM
 - Current Phase: Phase 2 - Frontend Implementation
-- Overall Progress: ~60%
+- Overall Progress: ~62%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
-- Current Branch: feat/US-15-calendar-scroll-to-today
-- Latest Release: Version 0.1.6
+- Current Branch: fix/calendar-persistence-debug
+- Latest Release: Version 0.1.7
 
 ## Key Metrics
-- Features Completed: ~45/82 (~55% based on sub-tasks)
+- Features Completed: ~47/82 (~57% based on sub-tasks)
 - Open Issues: Implementing expanded statistics and financial tracking
-- Test Coverage: ~58% (estimated)
-- Current Focus: Enhanced calendar interaction with timer integration
+- Test Coverage: ~60% (estimated)
+- Current Focus: Debugging and enhancing calendar persistence
 
 ---
+
+## Version 0.1.7 - April 9, 2025 11:17 AM
+
+### Changed
+
+- Removed Outdated Tests
+  - Description: Deleted the `SobrietyTimer.persistence.test.ts` file containing placeholder tests that were not implemented.
+  - Why: These tests were no longer relevant until the associated tasks for local storage and timer persistence are completed.
+  - Impact: Cleaner test suite with reduced technical debt.
+  - Reference: Commit 78dfc51.
+
+- Enhanced Debugging and State Management
+  - Description: Added detailed debug logs in various components including `SobrietyTimer`, `StreakCounter`, and `DayCell` to track state changes and interactions.
+  - Why: To improve traceability of state changes and interactions across components.
+  - Impact: Easier identification and resolution of issues related to state management.
+  - Reference: Commit f0174a4.
+
+- Improved Toggle Logic
+  - Description: Implemented conditional logic in `toggleSoberDay` to prevent unnecessary timer resets.
+  - Why: To avoid UI flicker and ensure smoother user experience.
+  - Impact: More reliable interaction between calendar actions and timer display.
+  - Reference: Commit f0174a4.
+
+- Enhanced Calendar Data Context
+  - Description: Updated `CalendarDataContext` to dynamically calculate date ranges for loaded data.
+  - Why: To improve data persistence and initialization.
+  - Impact: Better handling of persisted calendar data across app sessions.
+  - Reference: Commit f0174a4.
+
+- Improved Local Storage Repository
+  - Description: Enhanced `LocalStorageSobrietyRepository` to log migration from old data formats and ensure data integrity.
+  - Why: To maintain data consistency during loading and saving processes.
+  - Impact: More robust data persistence with better error handling.
+  - Reference: Commit f0174a4.
+
+- Optimized State Management
+  - Description: Improved state management by ensuring that side effects are conditional based on actual state changes.
+  - Why: To reduce UI flicker and enhance performance.
+  - Impact: Smoother user experience with more predictable component behavior.
+  - Reference: Commit f0174a4.
 
 ## Version 0.1.6 - April 8, 2025 11:37 AM
 

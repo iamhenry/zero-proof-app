@@ -3,6 +3,14 @@
  * PURPOSE: Renders an optimized, memoized, interactive day cell for the calendar grid.
  * FUNCTIONS:
  *   - DayCell({ day: DayData, onToggleSober?: (dayId: string) => void }): JSX.Element -> Renders a single day cell, optimized with React.memo.
+ *   - handlePress(): void -> Handles press events on a day cell to toggle sobriety status with debug logging.
+ * KEY FEATURES:
+ *   - High-performance rendering with aggressive memoization strategies
+ *   - Custom React.memo equality function to prevent unnecessary re-renders
+ *   - Intelligent CSS class computation based on sobriety status and streak intensity
+ *   - Enhanced debug logging for state change tracing
+ *   - Special display handling for first day of month
+ *   - Responsive visual feedback with proper color intensity representation
  * DEPENDENCIES: react, react-native, @/components/ui/text, ./types, ./utils
  */
 

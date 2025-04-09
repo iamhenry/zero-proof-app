@@ -13,7 +13,18 @@ This file contains documentation headers extracted from component files to provi
  *   - CalendarDataProvider({ children: ReactNode }): JSX.Element -> Context provider managing calendar state.
  *   - useCalendarContext(): CalendarContextProps -> Hook to consume the calendar context.
  *   - scrollToToday(): void -> Function to scroll the calendar grid to the current day.
- * DEPENDENCIES: react, dayjs, @/components/ui/calendar/types, @/lib/types/repositories, @/context/*, @/components/ui/calendar/utils
+ *   - toggleSoberDay(date: string): Promise<void> -> Toggles sobriety status for a day with conditional timer effects.
+ *   - recalculateStreaksAndIntensity(): { updatedWeeks, currentStreak, longestStreak, streakStartDayData } -> Recalculates streak data with data integrity checks.
+ * KEY FEATURES:
+ *   - Dynamic calendar data generation and loading
+ *   - Persistent storage of sobriety status
+ *   - Optimized streak calculation with proper streak intensity visualization
+ *   - Intelligent timer state management based on calendar interactions
+ *   - Infinite scrolling with dynamic past/future week loading
+ *   - Reference to the calendar FlatList for programmatic scrolling
+ *   - Comprehensive debug logging
+ *   - Error handling with graceful fallbacks
+ * DEPENDENCIES: react, dayjs, @/components/ui/calendar/types, @/lib/types/repositories, @/context/RepositoryContext, @/context/TimerStateContext, @/components/ui/calendar/utils
  */
 ```
 
@@ -37,6 +48,17 @@ This file contains documentation headers extracted from component files to provi
  * FUNCTIONS:
  *   - TimerStateProvider({ children: ReactNode }): JSX.Element -> Provides timer state context.
  *   - useTimerState(): TimerStateContextProps -> Hook to consume timer state and controls { startTime, isRunning, elapsedDays, startTimer, stopTimer, isLoading }.
+ *   - startTimer(time: number): void -> Starts or restarts the timer with persistence.
+ *   - stopTimer(): void -> Stops the timer with persistence.
+ *   - calculateDays(): void -> Calculates elapsed days since timer start.
+ * KEY FEATURES:
+ *   - Persistent timer state across app restarts
+ *   - Automatic elapsed days calculation from timer start time
+ *   - Regular interval updates for elapsed time display
+ *   - Comprehensive debug logging
+ *   - Loading state management during initial data retrieval
+ *   - Clean interval management to prevent memory leaks
+ *   - Optimized performance with proper effect dependencies
  * DEPENDENCIES: react, ./RepositoryContext, ../lib/types/repositories
  */
 ```
@@ -56,6 +78,14 @@ This file contains documentation headers extracted from component files to provi
  *   - loadTimerState() → Promise<TimerState | null>: Loads timer state.
  *   - saveDrinkCost(cost) → Promise<void>: Saves drink cost setting.
  *   - loadDrinkCost() → Promise<number | null>: Loads drink cost setting.
+ * KEY FEATURES:
+ *   - Robust error handling for all storage operations
+ *   - Data migration support for backward compatibility
+ *   - Comprehensive debug logging for all storage operations
+ *   - Consistent storage key naming convention
+ *   - Type safety with proper interface implementation
+ *   - Optimized storage operations with minimal data transformations
+ *   - Support for structured data with JSON serialization
  * DEPENDENCIES: @react-native-async-storage/async-storage, ../types/repositories
  */
 ```
@@ -91,7 +121,14 @@ This file contains documentation headers extracted from component files to provi
  * FILE: components/ui/statistics/StreakCounter.tsx
  * PURPOSE: Displays the current sobriety streak count with a visual icon.
  * FUNCTIONS:
- *   - StreakCounter({ count: number, className?: string }): JSX.Element -> Renders the streak counter component.
+ *   - StreakCounter({ count: number, className?: string }): JSX.Element -> Renders the streak counter component with customizable styling.
+ * KEY FEATURES:
+ *   - Visual representation of the current sobriety streak count
+ *   - Integration with TimerStateContext for accurate day counting
+ *   - Responsive styling with customizable appearance via className prop
+ *   - Enhanced debug logging for state change tracking
+ *   - Optimized rendering with consistent visual design
+ *   - Accessible text display with proper contrast and sizing
  * DEPENDENCIES: react, react-native, ./StreakIcon
  */
 ```
@@ -143,11 +180,20 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/timer/SobrietyTimer.tsx
- * PURPOSE: Renders an animated sobriety timer displaying elapsed time (d/h/m/s), using elapsed days from TimerStateContext.
+ * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext.
  * FUNCTIONS:
- *   - SobrietyTimer(props: { status?: string }) → JSX.Element: Main timer component with tap interaction to scroll calendar.
- *   - formatUnitValue(value: number) → string: Formats time unit numbers for display.
- *   - calculateElapsedTime(startTime: number | null) → { d: number, h: number, m: number, s: number }: Calculates elapsed time components.
+ *   - SobrietyTimer({ status?: string }): JSX.Element -> Renders the animated timer component with customizable status text.
+ *   - formatUnitValue(value: number): string -> Formats time unit numbers for display.
+ *   - calculateElapsedTime(startTime: number | null): { d, h, m, s } -> Calculates time components from a start timestamp.
+ * KEY FEATURES:
+ *   - Real-time animated display of elapsed sobriety time
+ *   - Smooth digit transitions using React Native Reanimated
+ *   - Interactive functionality - tapping the timer scrolls calendar to today
+ *   - Integration with TimerStateContext for timer state management
+ *   - Integration with CalendarDataContext for scrolling functionality
+ *   - Intelligent handling of loading states
+ *   - Efficient interval-based updates
+ *   - Debug logging for state change tracking
  * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext, @/context/CalendarDataContext
  */
 ```
@@ -191,14 +237,19 @@ This file contains documentation headers extracted from component files to provi
 ### DayCell.tsx
 ```
 /**
- * FILE: DayCell.tsx
- * CREATED: 2024-07-18 16:32:05
- *
- * PURPOSE: Implements an optimized day cell component for the calendar grid with memoization for performance.
- *
- * METHODS:
- * - DayCell(props: DayCellProps) → JSX.Element: Renders a single day cell with appropriate styling based on sobriety status
- * - handlePress() → void: Handles press events to toggle sobriety status
+ * FILE: components/ui/calendar/DayCell.tsx
+ * PURPOSE: Renders an optimized, memoized, interactive day cell for the calendar grid.
+ * FUNCTIONS:
+ *   - DayCell({ day: DayData, onToggleSober?: (dayId: string) => void }): JSX.Element -> Renders a single day cell, optimized with React.memo.
+ *   - handlePress(): void -> Handles press events on a day cell to toggle sobriety status with debug logging.
+ * KEY FEATURES:
+ *   - High-performance rendering with aggressive memoization strategies
+ *   - Custom React.memo equality function to prevent unnecessary re-renders
+ *   - Intelligent CSS class computation based on sobriety status and streak intensity
+ *   - Enhanced debug logging for state change tracing
+ *   - Special display handling for first day of month
+ *   - Responsive visual feedback with proper color intensity representation
+ * DEPENDENCIES: react, react-native, @/components/ui/text, ./types, ./utils
  */
 ```
 
@@ -243,20 +294,18 @@ This file contains documentation headers extracted from component files to provi
 /**
  * FILE: components/ui/calendar/utils.ts
  * CREATED: 2024-07-18 16:32:05
- * UPDATED: 2025-03-31 14:51:00
+ * UPDATED: 2025-04-09 10:57:00
  *
  * PURPOSE: Provides utility functions for calendar data generation, styling, and manipulation.
  *
  * METHODS:
- * - getToday() → dayjs.Dayjs: Returns current date with caching for performance
- * - getIntensityColor(intensity: number) → string: Returns style class based on sobriety streak intensity
- * - getTextColorClass(intensity: number) → string: Returns text color class based on intensity
- * - getDayStatus(date: string) → 'today' | 'past' | 'future': Determines if a day is today, past, or future
- * - generateCalendarData() → CalendarData: Creates structured calendar data with random streaks
- * - loadMoreWeeks(existingData: CalendarData, direction: 'past' | 'future', count: number) → CalendarData: Adds additional weeks to existing calendar data with deterministic sobriety status
- * - getMonthName(month: number) → string: Returns the abbreviated month name
- *
- * DEPENDENCIES: dayjs, ./types
+ * - generateCalendarData(startDate: Date, numWeeks: number): CalendarData → Generates calendar data for the specified date range
+ * - getWeekNumber(date: Date): number → Returns the ISO week number for a given date
+ * - isSameDay(a: Date, b: Date): boolean → Checks if two dates are the same day
+ * - formatDay(date: Date): string → Formats a date to a display-friendly day format
+ * - getDayIntensity(streak: number): number → Calculates the color intensity from 0-4 based on streak length
+ * - recalculateStreaksAndIntensity(days: DayData[]): DayData[] → Updates streak lengths and color intensities for a sequence of days
+ * - loadMoreWeeks(calendarData: CalendarData, direction: 'past' | 'future', weeks: number): CalendarData → Deterministically expands calendar data in past or future direction 
  */
 ```
 
@@ -264,46 +313,28 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/calendar/hooks/useCalendarData.ts
- * PURPOSE: Custom hook managing calendar state, including data loading, sobriety toggling, streak calculation, and infinite scrolling (past/future weeks). Integrates with RepositoryContext and TimerStateContext.
+ * PURPOSE: Custom hook providing calendar data management functionality (now mostly moved to CalendarDataContext).
  * FUNCTIONS:
- *   - useCalendarData() → { weeks, toggleSoberDay, loadPastWeeks, loadFutureWeeks, currentStreak, longestStreak, isLoadingInitial, isLoadingPast, isLoadingFuture }: Provides calendar state and interaction functions.
- *   - generateDeterministicInitialWeeks() → WeekData[]: Creates initial week structure.
- *   - recalculateStreaksAndIntensity(weeks: WeekData[]) → { updatedWeeks, currentStreak, longestStreak, streakStartDayData }: Calculates streaks and day intensity.
- * DEPENDENCIES: react, dayjs, ../types, ../utils, ../../../../lib/types/repositories, @/context/RepositoryContext, @/context/TimerStateContext
+ *   - useCalendarData(): CalendarDataReturnType -> Hook providing calendar data and operations.
+ * DEPENDENCIES: react, dayjs, ../../../../lib/types/repositories, @/context/RepositoryContext, ../types, ../utils
  */
 ```
 
-## App Layout
+## Main App Screens
 
-### _layout.tsx
+### index.tsx (Home Screen)
 ```
-import "../global.css";
-
-import { Slot } from "expo-router";
-
-import { SupabaseProvider } from "@/context/supabase-provider";
-import { RepositoryProvider } from "@/context/RepositoryContext"; // Import the new provider
-import { TimerStateProvider } from "@/context/TimerStateContext"; // Import TimerStateProvider
-
-export default function AppLayout() {
-	return (
-		<RepositoryProvider>
-			<TimerStateProvider>
-				<SupabaseProvider>
-					<Slot />
-				</SupabaseProvider>
-			</TimerStateProvider>
-		</RepositoryProvider>
-	);
-}
-```
-
-## Testing
-
-### async-storage.js
-```
-// __mocks__/@react-native-async-storage/async-storage.js
-
-// Basic mock implementation for AsyncStorage based on Jest documentation
-// https://react-native-async-storage.github.io/async-storage/docs/advanced/jest/
+/**
+ * FILE: app/(app)/(protected)/index.tsx
+ * PURPOSE: Renders the main home screen for authenticated users, displaying sobriety statistics and the calendar.
+ * FUNCTIONS:
+ *   - Home(): JSX.Element -> Renders the main screen layout with sobriety timer, streak counter, savings counter and calendar grid.
+ *   - logStoredData(): Promise<void> -> Debug utility that logs stored day status and streak data on component mount.
+ * KEY FEATURES:
+ *   - Automatic scroll to current day when calendar data finishes loading
+ *   - Integration with TimerStateContext to display elapsed days in streak counter
+ *   - Integration with CalendarDataContext for calendar data and scrolling functionality
+ *   - Diagnostic logging for persistent data debugging
+ * DEPENDENCIES: react, react-native, @/components/ui/calendar, @/components/ui/timer, @/components/ui/statistics, @/context/TimerStateContext, @/context/RepositoryContext, @/context/CalendarDataContext
+ */
 ```

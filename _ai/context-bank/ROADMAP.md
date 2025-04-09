@@ -126,12 +126,28 @@ Step-by-Step Tasks:
     - File: `_ai/scenarios/bdd-streak-counter.md`
   - [x] 8.7.5. Create tests for StreakCounter component
     - File: `components/ui/statistics/__tests__/StreakCounter.test.tsx`
+  - [x] 8.7.6. Enhance debug logging across key components
+    - File: `components/ui/timer/SobrietyTimer.tsx`, `components/ui/statistics/StreakCounter.tsx`, `components/ui/calendar/DayCell.tsx`
+  - [x] 8.7.7. Fix conditional timer control to prevent UI resets during calendar interactions
+    - File: `context/CalendarDataContext.tsx`, `context/TimerStateContext.tsx`
+  - [x] 8.7.8. Optimize initial data loading range calculation
+    - File: `context/CalendarDataContext.tsx`
+  - [x] 8.7.9. Optimize persistence layer with improved data integrity checks
+    - File: `lib/storage/LocalStorageSobrietyRepository.ts`
 
 ### Bugs
 - [x] BUG-03. Resolve display discrepancy between StreakCounter (calendar days) and SobrietyTimer (elapsed time)
   - [x] BUG-03.1. As a user, I want the definition of a "day" used for the streak count to be consistent with the elapsed time timer.
     - Resolution: Added elapsedDays calculation to TimerStateContext and used it in the StreakCounter, ensuring both components use the same definition of days.
     - File: `context/TimerStateContext.tsx`, `components/ui/statistics/StreakCounter.tsx`
+- [x] BUG-04. Fix timer UI reset when interacting with past calendar dates
+  - [x] BUG-04.1. As a user, I want the timer to remain stable and not reset when interacting with past calendar dates that are not part of my current streak.
+    - Resolution: Made the stopTimer() call conditional within toggleSoberDay, only executing it if the recalculated currentStreak was actually zero.
+    - File: `context/CalendarDataContext.tsx`
+- [x] BUG-05. Fix inconsistent persistence of calendar data on app refresh
+  - [x] BUG-05.1. As a user, I want all my marked calendar days to persist correctly when the app is refreshed.
+    - Resolution: Updated CalendarDataContext to dynamically calculate date ranges for loaded data based on persisted entries.
+    - File: `context/CalendarDataContext.tsx`
 
 <!-- FIXED -->
 - [x] BUG-01. Implement dynamic and performant loading of past and future dates
@@ -172,6 +188,8 @@ Step-by-Step Tasks:
     - File: `context/CalendarDataContext.tsx`
   - [x] 9.9 Integrate timer with calendar scroll functionality
     - File: `components/ui/timer/SobrietyTimer.tsx`
+  - [x] 9.10 Cleanup obsolete or outdated test files
+    - Removed: `components/ui/timer/__tests__/SobrietyTimer.persistence.test.ts`
 - [x] 10. Create sobriety timer functionality 
   - [x] 10.1. Implement real-time timer updates that tick every second
     - File: `components/ui/timer/SobrietyTimer.tsx`
@@ -184,6 +202,8 @@ Step-by-Step Tasks:
     - File: `context/TimerStateContext.tsx`
   - [x] 10.5. Enhance timer with interactive features (tap to scroll calendar)
     - File: `components/ui/timer/SobrietyTimer.tsx`, `context/CalendarDataContext.tsx`
+  - [x] 10.6. Improve timer state management with conditional side effects
+    - File: `context/TimerStateContext.tsx`, `context/CalendarDataContext.tsx`
 - [ ] 11. Implement financial tracking system 
   - [x] 11.1. Create savings calculator based on days sober × drink cost
     - File: `components/ui/settings/hooks/useFinancialSettings.ts`
