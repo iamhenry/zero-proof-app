@@ -20,6 +20,7 @@ import React, {
 import { FlatList } from "react-native"; // Add FlatList import
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import minMax from "dayjs/plugin/minMax"; // Import minMax plugin
 import {
 	WeekData,
 	DayData,
@@ -38,6 +39,7 @@ import { loadMoreWeeks } from "@/components/ui/calendar/utils"; // Assuming util
 
 dayjs.extend(isSameOrBefore);
 
+dayjs.extend(minMax); // Extend dayjs with minMax plugin
 // --- Define Context Shape ---
 export interface CalendarContextProps {
 	weeks: WeekData[];
@@ -68,7 +70,7 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 	children,
 }) => {
 	const repository = useRepository();
-	const { startTimer, stopTimer } = useTimerState();
+	const { startTimer, stopTimer, isRunning: timerIsRunning } = useTimerState(); // Get isRunning state here
 	const [weeks, setWeeks] = useState<WeekData[]>([]);
 	const [currentStreak, setCurrentStreak] = useState(0);
 	const [longestStreak, setLongestStreak] = useState(0);
@@ -124,6 +126,9 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 			streakStartDayData: DayData | null;
 		} => {
 			try {
+				console.log(
+					`[DEBUG:recalculate] Entering recalculateStreaksAndIntensity`,
+				);
 				if (!currentWeeks || currentWeeks.length === 0) {
 					return {
 						updatedWeeks: [],
@@ -199,6 +204,9 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 					}
 				}
 
+				console.log(
+					`[DEBUG:recalculate] Calculated: finalCurrentStreak=${finalCurrentStreak}, currentLongestStreak=${currentLongestStreak}, startDayId=${finalStreakStartDayData?.id}`,
+				);
 				return {
 					updatedWeeks: updatedWeeksResult,
 					currentStreak: finalCurrentStreak,
@@ -229,30 +237,105 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 					repository.loadStreakData(),
 				]);
 
-				const baseWeeks = generateDeterministicInitialWeeks();
+				console.log(
+					`[CalendarContext:loadInitialData] Loaded day status with ${
+						Object.keys(loadedDayStatus).length
+					} days. Keys: ${Object.keys(loadedDayStatus).slice(0, 5).join(", ")}${
+						Object.keys(loadedDayStatus).length > 5 ? "..." : ""
+					}`,
+				);
 
-				const weeksWithLoadedStatus = baseWeeks.map((week) => ({
-					...week,
-					days: week.days.map((day) => {
-						const dayData = loadedDayStatus[day.id];
-						if (dayData) {
-							if (typeof dayData === "boolean") {
-								return {
-									...day,
-									sober: dayData,
-									streakStartTimestampUTC: null,
-								};
-							} else {
-								return {
-									...day,
-									sober: dayData.sober,
-									streakStartTimestampUTC: dayData.streakStartTimestampUTC,
-								};
-							}
+				console.log(
+					`[CalendarContext:loadInitialData] Loaded streak data: ${
+						loadedStreakData
+							? `current=${loadedStreakData.currentStreak}, longest=${loadedStreakData.longestStreak}`
+							: "null"
+					}`,
+				);
+
+				// --- Determine Date Range from Loaded Data ---
+				const loadedDates = Object.keys(loadedDayStatus)
+					.map((dateStr) => dayjs(dateStr))
+					.sort((a, b) => a.diff(b));
+				const today = dayjs();
+				const earliestDate =
+					loadedDates.length > 0 ? loadedDates[0] : today.subtract(4, "week");
+				// Ensure latestDate includes today plus the future buffer, even if no future data exists yet
+				const latestBufferDate = today.add(4, "week");
+				const latestLoadedDate =
+					loadedDates.length > 0 ? loadedDates[loadedDates.length - 1] : today;
+				// Use dayjs.max which is now available via plugin
+				const latestDate =
+					dayjs.max(latestLoadedDate, latestBufferDate) ?? latestBufferDate;
+
+				const startDate = earliestDate.startOf("week");
+				const endDate = latestDate.endOf("week");
+				console.log(
+					`[DEBUG:loadInitialData] Determined date range: ${startDate.format("YYYY-MM-DD")} to ${endDate.format("YYYY-MM-DD")}`,
+				);
+
+				// --- Generate Weeks Based on Determined Range & Merge Loaded Data ---
+				const daysInRange: DayData[] = [];
+				let currentDate = startDate;
+				while (currentDate.isSameOrBefore(endDate, "day")) {
+					const dateStr = currentDate.format("YYYY-MM-DD");
+					const dayOfMonth = currentDate.date();
+					const loadedDay = loadedDayStatus[dateStr];
+					let initialSober = false;
+					let initialTimestamp = null;
+
+					// Apply loaded status if available
+					if (loadedDay) {
+						if (typeof loadedDay === "boolean") {
+							initialSober = loadedDay;
+						} else {
+							initialSober = loadedDay.sober;
+							initialTimestamp = loadedDay.streakStartTimestampUTC;
 						}
-						return day;
-					}),
-				}));
+					}
+
+					daysInRange.push({
+						id: dateStr,
+						date: dateStr,
+						sober: initialSober, // Use loaded status directly
+						intensity: 0, // Intensity calculated later
+						day: dayOfMonth,
+						month: currentDate.month(),
+						year: currentDate.year(),
+						isFirstOfMonth: dayOfMonth === 1,
+						streakStartTimestampUTC: initialTimestamp, // Use loaded timestamp
+					});
+					currentDate = currentDate.add(1, "day");
+				}
+
+				const weeksWithLoadedStatus: WeekData[] = [];
+				for (let i = 0; i < daysInRange.length; i += 7) {
+					const weekDays = daysInRange.slice(i, i + 7);
+					if (weekDays.length > 0) {
+						weeksWithLoadedStatus.push({
+							id: `week-${weekDays[0].date}`,
+							days: weekDays,
+						});
+					}
+				}
+				// --- End Generate Weeks ---
+
+				// <<< Log before recalculation (Keep this log for verification) >>>
+				const march1stBefore = weeksWithLoadedStatus
+					.flatMap((w) => w.days)
+					.find((d) => d.id === "2025-03-01");
+				console.log(
+					`[DEBUG:loadInitialData] BEFORE recalculate: March 1st status = ${
+						march1stBefore
+							? JSON.stringify({
+									sober: march1stBefore.sober,
+									intensity: march1stBefore.intensity, // Intensity will be 0 here, calculated later
+									timestamp: march1stBefore.streakStartTimestampUTC,
+								})
+							: "Not Found"
+					}`,
+				);
+				// <<< End Log >>>
 
 				const {
 					updatedWeeks,
@@ -339,6 +422,7 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 	// toggleSoberDay (copied and adapted from useCalendarData)
 	const toggleSoberDay = useCallback(
 		async (dayId: string) => {
+			// Removed incorrect hook call from here
 			console.log(
 				`[CalendarContext:toggleSoberDay] Initiated for dayId: ${dayId}`,
 			);
@@ -408,6 +492,15 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 						console.log(
 							`[CalendarContext:toggleSoberDay] Saved to repo: dayId=${dayId}, sober=${newSoberValue}, timestamp=${newStreakStartTimestampUTC}`,
 						);
+
+						// Verify data was saved correctly by reading it back
+						repository.loadDayStatus(dayId).then((savedData) => {
+							console.log(
+								`[CalendarContext:toggleSoberDay] Verification - Retrieved from repo: dayId=${dayId}, data=${
+									savedData ? JSON.stringify(savedData) : "null"
+								}`,
+							);
+						});
 					})
 					.catch((error) => {
 						console.error("Failed to save day status:", error);
@@ -463,9 +556,12 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 					return finalLongest;
 				});
 
-				// Timer Logic
-				stopTimer();
+				// Timer Logic - Conditional Start/Stop
+				console.log(
+					`[DEBUG:toggleSoberDay] Evaluating timer logic: newCurrent=${newCurrent}, timerIsRunning=${timerIsRunning}`,
+				);
 				if (newCurrent > 0 && streakStartDayData) {
+					// Start or ensure timer is running for the current streak
 					let effectiveStartTimeUTC: number | null = null;
 					const firstDayTimestamp = streakStartDayData.streakStartTimestampUTC;
 					const firstDayDate = streakStartDayData.date;
@@ -473,26 +569,40 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 					const isStreakStartingToday =
 						firstDayDate === today.format("YYYY-MM-DD");
 
+					// Determine the correct start time based on whether the streak starts today or earlier
 					if (firstDayTimestamp !== null && isStreakStartingToday) {
-						effectiveStartTimeUTC = firstDayTimestamp;
+						effectiveStartTimeUTC = firstDayTimestamp; // Use exact timestamp if starting today
 					} else {
-						effectiveStartTimeUTC = fallbackTime;
+						effectiveStartTimeUTC = fallbackTime; // Use midnight of the first day otherwise
 					}
 
 					if (
 						typeof effectiveStartTimeUTC === "number" &&
 						!isNaN(effectiveStartTimeUTC)
 					) {
+						console.log(
+							`[DEBUG:toggleSoberDay] Calling startTimer with timestamp: ${effectiveStartTimeUTC}`,
+						);
 						startTimer(effectiveStartTimeUTC);
 					} else {
 						console.error(
-							"Error: Calculated effectiveStartTimeUTC is invalid.",
+							"Error: Calculated effectiveStartTimeUTC is invalid. Stopping timer.",
 							{ streakStartDayData },
 						);
+						stopTimer(); // Stop timer if start time is invalid
 					}
+				} else {
+					// Stop timer if there is no current streak
+					console.log(
+						`[DEBUG:toggleSoberDay] No current streak (newCurrent=${newCurrent}). Calling stopTimer.`,
+					);
+					stopTimer();
 				}
 				console.log(
 					`[CalendarContext:toggleSoberDay] Timer state after update: isRunning=${newCurrent > 0}`,
+				);
+				console.log(
+					`[DEBUG:toggleSoberDay] After recalculate: newCurrent=${newCurrent}, calculatedLongest=${calculatedLongest}, startDayId=${streakStartDayData?.id}`,
 				);
 				// --- End Update Other State ---
 

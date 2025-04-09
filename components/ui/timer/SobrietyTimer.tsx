@@ -65,6 +65,15 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 		isLoading: isTimerLoading,
 	} = useTimerState();
 
+	// Add debug logs for timer state changes
+	useEffect(() => {
+		console.log(`[SobrietyTimer] Timer state changed: 
+			startTime=${startTime ? new Date(startTime).toISOString() : "null"} 
+			isRunning=${isRunning} 
+			elapsedDays=${elapsedDays}
+			isLoading=${isTimerLoading}`);
+	}, [startTime, isRunning, elapsedDays, isTimerLoading]);
+
 	const { scrollToToday } = useCalendarContext(); // Get scroll function from calendar context
 	// Local state for display values only (days state removed)
 	// const [days, setDays] = useState(0); // Removed, using elapsedDays from context

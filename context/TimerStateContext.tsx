@@ -48,19 +48,27 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 	useEffect(() => {
 		let isMounted = true;
 		const loadState = async () => {
+			console.log("[TimerContext:load] Starting initial load...");
 			setIsLoading(true);
 			try {
 				const loadedState = await repository.loadTimerState();
+				console.log(
+					`[TimerContext:load] Loaded state from repo: ${JSON.stringify(loadedState)}`,
+				);
 				if (isMounted) {
 					setStartTime(loadedState?.startTime ?? null);
 					setIsRunning(loadedState?.isRunning ?? false);
 				}
+				console.log(
+					`[TimerContext:load] Setting initial state: startTime=${loadedState?.startTime ?? null}, isRunning=${loadedState?.isRunning ?? false}`,
+				);
 			} catch (error) {
 				console.error("Failed to load timer state in context:", error);
 			} finally {
 				if (isMounted) {
 					setIsLoading(false);
 				}
+				console.log("[TimerContext:load] Finished initial load.");
 			}
 		};
 		loadState();
@@ -82,16 +90,23 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 
 	const startTimer = useCallback(
 		(time: number) => {
+			console.log(`[TimerContext:startTimer] Received time: ${time}`);
 			const newState: TimerState = { startTime: time, isRunning: true };
 			setStartTime(newState.startTime);
 			setIsRunning(newState.isRunning);
 			persistState(newState);
+			console.log(
+				`[TimerContext:startTimer] Setting state & persisting: ${JSON.stringify(newState)}`,
+			);
 		},
 		[persistState],
 	);
 
 	const stopTimer = useCallback(() => {
 		const newState: TimerState = { startTime: null, isRunning: false };
+		console.log(
+			`[TimerContext:stopTimer] Setting state & persisting: ${JSON.stringify(newState)}`,
+		);
 		setStartTime(newState.startTime);
 		setIsRunning(newState.isRunning);
 		persistState(newState);
@@ -105,10 +120,19 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 			if (isRunning && startTime) {
 				const now = Date.now();
 				const diff = now - startTime;
+				console.log(
+					`[TimerContext:calculateDays] Calculating: now=${now}, startTime=${startTime}`,
+				);
 				const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 				setElapsedDays(days);
+				console.log(
+					`[TimerContext:calculateDays] Setting elapsedDays: ${days}`,
+				);
 			} else {
 				setElapsedDays(0);
+				console.log(
+					"[TimerContext:calculateDays] Setting elapsedDays: 0 (timer not running or no start time)",
+				);
 			}
 		};
 

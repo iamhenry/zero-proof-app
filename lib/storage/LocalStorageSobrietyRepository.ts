@@ -28,10 +28,19 @@ import {
 // Define the old structure locally for backward compatibility check
 type OldBooleanDayStatusMap = { [date: string]: boolean };
 
+// Define AsyncStorage keys
 const DAY_STATUS_KEY = '@SobrietyApp:dayStatus';
 const STREAK_DATA_KEY = '@SobrietyApp:streakData';
 const TIMER_STATE_KEY = '@SobrietyApp:timerState';
 const DRINK_COST_KEY = '@SobrietyApp:drinkCost';
+
+// Debug log the keys at initialization
+console.log('[LocalStorageSobrietyRepository] Using AsyncStorage keys:', {
+  DAY_STATUS_KEY,
+  STREAK_DATA_KEY,
+  TIMER_STATE_KEY,
+  DRINK_COST_KEY,
+});
 
 export class LocalStorageSobrietyRepository
   implements ISobrietyDataRepository
@@ -40,41 +49,37 @@ export class LocalStorageSobrietyRepository
 
   async loadAllDayStatus(): Promise<DayDataMap> {
     try {
+      console.log(`[Repository:loadAllDayStatus] Attempting to load from AsyncStorage with key: ${DAY_STATUS_KEY}`);
       const jsonValue = await AsyncStorage.getItem(DAY_STATUS_KEY);
-      if (jsonValue == null) {
-        return {};
-      }
-      const parsedData = JSON.parse(jsonValue);
-
-      // Backward compatibility check
-      const firstKey = Object.keys(parsedData)[0];
-      if (firstKey && typeof parsedData[firstKey] === 'boolean') {
-        // Old format detected: Convert boolean map to StoredDayData map
-        const newMap: DayDataMap = {};
-        for (const date in parsedData as OldBooleanDayStatusMap) { // Use locally defined old type
-          newMap[date] = {
-            sober: parsedData[date],
-            streakStartTimestampUTC: null, // Default for old data
-          };
+      const storedData = jsonValue ? JSON.parse(jsonValue) : {};
+      
+      console.log(`[Repository:loadAllDayStatus] Loaded ${Object.keys(storedData).length} day entries`);
+      
+      // Check if we need to migrate from old format (just boolean values)
+      if (
+        Object.keys(storedData).length > 0 &&
+        typeof Object.values(storedData)[0] === 'boolean'
+      ) {
+        const oldStyleMap = storedData as OldBooleanDayStatusMap;
+        console.log(`[Repository:loadAllDayStatus] Migrating ${Object.keys(oldStyleMap).length} days from old format`);
+        
+        const migratedResult: DayDataMap = {};
+        for (const [date, soberValue] of Object.entries(oldStyleMap)) {
+          migratedResult[date] = { sober: soberValue, streakStartTimestampUTC: null };
         }
-        // Optionally re-save in the new format immediately? For now, just return converted.
-        // const convertedJsonValue = JSON.stringify(newMap);
-        // await AsyncStorage.setItem(DAY_STATUS_KEY, convertedJsonValue);
-        console.log('Migrated old day status format to new format.');
-        return newMap;
+        
+        // Migrate by saving in the new format
+        await AsyncStorage.setItem(DAY_STATUS_KEY, JSON.stringify(migratedResult));
+        console.log(`[Repository:loadAllDayStatus] Migration complete, saved to AsyncStorage`);
+        
+        return migratedResult;
       }
-
-      // Assume new format if not boolean
-      return parsedData as DayDataMap;
+      
+      // Return data in new structure
+      return storedData as DayDataMap;
     } catch (e) {
-      console.error('Failed to load day status map.', e);
-      // Handle potential JSON parsing errors or other issues
-      // Check if the error is due to invalid JSON and potentially clear corrupted data
-      if (e instanceof SyntaxError) {
-        console.warn('Invalid JSON found in AsyncStorage for DAY_STATUS_KEY. Clearing data.');
-        await AsyncStorage.removeItem(DAY_STATUS_KEY);
-      }
-      return {}; // Return empty map on error
+      console.error('Failed to load day status.', e);
+      return {};
     }
   }
 
@@ -85,10 +90,17 @@ export class LocalStorageSobrietyRepository
     streakStartTimestampUTC: number | null,
   ): Promise<void> {
     try {
+      console.log(`[Repository:saveDayStatus] Saving day: ${date}, sober: ${isSober}, timestamp: ${streakStartTimestampUTC}`);
+      
       const currentMap = await this.loadAllDayStatus();
       currentMap[date] = { sober: isSober, streakStartTimestampUTC };
       const jsonValue = JSON.stringify(currentMap);
+      
+      console.log(`[Repository:saveDayStatus] Updated map now has ${Object.keys(currentMap).length} entries`);
+      console.log(`[Repository:saveDayStatus] Saving to AsyncStorage with key: ${DAY_STATUS_KEY}`);
+      
       await AsyncStorage.setItem(DAY_STATUS_KEY, jsonValue);
+      console.log(`[Repository:saveDayStatus] Successfully saved to AsyncStorage`);
     } catch (e) {
       console.error('Failed to save day status.', e);
     }

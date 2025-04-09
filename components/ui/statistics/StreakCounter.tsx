@@ -19,6 +19,11 @@ export const StreakCounter: React.FC<StreakCounterProps> = ({
 	count = 0,
 	className = "",
 }) => {
+	// Add debug log for when streak count changes
+	React.useEffect(() => {
+		console.log(`[StreakCounter:render] Displaying streak count: ${count}`);
+	}, [count]);
+
 	return (
 		<View className="absolute top-20 left-5 z-10">
 			<View

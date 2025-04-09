@@ -1,5 +1,44 @@
 # MEMORY.md
 
+## [Apr 9, 2025 10:52 AM] Conditional Timer Control Prevents UI Resets
+**Context:** Debugged an issue where the `SobrietyTimer` and `StreakCounter` UI components incorrectly reset (showing 0 or an unrelated value like 5) when a past calendar date (not part of the current streak) was toggled as 'sober'.
+**Lesson:**
+- When a user action (like toggling a past date) triggers state recalculations (streak length) that affect other dependent states (timer running status), ensure that side effects (like stopping/starting the timer) are strictly conditional on the *actual outcome* of the recalculation, not triggered unconditionally by the action itself.
+- In this case, `toggleSoberDay` in `CalendarDataContext` was unconditionally calling `stopTimer()`, causing a brief UI flicker/reset even when the subsequent streak recalculation determined the current streak was unaffected and correctly called `startTimer()` again.
+- The fix involved making the `stopTimer()` call conditional within `toggleSoberDay`, only executing it if the recalculated `currentStreak` was actually zero.
+- Debugging involved adding detailed logs to both interacting contexts (`CalendarDataContext`, `TimerStateContext`) to trace the state flow and pinpoint the unconditional `stopTimer()` call as the root cause.
+**Related Methods/Concepts:**
+- React Context API (`CalendarDataContext`, `TimerStateContext`)
+- State management across multiple contexts
+- Conditional logic for side effects
+- Debugging state synchronization issues
+- `useEffect` hook interactions
+- Importance of precise state updates to prevent UI flicker/resets
+**Future Improvements:**
+- When implementing interactions that span multiple contexts or state slices, carefully map out the sequence of state updates and side effects.
+- Ensure functions triggering recalculations wait for the results before enacting side effects like stopping timers, unless the action inherently requires an immediate stop.
+- Add integration tests specifically verifying that actions on non-current streak days do not affect the running timer display.
+
+
+## [Apr 9, 2025 10:51 AM] Data Loading Range & Initial Scroll Timing
+**Context:** Debugged issues where past calendar day statuses weren't persisting on refresh, and the calendar didn't scroll to today correctly on initial load, followed by a regression where toggling any day caused a scroll.
+**Lesson:**
+- **Data Loading Range:** When loading persisted data spanning a wide date range (e.g., calendar statuses), the initial data structure generated on load (`weeks` array in `CalendarDataContext`) must cover the *full* range of the loaded data, not just a fixed window around the current date. Otherwise, persisted data outside the initial window will be ignored. The fix involved dynamically calculating the start/end dates based on `loadedDayStatus` keys.
+- **Initial Scroll Timing:** A "scroll to today" effect triggered by a loading state (`isLoadingInitial` becoming false) must prevent re-triggering on subsequent renders. Using a `useRef` flag (`initialScrollDoneRef`) ensures the scroll action runs only *once* after the initial load completes, preventing unwanted scrolls when state updates later (e.g., toggling a day).
+**Related Methods/Concepts:**
+- React Context API (`CalendarDataContext`)
+- `useEffect` hook dependencies and execution timing
+- `useRef` for tracking component state across renders without causing re-renders
+- Data persistence (`AsyncStorage`, Repository pattern)
+- Initial data hydration strategies
+- `FlatList` scrolling (`scrollToToday`)
+- Debugging state inconsistencies during initialization
+**Future Improvements:**
+- Ensure initial data generation logic always considers the full extent of persisted data.
+- When implementing effects triggered by loading states, carefully consider if they should run only once or on every relevant state change, using refs or other state to manage one-time actions.
+- Add integration tests verifying both data persistence across refreshes and correct initial scroll behavior.
+
+
 ## [Apr 8, 2025 11:37 AM] Component Integration Enhances User Experience
 **Context:** Implemented scroll to today functionality in the calendar and integrated it with the SobrietyTimer component.
 **Lesson:**

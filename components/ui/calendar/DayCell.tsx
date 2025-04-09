@@ -33,6 +33,13 @@ export const DayCell = React.memo(
 			[day.intensity],
 		);
 
+		// Added debug log for DayCell render
+		React.useEffect(() => {
+			console.log(
+				`[DayCell:render] Day: ${day.id}, Sober: ${day.sober}, Intensity: ${day.intensity}`,
+			);
+		}, [day.id, day.sober, day.intensity]);
+
 		// Memoize text color calculation
 		const textColorClass = useMemo(() => {
 			return day.sober
@@ -57,12 +64,12 @@ export const DayCell = React.memo(
 		// Memoize press handler
 		const handlePress = useCallback(() => {
 			console.log(
-				`[DayCell:handlePress] Called for day: ${day.id}. Has onToggleSober prop: ${!!onToggleSober}`,
+				`[DayCell:handlePress] Called for day: ${day.id}. Current state: Sober=${day.sober}, Intensity=${day.intensity}. Has onToggleSober prop: ${!!onToggleSober}`,
 			);
 			if (onToggleSober) {
 				onToggleSober(day.id);
 			}
-		}, [onToggleSober, day.id]);
+		}, [onToggleSober, day.id, day.sober, day.intensity]);
 
 		return (
 			<View className="flex-1 p-0.5">
