@@ -23,7 +23,7 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 - [x] US-12: As a user, I want to view a calendar grid with days of the week as columns and consecutive days without gaps, so that I can easily understand the layout of time.
 - [x] US-13: As a user, I want to see weekday headers (e.g., M, T, W, Th, F, S, S) at the top of the calendar, so that I can identify the days of the week.
 - [x] US-14: As a user, I want to scroll vertically through the calendar to view different months and years, with the calendar loading more data automatically as I scroll, so that I can access any date range seamlessly.
-- [ ] US-15: As a user, I want to tap the timer component at any time, and have the calendar automatically scroll to center the current day ('today') in the viewport, so that I can easily navigate back to the present day regardless of my current scroll position.
+- [x] US-15: As a user, I want to tap the timer component at any time, and have the calendar automatically scroll to center the current day ('today') in the viewport, so that I can easily navigate back to the present day regardless of my current scroll position.
 
 ## Timer Functionality
 - [x] US-16: As a user, I want to view an active timer showing how long I've been sober in days, hours, minutes, and seconds so I can see my real-time progress.
@@ -38,12 +38,18 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 - [x] US-22: As a user, I want to see my current streak of consecutive sober days so I can stay motivated to maintain it floating above the calendar.
 - [x] US-23: As a user, I want to see another stat showing my longest streak count.
 
-## Calorie Tracker
-- [ ] US-24: As a user, I want to see a single stat showing how many calories I've prevented from being sober so I can stay motivated to maintain it.
+
 
 ## Financial Tracking
-- [x] US-25: As a user, I want to see a single stat to show how much money I've saved based on a calculation of how much a single drink costs and an average of how drinks I have per week.
+- [x] US-25: As a user, I want to see a single stat to show how much money I've saved based on a calculation of how much a single drink costs and an average of how drinks I have per week. It'll be calculated based a calculation of the total amount of sober days and how many drinks i have per day. I will be enter a value for the amount of drinks per week to make it an easier UX. (eg. drinks per week is 14, average 2 drinks per day, and total sober days so far is 10 = $20 savings)
+  - [ ] US-25.1: The financial counter should update if i toggle on/off a sober day.
 - [ ] US-26: As a user, I want to input the cost of my typical drink so the app can calculate my financial savings.
+
+
+# Backlog
+
+## Calorie Tracker
+- [ ] US-24: As a user, I want to see a single stat showing how many calories I've prevented from being sober so I can stay motivated to maintain it.
 
 ## Consumption Tracking
 - [ ] US-28: As a user, I want to log the number of drinks I consumed on non-sober days so I can track my consumption patterns.

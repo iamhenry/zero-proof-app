@@ -135,8 +135,9 @@ Step-by-Step Tasks:
   - [x] 8.7.9. Optimize persistence layer with improved data integrity checks
     - File: `lib/storage/LocalStorageSobrietyRepository.ts`
 
-### Bugs
+### Phase 2: Frontend Implementation Bugs
 - [ ] bug-06. scrolling way back in the past dates (enough to load date not initially loaded on app start or refresh. eg. 0ct 2024), tapping the timer component does is broken and does not scroll you to current date as expected.
+- [ ] bug-07. today is april 10, 2025, and it has not been marked as sober. however the timer still indicates a running elpase time as it was (81d, 10h, 38m, 01s). this should not be the case. the user must explicitly toggle the current day in order to keep the timer elapse time running. (screenshot on my desktop)
 
 <!-- FIXED -->
 - [x] BUG-01. Implement dynamic and performant loading of past and future dates
@@ -219,38 +220,58 @@ Step-by-Step Tasks:
 Objective: Build features to track and visualize user progress over time.
 
 Data Flow:
-- Streak data flows through dedicated streak service
+- Streak logic gradually transitions from Context to dedicated streak service
 - Drink logging updates statistics and calendar view
 - Progress data is processed for sharing functionality
 
 Acceptance Criteria:
-- Streak management system is implemented
+- Streak management system is implemented with proper separation of concerns
 - Drink logging system is functional
 - Progress sharing feature is implemented
 
 Step-by-Step Tasks:
-- [ ] 12. Build streak management system 
-  - [ ] 12.1. Implement current streak counter with daily updates
+- [ ] 12. Refactor and enhance streak management system 
+  - [ ] 12.1. Extract streak calculation logic to dedicated service
     - File: `lib/services/streak-service.ts` (to be created)
+    - Branch Name: `refactor/extract-streak-service`
+    - Rationale: Separate business logic from UI state management for better testability and maintainability
+    - Approach: Incrementally extract pure calculation functions first while maintaining compatibility
+    - Signs refactoring is needed: Context exceeding 500 lines, difficulty testing, duplicate logic
+  - [ ] 12.2. Implement daily updates with notifications (post-MVP)
+    - File: `lib/services/streak-service.ts`
     - Branch Name: `feat/streak-daily-updates`
-  - [ ] 12.2. Add longest streak recording that persists across resets
-    - File: `lib/services/streak-service.ts` (to be created)
+    - Depends on: Task 12.1 completion
+  - [ ] 12.3. Add longest streak recording that persists across resets
+    - File: `lib/services/streak-service.ts`
     - Branch Name: `feat/streak-longest-persistent`
-  - [ ] 12.3. Create streak reset handling with optional notes for relapse
-    - File: `lib/services/streak-service.ts` (to be created)
+    - Note: Core functionality exists, enhancement adds more detailed historical tracking
+  - [ ] 12.4. Create streak reset handling with optional notes for relapse (post-MVP)
+    - File: `lib/services/streak-service.ts`
     - Branch Name: `feat/streak-reset-handling`
+    - Depends on: Task 12.1 completion
+  - [ ] 12.5. Implement selective service extraction for key business logic
+  - [ ] 12.5.1. Extract streak calculation logic to dedicated service
+    - File: `lib/services/streak-service.ts` (to be created)
+    - Branch Name: `refactor/extract-streak-service`
+    - Approach: Incrementally extract pure calculation functions first while maintaining compatibility
+    - Rationale: Prepare architecture for upcoming Supabase integration (dependency for Milestone 6)
+  - [ ] 12.5.2. Create foundation for sync service architecture  
+    - File: `lib/services/sync-service.ts` (to be created)
+    - Branch Name: `refactor/sync-service-foundation`
+    - Approach: Define interfaces and basic structure without implementation details
+    - Rationale: Establish patterns for later remote storage integration
 - [ ] 13. Develop drink logging system 
   - [ ] 13.1. Create daily drink counter with type and amount tracking
     - File: `components/ui/drink-log/DrinkCounter.tsx` (to be created)
     - Branch Name: `feat/drink-log-daily-counter`
-  - [ ] 13.2. Implement consumption pattern tracking to identify trends
+  - [ ] 13.2. Implement consumption pattern tracking to identify trends (post-MVP)
     - File: `lib/services/analytics-service.ts` (to be created)
     - Branch Name: `feat/analytics-consumption-patterns`
   - [ ] 13.3. Add entry correction/undo functionality to fix mistakes
     - File: `components/ui/drink-log/LogEditor.tsx` (to be created)
     - File: `lib/services/drink-log-service.ts` (to be created)
     - Branch Name: `feat/drink-log-correction-undo`
-- [ ] 14. Create progress sharing feature 
+- [ ] 14. Create progress sharing feature (post-MVP)
   - [ ] 14.1. Implement calendar graphics generator for social media sharing
     - File: `lib/services/share-service.ts` (to be created)
     - Branch Name: `feat/share-calendar-graphics`
@@ -258,6 +279,24 @@ Step-by-Step Tasks:
     - File: `components/ui/share/ShareButton.tsx` (to be created)
     - File: `components/ui/share/ShareModal.tsx` (to be created)
     - Branch Name: `feat/share-customizable-messages`
+
+### Refactoring Guidelines for Streak Service:
+
+1. Staged Approach:
+   - First extract pure calculation functions (`recalculateStreaksAndIntensity`)
+   - Update Contexts to use the service while maintaining the same API
+   - Gradually add new streak-related features to the service, not the Context
+
+2. When to Prioritize This Refactoring:
+   - Context files exceeding 500 lines (already true for CalendarDataContext)
+   - Duplicated streak logic appearing in multiple places
+   - Need to add complex new streak features
+   - Difficulty writing tests for streak-related functionality
+   
+3. Architecture Pattern:
+   - Components → Contexts (UI state) → Services (business logic) → Repositories (data)
+   - Contexts should only manage component state and service calls
+   - Services should contain pure business logic independent of UI
 
 ## Phase 3: Backend Integration
 Connect frontend with Supabase backend services.
@@ -275,11 +314,13 @@ Acceptance Criteria:
 - Authentication flow is fully implemented
 - Database schema and tables are created
 
+
 Step-by-Step Tasks:
 - [ ] 15. Set up Supabase project configuration 
   - [ ] 15.1. Create Supabase project with proper region and settings
     - File: `config/supabase.ts` (partially implemented)
     - Branch Name: `chore/config-supabase-project-setup`
+    - Dependencies: Task 12.5 (Service foundation)
   - [ ] 15.2. Configure database rules and policies for secure data access
     - File: `config/supabase.ts` (to be expanded)
     - Branch Name: `chore/config-supabase-db-rules`
@@ -323,7 +364,12 @@ Acceptance Criteria:
 - Multi-device support is functional
 
 Step-by-Step Tasks:
-- [ ] 18. Implement data sync system 
+- [ ] 18. Implement data sync system
+  - [ ] 18.0.1. Implement full SyncService using previously established foundation
+    - File: `lib/services/sync-service.ts` (to be expanded)
+    - Branch Name: `feat/complete-sync-service`
+    - Rationale: Leverage the foundation created in Task 12.5.2 for robust sync implementation
+    - Dependencies: Task 12.5 (Service foundation)
   - [ ] 18.1. Create bidirectional sync between local storage and Supabase
     - File: `lib/services/sync-service.ts` (to be created)
     - Branch Name: `feat/sync-bidirectional-local-supabase`
