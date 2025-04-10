@@ -209,12 +209,17 @@ Step-by-Step Tasks:
 - [ ] 11. Implement financial tracking system 
   - [x] 11.1. Create savings calculator based on days sober × drink cost
     - File: `components/ui/settings/hooks/useFinancialSettings.ts`
-  - [ ] 11.2. Implement drink cost management with different drink types and prices
+  - [ ] 11.2. Implement financial service for savings calculations
+    - File: `lib/services/financial-service.ts` (to be created)
+    - Branch Name: `feat/financial-service-implementation`
+    - Dependencies: CalendarDataContext for sober day tracking
+  - [ ] 11.3. Connect SavingsCounter to calculate and display real-time savings
+    - File: `components/ui/statistics/SavingsCounter.tsx` (to be updated)
+    - Branch Name: `feat/savings-counter-integration`
+  - [ ] 11.4. (Future Enhancement) Implement drink quantity management in settings
     - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
-    - Branch Name: `feat/settings-drink-cost-management`
-  - [ ] 11.3. Add statistics aggregation to show total and average savings
-    - File: `lib/services/statistics-service.ts` (to be created)
-    - Branch Name: `feat/stats-savings-aggregation`
+    - Branch Name: `feat/settings-drink-quantity-management`
+
 
 ### Milestone 5: Progress Tracking Features
 Objective: Build features to track and visualize user progress over time.
