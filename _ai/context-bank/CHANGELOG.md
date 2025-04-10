@@ -25,6 +25,42 @@ This document tracks all modifications, organized by version and release date, t
 
 ---
 
+## Version 0.1.8 (Staged) - April 10, 2025 02:54 PM
+
+### Added
+
+- Financial Savings Counter Feature (Tasks 11.2 & 11.3)
+  - Description: Implemented a new feature to calculate and display estimated financial savings based on the user's sobriety duration and configured average daily spending on their vice (e.g., alcohol). This involved creating a new financial service, a dedicated data context, and updating the UI.
+  - Why: To provide users with a tangible metric of the financial benefits of their sobriety, enhancing motivation (User Story US-F1).
+  - Process: Followed a Test-Driven Development (TDD) approach:
+    1.  Defined BDD scenarios (`_ai/scenarios/bdd-financial-service.md`).
+    2.  Wrote failing tests for the service (`lib/services/__tests__/financial-service.test.ts`).
+    3.  Implemented the `FinancialService` (`lib/services/financial-service.ts`) to make tests pass.
+    4.  Wrote failing tests for the `SavingsDataContext` (`context/__tests__/SavingsDataContext.test.tsx`), including addressing challenges with mocking context providers.
+    5.  Implemented the `SavingsDataContext` (`context/SavingsDataContext.tsx`) to manage savings data and interact with the service.
+    6.  Wrote failing tests for the `SavingsCounter` component (`components/ui/statistics/__tests__/SavingsCounter.test.tsx`).
+    7.  Updated the `SavingsCounter` component (`components/ui/statistics/SavingsCounter.tsx`) to consume the new context and display the calculated savings.
+    8.  Integrated the `SavingsDataProvider` into the main app layout (`app/_layout.tsx`).
+  - Impact: Users can now see their estimated financial savings alongside their sobriety streak. Introduces new service, context, and updated UI components with corresponding tests.
+  - Reference: Staged changes (Tasks 11.2, 11.3). BDD Scenarios: `_ai/scenarios/bdd-financial-service.md`.
+
+### Changed
+
+- App Layout (`app/_layout.tsx`)
+  - Description: Wrapped the main application stack with the new `SavingsDataProvider`.
+  - Why: To make the financial savings data available to components within the app, specifically the `SavingsCounter`.
+  - Impact: Enables the `SavingsCounter` component to access and display savings data.
+  - Reference: Staged changes.
+
+- Savings Counter Component (`components/ui/statistics/SavingsCounter.tsx`)
+  - Description: Refactored the component to consume data from the new `SavingsDataContext` instead of using placeholder values.
+  - Why: To display real-time calculated financial savings based on user settings and sobriety duration.
+  - Impact: The counter now shows accurate financial savings information.
+  - Reference: Staged changes.
+
+---
+
+
 ## Version 0.1.7 - April 9, 2025 11:17 AM
 
 ### Changed

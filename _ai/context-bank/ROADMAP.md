@@ -209,11 +209,11 @@ Step-by-Step Tasks:
 - [ ] 11. Implement financial tracking system 
   - [x] 11.1. Create savings calculator based on days sober × drink cost
     - File: `components/ui/settings/hooks/useFinancialSettings.ts`
-  - [ ] 11.2. Implement financial service for savings calculations
+  - [x] 11.2. Implement financial service for savings calculations
     - File: `lib/services/financial-service.ts` (to be created)
     - Branch Name: `feat/financial-service-implementation`
     - Dependencies: CalendarDataContext for sober day tracking
-  - [ ] 11.3. Connect SavingsCounter to calculate and display real-time savings
+  - [x] 11.3. Connect SavingsCounter to calculate and display real-time savings
     - File: `components/ui/statistics/SavingsCounter.tsx` (to be updated)
     - Branch Name: `feat/savings-counter-integration`
   - [ ] 11.4. (Future Enhancement) Implement drink quantity management in settings

@@ -41,10 +41,10 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 
 
 ## Financial Tracking
-- [ ] US-25: As a user, I want to see a single stat showing how much money I've saved based on the total amount of sober days tracked in the app and a predetermined drink consumption rate.
-  - [ ] US-25.1: The financial counter should update in real-time if I toggle on/off a sober day.
-  - [ ] US-25.2: The savings calculation should use the formula: savings = pricePerDrink × drinksPerDay × totalSoberDays.
-  - [ ] US-25.3: For the MVP, the pricePerDrink and drinksPerDay values will be hardcoded constants.
+- [x] US-25: As a user, I want to see a single stat showing how much money I've saved based on the total amount of sober days tracked in the app and a predetermined drink consumption rate.
+  - [x] US-25.1: The financial counter should update in real-time if I toggle on/off a sober day.
+  - [x] US-25.2: The savings calculation should use the formula: savings = pricePerDrink × drinksPerDay × totalSoberDays.
+  - [x] US-25.3: For the MVP, the pricePerDrink and drinksPerDay values will be hardcoded constants.
 - [ ] US-26: (Future Enhancement) As a user, I want to input the quantity of drinks I typically consume per day so the app can calculate my financial savings more accurately.
   - [ ] US-26.1: The settings UI should allow me to enter my typical daily drink consumption.
   - [ ] US-26.2: The financial savings calculation should update immediately when I change my drink quantity.

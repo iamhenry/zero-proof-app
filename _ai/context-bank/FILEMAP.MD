@@ -27,6 +27,24 @@ This file contains documentation headers extracted from component files to provi
  * DEPENDENCIES: react, dayjs, @/components/ui/calendar/types, @/lib/types/repositories, @/context/RepositoryContext, @/context/TimerStateContext, @/components/ui/calendar/utils
  */
 ```
+### SavingsDataContext.tsx
+```
+/**
+ * FILE: context/SavingsDataContext.tsx
+ * PURPOSE: Provides context for managing and accessing calculated financial savings data. It interacts with FinancialService to get savings based on sobriety duration and user settings.
+ * FUNCTIONS:
+ *   - SavingsDataProvider({ children: ReactNode }): JSX.Element -> Context provider managing savings state.
+ *   - useSavingsData(): SavingsContextProps -> Hook to consume savings context { totalSavings, isLoading }.
+ * KEY FEATURES:
+ *   - Fetches financial settings (drink cost) using RepositoryContext.
+ *   - Fetches timer state (elapsed days) using TimerStateContext.
+ *   - Calculates total savings using FinancialService.
+ *   - Provides loading state indication.
+ *   - Handles scenarios where settings or timer data might be unavailable.
+ * DEPENDENCIES: react, ./RepositoryContext, ./TimerStateContext, ../lib/services/financial-service, ../lib/types/repositories
+ */
+```
+
 
 ### RepositoryContext.tsx
 ```
@@ -99,6 +117,17 @@ This file contains documentation headers extracted from component files to provi
  * DEPENDENCIES: None
  */
 ```
+### financial-service.ts
+```
+/**
+ * FILE: lib/services/financial-service.ts
+ * PURPOSE: Provides functions for calculating financial savings based on sobriety duration and user-defined cost per drink/day.
+ * FUNCTIONS:
+ *   - calculateTotalSavings(elapsedDays: number, costPerDay: number): number -> Calculates the total savings.
+ * DEPENDENCIES: None
+ */
+```
+
 
 ## Settings Components
 
@@ -137,13 +166,15 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/statistics/SavingsCounter.tsx
- * CREATED: 2025-03-27 14:30:00
- *
- * PURPOSE: Displays the total monetary savings accumulated from sobriety.
- *
- * COMPONENTS:
- * - SavingsCounter(props: SavingsCounterProps) → JSX.Element: Renders the savings display with a money icon and formatted currency.
- *   - props: { amount: string, className?: string }
+ * PURPOSE: Displays the estimated financial savings accumulated from sobriety, fetching data from SavingsDataContext.
+ * FUNCTIONS:
+ *   - SavingsCounter({ className?: string }): JSX.Element -> Renders the savings counter, consuming data from SavingsDataContext.
+ * KEY FEATURES:
+ *   - Consumes totalSavings and isLoading state from SavingsDataContext.
+ *   - Displays formatted currency value of savings.
+ *   - Shows a loading indicator while data is being fetched.
+ *   - Includes a visual money icon.
+ * DEPENDENCIES: react, react-native, ./MoneyIcon, @/context/SavingsDataContext, @/lib/utils (for formatCurrency)
  */
 ```
 

@@ -1,30 +1,26 @@
-/**
- * FILE: components/ui/statistics/SavingsCounter.tsx
- * CREATED: 2025-03-27 14:30:00
- *
- * PURPOSE:
- * Displays the total monetary savings achieved, typically related to sobriety efforts.
- * Includes a visual money icon.
- *
- * COMPONENTS:
- * - SavingsCounter(props: SavingsCounterProps): Renders the savings display.
- *   - props: { amount: string, className?: string }
- * DEPENDENCIES: react, react-native, ./MoneyIcon
- */
+// FILE: components/ui/statistics/SavingsCounter.tsx
+// PURPOSE: Displays the total monetary savings achieved, fetching data from SavingsDataContext. Includes a visual money icon.
+// COMPONENTS:
+//   - SavingsCounter(props: { className?: string }): Renders the savings display. Fetches savings amount via useSavingsData hook.
+// DEPENDENCIES: React, React Native, ./MoneyIcon, @/context/SavingsDataContext
 
 import * as React from "react";
 import { View, Text } from "react-native";
 import { MoneyIcon } from "./MoneyIcon";
+import { useSavingsData } from "@/context/SavingsDataContext"; // Import the hook
 
+// Remove amount prop, className is still useful
 export interface SavingsCounterProps {
-	amount: string;
 	className?: string;
 }
 
 export const SavingsCounter: React.FC<SavingsCounterProps> = ({
-	amount = "$1,298",
 	className = "",
 }) => {
+	// Consume the context
+	const { currentSavings } = useSavingsData();
+	// Minimal formatting for display
+	const formattedAmount = currentSavings.toLocaleString();
 	return (
 		<View className="absolute top-20 right-5 z-10">
 			<View
@@ -34,7 +30,7 @@ export const SavingsCounter: React.FC<SavingsCounterProps> = ({
 					<MoneyIcon />
 				</View>
 				<Text className="text-center text-black text-xl font-extrabold font-['Rounded_Mplus_1c']">
-					${amount}
+					${formattedAmount}
 				</Text>
 			</View>
 		</View>

@@ -1,5 +1,31 @@
 # MEMORY.md
 
+## [Apr 10, 2025 02:55 PM] Financial Savings Feature: Service + Context Architecture & Test Setup Learnings
+Context: Implemented the Financial Savings Counter feature (Tasks 11.2 & 11.3) using a TDD approach, involving a new service (`FinancialService`), a new context (`SavingsDataContext`), and updates to the `SavingsCounter` component and tests.
+Lesson:
+- Architecture Choice (Solution 2b): Opted for a dedicated `FinancialService` for calculation logic and a new `SavingsDataContext` for state management and component interaction.
+  - Rationale: This separates calculation concerns (service) from UI state and data fetching/coordination (context), aligning with the evolving architecture pattern discussed previously (moving towards services). It avoids further bloating existing contexts like `TimerStateContext`.
+- TDD Flow: The TDD process (BDD -> Service Test -> Service Impl -> Context Test -> Context Impl -> Component Test -> Component Impl) worked well for building the feature incrementally.
+- Test Setup Challenges (Context Providers): Testing components and contexts that depend on other contexts (`SavingsDataContext` depends on `RepositoryContext` and `TimerStateContext`) requires careful test setup.
+  - Solution: Mocking the *values* provided by the dependency contexts is crucial. This often involves creating wrapper components or helper functions (`renderWithProviders`) in test utilities (`lib/test-utils.tsx`) to provide the necessary mocked context values during rendering. Simply mocking the context hook itself (`useRepository`, `useTimerState`) is often insufficient if the component under test relies on the provider structure.
+  - Example: `SavingsDataContext.test.tsx` needed wrappers to provide mock `RepositoryContext` and `TimerStateContext` values.
+- Context Dependency Management: Introducing new contexts requires updating the main application layout (`app/_layout.tsx`) to include the new provider, ensuring the context is available down the component tree.
+Related Methods/Concepts:
+- Test-Driven Development (TDD)
+- Behavior-Driven Development (BDD)
+- Service Layer Architecture
+- React Context API
+- Mocking Context Providers in Tests
+- Unit Testing (`@testing-library/react`, `@testing-library/react-hooks`)
+- Component Testing
+- Dependency Injection (via Context)
+- Separation of Concerns
+Future Improvements:
+- Continue extracting complex logic into services rather than adding it to contexts.
+- Refine and standardize the `renderWithProviders` test utility to handle common context combinations easily.
+- Add integration tests that cover the interaction flow from `SavingsCounter` through `SavingsDataContext` to `FinancialService` and underlying contexts/repositories.
+
+
 ## [Apr 10, 2025 2:45 PM] Context Architecture Impact on Remote Storage Integration
 Context: Evaluated the implications of maintaining the current Context-heavy architecture when implementing Supabase remote storage integration.
 Lesson:
