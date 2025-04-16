@@ -1,11 +1,14 @@
-// Final corrected content for components/ui/calendar/hooks/useCalendarData.ts
-
 /**
  * FILE: components/ui/calendar/hooks/useCalendarData.ts
- * PURPOSE: Manages calendar state, sobriety tracking, streak calculation, and infinite scrolling, integrating with repository and timer contexts.
+ * PURPOSE: Legacy hook now acting as a compatibility layer to redirect to CalendarDataContext.
  * FUNCTIONS:
- *   - useCalendarData(): object -> Returns calendar state { weeks, currentStreak, longestStreak, ... } and functions { toggleSoberDay, loadPastWeeks, loadFutureWeeks }.
- * DEPENDENCIES: react, dayjs, ../types, ../utils, @/context/RepositoryContext, @/context/TimerStateContext, @/lib/types/repositories
+ *   - useCalendarData(): CalendarData -> Returns data from CalendarDataContext, maintaining backward compatibility.
+ * KEY FEATURES:
+ *   - Transitional wrapper for migrated functionality
+ *   - All core functionality has been moved to CalendarDataContext
+ *   - Provides compatibility for components not yet updated to use context directly
+ *   - Will be deprecated in future updates
+ * DEPENDENCIES: react, @/context/CalendarDataContext, ../types
  */
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useRef } from 'react'; // Import useRef
@@ -476,11 +479,6 @@ export const useCalendarData = () => {
     }, 0);
   }, [weeks, isLoadingFuture]);
 
-  // Placeholder function for scrolling to today
-  const scrollToToday = () => {
-    console.log('[useCalendarData] scrollToToday called (placeholder)');
-  };
-
   return {
     weeks,
     toggleSoberDay,
@@ -491,7 +489,7 @@ export const useCalendarData = () => {
     isLoadingInitial,
     isLoadingPast,
     isLoadingFuture,
-    scrollToToday, // Add the new function here
+    // scrollToToday, // Removed since we're now using the context's implementation
     // timerDurationDetails, // Removed timerDurationDetails from return
   };
 };

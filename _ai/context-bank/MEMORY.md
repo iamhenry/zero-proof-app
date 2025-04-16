@@ -1,5 +1,39 @@
 # MEMORY.md
 
+## [Apr 16, 2025 04:17 PM] Enhanced Cross-Component Interactions via Context: Timer-to-Calendar Navigation
+Context: Expanded and improved the feature (US-15) where tapping the SobrietyTimer component automatically scrolls the CalendarGrid to center today's date, with specific focus on handling edge cases like scrolling from distant past dates.
+Lesson:
+- Preventing Side Effects During Programmatic Scrolling: Added flags (`isProgrammaticScrolling`) to prevent unwanted side effects such as:
+  - Loading additional weeks while scrolling to today
+  - Multiple scroll operations firing simultaneously 
+  - UI flickering during rapid navigation commands
+- Performance Optimization: Improved scroll timing and behavior by:
+  - Scheduling scroll operations with appropriate delays
+  - Using state flags to coordinate complex scroll behaviors
+  - Implementing scroll completion detection to manage state
+- Integration Testing Strategy: Testing cross-component interactions requires:
+  - Mocking both components in their interacting state
+  - Simulating real user interactions (tap events)
+  - Verifying that the receiving component behaves correctly
+  - Testing edge cases like navigating from extremely distant dates
+- Debug Tracing: Enhanced logging to track:
+  - Scroll state transitions
+  - Component communication events
+  - Timer interactions and their effects
+  - Scroll completion and side effects
+Related Methods/Concepts:
+- State flags for managing complex UI operations
+- Cross-component event coordination
+- Touch event handling and propagation
+- FlatList scrollToIndex performance considerations
+- Timeout management for UI operations
+- Integration testing for component communication
+Future Improvements:
+- Add visual feedback during longer scrolling operations
+- Consider implementing a shared navigation service for more complex patterns
+- Add gesture support for additional intuitive navigation shortcuts
+- Incorporate haptic feedback for touch interactions
+
 ## [Apr 10, 2025 02:55 PM] Financial Savings Feature: Service + Context Architecture & Test Setup Learnings
 Context: Implemented the Financial Savings Counter feature (Tasks 11.2 & 11.3) using a TDD approach, involving a new service (`FinancialService`), a new context (`SavingsDataContext`), and updates to the `SavingsCounter` component and tests.
 Lesson:
