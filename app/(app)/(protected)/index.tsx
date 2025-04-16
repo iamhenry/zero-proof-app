@@ -1,15 +1,17 @@
 /**
  * FILE: app/(app)/(protected)/index.tsx
- * PURPOSE: Renders the main home screen for authenticated users, displaying sobriety statistics and the calendar.
+ * PURPOSE: Main home screen displaying calendar, timer, and statistics with interactive features.
  * FUNCTIONS:
- *   - Home(): JSX.Element -> Renders the main screen layout with sobriety timer, streak counter, savings counter and calendar grid.
- *   - logStoredData(): Promise<void> -> Debug utility that logs stored day status and streak data on component mount.
+ *   - HomeScreen() -> React component rendering the main application screen with calendar and statistics.
  * KEY FEATURES:
- *   - Automatic scroll to current day when calendar data finishes loading
- *   - Integration with TimerStateContext to display elapsed days in streak counter
- *   - Integration with CalendarDataContext for calendar data and scrolling functionality
- *   - Diagnostic logging for persistent data debugging
- * DEPENDENCIES: react, react-native, @/components/ui/calendar, @/components/ui/timer, @/components/ui/statistics, @/context/TimerStateContext, @/context/RepositoryContext, @/context/CalendarDataContext
+ *   - Integration with CalendarDataContext for data management
+ *   - Timer component with tap-to-scroll calendar navigation
+ *   - Dynamic calendar grid with infinite scrolling
+ *   - Statistics display for streaks and financial savings
+ *   - Optimized navigation between timer and calendar
+ *   - Enhanced scroll handling for improved user experience
+ *   - Support for viewing distant past dates with reliable navigation
+ * DEPENDENCIES: react, react-native, @/components/ui/calendar/CalendarGrid, @/components/ui/timer/SobrietyTimer, @/components/ui/statistics/StreakCounter, @/components/ui/statistics/SavingsCounter
  */
 
 import React, { useEffect, useRef } from "react"; // Import useRef
@@ -26,6 +28,8 @@ export default function Home() {
 	const repository = useRepository();
 	const { isLoadingInitial, scrollToToday } = useCalendarContext(); // Get loading state and scroll function
 	const initialScrollDoneRef = useRef(false); // Ref to track initial scroll
+	const initialScrollTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to hold timeout ID
+	const backupScrollTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to hold backup timeout ID
 
 	// Debug function to log all stored day status on component mount
 	useEffect(() => {
@@ -66,31 +70,75 @@ export default function Home() {
 	}, [repository]);
 
 	// Effect to scroll to today when initial loading is done
+	// This only happens once when the app first loads, not when navigating to past dates
 	useEffect(() => {
+		// Clean up any previous timeouts to avoid multiple scrolls
+		if (initialScrollTimeoutRef.current) {
+			clearTimeout(initialScrollTimeoutRef.current);
+			initialScrollTimeoutRef.current = null;
+		}
+
+		if (backupScrollTimeoutRef.current) {
+			clearTimeout(backupScrollTimeoutRef.current);
+			backupScrollTimeoutRef.current = null;
+		}
+
 		if (!isLoadingInitial && !initialScrollDoneRef.current) {
 			// Only scroll if loading is done AND the initial scroll hasn't happened yet
+			// This ensures we only scroll to today on app launch, not when navigating through the calendar
 			initialScrollDoneRef.current = true; // Mark initial scroll as initiated
-			// Use setTimeout to ensure FlatList has rendered
-			const timerId = setTimeout(() => {
-				scrollToToday();
-			}, 100); // Small delay (100ms) might be needed
 
-			// Cleanup function for the timeout remains important
-			return () => {
-				clearTimeout(timerId);
-			};
-		} else if (isLoadingInitial) {
-		} else {
+			// Use a longer delay to ensure FlatList has fully rendered
+			const initialDelay = 300; // Increased from 100ms to 300ms
+
+			console.log(
+				"[Home] Scheduling initial scroll to today with delay:",
+				initialDelay,
+			);
+
+			initialScrollTimeoutRef.current = setTimeout(() => {
+				console.log("[Home] Executing initial scroll to today");
+				scrollToToday();
+
+				// Add a backup scroll after another delay in case the first one failed
+				backupScrollTimeoutRef.current = setTimeout(() => {
+					console.log("[Home] Executing backup scroll to today");
+					scrollToToday();
+					backupScrollTimeoutRef.current = null;
+				}, 500); // Additional 500ms backup scroll
+
+				initialScrollTimeoutRef.current = null;
+			}, initialDelay);
 		}
-		// No cleanup needed if we didn't schedule a timeout
-		return () => {};
-	}, [isLoadingInitial, scrollToToday]); // Dependencies remain the same
+
+		// Cleanup function to clear timeouts
+		return () => {
+			if (initialScrollTimeoutRef.current) {
+				clearTimeout(initialScrollTimeoutRef.current);
+				initialScrollTimeoutRef.current = null;
+			}
+
+			if (backupScrollTimeoutRef.current) {
+				clearTimeout(backupScrollTimeoutRef.current);
+				backupScrollTimeoutRef.current = null;
+			}
+		};
+	}, [isLoadingInitial, scrollToToday]);
+
+	// Effect to handle component unmount and cleanup
+	useEffect(() => {
+		return () => {
+			// Reset the ref on unmount so if the component remounts, it will scroll again
+			initialScrollDoneRef.current = false;
+		};
+	}, []);
+
 	return (
 		<SafeAreaView className="flex-1 bg-background">
 			<View className="flex-1 p-3">
 				<StreakCounter count={elapsedDays} />
 				<SobrietyTimer />
-				<SavingsCounter amount="1,200" />
+				<SavingsCounter />
 				<CalendarGrid />
 			</View>
 		</SafeAreaView>

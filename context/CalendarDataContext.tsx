@@ -4,7 +4,7 @@
  * FUNCTIONS:
  *   - CalendarDataProvider({ children: ReactNode }): JSX.Element -> Context provider managing calendar state.
  *   - useCalendarContext(): CalendarContextProps -> Hook to consume the calendar context.
- *   - scrollToToday(): void -> Function to scroll the calendar grid to the current day.
+ *   - scrollToToday(): void -> Enhanced function to scroll calendar to today's date with error handling, platform-specific animations, and dynamic index calculations.
  *   - toggleSoberDay(date: string): Promise<void> -> Toggles sobriety status for a day with conditional timer effects.
  *   - recalculateStreaksAndIntensity(): { updatedWeeks, currentStreak, longestStreak, streakStartDayData } -> Recalculates streak data with data integrity checks.
  * KEY FEATURES:
@@ -13,9 +13,11 @@
  *   - Optimized streak calculation with proper streak intensity visualization
  *   - Intelligent timer state management based on calendar interactions
  *   - Infinite scrolling with dynamic past/future week loading
- *   - Reference to the calendar FlatList for programmatic scrolling
- *   - Comprehensive debug logging
- *   - Error handling with graceful fallbacks
+ *   - Programmatic scrolling with improved reliability when viewing distant past dates
+ *   - Platform-specific animation timing for smoother scrolling
+ *   - Prevention of loading interference during programmatic scrolling
+ *   - Improved error handling with fallbacks for scrolling operations
+ *   - Comprehensive debug logging and state tracking
  * DEPENDENCIES: react, dayjs, @/components/ui/calendar/types, @/lib/types/repositories, @/context/RepositoryContext, @/context/TimerStateContext, @/components/ui/calendar/utils
  */
 import React, {
@@ -29,7 +31,7 @@ import React, {
 	useRef,
 	RefObject, // Add RefObject
 } from "react";
-import { FlatList } from "react-native"; // Add FlatList import
+import { FlatList, Platform } from "react-native"; // Add Platform import
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import minMax from "dayjs/plugin/minMax"; // Import minMax plugin
@@ -89,6 +91,7 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 	const [isLoadingInitial, setIsLoadingInitial] = useState(true);
 	const [isLoadingPast, setIsLoadingPast] = useState(false);
 	const [isLoadingFuture, setIsLoadingFuture] = useState(false);
+	const [programmaticScrolling, setProgrammaticScrolling] = useState(false);
 	const isInitialMount = useRef(true);
 	const calendarRef = useRef<FlatList<WeekData> | null>(null); // Use specific FlatList type
 
@@ -684,39 +687,64 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 
 	// Function to scroll the calendar grid to the week containing today's date
 	const scrollToToday = useCallback(() => {
-		if (!calendarRef.current || weeks.length === 0) {
-			console.log(
-				"[CalendarContext] scrollToToday: Ref not ready or no weeks loaded.",
-			);
+		console.log("scrollToToday called");
+
+		if (!calendarRef.current) {
+			console.log("Calendar ref is null, cannot scroll");
 			return;
 		}
 
-		const todayStr = dayjs().format("YYYY-MM-DD");
-		let targetWeekIndex = -1;
+		// Temporarily disable loading new weeks to prevent index shifts during scrolling
+		setIsLoadingPast(true);
 
-		for (let i = 0; i < weeks.length; i++) {
-			const week = weeks[i];
-			if (week.days.some((day) => day.id === todayStr)) {
-				targetWeekIndex = i;
-				break;
-			}
-		}
+		try {
+			const todayDate = dayjs().startOf("day");
 
-		if (targetWeekIndex !== -1) {
-			console.log(
-				`[CalendarContext] scrollToToday: Scrolling to week index ${targetWeekIndex}`,
-			);
-			calendarRef.current.scrollToIndex({
-				index: targetWeekIndex,
-				animated: true,
-				viewPosition: 0.5, // Center the item
+			// Find the index of today's week
+			const todayWeekIndex = weeks.findIndex((week) => {
+				if (!week.days || week.days.length < 7) return false;
+				const weekStart = dayjs(week.days[0].date);
+				const weekEnd = dayjs(week.days[6].date);
+				return (
+					todayDate.isAfter(weekStart.subtract(1, "day")) &&
+					todayDate.isBefore(weekEnd.add(1, "day"))
+				);
 			});
-		} else {
-			console.log(
-				"[CalendarContext] scrollToToday: Could not find week containing today.",
-			);
+
+			console.log(`Today's week index: ${todayWeekIndex}`);
+
+			if (todayWeekIndex !== -1) {
+				// Set programmatic scrolling flag
+				setProgrammaticScrolling(true);
+
+				// Scroll to today's week with animation
+				calendarRef.current.scrollToIndex({
+					index: todayWeekIndex,
+					animated: true,
+					viewPosition: 0.5, // Center the week
+					viewOffset: 0,
+				});
+
+				// Schedule to reset flags after animation completes
+				const animationDuration = Platform.OS === "ios" ? 400 : 300;
+				setTimeout(() => {
+					setProgrammaticScrolling(false);
+					setIsLoadingPast(false);
+					console.log("Scroll animation completed, flags reset");
+				}, animationDuration);
+			} else {
+				console.log("Could not find today's week in the calendar data");
+				// Reset flags if we couldn't find today's week
+				setProgrammaticScrolling(false);
+				setIsLoadingPast(false);
+			}
+		} catch (error) {
+			console.error("Error scrolling to today:", error);
+			// Reset flags in case of error
+			setProgrammaticScrolling(false);
+			setIsLoadingPast(false);
 		}
-	}, [weeks]); // Dependency: weeks array
+	}, [weeks, calendarRef]);
 
 	// --- Provide Context Value ---
 	const value = useMemo(

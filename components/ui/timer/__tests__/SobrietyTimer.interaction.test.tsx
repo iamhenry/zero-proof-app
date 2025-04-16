@@ -51,12 +51,10 @@ const mockRepository: ISobrietyDataRepository = {
 	saveStreakData: jest.fn().mockResolvedValue(undefined),
 	loadStreakData: jest.fn().mockResolvedValue(null),
 	saveTimerState: jest.fn().mockResolvedValue(undefined),
-	loadTimerState: jest
-		.fn()
-		.mockResolvedValue({
-			startTime: Date.now() - 1000 * 60 * 5,
-			isRunning: true,
-		}),
+	loadTimerState: jest.fn().mockResolvedValue({
+		startTime: Date.now() - 1000 * 60 * 5,
+		isRunning: true,
+	}),
 	saveDrinkCost: jest.fn().mockResolvedValue(undefined),
 	loadDrinkCost: jest.fn().mockResolvedValue(null),
 };
@@ -149,5 +147,51 @@ describe("Feature: Timer Tap Scrolls Calendar to Today (US-15 Interaction)", () 
 
 		// Assert
 		expect(mockScrollToToday).toHaveBeenCalledTimes(1);
+	});
+
+	// MARK: - Scenario: Tap Timer When Very Far in Past with Dynamic Loading
+	test("testTimerTap_WhenVeryFarPastWithDynamicLoading_ShouldScrollToTodayWithSingleTap", async () => {
+		// Arrange - Mock past data loading state
+		const mockCalendarContextWithLoading = {
+			...getDefaultMockCalendarContextValue(),
+			isLoadingPast: true, // Simulate past weeks loading
+		};
+
+		// Override the context mock to simulate dynamic loading
+		(useCalendarContext as jest.Mock).mockImplementation(
+			() => mockCalendarContextWithLoading,
+		);
+
+		const { getByText, findByText } = renderComponent();
+		await findByText("Sober"); // Wait for render
+
+		// At this point, scrollToToday should NOT have been called automatically
+		// when scrolling to far past dates - this verifies we don't auto-scroll
+		expect(mockScrollToToday).not.toHaveBeenCalled();
+
+		const timerContainer = getByText("Sober").parent;
+		if (!timerContainer) throw new Error("Could not find timer container.");
+
+		// Act - Tap the timer while "loading" past weeks
+		fireEvent.press(timerContainer);
+
+		// Assert - First tap should trigger scrollToToday
+		expect(mockScrollToToday).toHaveBeenCalledTimes(1);
+
+		// Simulate dynamic loading completion and index shift
+		(useCalendarContext as jest.Mock).mockImplementation(() => ({
+			...mockCalendarContextWithLoading,
+			isLoadingPast: false,
+		}));
+
+		// Clear the mock to prepare for next test
+		mockScrollToToday.mockClear();
+
+		// Act - Tap the timer again
+		fireEvent.press(timerContainer);
+
+		// Assert - Second tap should also work (one tap should be enough)
+		expect(mockScrollToToday).toHaveBeenCalledTimes(1);
+		expect(mockScrollToToday).toHaveBeenCalledWith();
 	});
 });

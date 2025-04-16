@@ -1,17 +1,18 @@
 /**
  * FILE: components/ui/calendar/DayCell.tsx
- * PURPOSE: Renders an optimized, memoized, interactive day cell for the calendar grid.
+ * PURPOSE: Renders an individual day cell in the calendar grid with sobriety status and styling.
  * FUNCTIONS:
- *   - DayCell({ day: DayData, onToggleSober?: (dayId: string) => void }): JSX.Element -> Renders a single day cell, optimized with React.memo.
- *   - handlePress(): void -> Handles press events on a day cell to toggle sobriety status with debug logging.
+ *   - DayCell({ day, onPress, className }): JSX.Element -> Renders a day cell with appropriate styling based on sobriety status and today detection.
  * KEY FEATURES:
- *   - High-performance rendering with aggressive memoization strategies
- *   - Custom React.memo equality function to prevent unnecessary re-renders
- *   - Intelligent CSS class computation based on sobriety status and streak intensity
- *   - Enhanced debug logging for state change tracing
- *   - Special display handling for first day of month
- *   - Responsive visual feedback with proper color intensity representation
- * DEPENDENCIES: react, react-native, @/components/ui/text, ./types, ./utils
+ *   - Conditional rendering based on day properties (sober/non-sober, future/past/today)
+ *   - Visual intensity indicators scaled by streak length
+ *   - Memoized calculations for optimal re-render performance
+ *   - Touch interaction for toggling sobriety status
+ *   - Optimized with React.memo to prevent unnecessary re-renders
+ *   - Selective debug logging that can be enabled/disabled for performance
+ *   - Dynamic styling based on day status and properties
+ *   - Future date detection with different visual treatment
+ * DEPENDENCIES: react, react-native, dayjs, ./types
  */
 
 import React, { useCallback, useMemo } from "react";
@@ -42,11 +43,11 @@ export const DayCell = React.memo(
 		);
 
 		// Added debug log for DayCell render
-		React.useEffect(() => {
-			console.log(
-				`[DayCell:render] Day: ${day.id}, Sober: ${day.sober}, Intensity: ${day.intensity}`,
-			);
-		}, [day.id, day.sober, day.intensity]);
+		// React.useEffect(() => {
+		// 	console.log(
+		// 		`[DayCell:render] Day: ${day.id}, Sober: ${day.sober}, Intensity: ${day.intensity}`,
+		// 	);
+		// }, [day.id, day.sober, day.intensity]);
 
 		// Memoize text color calculation
 		const textColorClass = useMemo(() => {

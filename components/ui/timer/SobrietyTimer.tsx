@@ -1,6 +1,6 @@
 /**
  * FILE: components/ui/timer/SobrietyTimer.tsx
- * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext.
+ * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext with calendar navigation.
  * FUNCTIONS:
  *   - SobrietyTimer({ status?: string }): JSX.Element -> Renders the animated timer component with customizable status text.
  *   - formatUnitValue(value: number): string -> Formats time unit numbers for display.
@@ -8,12 +8,13 @@
  * KEY FEATURES:
  *   - Real-time animated display of elapsed sobriety time
  *   - Smooth digit transitions using React Native Reanimated
- *   - Interactive functionality - tapping the timer scrolls calendar to today
+ *   - Interactive functionality - tapping the timer scrolls calendar to today, with enhanced debugging
  *   - Integration with TimerStateContext for timer state management
  *   - Integration with CalendarDataContext for scrolling functionality
+ *   - Debug logging for state changes and function availability
  *   - Intelligent handling of loading states
- *   - Efficient interval-based updates
- *   - Debug logging for state change tracking
+ *   - Efficient interval-based updates with proper cleanup
+ *   - Reliable calendar navigation even when scrolled far into past dates
  * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext, @/context/CalendarDataContext
  */
 
@@ -86,6 +87,14 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 	}, [startTime, isRunning, elapsedDays, isTimerLoading]);
 
 	const { scrollToToday } = useCalendarContext(); // Get scroll function from calendar context
+
+	// Debug log to check if scrollToToday is available
+	useEffect(() => {
+		console.log(
+			`[SobrietyTimer] scrollToToday function availability check: ${typeof scrollToToday === "function" ? "Available" : "Not Available"}`,
+		);
+	}, [scrollToToday]);
+
 	// Local state for display values only (days state removed)
 	// const [days, setDays] = useState(0); // Removed, using elapsedDays from context
 	const [hours, setHours] = useState(0);
@@ -220,7 +229,10 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 	return (
 		// Wrap the entire timer display in a TouchableOpacity
 		<TouchableOpacity
-			onPress={scrollToToday}
+			onPress={() => {
+				console.log("[SobrietyTimer] Timer tapped, calling scrollToToday");
+				scrollToToday();
+			}}
 			activeOpacity={0.8}
 			className="absolute bottom-8 left-0 right-0 items-center z-10"
 		>

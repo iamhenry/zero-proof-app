@@ -1,5 +1,26 @@
 # MEMORY.md
 
+## [Apr 11, 2025 01:30 PM] Cross-Component Interactions via Context: Timer-to-Calendar Navigation
+Context: Implemented a feature (US-15) where tapping the SobrietyTimer component automatically scrolls the CalendarGrid to center today's date, creating an intuitive navigation pattern between related components.
+Lesson:
+- Cross-Component Coordination: Using React Context (CalendarDataContext) as a communication channel between unrelated components (SobrietyTimer and CalendarGrid) enables clean interactions without prop drilling.
+- Component Ref Forwarding: Exposing refs through context (`calendarRef` in CalendarDataContext) allows external components to control UI elements that would otherwise be encapsulated.
+  - The calendar's FlatList instance is accessible via the context, enabling the timer to trigger programmatic scrolling to specific indexes.
+- Scroll State Management: Managing scroll state flags (`isProgrammaticScrolling`) prevents unwanted side effects during programmatic scrolling:
+  - Prevents loading additional weeks when `scrollToToday` is active
+  - Avoids redundant scrolling operations by tracking scroll completion
+  - Uses timeouts and state flags to coordinate complex scroll behaviors
+- One-Time Actions with useRef: Using React's useRef for flags (`initialScrollDoneRef`) ensures one-time actions like initial scrolling happen exactly once.
+- Touch Interaction Pattern: Treating informational components (like the timer) as navigation shortcuts provides intuitive UX without cluttering the interface with additional buttons.
+- Strategy Pattern for Initial Load vs. User Interaction: Having distinct scroll strategies for initial app load (delayed, with backup) versus user-initiated actions (immediate) improves perceived responsiveness.
+Related Methods/Concepts:
+- React Context API for cross-component communication
+- FlatList scrollToIndex for programmatic scrolling
+- useRef for preserving values across renders without triggering re-renders
+- TouchableOpacity for touch interaction handling
+- setTimeout for scheduling UI operations
+- React's forwardRef pattern (conceptually, although implemented directly via context)
+
 ## [Apr 10, 2025 02:55 PM] Financial Savings Feature: Service + Context Architecture & Test Setup Learnings
 Context: Implemented the Financial Savings Counter feature (Tasks 11.2 & 11.3) using a TDD approach, involving a new service (`FinancialService`), a new context (`SavingsDataContext`), and updates to the `SavingsCounter` component and tests.
 Lesson:

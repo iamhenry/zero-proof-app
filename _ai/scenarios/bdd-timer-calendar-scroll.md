@@ -39,3 +39,15 @@ Acceptance Criteria:
 - [ ] Verify the calendar scrolls in the backward direction (towards past dates).
 - [ ] Verify the element representing 'today' becomes visible after the scroll animation completes.
 - [ ] Verify the week containing 'today' is positioned approximately in the center of the calendar grid viewport.
+
+## Scenario 4: Tap Timer When Very Far in Past with Dynamic Loading
+Given: The calendar is displayed
+And: The view is scrolled very far into the past, triggering dynamic loading of past weeks
+When: The user taps the sobriety timer component
+Then: The calendar should stabilize and scroll directly to today's date with a single tap
+
+Acceptance Criteria:
+- [ ] Verify that scrolling very far into the past still allows a single tap to return to today.
+- [ ] Verify that when past weeks are being dynamically loaded, the today index is correctly recalculated.
+- [ ] Verify that the scrolling is smooth and direct, without intermediate stops.
+- [ ] Verify the calendar avoids multiple taps being required to reach today's date.
