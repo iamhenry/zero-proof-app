@@ -137,7 +137,7 @@ Step-by-Step Tasks:
 
 ### Phase 2: Frontend Implementation Bugs
 - [ ] bug-07. today is april 10, 2025, and it has not been marked as sober. however the timer still indicates a running elpase time as it was (81d, 10h, 38m, 01s). this should not be the case. the user must explicitly toggle the current day in order to keep the timer elapse time running. (screenshot on my desktop)
-- [x] bug-08. when refreshing the app or at app launch, The current day is not within the viewport of the screen. Today should be at the center of the screen, which is the expected behavior.
+
 
 <!-- FIXED -->
 - [x] BUG-01. Implement dynamic and performant loading of past and future dates
@@ -160,6 +160,7 @@ Step-by-Step Tasks:
   - [x] BUG-06.1. As a user, I want to be able to tap the timer component to return to today's date when scrolled far back in the past (e.g., Oct 2024), even if those dates weren't initially loaded.
     - Resolution: Enhanced scroll state management in CalendarGrid with improved handling of programmatic scrolling and coordination between components.
     - File: `components/ui/timer/SobrietyTimer.tsx`, `context/CalendarDataContext.tsx`
+- [x] bug-08. when refreshing the app or at app launch, The current day is not within the viewport of the screen. Today should be at the center of the screen, which is the expected behavior.
 
 ### Milestone 4: Core Feature Implementation
 Objective: Develop the main functionality of the application including calendar interaction, timer, and financial tracking.
