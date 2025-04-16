@@ -137,7 +137,7 @@ Step-by-Step Tasks:
 
 ### Phase 2: Frontend Implementation Bugs
 - [ ] bug-07. today is april 10, 2025, and it has not been marked as sober. however the timer still indicates a running elpase time as it was (81d, 10h, 38m, 01s). this should not be the case. the user must explicitly toggle the current day in order to keep the timer elapse time running. (screenshot on my desktop)
-- [ ] bug-08. when refreshing the app or at app launch, The current day is not within the viewport of the screen. Today should be at the center of the screen, which is the expected behavior.
+- [x] bug-08. when refreshing the app or at app launch, The current day is not within the viewport of the screen. Today should be at the center of the screen, which is the expected behavior.
 
 <!-- FIXED -->
 - [x] BUG-01. Implement dynamic and performant loading of past and future dates
