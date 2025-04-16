@@ -136,7 +136,6 @@ Step-by-Step Tasks:
     - File: `lib/storage/LocalStorageSobrietyRepository.ts`
 
 ### Phase 2: Frontend Implementation Bugs
-- [ ] bug-06. scrolling way back in the past dates (enough to load date not initially loaded on app start or refresh. eg. 0ct 2024), tapping the timer component does is broken and does not scroll you to current date as expected.
 - [ ] bug-07. today is april 10, 2025, and it has not been marked as sober. however the timer still indicates a running elpase time as it was (81d, 10h, 38m, 01s). this should not be the case. the user must explicitly toggle the current day in order to keep the timer elapse time running. (screenshot on my desktop)
 
 <!-- FIXED -->
@@ -156,6 +155,10 @@ Step-by-Step Tasks:
   - [x] BUG-05.1. As a user, I want all my marked calendar days to persist correctly when the app is refreshed.
     - Resolution: Updated CalendarDataContext to dynamically calculate date ranges for loaded data based on persisted entries.
     - File: `context/CalendarDataContext.tsx`
+- [x] BUG-06. Fix timer scroll functionality when navigating from distant past dates
+  - [x] BUG-06.1. As a user, I want to be able to tap the timer component to return to today's date when scrolled far back in the past (e.g., Oct 2024), even if those dates weren't initially loaded.
+    - Resolution: Enhanced scroll state management in CalendarGrid with improved handling of programmatic scrolling and coordination between components.
+    - File: `components/ui/timer/SobrietyTimer.tsx`, `context/CalendarDataContext.tsx`
 
 ### Milestone 4: Core Feature Implementation
 Objective: Develop the main functionality of the application including calendar interaction, timer, and financial tracking.
@@ -351,7 +354,9 @@ Step-by-Step Tasks:
 
 #### Editing Drink Quantity Form
 - [x] Tapping the timer will take you to the current day (quick way to get back to present day)
+    - File: `components/ui/timer/SobrietyTimer.tsx`, `context/CalendarDataContext.tsx`
     - Branch Name: `feat/timer-tap-to-today`
+    - Completed: April 16, 2025
 - [ ] 11.4. (Future Enhancement) Implement drink quantity management in settings
     - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
     - Branch Name: `feat/settings-drink-quantity-management`
