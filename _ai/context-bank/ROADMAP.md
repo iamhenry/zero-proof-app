@@ -216,9 +216,163 @@ Step-by-Step Tasks:
   - [x] 11.3. Connect SavingsCounter to calculate and display real-time savings
     - File: `components/ui/statistics/SavingsCounter.tsx` (to be updated)
     - Branch Name: `feat/savings-counter-integration`
-  - [ ] 11.4. (Future Enhancement) Implement drink quantity management in settings
+
+### Milestone 7: Onboarding and Monetization (MVP Focus)
+- Objective: Implement onboarding flow with drink quantity input and a freemium model with a 3-day trial for MVP launch.
+- Data Flow:
+  - Onboarding data (e.g., drink quantity) flows through form components to local storage.
+  - Drink quantity data feeds into savings calculations for display in the `SavingsCounter`.
+  - Trial status and payment data flow through Expo IAP to local state, stored in AsyncStorage.
+  - Onboarding completion state is tracked in local storage to prevent re-display.
+  - Paywall blocks access to protected screens if the trial has ended.
+- Acceptance Criteria:
+  - Onboarding flow with 7 screens (heatmap, streak, savings, drink input [2 screens], pricing, paywall) is implemented using `react-native-onboarding-swiper`.
+  - Users can input weekly drink quantity during onboarding, saved locally, but cannot edit it post-onboarding.
+  - Drink quantity is used to calculate and display savings in the `SavingsCounter`.
+  - Onboarding is shown only once per user, tracked via local storage.
+  - 3-day free trial with paywall triggers post-trial, integrated with Apple App Store subscriptions via Expo.
+  - Paywall blocks access to protected screens (e.g., home screen) if the trial has ended and no subscription is active.
+  - Superwall integration is deferred to post-launch.
+- Step-by-Step Tasks:
+  - [ ] 32. Implement onboarding flow
+    - [ ] 32.1. Integrate `react-native-onboarding-swiper` for multi-screen flow
+      - File: `app/(app)/onboarding.tsx` (to be created)
+      - Branch Name: `feat/onboarding-flow`
+    - [ ] 32.2. Reuse existing components (CalendarGrid, StreakCounter, SavingsCounter) for Screens 1-3
+      - Branch Name: `feat/onboarding-reuse-components`
+    - [ ] 32.3. Create drink quantity input form with keypad (Screens 4-5)
+      - File: `components/ui/onboarding/DrinkQuantityInput.tsx` (to be created)
+      - Branch Name: `feat/onboarding-drink-quantity`
+    - [ ] 32.4. Design pricing and paywall screens (Screens 6-7)
+      - File: `components/ui/onboarding/PaywallScreen.tsx` (to be created)
+      - Branch Name: `feat/onboarding-paywall`
+    - [ ] 32.5. Track onboarding completion in local storage to show only once
+      - File: `lib/storage/LocalStorageSobrietyRepository.ts` (to be expanded)
+      - Branch Name: `feat/onboarding-persistence`
+    - [ ] 32.6. Navigate to home screen after user starts trial
+      - File: `app/(app)/onboarding.tsx`
+      - Branch Name: `feat/onboarding-navigation`
+  - [ ] 33. Implement drink quantity storage and savings integration
+    - [ ] 33.1. Add form handling with React Hook Form and Zod
+      - File: `components/ui/onboarding/DrinkQuantityInput.tsx`
+    - [ ] 33.2. Save drink quantity to AsyncStorage
+      - File: `lib/storage/LocalStorageSobrietyRepository.ts` (to be expanded)
+      - Branch Name: `feat/local-drink-quantity-storage`
+    - [ ] 33.3. Connect drink quantity to savings calculations for display in `SavingsCounter`
+      - File: `components/ui/statistics/SavingsCounter.tsx` (to be updated)
+      - Branch Name: `feat/savings-drink-quantity-integration`
+  - [ ] 34. Implement freemium model with 3-day trial
+    - [ ] 34.1. Configure Expo `expo-in-app-purchases` for Apple App Store subscriptions
+      - File: `config/in-app-purchases.ts` (to be created)
+      - Branch Name: `feat/iap-subscription-setup`
+    - [ ] 34.2. Set 3-day trial expiration in local storage (AsyncStorage)
+      - File: `context/TrialStateContext.tsx` (to be created)
+      - Branch Name: `feat/trial-expiration`
+    - [ ] 34.3. Implement paywall display post-trial, blocking access to protected screens
+      - File: `components/ui/paywall/Paywall.tsx` (to be created)
+      - Branch Name: `feat/paywall-display`
+      - Note: If trial has ended and no subscription is active, redirect users to the paywall screen instead of allowing access to protected routes (e.g., home screen).
+    - [ ] 34.4. Handle trial persistence using local storage
+      - File: `context/TrialStateContext.tsx`
+      - Branch Name: `feat/trial-persistence`
+      - Note: Trial state is stored locally in AsyncStorage. If the app is deleted and reinstalled, the trial will reset (i.e., a new 3-day trial starts), as there is no remote storage (Supabase) to persist trial state across installs. This can be addressed post-launch with Supabase integration.
+
+## Phase 4: UI Polish & Optimization
+Enhance user experience with animations and optimizations.
+
+### Milestone 11: Visual Enhancements
+Objective: Add visual polish and animations to improve user experience.
+
+Data Flow:
+- Animation triggers flow through component state changes
+- Loading state data flows through dedicated loading components
+- Error data is handled through error components
+
+Acceptance Criteria:
+- Animations and transitions are implemented throughout the app
+- Loading states and error handling are implemented
+- UI is visually polished and consistent
+
+Step-by-Step Tasks:
+- [ ] 26. Add animations and transitions
+  - [ ] 26.1. Implement smooth animations for calendar day selections
+    - File: `components/ui/calendar/CalendarGrid.tsx` (to be expanded)
+    - Branch Name: `feat/ui-calendar-animations`
+  - [ ] 26.2. Add celebration animations when reaching streak milestones
+    - File: `lib/animations/index.ts` (to be created)
+    - Branch Name: `feat/ui-streak-celebration-animations`
+  - [ ] 26.3. Create smooth timer countdown animations
+    - File: `components/ui/timer/SobrietyTimer.tsx` (to be expanded)
+    - Branch Name: `feat/ui-timer-animations`
+  - [ ] 26.4. Implement fluid page transitions between screens
+    - File: `app/(app)/_layout.tsx` (to be expanded)
+    - Branch Name: `feat/ui-page-transitions`
+- [ ] 27. Implement loading states and error handling
+  - [ ] 27.1. Create skeleton screens for data loading states
+    - File: `components/ui/loading/Skeleton.tsx` (to be created)
+    - Branch Name: `feat/ui-skeleton-loaders`
+  - [ ] 27.2. Add user-friendly error messages with retry options
+    - File: `components/ui/feedback/ErrorMessage.tsx` (to be created)
+    - Branch Name: `feat/ui-error-messages`
+  - [ ] 27.3. Implement loading indicators for all async operations
+    - File: `components/ui/loading/Spinner.tsx` (to be created)
+    - Branch Name: `feat/ui-loading-spinners`
+
+### Milestone 13: Final Testing & Launch Prep
+Objective: Prepare the application for launch on app stores.
+
+Data Flow:
+- Testing results flow through QA process
+- App store data flows through submission process
+- Marketing materials flow through promotion channels
+
+Acceptance Criteria:
+- App store materials are prepared
+- App passes all testing
+- App is ready for submission
+
+Step-by-Step Tasks:
+- [ ] 31. App store preparation
+  - [ ] 31.1. Create screenshots showing key features on various device sizes
+    - File: `assets/store/screenshots/` (to be created)
+    - Branch Name: `chore/release-screenshots`
+  - [ ] 31.2. Write compelling app description highlighting unique benefits
+    - File: `docs/app-store/description.md` (to be created)
+    - Branch Name: `docs/release-app-description`
+  - [ ] 31.3. Prepare promotional graphics and videos for store listings
+    - File: `assets/store/promotional/` (to be created)
+    - Branch Name: `chore/release-promo-assets`
+
+------------------------
+
+# Backlog
+
+------------------------
+
+#### Editing Drink Quantity Form
+- [x] Tapping the timer will take you to the current day (quick way to get back to present day)
+    - Branch Name: `feat/timer-tap-to-today`
+- [ ] 11.4. (Future Enhancement) Implement drink quantity management in settings
     - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
     - Branch Name: `feat/settings-drink-quantity-management`
+
+#### Onboarding
+- [ ] 35. (Post-Launch) Integrate Superwall for remote paywall management
+    - [ ] 35.1. Set up Superwall SDK
+      - File: `config/superwall.ts` (to be created)
+      - Branch Name: `feat/superwall-integration`
+    - [ ] 35.2. Configure remote paywall updates
+      - Branch Name: `feat/remote-paywall-config`
+  - [ ] 36. (Post-Launch) Add trial expiration notifications
+    - [ ] 36.1. Implement push notification for trial nearing end
+      - File: `lib/services/notification-service.ts` (to be created)
+      - Branch Name: `feat/trial-expiration-notifications`
+  - [ ] 37. (Post-Launch) Add analytics for onboarding and monetization
+    - [ ] 37.1. Track onboarding completion, trial conversions, and subscriptions
+      - File: `lib/services/analytics-service.ts` (to be created)
+      - Branch Name: `feat/analytics-monetization`
+
+---
 
 
 ### Milestone 5: Progress Tracking Features
@@ -303,10 +457,12 @@ Step-by-Step Tasks:
    - Contexts should only manage component state and service calls
    - Services should contain pure business logic independent of UI
 
+---
+
 ## Phase 3: Backend Integration
 Connect frontend with Supabase backend services.
 
-### Milestone 6: Authentication & Database
+### Milestone 8: Authentication & Database
 Objective: Set up and integrate Supabase backend services for authentication and data storage.
 
 Data Flow:
@@ -355,7 +511,7 @@ Step-by-Step Tasks:
     - File: `lib/types/financial-data.ts` (to be created)
     - Branch Name: `feat/db-schema-financial-data`
 
-### Milestone 7: Data Synchronization
+### Milestone 9: Data Synchronization
 Objective: Implement robust data synchronization between local storage and Supabase backend.
 
 Data Flow:
@@ -395,7 +551,7 @@ Step-by-Step Tasks:
     - File: `lib/services/subscription-service.ts` (to be created)
     - Branch Name: `feat/sync-realtime-multi-device`
 
-### Milestone 8: End-to-End Testing
+### Milestone 10: End-to-End Testing
 Objective: Implement E2E tests for critical user flows to ensure integrated functionality.
 
 Data Flow:
@@ -421,48 +577,7 @@ Step-by-Step Tasks:
 - [ ] 25. Integrate E2E tests into CI pipeline
     - Branch Name: `ci/integrate-e2e-tests`
 
-## Phase 4: UI Polish & Optimization
-Enhance user experience with animations and optimizations.
-
-### Milestone 9: Visual Enhancements
-Objective: Add visual polish and animations to improve user experience.
-
-Data Flow:
-- Animation triggers flow through component state changes
-- Loading state data flows through dedicated loading components
-- Error data is handled through error components
-
-Acceptance Criteria:
-- Animations and transitions are implemented throughout the app
-- Loading states and error handling are implemented
-- UI is visually polished and consistent
-
-Step-by-Step Tasks:
-- [ ] 26. Add animations and transitions
-  - [ ] 26.1. Implement smooth animations for calendar day selections
-    - File: `components/ui/calendar/CalendarGrid.tsx` (to be expanded)
-    - Branch Name: `feat/ui-calendar-animations`
-  - [ ] 26.2. Add celebration animations when reaching streak milestones
-    - File: `lib/animations/index.ts` (to be created)
-    - Branch Name: `feat/ui-streak-celebration-animations`
-  - [ ] 26.3. Create smooth timer countdown animations
-    - File: `components/ui/timer/SobrietyTimer.tsx` (to be expanded)
-    - Branch Name: `feat/ui-timer-animations`
-  - [ ] 26.4. Implement fluid page transitions between screens
-    - File: `app/(app)/_layout.tsx` (to be expanded)
-    - Branch Name: `feat/ui-page-transitions`
-- [ ] 27. Implement loading states and error handling
-  - [ ] 27.1. Create skeleton screens for data loading states
-    - File: `components/ui/loading/Skeleton.tsx` (to be created)
-    - Branch Name: `feat/ui-skeleton-loaders`
-  - [ ] 27.2. Add user-friendly error messages with retry options
-    - File: `components/ui/feedback/ErrorMessage.tsx` (to be created)
-    - Branch Name: `feat/ui-error-messages`
-  - [ ] 27.3. Implement loading indicators for all async operations
-    - File: `components/ui/loading/Spinner.tsx` (to be created)
-    - Branch Name: `feat/ui-loading-spinners`
-
-### Milestone 10: Performance Optimization
+### Milestone 12: Performance Optimization
 Objective: Optimize application performance for a smooth user experience.
 
 Data Flow:
@@ -506,46 +621,3 @@ Step-by-Step Tasks:
   - [ ] 30.3. Add performance monitoring for slow operations
     - File: `lib/services/analytics-service.ts` (to be expanded)
     - Branch Name: `feat/analytics-performance-monitoring`
-
-### Milestone 11: Final Testing & Launch Prep
-Objective: Prepare the application for launch on app stores.
-
-Data Flow:
-- Testing results flow through QA process
-- App store data flows through submission process
-- Marketing materials flow through promotion channels
-
-Acceptance Criteria:
-- App store materials are prepared
-- App passes all testing
-- App is ready for submission
-
-Step-by-Step Tasks:
-- [ ] 31. App store preparation
-  - [ ] 31.1. Create screenshots showing key features on various device sizes
-    - File: `assets/store/screenshots/` (to be created)
-    - Branch Name: `chore/release-screenshots`
-  - [ ] 31.2. Write compelling app description highlighting unique benefits
-    - File: `docs/app-store/description.md` (to be created)
-    - Branch Name: `docs/release-app-description`
-  - [ ] 31.3. Prepare promotional graphics and videos for store listings
-    - File: `assets/store/promotional/` (to be created)
-    - Branch Name: `chore/release-promo-assets`
-
----
-
-## Backlog
-
-- [ ] 6. Build settings interface components 
-  - [ ] 6.1. Create drink cost configuration form with price inputs and frequency
-    - File: `components/ui/settings/DrinkCostForm.tsx` (to be created)
-    - Branch Name: `feat/settings-drink-cost-form`
-  - [ ] 6.2. Design account management UI with profile edit and password reset
-    - File: `components/ui/settings/AccountSection.tsx` (to be created)
-    - Branch Name: `feat/settings-account-management-ui`
-  - [ ] 6.3. Implement preferences section for app notification settings
-    - File: `components/ui/settings/PreferencesSection.tsx` (to be created)
-    - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
-    - Branch Name: `feat/settings-preferences-notifications`
-- [ ] Tapping the timer will take you to the current day (quick way to get back to present day)
-    - Branch Name: `feat/timer-tap-to-today`
