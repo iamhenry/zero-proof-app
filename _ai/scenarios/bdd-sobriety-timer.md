@@ -113,6 +113,21 @@ Feature: Sobriety Timer Behavior
     - [ ] Timer accurately reflects elapsed time after the app returns from the background.
     - [ ] Calculation uses the correct persisted/calculated streak start time.
 
+  Scenario 10: Timer Displays Zero When Today is Not Sober Despite Persisted Streak Data
+    Given the user had a continuous sobriety streak of 81 days until yesterday
+    And today is not marked as sober
+    And the app has persisted streak data from previous days
+    When the app loads
+    Then the timer should display "0d 0h 0m 0s" regardless of the persisted streak data
+    And the timer should not be running
+
+    Acceptance Criteria:
+    - [ ] Timer displays "0d 0h 0m 0s" when today is not marked as sober, even if there's a persisted streak.
+    - [ ] The timer does not increment while today remains unmarked as sober.
+    - [ ] The application correctly prioritizes the current day's sobriety status over persisted streak data.
+    - [ ] The persisted streak data is preserved for historical purposes but does not affect the timer display.
+    - [ ] When the user marks today as sober, the timer should resume from the persisted streak start time.
+
   Implementation Notes:
   - Relies on persisted streak data (`DayData` including optional `streakStartTimestampUTC`) from calendar interactions.
   - Requires local storage implementation (`LocalStorageSobrietyRepository`) for persistence.

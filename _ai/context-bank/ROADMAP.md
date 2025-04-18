@@ -136,7 +136,7 @@ Step-by-Step Tasks:
     - File: `lib/storage/LocalStorageSobrietyRepository.ts`
 
 ### Phase 2: Frontend Implementation Bugs
-- [ ] bug-07. today is april 10, 2025, and it has not been marked as sober. however the timer still indicates a running elpase time as it was (81d, 10h, 38m, 01s). this should not be the case. the user must explicitly toggle the current day in order to keep the timer elapse time running. (screenshot on my desktop)
+- [ ] bug-07. today is april 10, 2025, and it has not been marked as sober. however the timer still indicates a running elpase time as it was (81d, 10h, 38m, 01s). this should not be the case. the user must explicitly toggle the current day in order to keep the timer elapse time running. (screenshot on my desktop). This only occurs the following day when i come back to the app.
 
 
 <!-- FIXED -->
