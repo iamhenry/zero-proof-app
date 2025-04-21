@@ -1,20 +1,21 @@
 /**
  * FILE: components/ui/timer/SobrietyTimer.tsx
- * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext with calendar navigation.
+ * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext with enhanced calendar navigation.
  * FUNCTIONS:
- *   - SobrietyTimer({ status?: string }): JSX.Element -> Renders the animated timer component with customizable status text.
+ *   - SobrietyTimer({ status?: string, forceNotSober?: boolean }): JSX.Element -> Renders the animated timer component with customizable status text and testing support.
  *   - formatUnitValue(value: number): string -> Formats time unit numbers for display.
  *   - calculateElapsedTime(startTime: number | null): { d, h, m, s } -> Calculates time components from a start timestamp.
  * KEY FEATURES:
  *   - Real-time animated display of elapsed sobriety time
  *   - Smooth digit transitions using React Native Reanimated
- *   - Interactive functionality - tapping the timer scrolls calendar to today, with enhanced debugging
- *   - Integration with TimerStateContext for timer state management
- *   - Integration with CalendarDataContext for scrolling functionality
- *   - Debug logging for state changes and function availability
- *   - Intelligent handling of loading states
+ *   - Interactive functionality - tapping the timer scrolls calendar to today, with enhanced debugging and error handling
+ *   - Integration with TimerStateContext for timer state management and elapsed days tracking
+ *   - Integration with CalendarDataContext for robust scrolling functionality
+ *   - Comprehensive debug logging for state changes, function availability, and interactions
+ *   - Intelligent handling of loading and error states
  *   - Efficient interval-based updates with proper cleanup
  *   - Reliable calendar navigation even when scrolled far into past dates
+ *   - Support for testing scenarios with forceNotSober prop
  * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext, @/context/CalendarDataContext
  */
 
@@ -30,7 +31,7 @@ import Animated, {
 // Removed ISobrietyDataRepository and TimerState imports as they are handled by context
 // Removed useRepository import
 
-import { useTimerState } from "@/context/TimerStateContext"; // Import timer state context hook
+import { useTimerState, TimerStateProvider } from "@/context/TimerStateContext"; // Import timer state context hook and provider
 
 import { useCalendarContext } from "@/context/CalendarDataContext"; // Import calendar context hook
 type TimerUnit = {
@@ -40,6 +41,7 @@ type TimerUnit = {
 
 type SobrietyTimerProps = {
 	status?: string; // Status can still be passed or determined differently
+	forceNotSober?: boolean; // For testing purposes - indicates if today is marked as not sober
 };
 
 // Formats a number to a string with consistent width
@@ -69,13 +71,21 @@ const calculateElapsedTime = (
 };
 
 export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
-	// Get timer state from context, including elapsedDays
+	// Get timer state from context
 	const {
 		startTime,
 		isRunning,
 		elapsedDays,
 		isLoading: isTimerLoading,
+		stopTimer, // Add stopTimer to ensure we can stop the timer when needed
 	} = useTimerState();
+
+	// Stop timer when not running
+	useEffect(() => {
+		if (!isRunning && startTime !== null) {
+			stopTimer();
+		}
+	}, [isRunning, startTime, stopTimer]);
 
 	// Add debug logs for timer state changes
 	useEffect(() => {
@@ -108,51 +118,49 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 	const animOnes = useSharedValue(1);
 
 	// Effect to initialize display when timer state loads from context
+	// Update display values when timer state changes
 	useEffect(() => {
-		if (!isTimerLoading) {
-			// Only run after context has loaded initial state
-			if (isRunning && startTime) {
-				const elapsed = calculateElapsedTime(startTime);
-				// setDays(elapsed.d); // Removed, using elapsedDays from context
-				setHours(elapsed.h);
-				setMinutes(elapsed.m);
-				setSeconds(elapsed.s);
-				prevSecondsRef.current = elapsed.s.toString().padStart(2, "0");
-			} else {
-				// Reset display if timer is not running or startTime is null
-				// setDays(0); // Removed, using elapsedDays from context
-				setHours(0);
-				setMinutes(0);
-				setSeconds(0);
-				prevSecondsRef.current = "00";
-			}
-		}
-	}, [startTime, isRunning, isTimerLoading]); // Depend on context state and loading status
+		if (isTimerLoading) return;
 
-	// Removed Effect to keep startTimeRef updated
-
-	// Update timer display every second
-	useEffect(() => {
-		if (!isRunning || startTime === null || isTimerLoading) {
-			// Restored startTime === null check
-			// Clear interval if timer should not be running or is loading
-			// setDays(0); // Removed, using elapsedDays from context
+		// Always show zeros when not running or no start time
+		if (!isRunning || startTime === null) {
 			setHours(0);
 			setMinutes(0);
 			setSeconds(0);
 			prevSecondsRef.current = "00";
-			return; // Exit effect early
+			return;
+		}
+
+		// Update with elapsed time when running
+		const elapsed = calculateElapsedTime(startTime);
+		setHours(elapsed.h);
+		setMinutes(elapsed.m);
+		setSeconds(elapsed.s);
+		prevSecondsRef.current = elapsed.s.toString().padStart(2, "0");
+	}, [startTime, isRunning, isTimerLoading]);
+
+	// Removed Effect to keep startTimeRef updated
+
+	// Update timer display every second
+	// Handle timer updates
+	useEffect(() => {
+		if (isTimerLoading || !isRunning || startTime === null) {
+			return;
 		}
 
 		const timer = setInterval(() => {
-			// Use startTime from context directly
+			// Only update if still running and has start time
+			if (!isRunning || startTime === null) {
+				clearInterval(timer);
+				return;
+			}
 			const elapsed = calculateElapsedTime(startTime);
 			const prevFormattedSecs = prevSecondsRef.current;
 
-			// Update state for display
-			setSeconds(elapsed.s);
-			setMinutes(elapsed.m);
-			setHours(elapsed.h);
+			// Only update if values have changed
+			if (elapsed.s !== seconds) setSeconds(elapsed.s);
+			if (elapsed.m !== minutes) setMinutes(elapsed.m);
+			if (elapsed.h !== hours) setHours(elapsed.h);
 			// setDays(elapsed.d); // Removed, using elapsedDays from context
 
 			// Calculate next seconds value for animation
@@ -208,10 +216,12 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 		};
 	});
 
+	// Display zeros when not running
+	const shouldShowZeros = !isRunning || startTime === null;
 	const timerUnits: TimerUnit[] = [
-		{ value: formatUnitValue(elapsedDays), label: "d" }, // Use elapsedDays from context
-		{ value: formatUnitValue(hours), label: "h" },
-		{ value: formatUnitValue(minutes), label: "m" },
+		{ value: formatUnitValue(shouldShowZeros ? 0 : elapsedDays), label: "d" },
+		{ value: formatUnitValue(shouldShowZeros ? 0 : hours), label: "h" },
+		{ value: formatUnitValue(shouldShowZeros ? 0 : minutes), label: "m" },
 	];
 
 	// Handle loading state
@@ -227,7 +237,6 @@ export function SobrietyTimer({ status = "Sober" }: SobrietyTimerProps) {
 	}
 
 	return (
-		// Wrap the entire timer display in a TouchableOpacity
 		<TouchableOpacity
 			onPress={() => {
 				console.log("[SobrietyTimer] Timer tapped, calling scrollToToday");

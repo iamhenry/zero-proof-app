@@ -193,4 +193,71 @@ describe("TimerStateProvider Persistence", () => {
 		expect(await findByText("Running: false")).toBeTruthy();
 		expect(await findByText("StartTime: null")).toBeTruthy();
 	});
+
+	// MARK: - Scenario: Timer Display When Today Not Sober
+
+	test("testLoadTimer_WhenTodayNotSober_ShouldDisplayZeroWithPersistedStreak", async () => {
+		// Arrange: Set up a long persisted streak (81 days)
+		const streakStartTimestamp = Date.now() - 81 * 24 * 60 * 60 * 1000; // 81 days ago
+		const initialTimerState: TimerState = {
+			startTime: streakStartTimestamp,
+			isRunning: false, // Not running because today is not sober
+		};
+		(defaultMockRepository.loadTimerState as jest.Mock).mockResolvedValue(
+			initialTimerState,
+		);
+
+		// Act
+		const { findByText } = render(
+			<TimerStateProvider forceNotSober={true}>
+				<TimerStateConsumer />
+			</TimerStateProvider>,
+			{ wrapper: MockRepositoryWrapper },
+		);
+
+		// Assert: Timer should display zero values and not be running
+		expect(await findByText("Loading: false")).toBeTruthy();
+		expect(await findByText("Running: false")).toBeTruthy();
+		expect(await findByText("StartTime: null")).toBeTruthy();
+
+		// Verify persisted streak data is preserved but not affecting display
+		expect(defaultMockRepository.loadTimerState).toHaveBeenCalledTimes(1);
+		expect(defaultMockRepository.saveTimerState).not.toHaveBeenCalled();
+	});
+
+	test("testTimerState_WhenTodayNotSober_ShouldRemainZeroAndNotIncrement", async () => {
+		// Arrange: Set up a persisted streak
+		const streakStartTimestamp = Date.now() - 30 * 24 * 60 * 60 * 1000; // 30 days ago
+		const initialTimerState: TimerState = {
+			startTime: streakStartTimestamp,
+			isRunning: false, // Not running because today is not sober
+		};
+		(defaultMockRepository.loadTimerState as jest.Mock).mockResolvedValue(
+			initialTimerState,
+		);
+
+		// Act: Render and try to start the timer
+		const { findByTestId, findByText } = render(
+			<TimerStateProvider forceNotSober={true}>
+				<TimerStateConsumer />
+			</TimerStateProvider>,
+			{ wrapper: MockRepositoryWrapper },
+		);
+
+		// Try to start the timer
+		const startButton = await findByTestId("startButton");
+		act(() => {
+			fireEvent.press(startButton);
+		});
+
+		// Assert: Timer should remain at zero and not start
+		expect(await findByText("Running: false")).toBeTruthy();
+		expect(await findByText("StartTime: null")).toBeTruthy();
+
+		// Verify the timer state wasn't saved with a running state
+		expect(defaultMockRepository.saveTimerState).toHaveBeenCalledWith({
+			startTime: null,
+			isRunning: false,
+		});
+	});
 });

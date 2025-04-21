@@ -2,7 +2,7 @@
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: April 16, 2025, 04:17 PM
+- Last Update: April 18, 2025, 10:33 AM
 - Current Phase: Phase 2 - Frontend Implementation
 - Overall Progress: ~65%
 - Completed Milestones: 2/7
@@ -18,6 +18,24 @@
 - Current Focus: Enhancing cross-component interactions and user navigation patterns
 
 ---
+
+## Version 0.1.10 - April 18, 2025 10:33 AM
+
+### Fixed
+
+- Bug Description Enhancement
+  - Description: Updated the description of bug-07 to clarify that the timer incorrectly displays elapsed time when the current day is not marked as sober, specifically noting that this issue occurs when returning to the app the following day.
+  - Why: To ensure the roadmap accurately reflects the ongoing issues related to timer functionality, contributing to the overall progress of frontend implementation tasks.
+  - Impact: Better understanding of the timer behavior issue for future fixes.
+  - Reference: Commit 59b8916.
+
+### Added
+
+- Enhanced Test Coverage
+  - Description: Added new BDD scenarios to verify the expected behavior of the timer under specific conditions.
+  - Why: To improve test coverage and validation of the application's sobriety tracking features.
+  - Impact: More comprehensive testing of timer functionality edge cases.
+  - Reference: Commit 59b8916.
 
 ## Version 0.1.9 - April 16, 2025 04:17 PM
 

@@ -1,5 +1,34 @@
 # MEMORY.md
 
+## [Apr 18, 2025 10:33 AM] Bug Description Clarity: Improving Documentation for Timer Behavior Issues
+Context: Enhanced the description of bug-07 to clarify the specific conditions under which the timer incorrectly displays elapsed time.
+Lesson:
+- Precise Bug Documentation: Detailed bug descriptions that include:
+  - Exact conditions that trigger the issue (current day not marked as sober)
+  - Specific timing of occurrence (when returning to the app the following day)
+  - Expected vs. actual behavior
+  - Impact on user experience
+- Test Coverage for Edge Cases: Added BDD scenarios to verify timer behavior under specific conditions, ensuring:
+  - Comprehensive test coverage for edge cases
+  - Clear validation criteria for bug fixes
+  - Documentation of expected behavior for future reference
+- Documentation as Communication: Well-documented bugs serve multiple purposes:
+  - Guide developers working on fixes
+  - Provide context for QA testing
+  - Create historical record of issues and their resolution
+  - Ensure consistent understanding across the team
+Related Methods/Concepts:
+- Bug tracking and documentation
+- BDD scenario writing
+- Edge case identification
+- Test coverage planning
+- Technical documentation standards
+Future Improvements:
+- Consider implementing a standardized bug documentation template
+- Add visual documentation (screenshots, diagrams) for complex UI behavior issues
+- Link bug descriptions directly to relevant test scenarios
+- Track bug patterns to identify potential architectural improvements
+
 ## [Apr 16, 2025 04:17 PM] Enhanced Cross-Component Interactions via Context: Timer-to-Calendar Navigation
 Context: Expanded and improved the feature (US-15) where tapping the SobrietyTimer component automatically scrolls the CalendarGrid to center today's date, with specific focus on handling edge cases like scrolling from distant past dates.
 Lesson:

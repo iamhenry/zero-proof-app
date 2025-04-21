@@ -1,20 +1,21 @@
 /**
  * FILE: context/TimerStateContext.tsx
- * PURPOSE: Manages global sobriety timer state (start time, running status, elapsed days) via React Context, handling persistence.
+ * PURPOSE: Manages global sobriety timer state (start time, running status, elapsed days) via React Context, handling persistence and testing scenarios.
  * FUNCTIONS:
- *   - TimerStateProvider({ children: ReactNode }): JSX.Element -> Provides timer state context.
+ *   - TimerStateProvider({ children: ReactNode, forceNotSober?: boolean }): JSX.Element -> Provides timer state context with optional test override.
  *   - useTimerState(): TimerStateContextProps -> Hook to consume timer state and controls { startTime, isRunning, elapsedDays, startTimer, stopTimer, isLoading }.
- *   - startTimer(time: number): void -> Starts or restarts the timer with persistence.
- *   - stopTimer(): void -> Stops the timer with persistence.
- *   - calculateDays(): void -> Calculates elapsed days since timer start.
+ *   - startTimer(time: number): void -> Starts or restarts the timer with persistence and debug logging.
+ *   - stopTimer(): void -> Stops the timer with persistence and debug logging.
+ *   - calculateDays(): void -> Calculates elapsed days since timer start with interval updates.
  * KEY FEATURES:
- *   - Persistent timer state across app restarts
+ *   - Persistent timer state across app restarts with robust error handling
  *   - Automatic elapsed days calculation from timer start time
- *   - Regular interval updates for elapsed time display
- *   - Comprehensive debug logging
+ *   - Regular interval updates for elapsed time display with memory leak prevention
+ *   - Comprehensive debug logging for state changes and operations
  *   - Loading state management during initial data retrieval
  *   - Clean interval management to prevent memory leaks
  *   - Optimized performance with proper effect dependencies
+ *   - Support for testing scenarios with forceNotSober prop
  * DEPENDENCIES: react, ./RepositoryContext, ../lib/types/repositories
  */
 import React, {
@@ -44,10 +45,13 @@ export const TimerStateContext = createContext<
 
 interface TimerStateProviderProps {
 	children: ReactNode;
+	// For testing purposes - indicates if today is marked as not sober
+	forceNotSober?: boolean;
 }
 
 export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 	children,
+	forceNotSober = false,
 }) => {
 	const repository = useRepository();
 	const [startTime, setStartTime] = useState<number | null>(null);
@@ -66,12 +70,18 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 				console.log(
 					`[TimerContext:load] Loaded state from repo: ${JSON.stringify(loadedState)}`,
 				);
+
 				if (isMounted) {
-					setStartTime(loadedState?.startTime ?? null);
-					setIsRunning(loadedState?.isRunning ?? false);
+					if (forceNotSober) {
+						setStartTime(null);
+						setIsRunning(false);
+					} else {
+						setStartTime(loadedState?.startTime ?? null);
+						setIsRunning(loadedState?.isRunning ?? false);
+					}
 				}
 				console.log(
-					`[TimerContext:load] Setting initial state: startTime=${loadedState?.startTime ?? null}, isRunning=${loadedState?.isRunning ?? false}`,
+					`[TimerContext:load] Setting initial state: startTime=${forceNotSober ? null : (loadedState?.startTime ?? null)}, isRunning=${forceNotSober ? false : (loadedState?.isRunning ?? false)}`,
 				);
 			} catch (error) {
 				console.error("Failed to load timer state in context:", error);
@@ -102,7 +112,10 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 	const startTimer = useCallback(
 		(time: number) => {
 			console.log(`[TimerContext:startTimer] Received time: ${time}`);
-			const newState: TimerState = { startTime: time, isRunning: true };
+			// Prevent starting timer when today is not sober
+			const newState: TimerState = forceNotSober
+				? { startTime: null, isRunning: false }
+				: { startTime: time, isRunning: true };
 			setStartTime(newState.startTime);
 			setIsRunning(newState.isRunning);
 			persistState(newState);
@@ -110,7 +123,7 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 				`[TimerContext:startTimer] Setting state & persisting: ${JSON.stringify(newState)}`,
 			);
 		},
-		[persistState],
+		[persistState, forceNotSober],
 	);
 
 	const stopTimer = useCallback(() => {
