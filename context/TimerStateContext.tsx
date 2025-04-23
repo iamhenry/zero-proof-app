@@ -6,7 +6,6 @@
  *   - useTimerState(): TimerStateContextProps -> Hook to consume timer state and controls { startTime, isRunning, elapsedDays, startTimer, stopTimer, isLoading }.
  *   - startTimer(time: number): void -> Starts or restarts the timer with persistence and debug logging.
  *   - stopTimer(): void -> Stops the timer with persistence and debug logging.
- *   - calculateDays(): void -> Calculates elapsed days since timer start with interval updates.
  * KEY FEATURES:
  *   - Persistent timer state across app restarts with robust error handling
  *   - Automatic elapsed days calculation from timer start time
@@ -26,8 +25,9 @@ import React, {
 	useCallback,
 	ReactNode,
 } from "react";
+import dayjs from "dayjs"; // Import dayjs
 import { useRepository } from "./RepositoryContext";
-import { TimerState } from "../lib/types/repositories";
+import { TimerState, StoredDayData } from "../lib/types/repositories"; // Add StoredDayData
 
 export interface TimerStateContextProps {
 	// Export this interface
@@ -72,17 +72,64 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 				);
 
 				if (isMounted) {
-					if (forceNotSober) {
-						setStartTime(null);
-						setIsRunning(false);
-					} else {
-						setStartTime(loadedState?.startTime ?? null);
-						setIsRunning(loadedState?.isRunning ?? false);
+					// Determine initial state based on loaded data and forceNotSober
+					let initialStartTime = loadedState?.startTime ?? null;
+					let initialIsRunning = loadedState?.isRunning ?? false;
+
+					// --- Verification Step ---
+					// If persisted state says running, double-check today's actual status from repo
+					// Only run verification if not already forced sober
+					if (initialIsRunning && !forceNotSober) {
+						try {
+							const todayStr = dayjs().format("YYYY-MM-DD");
+							const todayStatus: StoredDayData | null =
+								await repository.loadDayStatus(todayStr);
+							// Treat null/undefined status or explicitly false as not sober
+							const isTodayActuallySober =
+								typeof todayStatus === "boolean"
+									? todayStatus
+									: (todayStatus?.sober ?? false);
+
+							if (!isTodayActuallySober) {
+								console.log(
+									`[TimerContext:load] Verification failed: Persisted running=true, but today (${todayStr}) is not sober in repo. Overriding state.`,
+								);
+								initialStartTime = null;
+								initialIsRunning = false;
+							} else {
+								console.log(
+									`[TimerContext:load] Verification passed: Persisted running=true and today (${todayStr}) is sober in repo.`,
+								);
+							}
+						} catch (verifyError) {
+							console.error(
+								"[TimerContext:load] Error verifying today's status, defaulting to stop timer:",
+								verifyError,
+							);
+							initialStartTime = null;
+							initialIsRunning = false;
+						}
 					}
+					// --- End Verification Step ---
+
+					// Apply forceNotSober override *after* verification if necessary (it takes precedence)
+					if (forceNotSober) {
+						initialStartTime = null;
+						initialIsRunning = false;
+						console.log(
+							`[TimerContext:load] forceNotSober=true. Final initial state: startTime=${initialStartTime}, isRunning=${initialIsRunning}`,
+						);
+					} else {
+						// Log the state *after* potential verification override but *before* forceNotSober check
+						console.log(
+							`[TimerContext:load] State after verification (before forceNotSober check): startTime=${initialStartTime}, isRunning=${initialIsRunning}`,
+						);
+					}
+
+					// Set the final determined initial state directly
+					setStartTime(initialStartTime);
+					setIsRunning(initialIsRunning);
 				}
-				console.log(
-					`[TimerContext:load] Setting initial state: startTime=${forceNotSober ? null : (loadedState?.startTime ?? null)}, isRunning=${forceNotSober ? false : (loadedState?.isRunning ?? false)}`,
-				);
 			} catch (error) {
 				console.error("Failed to load timer state in context:", error);
 			} finally {
@@ -96,7 +143,8 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 		return () => {
 			isMounted = false;
 		};
-	}, [repository]); // Only depends on repository instance
+		// Only depends on repository and forceNotSober prop
+	}, [repository, forceNotSober]);
 
 	const persistState = useCallback(
 		async (newState: TimerState) => {
@@ -112,7 +160,7 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 	const startTimer = useCallback(
 		(time: number) => {
 			console.log(`[TimerContext:startTimer] Received time: ${time}`);
-			// Prevent starting timer when today is not sober
+			// Prevent starting timer when today is not sober (using forceNotSober prop)
 			const newState: TimerState = forceNotSober
 				? { startTime: null, isRunning: false }
 				: { startTime: time, isRunning: true };
@@ -123,6 +171,7 @@ export const TimerStateProvider: React.FC<TimerStateProviderProps> = ({
 				`[TimerContext:startTimer] Setting state & persisting: ${JSON.stringify(newState)}`,
 			);
 		},
+		// Only depends on persistState and forceNotSober prop
 		[persistState, forceNotSober],
 	);
 

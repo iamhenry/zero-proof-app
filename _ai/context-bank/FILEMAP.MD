@@ -62,21 +62,21 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: context/TimerStateContext.tsx
- * PURPOSE: Manages global sobriety timer state (start time, running status, elapsed days) via React Context, handling persistence.
+ * PURPOSE: Manages global sobriety timer state (start time, running status, elapsed days) via React Context, handling persistence and testing scenarios.
  * FUNCTIONS:
- *   - TimerStateProvider({ children: ReactNode }): JSX.Element -> Provides timer state context.
+ *   - TimerStateProvider({ children: ReactNode, forceNotSober?: boolean }): JSX.Element -> Provides timer state context with optional test override.
  *   - useTimerState(): TimerStateContextProps -> Hook to consume timer state and controls { startTime, isRunning, elapsedDays, startTimer, stopTimer, isLoading }.
- *   - startTimer(time: number): void -> Starts or restarts the timer with persistence.
- *   - stopTimer(): void -> Stops the timer with persistence.
- *   - calculateDays(): void -> Calculates elapsed days since timer start.
+ *   - startTimer(time: number): void -> Starts or restarts the timer with persistence and debug logging.
+ *   - stopTimer(): void -> Stops the timer with persistence and debug logging.
  * KEY FEATURES:
- *   - Persistent timer state across app restarts
+ *   - Persistent timer state across app restarts with robust error handling
  *   - Automatic elapsed days calculation from timer start time
- *   - Regular interval updates for elapsed time display
- *   - Comprehensive debug logging
+ *   - Regular interval updates for elapsed time display with memory leak prevention
+ *   - Comprehensive debug logging for state changes and operations
  *   - Loading state management during initial data retrieval
  *   - Clean interval management to prevent memory leaks
  *   - Optimized performance with proper effect dependencies
+ *   - Support for testing scenarios with forceNotSober prop
  * DEPENDENCIES: react, ./RepositoryContext, ../lib/types/repositories
  */
 ```
@@ -211,20 +211,22 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/timer/SobrietyTimer.tsx
- * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext.
+ * PURPOSE: Displays an animated sobriety timer (d/h/m/s) using state from TimerStateContext with enhanced calendar navigation.
  * FUNCTIONS:
- *   - SobrietyTimer({ status?: string }): JSX.Element -> Renders the animated timer component with customizable status text.
+ *   - SobrietyTimer({ status?: string, forceNotSober?: boolean }): JSX.Element -> Renders the animated timer component with customizable status text and testing support.
  *   - formatUnitValue(value: number): string -> Formats time unit numbers for display.
  *   - calculateElapsedTime(startTime: number | null): { d, h, m, s } -> Calculates time components from a start timestamp.
  * KEY FEATURES:
  *   - Real-time animated display of elapsed sobriety time
  *   - Smooth digit transitions using React Native Reanimated
- *   - Interactive functionality - tapping the timer scrolls calendar to today
- *   - Integration with TimerStateContext for timer state management
- *   - Integration with CalendarDataContext for scrolling functionality
- *   - Intelligent handling of loading states
- *   - Efficient interval-based updates
- *   - Debug logging for state change tracking
+ *   - Interactive functionality - tapping the timer scrolls calendar to today, with enhanced debugging and error handling
+ *   - Integration with TimerStateContext for timer state management and elapsed days tracking
+ *   - Integration with CalendarDataContext for robust scrolling functionality
+ *   - Comprehensive debug logging for state changes, function availability, and interactions
+ *   - Intelligent handling of loading and error states
+ *   - Efficient interval-based updates with proper cleanup
+ *   - Reliable calendar navigation even when scrolled far into past dates
+ *   - Support for testing scenarios with forceNotSober prop
  * DEPENDENCIES: react, react-native, react-native-reanimated, @/context/TimerStateContext, @/context/CalendarDataContext
  */
 ```

@@ -2,14 +2,14 @@
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: April 18, 2025, 10:33 AM
+- Last Update: April 21, 2025, 11:04 AM
 - Current Phase: Phase 2 - Frontend Implementation
 - Overall Progress: ~65%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
-- Current Branch: feat/timer-tap-to-today
-- Latest Release: Version 0.1.9
+- Current Branch: feat/timer-display-bug-fix
+- Latest Release: Version 0.1.11
 
 ## Key Metrics
 - Features Completed: ~49/82 (~60% based on sub-tasks)
@@ -18,6 +18,44 @@
 - Current Focus: Enhancing cross-component interactions and user navigation patterns
 
 ---
+
+## Version 0.1.11 - April 21, 2025 11:04 AM
+
+### Fixed
+
+- Timer Display Bug (bug-07)
+  - Description: Updated SobrietyTimer component to correctly display zero when today is not marked as sober, fixing the issue where the timer incorrectly showed elapsed time even when the current day was not sober.
+  - Why: To ensure the timer accurately reflects the user's current sobriety status, preventing confusion when returning to the app the following day.
+  - Impact: More accurate and consistent timer display that aligns with the calendar's sobriety tracking.
+  - Reference: Commit 7a84c5c.
+
+### Added
+
+- Enhanced Testing Support
+  - Description: Added `forceNotSober` prop to `SobrietyTimer` and `TimerStateProvider` components for improved testing of timer behavior under specific conditions.
+  - Why: To enable better test coverage for edge cases related to the timer's state and display, particularly when today is not marked as sober.
+  - Impact: More comprehensive testing capabilities for timer-related functionality.
+  - Reference: Commit 7a84c5c.
+
+- New Persistence Tests
+  - Description: Added new persistence tests for `SobrietyTimer` to verify correct behavior when today is not sober.
+  - Why: To ensure the timer state and display are handled correctly in scenarios where the user has a streak but the current day is not marked as sober.
+  - Impact: Increased test coverage and confidence in timer functionality.
+  - Reference: Commit 7a84c5c.
+
+### Changed
+
+- Timer State Verification
+  - Description: Enhanced `TimerStateContext` with a verification step that checks if today is actually marked as sober in the repository.
+  - Why: To prevent the timer from running when today is not marked as sober, ensuring consistency between the timer and calendar data.
+  - Impact: More reliable timer behavior that accurately reflects the user's current sobriety status.
+  - Reference: Commit 7a84c5c.
+
+- Documentation Updates
+  - Description: Updated CHANGELOG, MEMORY, and ROADMAP to reflect the fix for bug-07 and the addition of new tests.
+  - Why: To maintain accurate documentation of project progress, bug status, and lessons learned.
+  - Impact: Better tracking of project history and development decisions.
+  - Reference: Commit 7a84c5c.
 
 ## Version 0.1.10 - April 18, 2025 10:33 AM
 

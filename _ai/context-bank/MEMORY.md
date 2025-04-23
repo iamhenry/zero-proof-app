@@ -1,5 +1,36 @@
 # MEMORY.md
 
+## [Apr 21, 2025 11:04 AM] Timer State Verification: Ensuring Consistency Between Timer Display and Calendar Data
+Context: Fixed bug-07 where the timer incorrectly displayed elapsed time even when the current day was not marked as sober, particularly when returning to the app the following day.
+Lesson:
+- State Verification for Persisted Data: When loading persisted state that affects UI display (like timer running status):
+  - Always verify the loaded state against current application conditions
+  - Implement explicit verification steps that check if persisted state is still valid
+  - Override persisted state when conditions have changed (e.g., today is no longer marked as sober)
+  - Add detailed logging of verification steps and decisions for debugging
+- Testing Edge Cases with Props: Added `forceNotSober` prop to components for testing specific conditions:
+  - Enables direct testing of edge cases without complex setup
+  - Allows simulation of specific application states that might be difficult to reproduce
+  - Improves test coverage for conditional behavior
+  - Separates test concerns from production code
+- Component Behavior Consistency: Ensuring timer display accurately reflects calendar data:
+  - Timer should display zero when today is not marked as sober, regardless of streak history
+  - Persisted timer state should be overridden when today's status changes
+  - UI components should have consistent behavior across app restarts and day transitions
+  - User expectations about timer behavior should be clearly documented and tested
+Related Methods/Concepts:
+- State persistence and verification
+- React Context API
+- Component props for testing
+- Edge case testing
+- Conditional rendering based on application state
+- Debug logging for state transitions
+Future Improvements:
+- Consider implementing a more robust state verification system for all persisted data
+- Add automated tests that simulate day transitions to catch similar issues
+- Enhance debug logging with timestamps and context identifiers
+- Create a visual indicator when timer is stopped due to today not being marked as sober
+
 ## [Apr 18, 2025 10:33 AM] Bug Description Clarity: Improving Documentation for Timer Behavior Issues
 Context: Enhanced the description of bug-07 to clarify the specific conditions under which the timer incorrectly displays elapsed time.
 Lesson:

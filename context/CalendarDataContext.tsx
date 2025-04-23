@@ -6,7 +6,7 @@
  *   - useCalendarContext(): CalendarContextProps -> Hook to consume the calendar context.
  *   - scrollToToday(): void -> Enhanced function to scroll calendar to today's date with error handling, platform-specific animations, and dynamic index calculations.
  *   - toggleSoberDay(date: string): Promise<void> -> Toggles sobriety status for a day with conditional timer effects.
- *   - recalculateStreaksAndIntensity(): { updatedWeeks, currentStreak, longestStreak, streakStartDayData } -> Recalculates streak data with data integrity checks.
+ *   - recalculateStreaksAndIntensity(currentWeeks: WeekData[]): { updatedWeeks, currentStreak, longestStreak, streakStartDayData } -> Recalculates streak data with data integrity checks.
  * KEY FEATURES:
  *   - Dynamic calendar data generation and loading
  *   - Persistent storage of sobriety status
@@ -361,16 +361,39 @@ export const CalendarDataProvider: React.FC<CalendarProviderProps> = ({
 
 				setWeeks(updatedWeeks);
 
-				// Prioritize loaded streak data
-				const finalCurrentStreak =
-					loadedStreakData?.currentStreak ?? calculatedCurrent;
+				// --- Fix: Ensure today's status overrides persisted current streak ---
+				const todayStr = dayjs().format("YYYY-MM-DD");
+				const todayData = updatedWeeks
+					.flatMap((w) => w.days)
+					.find((d) => d.id === todayStr);
+				const isTodaySober = todayData?.sober ?? false; // Default to false if not found
+
+				let finalCurrentStreak = calculatedCurrent; // Start with calculated
+
+				if (!isTodaySober) {
+					// If today is NOT sober, the current streak MUST be 0.
+					finalCurrentStreak = 0;
+					console.log(
+						`[CalendarContext:loadInitialData] Today (${todayStr}) is NOT sober. Forcing currentStreak to 0.`,
+					);
+				} else {
+					// If today IS sober, use persisted value if available, otherwise the calculated one.
+					finalCurrentStreak =
+						loadedStreakData?.currentStreak ?? calculatedCurrent;
+					console.log(
+						`[CalendarContext:loadInitialData] Today (${todayStr}) is sober. Using persisted/calculated streak: ${finalCurrentStreak}`,
+					);
+				}
+
+				// Longest streak is independent of today's status, prioritize loaded if available
 				const finalLongestStreak =
 					loadedStreakData?.longestStreak ?? calculatedLongest;
+				// --- End Fix ---
 
 				setCurrentStreak(finalCurrentStreak);
-				setLongestStreak(finalLongestStreak); // Set longest streak from loaded or calculated
+				setLongestStreak(finalLongestStreak); // Set longest streak
 
-				// Timer initialization
+				// Timer initialization (uses the corrected finalCurrentStreak)
 				if (finalCurrentStreak > 0 && streakStartDayData) {
 					const effectiveStartTimeUTC =
 						streakStartDayData.streakStartTimestampUTC ??

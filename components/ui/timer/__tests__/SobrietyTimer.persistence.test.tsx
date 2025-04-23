@@ -10,7 +10,12 @@ import {
 	TimerState,
 	ISobrietyDataRepository,
 } from "../../../../lib/types/repositories"; // Use relative path
-import { defaultMockRepository } from "../../../../lib/test-utils"; // Use relative path
+import {
+	createTestWrapper,
+	defaultMockRepository,
+	// defaultMockCalendarContext, // Removed as it's no longer used after refactor
+} from "../../../../lib/test-utils"; // Use relative path
+// Remove the duplicate defaultMockRepository import below
 
 // --- Test Setup ---
 
@@ -89,6 +94,8 @@ describe("TimerStateProvider Persistence", () => {
 		(defaultMockRepository.loadTimerState as jest.Mock).mockResolvedValue(
 			initialTimerState,
 		);
+		// Simulate today being sober so the persisted running state is applied
+		(defaultMockRepository.loadDayStatus as jest.Mock).mockResolvedValue(true);
 
 		// Act
 		const { findByText } = render(
@@ -165,6 +172,8 @@ describe("TimerStateProvider Persistence", () => {
 		(defaultMockRepository.loadTimerState as jest.Mock).mockResolvedValue(
 			initialTimerState,
 		);
+		// Simulate today being sober so the persisted running state is applied initially
+		(defaultMockRepository.loadDayStatus as jest.Mock).mockResolvedValue(true);
 
 		const { findByTestId, findByText } = render(
 			<TimerStateProvider>
@@ -192,6 +201,43 @@ describe("TimerStateProvider Persistence", () => {
 		});
 		expect(await findByText("Running: false")).toBeTruthy();
 		expect(await findByText("StartTime: null")).toBeTruthy();
+	});
+
+	// MARK: - Scenario: Initialization with Persisted Running Timer but Today Not Sober
+
+	test("testInitialLoad_WhenPersistedRunningAndTodayNotSober_ShouldStopTimer", async () => {
+		// Arrange: Mock persisted state indicating timer was running
+		const initialTimestamp = Date.now() - 3600000; // 1 hour ago
+		const persistedTimerState: TimerState = {
+			startTime: initialTimestamp,
+			isRunning: true, // Persisted state says it *was* running
+		};
+		(defaultMockRepository.loadTimerState as jest.Mock).mockResolvedValue(
+			persistedTimerState,
+		);
+
+		// Arrange: Mock repository to indicate today is NOT sober
+		(defaultMockRepository.loadDayStatus as jest.Mock).mockResolvedValue(false); // Or null
+
+		// Act: Render the provider and consumer
+		const { findByText } = render(
+			<TimerStateProvider>
+				<TimerStateConsumer />
+			</TimerStateProvider>,
+			{ wrapper: MockRepositoryWrapper }, // Use the standard repository wrapper
+		);
+
+		// Assert: Check that despite persisted 'isRunning: true', the final state is stopped because today is not sober
+		// This assertion *should* fail due to the bug
+		expect(await findByText("Loading: false")).toBeTruthy();
+		expect(await findByText("Running: false")).toBeTruthy(); // EXPECTED: false (Bug makes this true)
+		expect(await findByText("StartTime: null")).toBeTruthy(); // EXPECTED: null (Bug makes this the persisted timestamp)
+
+		// Verify load was called, but save shouldn't be called *yet* (until Green phase fixes it)
+		expect(defaultMockRepository.loadTimerState).toHaveBeenCalledTimes(1);
+		// Depending on implementation, the fix might involve saving the corrected state.
+		// For the RED phase, we primarily care that the *initial* state is wrong.
+		// expect(defaultMockRepository.saveTimerState).not.toHaveBeenCalled();
 	});
 
 	// MARK: - Scenario: Timer Display When Today Not Sober

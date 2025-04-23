@@ -137,6 +137,7 @@ Step-by-Step Tasks:
 
 ### Phase 2: Frontend Implementation Bugs
 - [x] bug-07. today is april 10, 2025, and it has not been marked as sober. however the timer still indicates a running elpase time as it was (81d, 10h, 38m, 01s). this should not be the case. the user must explicitly toggle the current day in order to keep the timer elapse time running. (screenshot on my desktop). This only occurs the following day when i come back to the app.
+  - Fixed in commit 7a84c5c (Apr 21, 2025): Added verification step in TimerStateContext to check if today is actually marked as sober, and enhanced SobrietyTimer to display zero when today is not sober.
 
 
 <!-- FIXED -->
