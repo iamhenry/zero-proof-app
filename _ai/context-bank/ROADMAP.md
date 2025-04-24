@@ -232,7 +232,7 @@ Step-by-Step Tasks:
   - Onboarding completion state is tracked in local storage to prevent re-display.
   - Paywall blocks access to protected screens if the trial has ended.
 - Acceptance Criteria:
-  - Onboarding flow with 7 screens (heatmap, streak, savings, drink input [2 screens], pricing, paywall) is implemented using `react-native-onboarding-swiper`.
+  - Onboarding flow with 5 screens (heatmap, streak, savings, drink input, paywall) is implemented using `react-native-onboarding-swiper`.
   - Users can input weekly drink quantity during onboarding, saved locally, but cannot edit it post-onboarding.
   - Drink quantity is used to calculate and display savings in the `SavingsCounter`.
   - Onboarding is shown only once per user, tracked via local storage.
@@ -241,15 +241,15 @@ Step-by-Step Tasks:
   - Superwall integration is deferred to post-launch.
 - Step-by-Step Tasks:
   - [ ] 32. Implement onboarding flow
-    - [ ] 32.1. Integrate `react-native-onboarding-swiper` for multi-screen flow
+    - [ ] 32.1. Integrate `react-native-onboarding-swiper` for multi-screen flow (ensure `showSkip={false}`)
       - File: `app/(app)/onboarding.tsx` (to be created)
       - Branch Name: `feat/onboarding-flow`
-    - [ ] 32.2. Reuse existing components (CalendarGrid, StreakCounter, SavingsCounter) for Screens 1-3
-      - Branch Name: `feat/onboarding-reuse-components`
-    - [ ] 32.3. Create drink quantity input form with keypad (Screens 4-5)
+    - [ ] 32.2. Use static images for Screens 1-3 (copy TBD, replaces component reuse)
+      - Branch Name: `feat/onboarding-static-images`
+    - [ ] 32.3. Create reusable placeholder drink quantity input form (Screen 4) using number pad input and Zod validation (defer editing functionality)
       - File: `components/ui/onboarding/DrinkQuantityInput.tsx` (to be created)
       - Branch Name: `feat/onboarding-drink-quantity`
-    - [ ] 32.4. Design pricing and paywall screens (Screens 6-7)
+    - [ ] 32.4. Design paywall screen (Screen 5) with a simple dismissal button (simulates purchase for now)
       - File: `components/ui/onboarding/PaywallScreen.tsx` (to be created)
       - Branch Name: `feat/onboarding-paywall`
     - [ ] 32.5. Track onboarding completion in local storage to show only once
@@ -258,13 +258,13 @@ Step-by-Step Tasks:
     - [ ] 32.6. Navigate to home screen after user starts trial
       - File: `app/(app)/onboarding.tsx`
       - Branch Name: `feat/onboarding-navigation`
-  - [ ] 33. Implement drink quantity storage and savings integration
-    - [ ] 33.1. Add form handling with React Hook Form and Zod
+  - [ ] 33. Implement drink quantity storage and savings integration (using placeholder input)
+    - [ ] 33.1. Add form handling with React Hook Form and Zod for the reusable placeholder form
       - File: `components/ui/onboarding/DrinkQuantityInput.tsx`
-    - [ ] 33.2. Save drink quantity to AsyncStorage
+    - [ ] 33.2. Save drink quantity (from placeholder) to AsyncStorage
       - File: `lib/storage/LocalStorageSobrietyRepository.ts` (to be expanded)
       - Branch Name: `feat/local-drink-quantity-storage`
-    - [ ] 33.3. Connect drink quantity to savings calculations for display in `SavingsCounter`
+    - [ ] 33.3. Connect drink quantity (from placeholder) to savings calculations for display in `SavingsCounter`
       - File: `components/ui/statistics/SavingsCounter.tsx` (to be updated)
       - Branch Name: `feat/savings-drink-quantity-integration`
   - [ ] 34. Implement freemium model with 3-day trial

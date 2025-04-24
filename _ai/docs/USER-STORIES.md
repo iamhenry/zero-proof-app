@@ -49,6 +49,9 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
   - [ ] US-26.1: The settings UI should allow me to enter my typical daily drink consumption.
   - [ ] US-26.2: The financial savings calculation should update immediately when I change my drink quantity.
 
+## Onboarding
+- [ ] As a first-time user, after logging in and before seeing the home screen, I want to go through a mandatory onboarding flow so that I can understand the app's key features (like the heatmap, streak counter, and savings tracker) and provide my typical weekly drink consumption to personalize my experience. I understand this flow concludes with information about premium features and that I will only need to complete this onboarding once.
+
 
 # Backlog
 
