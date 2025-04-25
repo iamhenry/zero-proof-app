@@ -371,3 +371,22 @@ This file contains documentation headers extracted from component files to provi
  * DEPENDENCIES: react, react-native, @/components/ui/calendar, @/components/ui/timer, @/components/ui/statistics, @/context/TimerStateContext, @/context/RepositoryContext, @/context/CalendarDataContext
  */
 ```
+
+## Onboarding Components
+```
+/*
+FILE: OnboardingComponent.tsx
+PURPOSE: Displays onboarding screens for new users with 3 tutorial steps
+COMPONENT:
+
+OnboardingComponent({onDone}) → JSX: Renders onboarding flow with completion callback DEPENDENCIES:
+react-native-onboarding-swiper
+react-native Image */
+/**
+
+FILE: index.ts
+CREATED: 2024-07-18 16:32:05
+PURPOSE: Exports the SobrietyTimer component for use throughout the application.
+METHODS:
+N/A (export-only file) */
+```
