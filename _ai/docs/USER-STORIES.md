@@ -50,8 +50,11 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
   - [ ] US-26.2: The financial savings calculation should update immediately when I change my drink quantity.
 
 ## Onboarding
-- [ ] As a first-time user, after logging in and before seeing the home screen, I want to go through a mandatory onboarding flow so that I can understand the app's key features (like the heatmap, streak counter, and savings tracker) and provide my typical weekly drink consumption to personalize my experience. I understand this flow concludes with information about premium features and that I will only need to complete this onboarding once.
-
+- [ ] US-31: As a first-time user, after logging in and before seeing the home screen, I want to go through a mandatory onboarding flow so that I can understand the app's key features (like the heatmap, streak counter, and savings tracker) and provide my typical weekly drink consumption to personalize my experience. I understand this flow concludes with information about premium features and that I will only need to complete this onboarding once.
+- [ ] US-32: As a user, during the onboarding flow, I want to enter the drink quantity (the user will enter the amount for the week, which we will then calculate into days; e.g., the user enters 7 for weekly, and we calculate that as 1 drink per day) into a form that will be used to calculate my savings (in the `savings counter` component) for the days I've marked as sober.
+  - [ ] US-32.1: Note: we currently have hard coded values to calculate the savings amount. This input from the form will replace one of those values so the counter component is more accurate.
+- [ ] US-33: As a user, I want to see a paywall screen with a simple dismissal button that simulates a purchase, so that I can understand the premium features available in the app.
+  - [ ] note: this is just for testing. we will enable in app purchase into this paywall screen and the user will be able to start their trial.
 
 # Backlog
 
