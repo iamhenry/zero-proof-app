@@ -1,5 +1,28 @@
 # MEMORY.md
 
+## [Apr 25, 2025 11:07 AM] Onboarding Flow: Balancing Flexibility and Simplicity
+Context: Implemented onboarding flow with `react-native-onboarding-swiper` and static images, simplifying from 7 to 5 screens.
+Lesson:
+- Onboarding Flow Design:
+  - Using static images instead of reusable components for initial screens simplifies implementation while maintaining visual appeal
+  - Reducing screen count from 7 to 5 helps prevent user fatigue during onboarding
+  - Deferring edit capabilities for post-onboarding settings reduces initial complexity
+- Component Integration:
+  - `react-native-onboarding-swiper` provides a solid foundation for swipeable onboarding screens
+  - Conditionally rendering onboarding in _layout.tsx ensures proper flow control
+  - Static assets organized in dedicated directories improve maintainability
+Related Methods/Concepts:
+- React Navigation flow control
+- Static asset management
+- Conditional rendering
+- Component library integration
+- User experience optimization
+Future Improvements:
+- Consider adding animation transitions between screens
+- Implement analytics to track completion rates
+- Add progress indicators for multi-step forms
+- Consider A/B testing different onboarding flows post-launch
+
 ## [Apr 21, 2025 11:04 AM] Timer State Verification: Ensuring Consistency Between Timer Display and Calendar Data
 Context: Fixed bug-07 where the timer incorrectly displayed elapsed time even when the current day was not marked as sober, particularly when returning to the app the following day.
 Lesson:

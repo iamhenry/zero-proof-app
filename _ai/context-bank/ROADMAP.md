@@ -224,7 +224,7 @@ Step-by-Step Tasks:
     - Branch Name: `feat/savings-counter-integration`
 
 ### Milestone 7: Onboarding and Monetization (MVP Focus)
-- Objective: Implement onboarding flow with drink quantity input and a freemium model with a 3-day trial for MVP launch.
+- Objective: Implement onboarding flow with drink quantity input and a freemium model with a 3-day trial for MVP launch. [~40% Complete]
 - Data Flow:
   - Onboarding data (e.g., drink quantity) flows through form components to local storage.
   - Drink quantity data feeds into savings calculations for display in the `SavingsCounter`.
@@ -241,10 +241,10 @@ Step-by-Step Tasks:
   - Superwall integration is deferred to post-launch.
 - Step-by-Step Tasks:
   - [ ] 32. Implement onboarding flow
-    - [ ] 32.1. Integrate `react-native-onboarding-swiper` for multi-screen flow (ensure `showSkip={false}`)
-      - File: `app/(app)/onboarding.tsx` (to be created)
+    - [x] 32.1. Integrate `react-native-onboarding-swiper` for multi-screen flow (ensure `showSkip={false}`)
+      - File: `app/(app)/onboarding.tsx`
       - Branch Name: `feat/onboarding-flow`
-    - [ ] 32.2. Use static images for Screens 1-3 (copy TBD, replaces component reuse)
+    - [x] 32.2. Use static images for Screens 1-3 (copy TBD, replaces component reuse)
       - Branch Name: `feat/onboarding-static-images`
     - [ ] 32.3. Create reusable placeholder drink quantity input form (Screen 4) using number pad input and Zod validation (defer editing functionality)
       - File: `components/ui/onboarding/DrinkQuantityInput.tsx` (to be created)
