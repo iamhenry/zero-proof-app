@@ -55,6 +55,7 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
   - [ ] US-32.1: Note: we currently have hard coded values to calculate the savings amount. This input from the form will replace one of those values so the counter component is more accurate.
 - [ ] US-33: As a user, I want to see a paywall screen with a simple dismissal button that simulates a purchase, so that I can understand the premium features available in the app.
   - [ ] note: this is just for testing. we will enable in app purchase into this paywall screen and the user will be able to start their trial.
+- [ ] us-34. As a user, I want to be able to see my options for the paywall that will enable me to access all the features of the app. The paywall should be at the end of the onboarding experience.
 
 # Backlog
 
