@@ -8,8 +8,9 @@ DEPENDENCIES:
   - react-native Image
 */
 import React from "react";
-import { Image } from "react-native";
-import Onboarding from "react-native-onboarding-swiper";
+import { Image, View } from "react-native"; // Removed TouchableOpacity, Button, Text imports
+import Onboarding from "react-native-onboarding-swiper"; // Removed DoneButtonProps
+import PaywallScreen from "./PaywallScreen"; // Import the new PaywallScreen
 
 // Define props interface
 interface OnboardingComponentProps {
@@ -20,10 +21,15 @@ interface OnboardingComponentProps {
 const OnboardingComponent: React.FC<OnboardingComponentProps> = ({
 	onDone,
 }) => {
+	// Removed custom DoneButtonComponent
+
 	return (
 		<Onboarding
-			onDone={onDone} // Pass the onDone prop here
+			onDone={onDone} // This prop is now primarily for the library's internal use if needed, dismissal is handled in PaywallScreen
 			showSkip={false} // As per roadmap requirement
+			showNext={false} // Explicitly hide Next button on all pages
+			showDone={false} // Hide default Done button
+			// Removed DoneButtonComponent prop
 			pages={[
 				{
 					backgroundColor: "#fff",
@@ -57,6 +63,15 @@ const OnboardingComponent: React.FC<OnboardingComponentProps> = ({
 					title: "Track Savings",
 					subtitle:
 						"Track and calculate your savings based on the days you've been sober.",
+				},
+				// Add the PaywallScreen as the last page
+				{
+					backgroundColor: "#fff", // Match PaywallScreen background
+					// Render PaywallScreen within the 'subtitle' prop as per ADR
+					image: null, // Set image to null as content is in subtitle
+					title: "", // No title needed
+					// Pass onDone prop to PaywallScreen
+					subtitle: <PaywallScreen onDone={onDone} />,
 				},
 			]}
 		/>
