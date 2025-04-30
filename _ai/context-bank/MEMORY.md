@@ -1,5 +1,49 @@
 # MEMORY.md
 
+## [Apr 30, 2025 11:48 AM] Type Safety and Documentation in Onboarding Components
+Context: Enhanced TypeScript declarations and documentation for onboarding components to improve maintainability and developer experience.
+Lesson:
+- TypeScript Type Declaration Improvements:
+  - Adding detailed type declarations for third-party libraries enhances IDE support and catches potential issues early
+  - Type declarations should cover not just props but also internal types used by the component
+  - Well-typed components reduce runtime errors and improve code maintainability
+- Documentation Strategy:
+  - Documentation should cover both component purpose and integration points
+  - Inline comments should explain complex logic and business decisions
+  - Clear documentation reduces onboarding time for new developers
+Related Methods/Concepts:
+- TypeScript type declarations
+- Documentation standards
+- Component API design
+- Developer experience optimization
+Future Improvements:
+- Consider automating type generation where possible
+- Add example usage snippets in documentation
+- Implement documentation testing to ensure docs stay current
+- Create visual documentation with component previews
+
+## [Apr 29, 2025 12:47 PM] Paywall Integration: Monetization Through User Journey
+Context: Added PaywallScreen component as the final step in the onboarding flow, focusing on natural progression to premium features.
+Lesson:
+- User Journey Design:
+  - Placing premium offerings after feature showcase creates natural value proposition
+  - Static paywall implementation allows for easy A/B testing of different offerings
+  - Clear call-to-action encourages immediate conversion
+- Component Integration:
+  - PaywallScreen maintains independence while integrating with OnboardingComponent
+  - BDD scenarios ensure proper validation of critical monetization features
+  - Screen transitions maintain smooth user experience
+Related Methods/Concepts:
+- User experience design
+- Monetization strategy
+- Component composition
+- BDD testing practices
+Future Improvements:
+- Add analytics tracking for conversion metrics
+- Implement A/B testing infrastructure
+- Consider dynamic pricing based on user engagement
+- Add localization support for pricing display
+
 ## [Apr 25, 2025 11:07 AM] Onboarding Flow: Balancing Flexibility and Simplicity
 Context: Implemented onboarding flow with `react-native-onboarding-swiper` and static images, simplifying from 7 to 5 screens.
 Lesson:
