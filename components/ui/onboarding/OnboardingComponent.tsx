@@ -1,11 +1,9 @@
 /*
 FILE: OnboardingComponent.tsx
-PURPOSE: Displays onboarding screens for new users with 3 tutorial steps
-COMPONENT:
-  - OnboardingComponent({onDone}) → JSX: Renders onboarding flow with completion callback
-DEPENDENCIES:
-  - react-native-onboarding-swiper
-  - react-native Image
+PURPOSE: Displays onboarding screens for new users, including a paywall as the final step.
+FUNCTIONS:
+  - OnboardingComponent({onDone}) → JSX.Element: Renders the onboarding flow.
+DEPENDENCIES: react-native-onboarding-swiper, react-native Image, PaywallScreen
 */
 import React from "react";
 import { Image, View } from "react-native"; // Removed TouchableOpacity, Button, Text imports
@@ -29,6 +27,8 @@ const OnboardingComponent: React.FC<OnboardingComponentProps> = ({
 			showSkip={false} // As per roadmap requirement
 			showNext={false} // Explicitly hide Next button on all pages
 			showDone={false} // Hide default Done button
+			bottomBarColor={false} // Make bottom bar transparent to avoid background color issues
+			bottomBarHighlight={false} // Disable the default bottom bar highlight effect
 			// Removed DoneButtonComponent prop
 			pages={[
 				{

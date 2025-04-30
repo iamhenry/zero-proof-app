@@ -1,3 +1,11 @@
+/*
+FILE: PaywallScreen.tsx
+PURPOSE: Displays premium subscription options and handles user interaction for trial initiation.
+FUNCTIONS:
+  - PaywallScreen({onDone}) → JSX.Element: Renders the paywall UI.
+  - FeatureItem({icon, text}) → JSX.Element: Helper component to display a feature with an icon.
+DEPENDENCIES: react-native, @/components/ui/typography, @/components/ui/button
+*/
 import React from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import { H1, P } from "@/components/ui/typography"; // Removed Small as it's not used

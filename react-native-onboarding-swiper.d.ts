@@ -1,3 +1,14 @@
+/*
+FILE: react-native-onboarding-swiper.d.ts
+PURPOSE: Provides basic TypeScript type declarations for the 'react-native-onboarding-swiper' library to enable type checking.
+DEFINITIONS:
+  - Page: Interface for individual onboarding page configuration.
+  - DoneButtonProps: Interface for props passed to a custom Done button component.
+  - OnboardingProps: Interface for the main Onboarding component's props.
+  - Onboarding: React functional component type definition for the library's main export.
+DEPENDENCIES: react, react-native
+*/
+
 // Basic type declaration for react-native-onboarding-swiper
 // This silences the TS error but doesn't provide full type safety.
 // Add more specific types as needed.
