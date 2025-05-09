@@ -249,7 +249,7 @@ Step-by-Step Tasks:
     - [ ] 32.3. Create reusable placeholder drink quantity input form (Screen 4) using number pad input and Zod validation (defer editing functionality)
       - File: `components/ui/onboarding/DrinkQuantityInput.tsx` (to be created)
       - Branch Name: `feat/onboarding-drink-quantity`
-    - [ ] 32.4. Design paywall screen (Screen 5) with a simple dismissal button (simulates purchase for now)
+    - [x] 32.4. Design paywall screen (Screen 5) with a simple dismissal button (simulates purchase for now)
       - File: `components/ui/onboarding/PaywallScreen.tsx` (to be created)
       - Branch Name: `feat/onboarding-paywall`
     - [ ] 32.5. Track onboarding completion in local storage to show only once
