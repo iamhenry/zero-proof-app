@@ -9,6 +9,7 @@ import React from "react";
 import { Image, View } from "react-native"; // Removed TouchableOpacity, Button, Text imports
 import Onboarding from "react-native-onboarding-swiper"; // Removed DoneButtonProps
 import PaywallScreen from "./PaywallScreen"; // Import the new PaywallScreen
+import DrinkQuantityInput from "./DrinkQuantityInput"; // Import the DrinkQuantityInput component
 
 // Define props interface
 interface OnboardingComponentProps {
@@ -64,13 +65,27 @@ const OnboardingComponent: React.FC<OnboardingComponentProps> = ({
 					subtitle:
 						"Track and calculate your savings based on the days you've been sober.",
 				},
-				// Add the PaywallScreen as the last page
+				// Insert DrinkQuantityInput as the 4th page
+				{
+					backgroundColor: "#fff",
+					image: null,
+					title: "",
+					subtitle: (
+						<DrinkQuantityInput
+							onSubmit={() => {
+								// Advance to next onboarding page when form is submitted
+								// The onboarding-swiper exposes a ref for navigation, but since we don't have direct access,
+								// we rely on the default behavior: the form should be non-blocking, and the user can swipe.
+								// If navigation control is needed, refactor to use onboarding-swiper's ref.
+							}}
+						/>
+					),
+				},
+				// Move PaywallScreen to the 5th (last) page
 				{
 					backgroundColor: "#fff", // Match PaywallScreen background
-					// Render PaywallScreen within the 'subtitle' prop as per ADR
 					image: null, // Set image to null as content is in subtitle
 					title: "", // No title needed
-					// Pass onDone prop to PaywallScreen
 					subtitle: <PaywallScreen onDone={onDone} />,
 				},
 			]}
