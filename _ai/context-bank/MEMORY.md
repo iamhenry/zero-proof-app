@@ -519,3 +519,34 @@ Related Methods/Concepts:
 - `package.json`
 Future Improvements:
 - Verify required dependencies before writing code/tests that rely on them.
+
+## Latest Updates (May 14, 2025)
+
+### Onboarding Flow Implementation
+1. Decision: Implemented DrinkQuantityInput component with React Hook Form and Zod validation
+   - Rationale: Chose to use React Hook Form for form state management and Zod for validation to maintain consistency with existing form handling patterns in the app.
+   - Impact: Improved form handling with built-in validation and error handling.
+   - Lessons Learned: 
+     - Using a custom hook (useDrinkQuantityForm) helps encapsulate form logic and makes the component more reusable.
+     - Zod schema validation provides strong type safety and runtime validation.
+
+2. Decision: Updated build configuration to exclude iOS and Android build artifacts
+   - Rationale: Keep the repository clean by excluding generated files from version control.
+   - Impact: Improved repository maintenance and cleaner git status.
+   - Lessons Learned:
+     - Regular maintenance of .gitignore is important as the project grows.
+     - Consistent build artifact handling across platforms helps maintain repository cleanliness.
+
+3. Decision: Enhanced iOS development documentation
+   - Rationale: Provide clear guidance for developers testing on iOS devices.
+   - Impact: Improved developer experience and reduced setup time.
+   - Lessons Learned:
+     - Clear documentation of platform-specific setup steps is crucial for team productivity.
+     - Including troubleshooting steps helps prevent common issues.
+
+4. Decision: Streamlined task analysis process
+   - Rationale: Replaced {Task Analysis} with {oodaReasoning} for better clarity.
+   - Impact: More cohesive understanding of the reasoning process.
+   - Lessons Learned:
+     - Clear and consistent terminology improves team communication.
+     - Regular refinement of development processes leads to better efficiency.
