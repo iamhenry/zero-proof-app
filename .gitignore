@@ -21,5 +21,6 @@ web-build/
 expo-env.d.ts
 # @end expo-cli
 
+# Expo App Builds
 ios/
 android/

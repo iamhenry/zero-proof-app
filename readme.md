@@ -6,6 +6,16 @@
 
 This repository serves as a comprehensive starter project for developing React Native and Expo applications with Supabase as the backend. It integrates various technologies such as Expo Router for navigation, Tailwind CSS for styling, React-Hook-Form for form handling, Zod for schema validation, and TypeScript for type safety. By leveraging these powerful tools, this starter template provides a robust foundation for building modern, scalable, and efficient mobile applications.
 
+### Running on iOS
+
+This project uses [Expo](https://expo.dev/) to build and test the iOS app both locally and on physical devices. To run the app on your iOS device, use:
+
+```sh
+npx expo run:ios --device
+```
+
+> **Note:** The `ios` and `android` folders are not committed to GitHub, as the project is managed entirely through Expo. Native code is not tracked in version control unless the project is ejected.
+
 #### Disclaimer
 
 This is not supposed to be a template, boilerplate or a framework. It is an opinionated guide that shows how to do some things in a certain way. You are not forced to do everything exactly as it is shown here, decide what works best for you and your team and stay consistent with your style.
