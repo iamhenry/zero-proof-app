@@ -246,7 +246,7 @@ Step-by-Step Tasks:
       - Branch Name: `feat/onboarding-flow`
     - [x] 32.2. Use static images for Screens 1-3 (copy TBD, replaces component reuse)
       - Branch Name: `feat/onboarding-static-images`
-    - [ ] 32.3. Create reusable placeholder drink quantity input form (Screen 4) using number pad input and Zod validation (defer editing functionality)
+    - [x] 32.3. Create reusable placeholder drink quantity input form (Screen 4) using number pad input and Zod validation (defer editing functionality)
       - File: `components/ui/onboarding/DrinkQuantityInput.tsx` (to be created)
       - Branch Name: `feat/onboarding-drink-quantity`
     - [x] 32.4. Design paywall screen (Screen 5) with a simple dismissal button (simulates purchase for now)
