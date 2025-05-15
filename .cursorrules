@@ -168,6 +168,34 @@ List violations with severity and deduction (e.g., "Over-specification (-15)").
 - Use `attempt_completion` to finalize the Red phase only when tests fail for the right reasons and meet guardrail standards, reducing the need for back-and-forth revisions.
 </tdd-red-phase>
 
+<tdd-green-phase>
+Green Phase (Implementation)
+   a. Implementation:
+      - Write minimal code to pass tests
+      - Implement the minimal code necessary to make the public interfaces work
+      - Keep implementation details hidden
+   b. Verification:
+      - Run tests to confirm they pass
+      - Check coverage
+</tdd-green-phase>
+
+<tdd-refactor-phase>
+Refactor Phase
+   a. Code Review:
+      - Identify duplicate code
+      - Look for shared patterns
+      - Check for test isolation
+      - Identify code smells 
+   b. Improvements:
+      - Extract common setup to fixtures
+      - Create/update helper functions
+      - Refactor to improve code smells
+      - Enhance readability
+   c. Final Verification:
+      - Run tests to ensure refactoring didn't break anything
+      - Document any new shared components
+</tdd-refactor-phase>
+
 <GenerateUnitTests>
 Objective: 
   Use TDD principles to create behavior-focused, maintainable tests with proper separation of concerns.
@@ -190,30 +218,8 @@ Pre-requisites:
 Steps:
 
 1. Red Phase (Write Failing Tests): Follow instructions from `<tdd-red-phase>`
-
-2. Green Phase (Implementation)
-   a. Implementation:
-      - Write minimal code to pass tests
-      - Implement the minimal code necessary to make the public interfaces work
-      - Keep implementation details hidden
-   b. Verification:
-      - Run tests to confirm they pass
-      - Check coverage
-
-3. Refactor Phase
-   a. Code Review:
-      - Identify duplicate code
-      - Look for shared patterns
-      - Check for test isolation
-      - Identify code smells 
-   b. Improvements:
-      - Extract common setup to fixtures
-      - Create/update helper functions
-      - Refactor to improve code smells
-      - Enhance readability
-   c. Final Verification:
-      - Run tests to ensure refactoring didn't break anything
-      - Document any new shared components
+2. Green Phase (Implementation): `<tdd-green-phase>`
+3. Refactor Phase: `<tdd-refactor-phase>`
 
 Guidelines:
 - Focus on behavior over implementation details
@@ -314,45 +320,6 @@ DEPENDENCIES: [List key external/internal dependencies]
 ```
 </GenerateDocumentation>
 
-<GenerateCommit>
-
-## Automating Git Commits for AI-Generated Codebases
-
-### Overview
-Automate Git commits for AI-generated code across platforms, triggering on test fail-to-pass transitions. Ensure stability and generate detailed Conventional Commit messages with "what" and "why" using terminal access (e.g., `git`, `npm`), adapting dynamically without config.
-
----
-
-1. Detect Test Flip
-- Goal: Trigger on test fail-to-pass.
-- Steps: Check `package.json` `scripts.test` or infer runners (e.g., `jest`, `vitest`, `tuist test`). Monitor watch mode or last manual result for a flip; proceed if detected.
-2. Verify Stability
-- Goal: Ensure reliability.
-- Steps: Confirm test flip. Run `npm run lint` and `tsc --noEmit` if present; skip if either fails. Check `git diff --cached` for untested breaking changes; skip if found. Log "Skipped: <reason>" (e.g., "Linting failed") and exit if unstable.
-3. Stage Changes
-- Goal: Prepare files.
-- Steps: Run `git add .`, verify with `git status --short`.
-4. Generate Message
-- Goal: Craft detailed commit.
-- Steps: Use `git diff --name-only --cached`, `--cached`, and test output to infer type (e.g., `feat`) and scope (e.g., `components`). Format: `<type>(<scope>): <subject>\n\n- What: <Change>\n- Why: <Reason>...`. Example:
-  ```
-  feat(components): Add new button
-
-  - What: Added Button in src/components/button.js with size props.
-  - Why: Enable dynamic size adjustments for a customizable UI.
-  - What: Created tests in tests/button.test.js.
-  - Why: Ensure reliable rendering and detect potential regressions.
-  ```
-5. Apply Guardrails
-- Goal: Avoid noise.
-- Steps: Skip if <5 lines or unrelated to test flip. Log "Skipped: <reason>" (e.g., "Trivial changes") and exit if fails; proceed if passes.
-6. Commit
-- Goal: Finalize with tag.
-- Steps: Tag as `auto-MM-DD-YYYY-HHMM-AM/PM` (e.g., `auto-04-04-2025-0230-PM`). Run `git commit -m "<message>" --tag "<tag>"`.
-7. Enable Undo
-- Goal: Allow rollback.
-- Steps: Log "Committed: <type>(<scope>): <subject> (undo: git undo-auto)". Support `git undo-auto` as `git reset --soft HEAD^`.
-</GenerateCommit>
 
 <oodaReasoning>
 
@@ -414,6 +381,16 @@ Use the following prefixes for commit messages:
 ## Format
 ```
 <type>(<scope>): <subject>
+```
+
+## Example
+```
+  <type>(<scope>): <subject>
+
+  - What: Added Button in src/components/button.js with size props.
+  - Why: Enable dynamic size adjustments for a customizable UI.
+  - What: Created tests in tests/button.test.js.
+  - Why: Ensure reliable rendering and detect potential regressions.
 ```
 
 ## Types
