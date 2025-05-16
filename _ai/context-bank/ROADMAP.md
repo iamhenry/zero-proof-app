@@ -269,7 +269,7 @@ Step-by-Step Tasks:
       - Branch Name: `feat/savings-drink-quantity-integration`
   - [ ] 34 Implement drink quantity management in settings
     - File: `components/ui/settings/SettingsDrinkQuantityContainer.tsx` (to be expanded)
-    - Branch Name: `feat/settings-drink-quantity-management`
+    - Branch Name: `feat/settings-drink-quantity-screen`
   - [ ] 35. Implement freemium model with 3-day trial
     - [ ] 35.1. Configure Expo `expo-in-app-purchases` for Apple App Store subscriptions
       - File: `config/in-app-purchases.ts` (to be created)
