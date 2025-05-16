@@ -1,5 +1,38 @@
 # MEMORY.md
 
+## [May 17, 2025 10:45 AM] Test Development Practices: Framework-Agnostic Testing Principles
+Context: Analyzed and improved test development practices while working on SavingsCounter modal component tests, focusing on making testing principles more universal and less framework-specific.
+Lesson:
+- Test Infrastructure Setup:
+  - Pre-requisite checks for test infrastructure are crucial before writing tests
+  - Framework-specific setup (mocks, providers) should be separated from behavior testing
+  - Test utilities should be organized by responsibility (helpers, mocks, fixtures)
+- Testing Strategy Evolution:
+  - Shift from implementation details to behavior-focused testing
+  - Use BDD scenarios to guide test development
+  - Keep test structure flexible for different project architectures
+  - Focus on universal testing principles over framework-specific patterns
+- Quality Indicators:
+  - Clear scoring system for test quality (maintainability, clarity, isolation)
+  - Explicit quality thresholds for different aspects of tests
+  - Regular evaluation of test effectiveness
+- Test Organization:
+  - Group tests by behavior/scenario using clear naming conventions
+  - Maintain consistent test structure across different test types
+  - Separate setup, action, and verification phases
+Related Methods/Concepts:
+- Test-Driven Development (TDD)
+- Behavior-Driven Development (BDD)
+- Test infrastructure organization
+- Quality metrics for tests
+- Framework-agnostic testing principles
+- Test isolation and maintainability
+Future Improvements:
+- Create standardized test setup templates for common testing patterns
+- Implement automated test quality checks
+- Develop framework-specific implementations of universal testing principles
+- Add visual documentation for test organization patterns
+
 ## [May 16, 2025 11:13 AM] Drink Quantity Management: Balancing User Input and Financial Calculations
 Context: Implemented comprehensive drink quantity input system with integration into onboarding flow and settings, affecting savings calculations.
 Lesson:
