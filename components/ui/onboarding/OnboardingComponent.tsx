@@ -5,11 +5,11 @@ FUNCTIONS:
   - OnboardingComponent({onDone}) → JSX.Element: Renders the onboarding flow.
 DEPENDENCIES: react-native-onboarding-swiper, react-native Image, PaywallScreen
 */
-import React from "react";
+import React, { useRef } from "react";
 import { Image, View } from "react-native"; // Removed TouchableOpacity, Button, Text imports
 import Onboarding from "react-native-onboarding-swiper"; // Removed DoneButtonProps
 import PaywallScreen from "./PaywallScreen"; // Import the new PaywallScreen
-import DrinkQuantityInput from "./DrinkQuantityInput"; // Import the DrinkQuantityInput component
+import OnboardingDrinkQuantityContainer from "./OnboardingDrinkQuantityContainer"; // Import the new OnboardingDrinkQuantityContainer component
 
 // Define props interface
 interface OnboardingComponentProps {
@@ -20,7 +20,8 @@ interface OnboardingComponentProps {
 const OnboardingComponent: React.FC<OnboardingComponentProps> = ({
 	onDone,
 }) => {
-	// Removed custom DoneButtonComponent
+	// Create ref for onboarding navigation
+	const onboardingRef = useRef<any>();
 
 	return (
 		<Onboarding
@@ -30,7 +31,7 @@ const OnboardingComponent: React.FC<OnboardingComponentProps> = ({
 			showDone={false} // Hide default Done button
 			bottomBarColor={false} // Make bottom bar transparent to avoid background color issues
 			bottomBarHighlight={false} // Disable the default bottom bar highlight effect
-			// Removed DoneButtonComponent prop
+			ref={onboardingRef}
 			pages={[
 				{
 					backgroundColor: "#fff",
@@ -65,18 +66,17 @@ const OnboardingComponent: React.FC<OnboardingComponentProps> = ({
 					subtitle:
 						"Track and calculate your savings based on the days you've been sober.",
 				},
-				// Insert DrinkQuantityInput as the 4th page
+				// Insert OnboardingDrinkQuantityContainer as the 4th page
 				{
 					backgroundColor: "#fff",
 					image: null,
 					title: "",
 					subtitle: (
-						<DrinkQuantityInput
+						<OnboardingDrinkQuantityContainer
 							onSubmit={() => {
-								// Advance to next onboarding page when form is submitted
-								// The onboarding-swiper exposes a ref for navigation, but since we don't have direct access,
-								// we rely on the default behavior: the form should be non-blocking, and the user can swipe.
-								// If navigation control is needed, refactor to use onboarding-swiper's ref.
+								if (onboardingRef.current) {
+									onboardingRef.current.goNext();
+								}
 							}}
 						/>
 					),

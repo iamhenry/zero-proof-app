@@ -283,6 +283,10 @@ Step-by-Step Tasks:
       - Branch Name: `feat/trial-persistence`
       - Note: Trial state is stored locally in AsyncStorage. If the app is deleted and reinstalled, the trial will reset (i.e., a new 3-day trial starts), as there is no remote storage (Supabase) to persist trial state across installs. This can be addressed post-launch with Supabase integration.
 
+## Bugs
+- [ ] When I do an onboarding with the existing data and enter a value for the drink quantity and store it into the persistent storage, it doesn't reflect accurately when I tap the day cell. (eg. i entered 7 for weekly drink amount, complete the onboarding, tap day cell, the previous data [14 weekly drinks] is what shows up in the financial counter component)
+  - [ ] when i refresh the app and enter 21 for weekly amount, this time it will show the amount i had entered before (7 weekly). There's something glitchy about this data storage.
+
 ## Phase 4: UI Polish & Optimization
 Enhance user experience with animations and optimizations.
 

@@ -16,9 +16,20 @@ export const drinkQuantitySchema = z.object({
 export type DrinkQuantityFormData = z.infer<typeof drinkQuantitySchema>;
 
 export interface DrinkQuantityInputProps {
+  // Core functionality
   onSubmit: (value: number) => void;
   initialValue?: number;
+  
+  // Display customization
   placeholder?: string;
   errorMessage?: string;
   label?: string;
+  buttonText?: string;  // New: Customizable button text (defaults to "Next")
+  
+  // Mode control
+  isSettingsMode?: boolean;  // New: Controls UI layout and button display
+  
+  // Optional settings mode callbacks
+  onCancel?: () => void;  // New: Only used in settings mode
+  isLoading?: boolean;    // New: Indicates loading state
 }

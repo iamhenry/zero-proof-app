@@ -3,9 +3,11 @@ import React, { ReactNode } from "react";
 import { render, act, waitFor } from "@testing-library/react-native";
 import { SavingsCounter } from "../SavingsCounter";
 import { SavingsDataProvider } from "../../../../context/SavingsDataContext";
-import { useCalendarContext } from "../../../../context/CalendarDataContext"; // Import the hook to mock
-import * as FinancialService from "../../../../lib/services/financial-service"; // Import service to mock
-import { WeekData, DayData } from "../../../ui/calendar/types"; // Corrected import path
+import { useCalendarContext } from "../../../../context/CalendarDataContext";
+import { RepositoryContext } from "../../../../context/RepositoryContext";
+import * as FinancialService from "../../../../lib/services/financial-service";
+import { WeekData, DayData } from "../../../ui/calendar/types";
+import { ISobrietyDataRepository } from "../../../../lib/types/repositories";
 
 // --- Mocks ---
 
@@ -19,11 +21,25 @@ jest.mock("../../../../lib/services/financial-service", () => ({
 	calculateSavings: jest.fn(),
 }));
 
-// Type assertions for mocked hooks/functions
+// Type assertion for mocked hooks/functions
 const mockedUseCalendarContext = useCalendarContext as jest.Mock;
 const mockedCalculateSavings = FinancialService.calculateSavings as jest.Mock;
 
-// Helper to create mock weeks data based on sober days count
+// Helper to create mock day data
+const createMockDayData = (overrides: Partial<DayData> = {}): DayData => ({
+	id: "2024-01-01",
+	date: "2024-01-01",
+	day: 1,
+	month: 0,
+	year: 2024,
+	sober: false,
+	intensity: 0,
+	isFirstOfMonth: true,
+	streakStartTimestampUTC: null,
+	...overrides,
+});
+
+// Helper to create mock week data
 const createMockWeeks = (soberDaysCount: number): WeekData[] => {
 	const days: DayData[] = [];
 	const year = 2025;
@@ -49,46 +65,39 @@ const createMockWeeks = (soberDaysCount: number): WeekData[] => {
 	return [{ id: "mock-week-1", days }];
 };
 
+// Mock repository
+const mockRepository: jest.Mocked<ISobrietyDataRepository> = {
+	loadDayStatus: jest.fn(),
+	saveDayStatus: jest.fn(),
+	loadAllDayStatus: jest.fn(),
+	loadDrinkCost: jest.fn(),
+	saveDrinkCost: jest.fn(),
+	loadStreakData: jest.fn(),
+	saveStreakData: jest.fn(),
+	loadTimerState: jest.fn(),
+	saveTimerState: jest.fn(),
+};
+
 // --- Test Setup ---
 
-// Wrapper component to provide ONLY the SavingsDataProvider
-// The CalendarDataContext is mocked via useCalendarContext
+// Wrapper component to provide both SavingsDataProvider and RepositoryContext
 const TestWrapper = ({ children }: { children: ReactNode }) => (
-	<SavingsDataProvider>{children}</SavingsDataProvider>
+	<RepositoryContext.Provider value={mockRepository}>
+		<SavingsDataProvider>{children}</SavingsDataProvider>
+	</RepositoryContext.Provider>
 );
-
-// --- Tests ---
 
 describe("SavingsCounter Component Integration", () => {
 	beforeEach(() => {
-		// Reset mocks before each test
-		mockedUseCalendarContext.mockClear();
-		mockedCalculateSavings.mockClear();
+		jest.clearAllMocks();
+		mockRepository.loadDrinkCost.mockResolvedValue(14); // Default to 14 drinks per week
 	});
 
-	// MARK: - Scenario: Display Initial Savings
-	it("should display the initial savings calculated based on CalendarDataContext", () => {
-		const initialSoberDays = 15;
+	// MARK: - Scenario: Initial Savings Display
+	it("displays initial savings based on sober days", async () => {
+		const initialSoberDays = 5;
 		const mockWeeks = createMockWeeks(initialSoberDays);
-		const expectedInitialSavings = 150; // Example: 15 days * 2 drinks/day * $5/drink
-
-		// Setup mocks
-		mockedUseCalendarContext.mockReturnValue({ weeks: mockWeeks }); // Provide mock weeks via the hook
-		mockedCalculateSavings.mockReturnValue(expectedInitialSavings);
-
-		// Render with wrapper
-		const { getByText } = render(<SavingsCounter />, { wrapper: TestWrapper });
-
-		// Assertions
-		expect(mockedUseCalendarContext).toHaveBeenCalled();
-		expect(mockedCalculateSavings).toHaveBeenCalledWith(initialSoberDays);
-		expect(getByText(`$${expectedInitialSavings}`)).toBeTruthy();
-	});
-
-	it("should display $0 when initial sober days are 0", () => {
-		const initialSoberDays = 0;
-		const mockWeeks = createMockWeeks(initialSoberDays);
-		const expectedInitialSavings = 0;
+		const expectedInitialSavings = 50;
 
 		// Setup mocks
 		mockedUseCalendarContext.mockReturnValue({ weeks: mockWeeks });
@@ -96,21 +105,41 @@ describe("SavingsCounter Component Integration", () => {
 
 		const { getByText } = render(<SavingsCounter />, { wrapper: TestWrapper });
 
-		expect(mockedCalculateSavings).toHaveBeenCalledWith(initialSoberDays);
-		expect(getByText(`$${expectedInitialSavings}`)).toBeTruthy();
+		await waitFor(() => {
+			expect(mockedCalculateSavings).toHaveBeenCalledWith(initialSoberDays, 14);
+			expect(getByText(`$${expectedInitialSavings}`)).toBeTruthy();
+		});
+	});
+
+	it("should display $0 when initial sober days are 0", async () => {
+		const initialSoberDays = 0;
+		const mockWeeks = createMockWeeks(initialSoberDays);
+		const weeklyDrinks = 14;
+		const expectedInitialSavings = 0;
+
+		// Setup mocks
+		mockedUseCalendarContext.mockReturnValue({ weeks: mockWeeks });
+		mockRepository.loadDrinkCost.mockResolvedValue(weeklyDrinks);
+		mockedCalculateSavings.mockReturnValue(expectedInitialSavings);
+
+		const { getByText } = render(<SavingsCounter />, { wrapper: TestWrapper });
+
+		await waitFor(() => {
+			expect(mockedCalculateSavings).toHaveBeenCalledWith(
+				initialSoberDays,
+				weeklyDrinks,
+			);
+			expect(getByText(`$${expectedInitialSavings}`)).toBeTruthy();
+		});
 	});
 
 	// MARK: - Scenario: Savings Counter Updates (Reactivity)
 	it("should update the displayed savings when CalendarDataContext weeks data changes", async () => {
-		const initialSoberDays = 15;
+		const initialSoberDays = 5;
 		const initialMockWeeks = createMockWeeks(initialSoberDays);
-		const initialExpectedSavings = 150;
+		const initialExpectedSavings = 50;
 
-		const updatedSoberDays = 20; // Simulate more sober days
-		const updatedMockWeeks = createMockWeeks(updatedSoberDays);
-		const updatedExpectedSavings = 200; // 20 * 2 * 5
-
-		// Initial mock setup
+		// Initial setup
 		mockedUseCalendarContext.mockReturnValue({ weeks: initialMockWeeks });
 		mockedCalculateSavings.mockReturnValue(initialExpectedSavings);
 
@@ -119,27 +148,73 @@ describe("SavingsCounter Component Integration", () => {
 			wrapper: TestWrapper,
 		});
 
-		// Check initial state
-		expect(mockedCalculateSavings).toHaveBeenCalledWith(initialSoberDays);
-		expect(getByText(`$${initialExpectedSavings}`)).toBeTruthy();
-
-		// Simulate update in CalendarDataContext by changing the mock hook's return value
-		mockedUseCalendarContext.mockReturnValue({ weeks: updatedMockWeeks });
-		mockedCalculateSavings.mockReturnValue(updatedExpectedSavings); // Update calc mock too
-
-		// Rerender the component to trigger the updated context consumption
-		// Use act because the state update within SavingsDataProvider might happen
-		act(() => {
-			rerender(<SavingsCounter />);
+		// Initial assertions
+		await waitFor(() => {
+			expect(mockedCalculateSavings).toHaveBeenCalledWith(initialSoberDays, 14);
+			expect(getByText(`$${initialExpectedSavings}`)).toBeTruthy();
 		});
 
-		// Verify the displayed savings updated after context change
-		// Use waitFor because the update within SavingsDataProvider might be async or batched
+		// Simulate update in CalendarDataContext
+		const updatedSoberDays = 7;
+		const updatedMockWeeks = createMockWeeks(updatedSoberDays);
+		const updatedExpectedSavings = 70;
+
+		// Update mocks and trigger rerender by changing context value
+		mockedUseCalendarContext.mockReturnValue({ weeks: updatedMockWeeks });
+		mockedCalculateSavings.mockReturnValue(updatedExpectedSavings);
+
+		// Rerender the component (simulates provider re-rendering due to context change)
+		rerender(<SavingsCounter />);
+
+		// Assertions after update
 		await waitFor(() => {
-			// SavingsDataProvider recalculates based on the new 'weeks' from the mocked hook
-			expect(mockedCalculateSavings).toHaveBeenCalledTimes(2); // Called initially and on update
-			expect(mockedCalculateSavings).toHaveBeenCalledWith(updatedSoberDays);
+			expect(mockedCalculateSavings).toHaveBeenCalledWith(updatedSoberDays, 14);
 			expect(getByText(`$${updatedExpectedSavings}`)).toBeTruthy();
+		});
+	});
+
+	// MARK: - Scenario: Loading State
+	it("should show loading indicator while drink cost is being loaded", async () => {
+		const mockWeeks = createMockWeeks(5);
+		mockedUseCalendarContext.mockReturnValue({ weeks: mockWeeks });
+
+		// Delay the loadDrinkCost resolution
+		let resolveLoadDrinkCost: (value: number) => void;
+		mockRepository.loadDrinkCost.mockImplementation(
+			() =>
+				new Promise((resolve) => {
+					resolveLoadDrinkCost = resolve;
+				}),
+		);
+
+		const { getByTestId } = render(<SavingsCounter />, {
+			wrapper: TestWrapper,
+		});
+
+		// Initially should show loading indicator
+		expect(getByTestId("activity-indicator")).toBeTruthy();
+
+		// Resolve the loadDrinkCost promise
+		await act(async () => {
+			resolveLoadDrinkCost!(14);
+		});
+
+		// After loading, should show the savings amount
+		await waitFor(() => {
+			expect(() => getByTestId("activity-indicator")).toThrow();
+		});
+	});
+
+	it("should handle errors gracefully when loading drink cost fails", async () => {
+		const mockWeeks = createMockWeeks(5);
+		mockedUseCalendarContext.mockReturnValue({ weeks: mockWeeks });
+		mockRepository.loadDrinkCost.mockRejectedValue(new Error("Load failed"));
+		mockedCalculateSavings.mockReturnValue(50); // Using default weekly drinks
+
+		const { getByText } = render(<SavingsCounter />, { wrapper: TestWrapper });
+
+		await waitFor(() => {
+			expect(getByText("$50")).toBeTruthy(); // Should still display savings using default value
 		});
 	});
 });

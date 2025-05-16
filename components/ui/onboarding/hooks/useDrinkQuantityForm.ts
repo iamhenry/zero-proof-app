@@ -5,11 +5,12 @@
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { drinkQuantitySchema, DrinkQuantityFormData } from "../types";
+import { useEffect } from "react";
 
 interface UseDrinkQuantityFormProps {
   onSubmit: (value: number) => void;
-  initialValue: number;
-  errorMessage: string;
+  initialValue?: number;
+  errorMessage?: string;
 }
 
 interface UseDrinkQuantityFormReturn {
@@ -23,8 +24,8 @@ interface UseDrinkQuantityFormReturn {
 
 export function useDrinkQuantityForm({
   onSubmit,
-  initialValue,
-  errorMessage,
+  initialValue = 0,
+  errorMessage = "Please enter a valid quantity",
 }: UseDrinkQuantityFormProps): UseDrinkQuantityFormReturn {
   const {
     control,
@@ -35,10 +36,17 @@ export function useDrinkQuantityForm({
   } = useForm<DrinkQuantityFormData>({
     resolver: zodResolver(drinkQuantitySchema),
     defaultValues: {
-      quantity: initialValue.toString(),
+      quantity: initialValue > 0 ? initialValue.toString() : "",
     },
     mode: "onChange",
   });
+
+  // Use an effect to update the form value when initialValue changes
+  useEffect(() => {
+    if (initialValue > 0) {
+      setValue("quantity", initialValue.toString(), { shouldValidate: true });
+    }
+  }, [initialValue, setValue]);
 
   const quantityValue = watch("quantity");
 
@@ -47,7 +55,10 @@ export function useDrinkQuantityForm({
   };
 
   const isButtonDisabled =
-    !isValid || quantityValue === "0" || parseInt(quantityValue, 10) <= 0;
+    !isValid || 
+    !quantityValue || 
+    quantityValue === "0" || 
+    parseInt(quantityValue, 10) <= 0;
 
   return {
     control,

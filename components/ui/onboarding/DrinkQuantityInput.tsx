@@ -1,17 +1,16 @@
 /**
  * DrinkQuantityInput Component
- * A form component for collecting and validating weekly drink quantity input.
- * Uses React Hook Form with Zod validation.
+ *
+ * A reusable component for collecting and validating drink quantity input
+ * that works in both onboarding and settings contexts.
  */
 
 import React from "react";
-import { View } from "react-native";
-import { Controller } from "react-hook-form";
-
+import { View, Text } from "react-native";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
 import { Label } from "@/components/ui/label";
+import { Controller } from "react-hook-form";
 import { useDrinkQuantityForm } from "@/components/ui/onboarding/hooks/useDrinkQuantityForm";
 import { DrinkQuantityInputProps } from "@/components/ui/onboarding/types";
 
@@ -19,8 +18,12 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 	onSubmit,
 	initialValue = 0,
 	placeholder = "0",
-	errorMessage = "Please enter a quantity greater than 0",
-	label = "Number of drinks per week?",
+	errorMessage = "Please enter a valid quantity",
+	label = "How many drinks would you typically have in a week?",
+	buttonText = "Next",
+	isSettingsMode = false,
+	onCancel,
+	isLoading = false,
 }) => {
 	const { control, handleSubmit, errors, isButtonDisabled, setValue } =
 		useDrinkQuantityForm({
@@ -60,6 +63,7 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 						className="mb-4 text-4xl"
 						aria-labelledby="drinkQuantityLabel"
 						aria-describedby={errors.quantity ? "quantityError" : undefined}
+						editable={!isLoading}
 					/>
 				)}
 			/>
@@ -73,16 +77,32 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 					{errors.quantity.message || errorMessage}
 				</Text>
 			)}
-			<Button
-				onPress={handleSubmit(handleFormSubmit)}
-				disabled={isButtonDisabled}
-				className="mt-4"
-				aria-label="Next"
-				accessibilityState={{ disabled: isButtonDisabled }}
-				accessibilityRole="button"
+			<View
+				className={`mt-4 ${isSettingsMode ? "flex-row justify-between" : ""}`}
 			>
-				<Text>Next</Text>
-			</Button>
+				{isSettingsMode && onCancel && (
+					<Button
+						onPress={onCancel}
+						className="flex-1 mr-2"
+						aria-label="Cancel"
+						accessibilityRole="button"
+						variant="outline"
+						disabled={isLoading}
+					>
+						Cancel
+					</Button>
+				)}
+				<Button
+					onPress={handleSubmit(handleFormSubmit)}
+					disabled={isButtonDisabled || isLoading}
+					className={isSettingsMode ? "flex-1" : ""}
+					aria-label={buttonText}
+					accessibilityState={{ disabled: isButtonDisabled || isLoading }}
+					accessibilityRole="button"
+				>
+					{buttonText}
+				</Button>
+			</View>
 		</View>
 	);
 };
