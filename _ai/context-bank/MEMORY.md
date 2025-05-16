@@ -1,5 +1,35 @@
 # MEMORY.md
 
+## [May 16, 2025 11:13 AM] Drink Quantity Management: Balancing User Input and Financial Calculations
+Context: Implemented comprehensive drink quantity input system with integration into onboarding flow and settings, affecting savings calculations.
+Lesson:
+- Component Architecture:
+  - Separating input logic (DrinkQuantityInput) from container components (OnboardingDrinkQuantityContainer, SettingsDrinkQuantityContainer) improves reusability
+  - Using React Hook Form with Zod validation ensures consistent form handling and validation across different contexts
+  - Container components handle context-specific behavior while sharing core input functionality
+- Data Flow Design:
+  - Local storage integration for drink quantity persistence
+  - Financial service updates to incorporate drink quantity in savings calculations
+  - SavingsDataContext enhancement to manage drink quantity state
+  - Clear separation between input handling and financial calculations
+- Testing Strategy:
+  - Comprehensive test coverage for both input components and integration
+  - BDD scenarios defining expected behavior in different contexts
+  - Validation testing for edge cases and user interactions
+  - Integration tests for savings calculation accuracy
+Related Methods/Concepts:
+- Form handling with React Hook Form
+- Zod schema validation
+- Component composition
+- Context API integration
+- Local storage persistence
+- Financial calculation services
+Future Improvements:
+- Consider adding drink type categorization for more accurate cost calculations
+- Implement data migration strategy for future schema changes
+- Add analytics tracking for usage patterns
+- Consider cloud sync for multi-device consistency
+
 ## [Apr 30, 2025 11:48 AM] Type Safety and Documentation in Onboarding Components
 Context: Enhanced TypeScript declarations and documentation for onboarding components to improve maintainability and developer experience.
 Lesson:

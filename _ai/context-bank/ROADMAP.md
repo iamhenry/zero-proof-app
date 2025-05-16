@@ -224,7 +224,7 @@ Step-by-Step Tasks:
     - Branch Name: `feat/savings-counter-integration`
 
 ### Milestone 7: Onboarding and Monetization (MVP Focus)
-- Objective: Implement onboarding flow with drink quantity input and a freemium model with a 3-day trial for MVP launch. [~40% Complete]
+- Objective: Implement onboarding flow with drink quantity input and a freemium model with a 3-day trial for MVP launch. [~75% Complete]
 - Data Flow:
   - Onboarding data (e.g., drink quantity) flows through form components to local storage.
   - Drink quantity data feeds into savings calculations for display in the `SavingsCounter`.
@@ -233,7 +233,7 @@ Step-by-Step Tasks:
   - Paywall blocks access to protected screens if the trial has ended.
 - Acceptance Criteria:
   - Onboarding flow with 5 screens (heatmap, streak, savings, drink input, paywall) is implemented using `react-native-onboarding-swiper`.
-  - Users can input weekly drink quantity during onboarding, saved locally, but cannot edit it post-onboarding.
+  - Users can input weekly drink quantity during onboarding and edit it in settings.
   - Drink quantity is used to calculate and display savings in the `SavingsCounter`.
   - Onboarding is shown only once per user, tracked via local storage.
   - 3-day free trial with paywall triggers post-trial, integrated with Apple App Store subscriptions via Expo.
@@ -258,27 +258,30 @@ Step-by-Step Tasks:
     - [ ] 32.6. Navigate to home screen after user starts trial
       - File: `app/(app)/onboarding.tsx`
       - Branch Name: `feat/onboarding-navigation`
-  - [ ] 33. Implement drink quantity storage and savings integration (using placeholder input)
-    - [ ] 33.1. Add form handling with React Hook Form and Zod for the reusable placeholder form
+  - [x] 33. Implement drink quantity storage and savings integration (using placeholder input)
+    - [x] 33.1. Add form handling with React Hook Form and Zod for the reusable placeholder form
       - File: `components/ui/onboarding/DrinkQuantityInput.tsx`
-    - [ ] 33.2. Save drink quantity (from placeholder) to AsyncStorage
+    - [x] 33.2. Save drink quantity (from placeholder) to AsyncStorage
       - File: `lib/storage/LocalStorageSobrietyRepository.ts` (to be expanded)
       - Branch Name: `feat/local-drink-quantity-storage`
-    - [ ] 33.3. Connect drink quantity (from placeholder) to savings calculations for display in `SavingsCounter`
+    - [x] 33.3. Connect drink quantity (from placeholder) to savings calculations for display in `SavingsCounter`
       - File: `components/ui/statistics/SavingsCounter.tsx` (to be updated)
       - Branch Name: `feat/savings-drink-quantity-integration`
-  - [ ] 34. Implement freemium model with 3-day trial
-    - [ ] 34.1. Configure Expo `expo-in-app-purchases` for Apple App Store subscriptions
+  - [ ] 34 Implement drink quantity management in settings
+    - File: `components/ui/settings/SettingsDrinkQuantityContainer.tsx` (to be expanded)
+    - Branch Name: `feat/settings-drink-quantity-management`
+  - [ ] 35. Implement freemium model with 3-day trial
+    - [ ] 35.1. Configure Expo `expo-in-app-purchases` for Apple App Store subscriptions
       - File: `config/in-app-purchases.ts` (to be created)
       - Branch Name: `feat/iap-subscription-setup`
-    - [ ] 34.2. Set 3-day trial expiration in local storage (AsyncStorage)
+    - [ ] 35.2. Set 3-day trial expiration in local storage (AsyncStorage)
       - File: `context/TrialStateContext.tsx` (to be created)
       - Branch Name: `feat/trial-expiration`
-    - [ ] 34.3. Implement paywall display post-trial, blocking access to protected screens
+    - [ ] 35.3. Implement paywall display post-trial, blocking access to protected screens
       - File: `components/ui/paywall/Paywall.tsx` (to be created)
       - Branch Name: `feat/paywall-display`
       - Note: If trial has ended and no subscription is active, redirect users to the paywall screen instead of allowing access to protected routes (e.g., home screen).
-    - [ ] 34.4. Handle trial persistence using local storage
+    - [ ] 35.4. Handle trial persistence using local storage
       - File: `context/TrialStateContext.tsx`
       - Branch Name: `feat/trial-persistence`
       - Note: Trial state is stored locally in AsyncStorage. If the app is deleted and reinstalled, the trial will reset (i.e., a new 3-day trial starts), as there is no remote storage (Supabase) to persist trial state across installs. This can be addressed post-launch with Supabase integration.

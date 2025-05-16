@@ -373,20 +373,88 @@ This file contains documentation headers extracted from component files to provi
 ```
 
 ## Onboarding Components
+
+### OnboardingComponent.tsx
 ```
-/*
-FILE: OnboardingComponent.tsx
-PURPOSE: Displays onboarding screens for new users with 3 tutorial steps
-COMPONENT:
-
-OnboardingComponent({onDone}) → JSX: Renders onboarding flow with completion callback DEPENDENCIES:
-react-native-onboarding-swiper
-react-native Image */
 /**
+ * FILE: components/ui/onboarding/OnboardingComponent.tsx
+ * PURPOSE: Implements the main onboarding flow using react-native-onboarding-swiper, managing screen transitions and user progression.
+ * FUNCTIONS:
+ *   - OnboardingComponent({ onComplete }: OnboardingProps): JSX.Element -> Renders the onboarding flow with multiple screens.
+ * KEY FEATURES:
+ *   - Multi-screen onboarding flow with swipeable navigation
+ *   - Static image display for feature introduction
+ *   - Integration with PaywallScreen as final step
+ *   - Completion callback handling
+ *   - Progress tracking
+ *   - Skip functionality disabled
+ * DEPENDENCIES: react, react-native-onboarding-swiper, ./PaywallScreen
+ */
+```
 
-FILE: index.ts
-CREATED: 2024-07-18 16:32:05
-PURPOSE: Exports the SobrietyTimer component for use throughout the application.
-METHODS:
-N/A (export-only file) */
+### PaywallScreen.tsx
+```
+/**
+ * FILE: components/ui/onboarding/PaywallScreen.tsx
+ * PURPOSE: Implements the paywall screen shown at the end of onboarding, presenting premium features and subscription options.
+ * FUNCTIONS:
+ *   - PaywallScreen({ onComplete }: PaywallScreenProps): JSX.Element -> Renders the paywall interface.
+ * KEY FEATURES:
+ *   - Premium feature showcase
+ *   - Subscription options display
+ *   - Trial period information
+ *   - Clear call-to-action
+ *   - Integration with onboarding flow
+ * DEPENDENCIES: react, react-native, expo-in-app-purchases
+ */
+```
+
+### DrinkQuantityInput.tsx
+```
+/**
+ * FILE: components/ui/onboarding/DrinkQuantityInput.tsx
+ * PURPOSE: Reusable form component for inputting drink quantity with validation and customizable button text.
+ * FUNCTIONS:
+ *   - DrinkQuantityInput({ onSubmit, buttonText, defaultValue }: DrinkQuantityInputProps): JSX.Element -> Renders the drink quantity input form.
+ * KEY FEATURES:
+ *   - Form handling with React Hook Form
+ *   - Zod validation for input values
+ *   - Customizable button text
+ *   - Support for default values
+ *   - Error message display
+ *   - Number pad input optimization
+ * DEPENDENCIES: react, react-hook-form, zod, react-native
+ */
+```
+
+### OnboardingDrinkQuantityContainer.tsx
+```
+/**
+ * FILE: components/ui/onboarding/OnboardingDrinkQuantityContainer.tsx
+ * PURPOSE: Container component for managing drink quantity input during onboarding.
+ * FUNCTIONS:
+ *   - OnboardingDrinkQuantityContainer({ onComplete }: OnboardingDrinkQuantityContainerProps): JSX.Element -> Manages drink quantity input in onboarding context.
+ * KEY FEATURES:
+ *   - Integration with onboarding flow
+ *   - Local storage persistence
+ *   - Completion callback handling
+ *   - Error state management
+ * DEPENDENCIES: react, ./DrinkQuantityInput, @/context/RepositoryContext
+ */
+```
+
+### SettingsDrinkQuantityContainer.tsx
+```
+/**
+ * FILE: components/ui/settings/SettingsDrinkQuantityContainer.tsx
+ * PURPOSE: Container component for managing drink quantity input in settings screen.
+ * FUNCTIONS:
+ *   - SettingsDrinkQuantityContainer(): JSX.Element -> Manages drink quantity input in settings context.
+ * KEY FEATURES:
+ *   - Settings screen integration
+ *   - Local storage persistence
+ *   - Current value display
+ *   - Update confirmation
+ * DEPENDENCIES: react, ../onboarding/DrinkQuantityInput, @/context/RepositoryContext
+ */
 ```
