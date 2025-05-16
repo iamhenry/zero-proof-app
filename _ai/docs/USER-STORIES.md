@@ -46,16 +46,20 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
   - [x] US-25.2: The savings calculation should use the formula: savings = pricePerDrink × drinksPerDay × totalSoberDays.
   - [x] US-25.3: For the MVP, the pricePerDrink and drinksPerDay values will be hardcoded constants.
 - [ ] US-26: As a user, I want to input the quantity of drinks I typically consume per day so the app can calculate my financial savings more accurately.
-  - [ ] US-26.1: The settings UI should allow me to enter my typical daily drink consumption.
-  - [ ] US-26.2: The financial savings calculation should update immediately when I change my drink quantity.
+  - [x] US-26.1: The settings UI should allow me to enter my typical daily drink consumption.
+  - [x] US-26.2: The financial savings calculation should update immediately when I change my drink quantity.
 
 ## Onboarding
-- [ ] US-31: As a first-time user, after logging in and before seeing the home screen, I want to go through a mandatory onboarding flow so that I can understand the app's key features (like the heatmap, streak counter, and savings tracker) and provide my typical weekly drink consumption to personalize my experience. I understand this flow concludes with information about premium features and that I will only need to complete this onboarding once.
-- [ ] US-32: As a user, during the onboarding flow, I want to enter the drink quantity (the user will enter the amount for the week, which we will then calculate into days; e.g., the user enters 7 for weekly, and we calculate that as 1 drink per day) into a form that will be used to calculate my savings (in the `savings counter` component) for the days I've marked as sober.
-  - [ ] US-32.1: Note: we currently have hard coded values to calculate the savings amount. This input from the form will replace one of those values so the counter component is more accurate.
-- [ ] US-33: As a user, I want to see a paywall screen with a simple dismissal button that simulates a purchase, so that I can understand the premium features available in the app.
-  - [ ] note: this is just for testing. we will enable in app purchase into this paywall screen and the user will be able to start their trial.
-- [ ] us-34. As a user, I want to be able to see my options for the paywall that will enable me to access all the features of the app. The paywall should be at the end of the onboarding experience.
+- [x] US-31: As a first-time user, after logging in and before seeing the home screen, I want to go through a mandatory onboarding flow so that I can understand the app's key features (like the heatmap, streak counter, and savings tracker) and provide my typical weekly drink consumption to personalize my experience. I understand this flow concludes with information about premium features and that I will only need to complete this onboarding once.
+- [x] US-32: As a user, during the onboarding flow, I want to enter the drink quantity (the user will enter the amount for the week, which we will then calculate into days; e.g., the user enters 7 for weekly, and we calculate that as 1 drink per day) into a form that will be used to calculate my savings (in the `savings counter` component) for the days I've marked as sober.
+  - [x] US-32.1: Note: we currently have hard coded values to calculate the savings amount. This input from the form will replace one of those values so the counter component is more accurate.
+- [x] US-33: As a user, I want to see a paywall screen with a simple dismissal button that simulates a purchase, so that I can understand the premium features available in the app.
+  - [x] note: this is just for testing. we will enable in app purchase into this paywall screen and the user will be able to start their trial.
+- [x] us-34. As a user, I want to be able to see my options for the paywall that will enable me to access all the features of the app. The paywall should be at the end of the onboarding experience.
+- [ ] US-35. As a user, I want to tap on the financial counter to display the screen for the settings that allows me to edit and update the financial counter. And I should be able to save it and it does the recalculation for the financial component.
+  - [ ] i should be able to cancel the edit
+  - [ ] i should be able to close the screen
+  - [ ] the savings counter component should update immediable upon tapping the save button with the updated value
 
 # Backlog
 
