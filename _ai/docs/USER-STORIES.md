@@ -48,6 +48,10 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 - [ ] US-26: As a user, I want to input the quantity of drinks I typically consume per day so the app can calculate my financial savings more accurately.
   - [x] US-26.1: The settings UI should allow me to enter my typical daily drink consumption.
   - [x] US-26.2: The financial savings calculation should update immediately when I change my drink quantity.
+- [x] US-35. As a user, I want to tap on the financial counter to display the screen for the settings that allows me to edit and update the financial counter. And I should be able to save it and it does the recalculation for the financial component.
+  - [x] i should be able to cancel the edit
+  - [x] i should be able to close the screen
+  - [x] the savings counter component should update immediable upon tapping the save button with the updated value
 
 ## Onboarding
 - [x] US-31: As a first-time user, after logging in and before seeing the home screen, I want to go through a mandatory onboarding flow so that I can understand the app's key features (like the heatmap, streak counter, and savings tracker) and provide my typical weekly drink consumption to personalize my experience. I understand this flow concludes with information about premium features and that I will only need to complete this onboarding once.
@@ -56,10 +60,7 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 - [x] US-33: As a user, I want to see a paywall screen with a simple dismissal button that simulates a purchase, so that I can understand the premium features available in the app.
   - [x] note: this is just for testing. we will enable in app purchase into this paywall screen and the user will be able to start their trial.
 - [x] us-34. As a user, I want to be able to see my options for the paywall that will enable me to access all the features of the app. The paywall should be at the end of the onboarding experience.
-- [ ] US-35. As a user, I want to tap on the financial counter to display the screen for the settings that allows me to edit and update the financial counter. And I should be able to save it and it does the recalculation for the financial component.
-  - [ ] i should be able to cancel the edit
-  - [ ] i should be able to close the screen
-  - [ ] the savings counter component should update immediable upon tapping the save button with the updated value
+
 
 # Backlog
 
