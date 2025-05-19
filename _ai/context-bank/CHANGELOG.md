@@ -2,22 +2,76 @@
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: May 16, 2025, 11:13 AM
+- Last Update: May 19, 2025, 01:15 PM
 - Current Phase: Phase 2 - Frontend Implementation
-- Overall Progress: ~80%
+- Overall Progress: ~85%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
 - Current Branch: feat/drink-quantity
-- Latest Release: Version 0.1.17
+- Latest Release: Version 0.1.20
 
 ## Key Metrics
-- Features Completed: ~60/82 (~73% based on sub-tasks)
+- Features Completed: ~65/82 (~79% based on sub-tasks)
 - Open Issues: Implementing drink quantity tracking and savings calculations
-- Test Coverage: ~72% (estimated)
+- Test Coverage: ~75% (estimated)
 - Current Focus: Enhancing drink quantity input and savings calculations
 
 ---
+
+## Version 0.1.20 - May 19, 2025 01:15 PM
+
+### Updated
+
+- ROADMAP and USER-STORIES Documentation
+  - Description: Marked the savings counter component recalculation issue as completed in ROADMAP.md.
+  - Why: To maintain accurate documentation of progress and ensure clarity in user story implementation.
+  - Impact: Better tracking of project progress and clearer development roadmap.
+  - Reference: Commit 029678b.
+
+- Drink Quantity Input
+  - Description: Changed the label in DrinkQuantityInput from "How many drinks would you typically have in a week?" to "How many drinks per week?" and updated button text from "Next" to "Save".
+  - Why: To enhance user understanding and ensure consistency across onboarding and settings interfaces.
+  - Impact: Improved user experience with clearer input instructions.
+  - Reference: Commit 54379b9.
+
+### Enhanced
+
+- SavingsCounter Modal
+  - Description: Improved the SavingsCounter component by integrating a modal for drink quantity settings, enhancing user interaction and state management.
+  - Why: To provide a seamless experience for users adjusting their drink quantities, ensuring immediate updates to savings calculations.
+  - Impact: More responsive and intuitive user interface for managing savings calculations.
+  - Reference: Commit f9741e7.
+
+- Testing Coverage
+  - Description: Added comprehensive tests for the SavingsCounter modal interactions, focusing on state management and error handling.
+  - Why: To ensure reliability and robustness of the modal functionality.
+  - Impact: Improved application stability and confidence in the feature's reliability.
+  - Reference: Commit f9741e7.
+
+## Version 0.1.19 - May 16, 2025 01:41 PM
+
+### Enhanced
+
+- Test Development Practices
+  - Description: Updated test development practices in `.clinerules` and `.cursorrules` to emphasize framework-agnostic principles and improved test infrastructure setup.
+  - Why: To ensure a more organized and effective approach to test writing, focusing on behavior-driven development and clear scoring systems for test quality.
+  - Impact: Better test organization, maintainability, and clarity across the codebase.
+  - Reference: Commit a5aea65.
+
+### Updated
+
+- User Stories and BDD Scenarios
+  - Description: Marked several user stories as completed and added new BDD scenarios for the Savings Counter Modal interaction.
+  - Why: To reflect progress in user story implementation and ensure comprehensive testing of the modal's functionality.
+  - Impact: More accurate project tracking and better test coverage for new features.
+  - Reference: Commit 84ce3d7.
+
+- ROADMAP Branch Naming
+  - Description: Changed the branch name for the drink quantity management task from `feat/settings-drink-quantity-management` to `feat/settings-drink-quantity-screen`.
+  - Why: To better reflect the focus of the task on the settings screen.
+  - Impact: Improved clarity and alignment with the project's structure and naming conventions.
+  - Reference: Commit 5d53270.
 
 ## Version 0.1.17 - May 16, 2025 11:13 AM
 

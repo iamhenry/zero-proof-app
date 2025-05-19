@@ -223,6 +223,39 @@ Step-by-Step Tasks:
     - File: `components/ui/statistics/SavingsCounter.tsx` (to be updated)
     - Branch Name: `feat/savings-counter-integration`
 
+### Milestone 5: Settings Screen and Drink Quantity Input
+Objective: Implement settings screen with drink quantity input functionality.
+
+Data Flow:
+- Settings form data managed via React Hook Form
+- Drink quantity data persisted via local storage
+- Drink quantity impacts financial calculations via SavingsDataContext
+
+Acceptance Criteria:
+- Settings screen is implemented with drink quantity input
+- Drink quantity data persists across app sessions
+- Financial calculations update based on drink quantity
+
+Step-by-Step Tasks:
+- [x] 10. Create settings screen with drink quantity input
+  - [x] 10.1. Implement DrinkQuantityInput component with validation
+    - File: `components/ui/onboarding/DrinkQuantityInput.tsx`
+  - [x] 10.2. Create form hook for drink quantity management
+    - File: `components/ui/onboarding/hooks/useDrinkQuantityForm.ts`
+  - [x] 10.3. Update financial service to use drink quantity data
+    - File: `lib/services/FinancialService.ts`
+  - [x] 10.4. Enhance SavingsDataContext with drink quantity state management
+    - File: `context/SavingsDataContext.tsx`
+  - [x] 10.5. Implement OnboardingDrinkQuantityContainer for initial setup
+    - File: `components/ui/onboarding/OnboardingDrinkQuantityContainer.tsx`
+  - [x] 10.6. Implement SettingsDrinkQuantityContainer for settings updates
+    - File: `components/ui/settings/SettingsDrinkQuantityContainer.tsx`
+  - [x] 10.7. Create SavingsCounterModal component for quick drink quantity updates
+    - File: `components/ui/statistics/SavingsCounterModal.tsx`
+  - [x] 10.8. Add comprehensive tests for drink quantity components
+    - Files: `components/ui/onboarding/__tests__/`, `components/ui/settings/__tests__/`
+  - [x] The savings counter component does not recalculate after the user edits their value in the drink quantity settings modal.
+
 ### Milestone 7: Onboarding and Monetization (MVP Focus)
 - Objective: Implement onboarding flow with drink quantity input and a freemium model with a 3-day trial for MVP launch. [~75% Complete]
 - Data Flow:
@@ -267,7 +300,7 @@ Step-by-Step Tasks:
     - [x] 33.3. Connect drink quantity (from placeholder) to savings calculations for display in `SavingsCounter`
       - File: `components/ui/statistics/SavingsCounter.tsx` (to be updated)
       - Branch Name: `feat/savings-drink-quantity-integration`
-  - [ ] 34 Implement drink quantity management in settings
+  - [x] 34 Implement drink quantity management in settings
     - File: `components/ui/settings/SettingsDrinkQuantityContainer.tsx` (to be expanded)
     - Branch Name: `feat/settings-drink-quantity-screen`
   - [ ] 35. Implement freemium model with 3-day trial
@@ -287,11 +320,13 @@ Step-by-Step Tasks:
       - Note: Trial state is stored locally in AsyncStorage. If the app is deleted and reinstalled, the trial will reset (i.e., a new 3-day trial starts), as there is no remote storage (Supabase) to persist trial state across installs. This can be addressed post-launch with Supabase integration.
 
 ## Bugs
-- [ ] When I do an onboarding with the existing data and enter a value for the drink quantity and store it into the persistent storage, it doesn't reflect accurately when I tap the day cell. (eg. i entered 7 for weekly drink amount, complete the onboarding, tap day cell, the previous data [14 weekly drinks] is what shows up in the financial counter component)
-  - [ ] when i refresh the app and enter 21 for weekly amount, this time it will show the amount i had entered before (7 weekly). There's something glitchy about this data storage.
+// FIXME:
 - [ ] "Scrolling to the bottom on the calendar grid does not fetch new future dates and displays them. But if I scroll to the top and get historical dates, when I scroll back to the very bottom to fetch new dates, it does fetch it. So there seems to be some sort of discrepancy there."
   - [ ] why didnt the test catch this?
-  //  FIXME: 
+
+<!-- FIXED -->
+- [x] When I do an onboarding with the existing data and enter a value for the drink quantity and store it into the persistent storage, it doesn't reflect accurately when I tap the day cell. (eg. i entered 7 for weekly drink amount, complete the onboarding, tap day cell, the previous data [14 weekly drinks] is what shows up in the financial counter component)
+  - [x] when i refresh the app and enter 21 for weekly amount, this time it will show the amount i had entered before (7 weekly). There's something glitchy about this data storage.
   - [x] The savings counter component does not recalculate after the user edits their value in the drink quantity settings modal.
     - [x] why didnt the test catch this?
 

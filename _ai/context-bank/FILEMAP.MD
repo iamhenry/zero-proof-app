@@ -142,6 +142,26 @@ This file contains documentation headers extracted from component files to provi
  */
 ```
 
+### SettingsDrinkQuantityContainer.tsx
+```
+/**
+ * FILE: components/ui/settings/SettingsDrinkQuantityContainer.tsx
+ * PURPOSE: Container component for managing drink quantity input in settings screen.
+ * FUNCTIONS:
+ *   - SettingsDrinkQuantityContainer({ onSuccess, onCancel }: SettingsDrinkQuantityContainerProps): JSX.Element -> Manages drink quantity input in settings context.
+ * KEY FEATURES:
+ *   - Settings screen integration with success/cancel callbacks
+ *   - Local storage persistence through repository
+ *   - Current value retrieval and display
+ *   - Form validation with React Hook Form integration
+ *   - Loading state management during data fetching and saving
+ *   - Error handling with user feedback
+ *   - Configures DrinkQuantityInput with "Save" button text
+ *   - Touchable cancel option for dismissing without saving
+ * DEPENDENCIES: react, ../onboarding/DrinkQuantityInput, @/context/RepositoryContext
+ */
+```
+
 ## Statistics Components
 
 ### StreakCounter.tsx
@@ -174,7 +194,27 @@ This file contains documentation headers extracted from component files to provi
  *   - Displays formatted currency value of savings.
  *   - Shows a loading indicator while data is being fetched.
  *   - Includes a visual money icon.
- * DEPENDENCIES: react, react-native, ./MoneyIcon, @/context/SavingsDataContext, @/lib/utils (for formatCurrency)
+ *   - Integrates with SavingsCounterModal for drink quantity updates
+ *   - Provides touchable interaction to open settings modal
+ * DEPENDENCIES: react, react-native, ./MoneyIcon, @/context/SavingsDataContext, @/lib/utils (for formatCurrency), ./SavingsCounterModal
+ */
+```
+
+### SavingsCounterModal.tsx
+```
+/**
+ * FILE: components/ui/statistics/SavingsCounterModal.tsx
+ * PURPOSE: Provides a modal interface for updating drink quantity settings directly from the SavingsCounter component.
+ * FUNCTIONS:
+ *   - SavingsCounterModal({ visible, onClose, onSuccess }): JSX.Element -> Renders a modal with DrinkQuantityInput for updating drink quantity.
+ * KEY FEATURES:
+ *   - Integrates with DrinkQuantityInput for consistent form handling
+ *   - Manages modal animations and state transitions
+ *   - Provides clear success/error callbacks for parent component
+ *   - Handles loading and error states during form submission
+ *   - Ensures immediate update of savings calculations upon successful submission
+ *   - Implements proper cleanup to prevent state updates after unmount
+ * DEPENDENCIES: react, react-native, @/components/ui/onboarding/DrinkQuantityInput, @/context/RepositoryContext, @/context/SavingsDataContext
  */
 ```
 
@@ -418,11 +458,13 @@ This file contains documentation headers extracted from component files to provi
  *   - DrinkQuantityInput({ onSubmit, buttonText, defaultValue }: DrinkQuantityInputProps): JSX.Element -> Renders the drink quantity input form.
  * KEY FEATURES:
  *   - Form handling with React Hook Form
- *   - Zod validation for input values
- *   - Customizable button text
- *   - Support for default values
- *   - Error message display
+ *   - Zod validation for input values (positive integers only)
+ *   - Customizable button text ("Save" or "Next" depending on context)
+ *   - Support for default/initial values
+ *   - Clear error message display
  *   - Number pad input optimization
+ *   - Concise, user-friendly labels ("How many drinks per week?")
+ *   - Reusable across onboarding and settings contexts
  * DEPENDENCIES: react, react-hook-form, zod, react-native
  */
 ```
@@ -436,25 +478,12 @@ This file contains documentation headers extracted from component files to provi
  *   - OnboardingDrinkQuantityContainer({ onComplete }: OnboardingDrinkQuantityContainerProps): JSX.Element -> Manages drink quantity input in onboarding context.
  * KEY FEATURES:
  *   - Integration with onboarding flow
- *   - Local storage persistence
- *   - Completion callback handling
- *   - Error state management
+ *   - Local storage persistence of drink quantity
+ *   - Error handling with proper fallbacks
+ *   - Robust validation and data saving
+ *   - Integration with repository for persistence
+ *   - Configures DrinkQuantityInput with "Next" button text
+ *   - Comprehensive debug logging
  * DEPENDENCIES: react, ./DrinkQuantityInput, @/context/RepositoryContext
- */
-```
-
-### SettingsDrinkQuantityContainer.tsx
-```
-/**
- * FILE: components/ui/settings/SettingsDrinkQuantityContainer.tsx
- * PURPOSE: Container component for managing drink quantity input in settings screen.
- * FUNCTIONS:
- *   - SettingsDrinkQuantityContainer(): JSX.Element -> Manages drink quantity input in settings context.
- * KEY FEATURES:
- *   - Settings screen integration
- *   - Local storage persistence
- *   - Current value display
- *   - Update confirmation
- * DEPENDENCIES: react, ../onboarding/DrinkQuantityInput, @/context/RepositoryContext
  */
 ```

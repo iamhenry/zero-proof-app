@@ -1,5 +1,35 @@
 # MEMORY.md
 
+## [May 19, 2025 01:15 PM] SavingsCounter Modal Implementation: Ensuring Immediate Calculations Update
+Context: Implemented a modal for adjusting drink quantity settings in the SavingsCounter component and ensuring immediate updates to savings calculations.
+Lesson:
+- Modal Integration Patterns:
+  - Position modal as a direct child of the parent component to maintain state continuity
+  - Use consistent form components between different contexts (onboarding, settings, modal)
+  - Implement clear success/failure callback patterns with proper error handling
+  - Provide immediate visual feedback for user actions
+- State Management Best Practices:
+  - Update context state before dismissing modal to ensure UI consistency
+  - Implement state verification to confirm updates are applied before UI changes
+  - Use effect cleanup functions to prevent state updates after component unmount
+  - Add comprehensive error boundaries for better user experience during failures
+- Testing Approaches:
+  - Test full interaction flow: open modal → input data → submit → verify updates → modal closed
+  - Create robust mock implementations that accurately simulate context behavior
+  - Test error scenarios explicitly with controlled error injection
+  - Use act() and waitFor() appropriately to handle async operations in tests
+Related Methods/Concepts:
+- React Native Modal component
+- Context API state management
+- Form submission and validation
+- Error handling patterns
+- Async operation testing
+Future Improvements:
+- Create standardized modal wrapper with built-in loading states and error handling
+- Add animation transitions for smoother modal interactions
+- Implement analytics tracking for form interactions and submission success rates
+- Consider micro-frontend architecture for more complex modals
+
 ## [May 19, 2025 12:10 PM] React Native Modal and State Management Patterns
 Context: Fixed SavingsCounterModal test reliability issues by improving async state management and modal animation handling.
 Lesson:
