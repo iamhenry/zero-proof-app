@@ -73,9 +73,7 @@ describe("OnboardingDrinkQuantityContainer", () => {
 			);
 
 			// Verify DrinkQuantityInput is rendered with correct label
-			expect(
-				screen.getByText("How many drinks would you typically have in a week?"),
-			).toBeTruthy();
+			expect(screen.getByText("How many drinks per week?")).toBeTruthy();
 
 			// Verify Next button exists and is disabled initially
 			const nextButton = screen.getByRole("button", { name: /next/i });

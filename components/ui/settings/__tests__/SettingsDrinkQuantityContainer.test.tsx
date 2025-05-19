@@ -104,7 +104,7 @@ describe("SettingsDrinkQuantityContainer", () => {
 			});
 
 			// Verify placeholder is shown
-			const placeholder = screen.getByText("0");
+			const placeholder = screen.getByPlaceholderText("0");
 			expect(placeholder).toBeTruthy();
 		});
 	});

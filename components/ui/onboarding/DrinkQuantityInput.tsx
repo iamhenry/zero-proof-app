@@ -26,7 +26,7 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 	initialValue = 0,
 	placeholder = "0",
 	errorMessage = "Please enter a valid quantity",
-	label = "How many drinks would you typically have in a week?",
+	label = "How many drinks per week?",
 	buttonText = "Next",
 	isSettingsMode = false,
 	onCancel,
@@ -61,11 +61,10 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 				<Label
 					nativeID="drinkQuantityLabel"
 					testID="drink-quantity-label"
-					className="pb-2 text-lg font-semibold"
+					className="pb-2 text-lg font-semibold text-center"
 				>
-					{isSettingsMode && quantityValue ? quantityValue : label}
+					{label}
 				</Label>
-				<Text className="text-4xl text-center mb-4">{placeholder}</Text>
 				<Controller
 					control={control}
 					name="quantity"
@@ -81,7 +80,7 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 							}}
 							value={value}
 							keyboardType="numeric"
-							className="mb-4 text-4xl"
+							className="mb-4 text-8xl border-0 text-center"
 							aria-labelledby="drinkQuantityLabel"
 							aria-describedby={errors.quantity ? "quantityError" : undefined}
 							editable={!isLoading && !disabled}
@@ -109,19 +108,19 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 								Keyboard.dismiss();
 								onCancel();
 							}}
-							className="flex-1 mr-2"
+							className="flex-1 mr-2 rounded-full text-black"
 							aria-label="Cancel"
 							accessibilityRole="button"
 							variant="outline"
 							disabled={isLoading || disabled}
 						>
-							Cancel
+							<Text>Cancel</Text>
 						</Button>
 					)}
 					<Button
 						onPress={handleSubmit(handleFormSubmit)}
 						disabled={isButtonDisabled || isLoading || disabled}
-						className={isSettingsMode ? "flex-1" : ""}
+						className={`${isSettingsMode ? "flex-1" : ""} rounded-full`}
 						aria-label={buttonText}
 						accessibilityState={{ disabled: isButtonDisabled || isLoading }}
 						accessibilityRole="button"
@@ -129,7 +128,7 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 						{isLoading ? (
 							<ActivityIndicator testID="loading-indicator" color="white" />
 						) : (
-							buttonText
+							<Text className="text-white">Save</Text>
 						)}
 					</Button>
 				</View>

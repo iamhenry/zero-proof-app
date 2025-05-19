@@ -114,10 +114,10 @@ describe("SavingsCounter Modal Interactions", () => {
 				expect(input.props.value).toBe(String(savedValue));
 			});
 
-			// Verify the label shows the same value
+			// Verify the label shows the question text
 			await waitFor(() => {
 				const label = screen.getByTestId("drink-quantity-label");
-				expect(label).toHaveTextContent(String(savedValue));
+				expect(label).toHaveTextContent("How many drinks per week?");
 			});
 		});
 

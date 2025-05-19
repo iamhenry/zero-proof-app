@@ -92,7 +92,7 @@ const SettingsDrinkQuantityContainer: React.FC<
 				initialValue={initialValue}
 				errorMessage={undefined} // Handle errors at the container level instead
 				isLoading={isLoading}
-				label="Weekly drink quantity"
+				label="How many drinks per week?"
 				buttonText="Save"
 				isSettingsMode={true}
 				onCancel={onCancel}
