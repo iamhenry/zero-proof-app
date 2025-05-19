@@ -289,6 +289,11 @@ Step-by-Step Tasks:
 ## Bugs
 - [ ] When I do an onboarding with the existing data and enter a value for the drink quantity and store it into the persistent storage, it doesn't reflect accurately when I tap the day cell. (eg. i entered 7 for weekly drink amount, complete the onboarding, tap day cell, the previous data [14 weekly drinks] is what shows up in the financial counter component)
   - [ ] when i refresh the app and enter 21 for weekly amount, this time it will show the amount i had entered before (7 weekly). There's something glitchy about this data storage.
+- [ ] "Scrolling to the bottom on the calendar grid does not fetch new future dates and displays them. But if I scroll to the top and get historical dates, when I scroll back to the very bottom to fetch new dates, it does fetch it. So there seems to be some sort of discrepancy there."
+  - [ ] why didnt the test catch this?
+  //  FIXME: 
+  - [ ] The savings counter component does not recalculate after the user edits their value in the drink quantity settings modal.
+    - [ ] why didnt the test catch this?
 
 ## Phase 4: UI Polish & Optimization
 Enhance user experience with animations and optimizations.

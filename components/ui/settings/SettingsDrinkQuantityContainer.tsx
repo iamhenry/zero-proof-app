@@ -13,11 +13,12 @@ import DrinkQuantityInput from "../onboarding/DrinkQuantityInput";
 interface SettingsDrinkQuantityContainerProps {
 	onSuccess?: () => void;
 	onCancel?: () => void;
+	disabled?: boolean;
 }
 
 const SettingsDrinkQuantityContainer: React.FC<
 	SettingsDrinkQuantityContainerProps
-> = ({ onSuccess, onCancel }) => {
+> = ({ onSuccess, onCancel, disabled = false }) => {
 	const repository = useRepository();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -29,8 +30,11 @@ const SettingsDrinkQuantityContainer: React.FC<
 			try {
 				const value = await repository.loadDrinkCost();
 				setInitialValue(value || 0);
-			} catch (error) {
-				setErrorMessage("Failed to load drink quantity data.");
+			} catch (error: any) {
+				// Ensure error message includes "failed to load" for test compatibility
+				setErrorMessage(
+					`Failed to load drink quantity data: ${error?.message || ""}`,
+				);
 				console.error("Error loading drink quantity data:", error);
 			} finally {
 				setIsLoading(false);
@@ -46,14 +50,18 @@ const SettingsDrinkQuantityContainer: React.FC<
 		setIsSaved(false);
 
 		try {
-			await repository.saveDrinkCost(quantity);
+			// Ensure quantity is a number, though it should be from DrinkQuantityInput's onSubmit type
+			await repository.saveDrinkCost(Number(quantity));
 			setIsSaved(true);
 
 			if (onSuccess) {
 				onSuccess();
 			}
-		} catch (error) {
-			setErrorMessage("Failed to save drink quantity. Please try again.");
+		} catch (error: any) {
+			// Ensure error message includes "failed to save" for test compatibility
+			setErrorMessage(
+				`Failed to save drink quantity. Please try again: ${error?.message || ""}`,
+			);
 			console.error("Error saving drink quantity:", error);
 		} finally {
 			setIsLoading(false);
@@ -68,6 +76,7 @@ const SettingsDrinkQuantityContainer: React.FC<
 				<Text
 					className="text-red-500 text-center mt-2"
 					accessibilityRole="alert"
+					testID="error-message"
 				>
 					{errorMessage}
 				</Text>
@@ -77,7 +86,7 @@ const SettingsDrinkQuantityContainer: React.FC<
 	};
 
 	return (
-		<View className="flex-1">
+		<View className="flex-1" testID="settings-drink-quantity-container">
 			<DrinkQuantityInput
 				onSubmit={handleSubmit}
 				initialValue={initialValue}
@@ -87,6 +96,7 @@ const SettingsDrinkQuantityContainer: React.FC<
 				buttonText="Save"
 				isSettingsMode={true}
 				onCancel={onCancel}
+				disabled={disabled}
 			/>
 			{renderErrorMessage()}
 			{isSaved && !errorMessage && (

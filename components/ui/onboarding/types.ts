@@ -32,4 +32,5 @@ export interface DrinkQuantityInputProps {
   // Optional settings mode callbacks
   onCancel?: () => void;  // New: Only used in settings mode
   isLoading?: boolean;    // New: Indicates loading state
+  disabled?: boolean;     // New: Disables all interaction with the component
 }

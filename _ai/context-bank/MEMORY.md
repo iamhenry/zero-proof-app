@@ -1,5 +1,69 @@
 # MEMORY.md
 
+## [May 19, 2025 12:10 PM] React Native Modal and State Management Patterns
+Context: Fixed SavingsCounterModal test reliability issues by improving async state management and modal animation handling.
+Lesson:
+- Modal Animation and State Coordination:
+  - Use requestAnimationFrame to coordinate modal animations with state updates
+  - Ensure proper cleanup of state when modal is dismissed
+  - Handle error cases without leaving modal in inconsistent state
+  - Add detailed logging for state transitions and modal events
+- Test Reliability:
+  - Replace arbitrary timeouts with waitFor assertions
+  - Use proper timeout and interval settings in waitFor
+  - Split verifications into logical stages
+  - Add comprehensive error handling tests
+- Implementation Best Practices:
+  - Use try/catch for proper error handling
+  - Ensure state cleanup even in error cases
+  - Add detailed logging for debugging
+  - Coordinate state updates with UI changes
+Related Methods/Concepts:
+- React Native Modal animations
+- State management
+- Error handling
+- Test reliability
+- Async operation testing
+Future Improvements:
+- Consider adding error boundary for better error handling
+- Add automated performance monitoring for state updates
+- Standardize modal interaction patterns across app
+- Create shared modal testing utilities
+
+## [May 19, 2025 11:36 AM] Context-Driven UI Updates: Ensuring Proper State Propagation
+Context: Debugged issue where SavingsCounter component did not update after modal changes, revealing gaps in state management and test coverage.
+Lesson:
+- State Update Propagation:
+  - Context updates must trigger appropriate UI refreshes through proper state management
+  - Modal dismissal should be coordinated with state updates to ensure UI consistency
+  - Success callbacks should verify state updates before closing modals
+- Test Coverage Strategy:
+  - Tests should explicitly verify the complete interaction flow:
+    1. Initial state
+    2. User interaction
+    3. State update
+    4. UI refresh
+    5. Final state validation
+  - Mock implementations should accurately simulate context behavior
+  - Test timing and async operations need careful consideration
+- Component Communication:
+  - Clear success/failure callback patterns for modal interactions
+  - Proper sequencing of state updates and UI changes
+  - Verification of state propagation through context hierarchy
+Related Methods/Concepts:
+- React Context API
+- Modal state management
+- Async operation handling
+- Test timing control
+- Mock implementation patterns
+- Component lifecycle management
+Future Improvements:
+- Implement standardized modal interaction patterns with built-in state update verification
+- Create test utilities specifically for verifying context-driven UI updates
+- Add integration tests focusing on complete interaction flows
+- Consider implementing a state management solution with better debugging capabilities
+- Document common patterns for modal-context interactions to prevent similar issues
+
 ## [May 17, 2025 10:45 AM] Test Development Practices: Framework-Agnostic Testing Principles
 Context: Analyzed and improved test development practices while working on SavingsCounter modal component tests, focusing on making testing principles more universal and less framework-specific.
 Lesson:

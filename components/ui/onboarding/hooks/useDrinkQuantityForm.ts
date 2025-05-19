@@ -20,6 +20,7 @@ interface UseDrinkQuantityFormReturn {
   isButtonDisabled: boolean;
   handleFormSubmit: (data: DrinkQuantityFormData) => void;
   setValue: UseFormReturn<DrinkQuantityFormData>["setValue"];
+  quantityValue: string | undefined;
 }
 
 export function useDrinkQuantityForm({
@@ -67,5 +68,6 @@ export function useDrinkQuantityForm({
     isButtonDisabled,
     handleFormSubmit,
     setValue,
+    quantityValue,
   };
 }
