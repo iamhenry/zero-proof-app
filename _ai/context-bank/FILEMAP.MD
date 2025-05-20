@@ -290,20 +290,25 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/calendar/CalendarGrid.tsx
- * CREATED: 2024-07-18 16:32:05
- * UPDATED: 2025-04-08 11:37:00
- *
- * PURPOSE: Implements a scrollable calendar grid component that displays sobriety tracking data.
- * It utilizes CalendarDataContext for state management, data, and interaction logic including scrolling.
- *
- * COMPONENTS:
- * - CalendarGrid() → JSX.Element: Renders the main calendar grid UI, including the weekday header and the scrollable list of weeks/days.
- *   Exposes calendarRef via context to enable external scrolling functionality.
- *
- * DEPENDENCIES:
- * - CalendarDataContext: Provides calendar state, data, and interaction logic.
- * - DayCell (Component): Renders individual day cells within the grid.
- * - WeekdayHeader (Component): Displays the header row with weekday names.
+ * PURPOSE: Renders a scrollable calendar grid showing weeks with corresponding day cells, integrating with CalendarDataContext.
+ * FUNCTIONS:
+ *   - CalendarGrid(): JSX.Element -> Main component for rendering the calendar grid.
+ *   - handleEndReached(): void -> Loads future weeks when end of list is reached, respects programmatic scrolling state.
+ *   - handleScroll(event): void -> Handles scroll events, loads past weeks when near top, respects programmatic scrolling.
+ *   - renderDayCell(day, index): JSX.Element -> Renders individual day cells with appropriate styling.
+ *   - renderWeek({ item }): JSX.Element -> Renders a week row containing 7 day cells.
+ *   - handleScrollToIndexFailed(info): void -> Gracefully handles scroll failures with fallback mechanism.
+ * KEY FEATURES:
+ *   - Integration with CalendarDataContext for data management
+ *   - Infinite scrolling with dynamic past/future week loading
+ *   - One-time initial scroll to today for better UX
+ *   - Fix for memory leak issues in programmatic scrolling
+ *   - Optimized FlatList rendering with fixed height calculations
+ *   - Smart ref handling for reliable programmatic scrolling
+ *   - Prevention of scroll interference during programmatic scrolling
+ *   - Enhanced error handling for scroll failures
+ *   - Comprehensive debug logging for ref and scroll state
+ * DEPENDENCIES: react, react-native, ./WeekdayHeader, ./DayCell, @/context/CalendarDataContext
  */
 ```
 

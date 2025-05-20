@@ -2,14 +2,14 @@
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: May 19, 2025, 01:15 PM
+- Last Update: May 20, 2025, 01:37 PM
 - Current Phase: Phase 2 - Frontend Implementation
-- Overall Progress: ~85%
+- Overall Progress: ~87%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
-- Current Branch: feat/drink-quantity
-- Latest Release: Version 0.1.20
+- Current Branch: fix/calendar-future-dates
+- Latest Release: Version 0.1.21
 
 ## Key Metrics
 - Features Completed: ~65/82 (~79% based on sub-tasks)
@@ -18,6 +18,32 @@
 - Current Focus: Enhancing drink quantity input and savings calculations
 
 ---
+
+## Version 0.1.21 - May 20, 2025 01:37 PM
+
+### Fixed
+
+- Calendar Future Dates Loading
+  - Description: Fixed programmatic scrolling flag reset in CalendarGrid.tsx and enhanced future date loading functionality.
+  - Why: To resolve issues with loading future dates on initial calendar scroll and ensure consistent loading behavior.
+  - Impact: More reliable calendar navigation and future date loading experience.
+  - Reference: Commit c060f1f.
+
+### Enhanced
+
+- Testing Coverage
+  - Description: Added comprehensive test suite for programmatic scrolling and future date loading scenarios.
+  - Why: To ensure reliability and robustness of the calendar navigation and loading functionality.
+  - Impact: Improved application stability and confidence in the calendar feature's reliability.
+  - Reference: Commit c060f1f.
+
+### Updated
+
+- Documentation
+  - Description: Added documentation for calendar future dates loading bug and its resolution.
+  - Why: To maintain clear records of identified issues and their solutions.
+  - Impact: Better knowledge sharing and future debugging reference.
+  - Reference: Commit c060f1f.
 
 ## Version 0.1.20 - May 19, 2025 01:15 PM
 
@@ -803,3 +829,29 @@
 2. Relevance: Focus on user or developer impact.
 3. Consistency: Follow semantic versioning and maintain standard formatting.
 4. Cross-Referencing: Link tickets, pull requests, or documentation for context.
+
+## Version 0.1.21 - May 20, 2025 01:37 PM
+
+### Fixed
+
+- Calendar Future Dates Loading
+  - Description: Fixed programmatic scrolling flag reset in CalendarGrid.tsx and enhanced future date loading functionality.
+  - Why: To resolve issues with loading future dates on initial calendar scroll and ensure consistent loading behavior.
+  - Impact: More reliable calendar navigation and future date loading experience.
+  - Reference: Commit c060f1f.
+
+### Enhanced
+
+- Testing Coverage
+  - Description: Added comprehensive test suite for programmatic scrolling and future date loading scenarios.
+  - Why: To ensure reliability and robustness of the calendar navigation and loading functionality.
+  - Impact: Improved application stability and confidence in the calendar feature's reliability.
+  - Reference: Commit c060f1f.
+
+### Updated
+
+- Documentation
+  - Description: Added documentation for calendar future dates loading bug and its resolution.
+  - Why: To maintain clear records of identified issues and their solutions.
+  - Impact: Better knowledge sharing and future debugging reference.
+  - Reference: Commit c060f1f.

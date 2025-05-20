@@ -1,5 +1,29 @@
 # MEMORY.md
 
+## [May 20, 2025 01:37 PM] Calendar Future Dates Loading: Optimizing Scroll and Load Behavior
+Context: Fixed issues with future dates loading in the calendar by improving programmatic scrolling and load trigger coordination.
+Lesson:
+- Scroll State Management:
+  - Programmatic scrolling flags need careful reset timing to prevent interference with user interactions
+  - Manual load triggers can ensure consistent data loading after programmatic scrolls
+  - Clear separation between programmatic and user-initiated scrolling improves reliability
+  - Comprehensive test coverage for scroll scenarios is crucial
+- Data Loading Patterns:
+  - Future date loading should be triggered consistently regardless of scroll source
+  - Load triggers should be coordinated with scroll completion
+  - Edge cases like initial load and programmatic scrolling need special handling
+  - Performance impact of loading operations should be monitored
+Related Methods/Concepts:
+- React Native scroll view management
+- Infinite scroll implementation
+- Programmatic scroll control
+- Test coverage for complex interactions
+Future Improvements:
+- Consider implementing scroll position persistence
+- Add performance monitoring for scroll operations
+- Create standardized scroll management utilities
+- Implement scroll analytics for usage patterns
+
 ## [May 19, 2025 01:15 PM] SavingsCounter Modal Implementation: Ensuring Immediate Calculations Update
 Context: Implemented a modal for adjusting drink quantity settings in the SavingsCounter component and ensuring immediate updates to savings calculations.
 Lesson:
@@ -563,7 +587,7 @@ Related Methods/Concepts:
 - Knowledge transfer
 - Type annotations
 Future Improvements:
-- Consider automated documentation formatting checks in the CI pipeline.
+- Consider automating documentation formatting checks in the CI pipeline.
 - Add a documentation style guide to the project README.
 
 ## [Mar 31, 2025 02:48 PM] Deterministic Data Generation Enables Reliable Testing
