@@ -227,4 +227,92 @@ describe("CalendarGrid", () => {
 
 		expect(loadMoreWeeksSpy).toHaveBeenCalledWith(expect.anything(), "past", 4);
 	});
+
+	// MARK: - Scenario: Programmatic Scrolling and Future Date Loading
+	describe("Programmatic Scrolling and Future Date Loading", () => {
+		test("should reset isProgrammaticScrolling flag after initial scroll to today", async () => {
+			// Arrange
+			renderWithProviders(<CalendarGrid />);
+			const flatList = await screen.findByTestId("calendar-grid-list");
+
+			// Act - simulate completion of initial scroll
+			act(() => {
+				jest.advanceTimersByTime(1000); // advance past the initial scroll timeout
+			});
+
+			// Simulate user scroll to bottom
+			fireEvent.scroll(flatList, {
+				nativeEvent: {
+					contentOffset: { y: 500 },
+					contentSize: { height: 1000, width: 400 },
+					layoutMeasurement: { height: 500, width: 400 },
+				},
+			});
+
+			// Assert - should load future dates since flag should be reset
+			await waitFor(() => {
+				expect(loadMoreWeeksSpy).toHaveBeenCalledWith(
+					expect.anything(),
+					"future",
+					4,
+				);
+			});
+		});
+
+		test("should load future dates on first scroll to bottom without loading past dates", async () => {
+			// Arrange
+			renderWithProviders(<CalendarGrid />);
+			const flatList = await screen.findByTestId("calendar-grid-list");
+
+			// Act - simulate completion of initial scroll and flag reset
+			act(() => {
+				jest.advanceTimersByTime(1000);
+			});
+
+			// Simulate scroll to bottom without loading past dates
+			fireEvent(flatList, "onEndReached");
+
+			// Assert
+			await waitFor(() => {
+				expect(loadMoreWeeksSpy).toHaveBeenCalledWith(
+					expect.anything(),
+					"future",
+					4,
+				);
+			});
+			// Verify past dates weren't loaded
+			expect(loadMoreWeeksSpy).not.toHaveBeenCalledWith(
+				expect.anything(),
+				"past",
+				expect.any(Number),
+			);
+		});
+
+		test("should handle user scroll during programmatic scroll", async () => {
+			// Arrange
+			renderWithProviders(<CalendarGrid />);
+			const flatList = await screen.findByTestId("calendar-grid-list");
+
+			// Act - simulate user scroll during programmatic scroll
+			fireEvent.scroll(flatList, {
+				nativeEvent: {
+					contentOffset: { y: 100 },
+					contentSize: { height: 1000, width: 400 },
+					layoutMeasurement: { height: 500, width: 400 },
+				},
+			});
+
+			// Simulate reaching the bottom
+			fireEvent(flatList, "onEndReached");
+
+			// Assert
+			await waitFor(() => {
+				expect(loadMoreWeeksSpy).toHaveBeenCalledWith(
+					expect.anything(),
+					"future",
+					4,
+				);
+			});
+		});
+	});
 });

@@ -100,10 +100,14 @@ export function CalendarGrid() {
 							viewPosition: 0.5,
 						});
 
-						// Reset the flag after a brief delay
+						// Reset the flag and trigger a scroll event after scroll completes
 						setTimeout(() => {
 							setIsProgrammaticScrolling(false);
-						}, 300);
+							// Manually trigger an end reached event after flag reset
+							if (calendarRef.current) {
+								handleEndReached();
+							}
+						}, 500);
 					}
 				}, 50);
 			} catch (error) {

@@ -7,12 +7,13 @@ alwaysApply: true
 ==========================
   1. Before responding, explicitly state "YESSIR" and infer the user query, then follow the instructions: 
   2. Immediately read and analyze files in {Context Bank}
-  3. Incorporate insights from {Context Bank} into {ooda_framework}
-  4. {Context Bank} analysis must occur before any other tool use
-  5. If {Context Bank} cannot be read, notify user immediately
-  6. Use {Context Bank} context to inform all subsequent decisions
-  7. Verify you have complete context
-  8. Finally proceed with the {ooda_framework}
+  3. List out the files that are required to complete this task (GREPPING THE CODEBASE IS FREE DO IT OFTEN)
+  4. Incorporate insights from {Context Bank} into {ooda_framework}
+  5. {Context Bank} analysis must occur before any other tool use
+  6. If {Context Bank} cannot be read, notify user immediately
+  7. Use {Context Bank} context to inform all subsequent decisions
+  8. Verify you have complete context
+  9. Finally proceed with the {ooda_framework}
 
 # Context Bank Directory
 ==========================
