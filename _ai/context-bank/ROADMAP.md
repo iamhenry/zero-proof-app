@@ -303,67 +303,51 @@ Step-by-Step Tasks:
   - [x] 34 Implement drink quantity management in settings
     - File: `components/ui/settings/SettingsDrinkQuantityContainer.tsx` (to be expanded)
     - Branch Name: `feat/settings-drink-quantity-screen`
-  - [ ] 35. Implement freemium model with 3-day trial and RevenueCat integration
-    - [ ] 35.1. Configure RevenueCat SDK and server-side validation
-      - File: `config/revenuecat.ts` (to be created)
-      - File: `lib/services/subscription-service.ts` (to be created)
-      - Branch Name: `feat/revenuecat-setup`
+  - [ ] 35. Implement freemium model with RevenueCat integration (iOS-focused, simplified)
+    - [x] 35.1. Install and Configure RevenueCat SDK (iOS-only)
+      - File: `config/revenuecat.ts` (completed)
+      - Branch Name: `feat/revenuecat-ios-setup`
       - Dependencies: RevenueCat SDK
       - Tasks:
-        1. Set up RevenueCat project and API keys
-        2. Install and configure RevenueCat SDK
-        3. Create subscription service layer
-        4. Configure webhook endpoints
-        5. Implement server-side receipt validation
-        6. Add monitoring and error handling
-      - Note: This is the foundation for all subscription functionality
-    - [ ] 35.2. Enhance existing PaywallScreen with RevenueCat
-      - File: `components/ui/onboarding/PaywallScreen.tsx`
-      - Branch Name: `feat/paywall-revenuecat`
+        1. [x] Install `react-native-purchases` SDK
+        2. [x] Enable In-App Purchase capability in Xcode
+        3. [x] Configure RevenueCat project and iOS API keys
+        4. [x] Create basic configuration service
+        5. [x] Add environment variable for API key
+        6. [x] Configure offerings in RevenueCat dashboard
+        7. [x] Set up products in App Store Connect
+        8. [x] Configure RevenueCat UI SDK template for paywall
+      - Note: Skip Android setup, webhooks, and server-side validation for now
+    - [ ] 35.2. Replace PaywallScreen with RevenueCat UI SDK Template
+      - File: `components/ui/onboarding/PaywallScreen.tsx` (to be replaced)
+      - Branch Name: `feat/revenuecat-ui-paywall`
       - Dependencies: Task 35.1
       - Tasks:
-        1. Replace placeholder purchase functions with RevenueCat hooks
-        2. Add subscription product fetching
-        3. Implement restore purchases functionality
-        4. Add loading states during purchase
-        5. Enhance error handling
-        6. Make component context-aware (onboarding vs post-trial)
-      - Note: Enhances existing component to work in both onboarding and post-trial contexts
-    - [ ] 35.3. Implement trial state management
-      - File: `context/TrialStateContext.tsx` (to be created)
-      - Branch Name: `feat/trial-state`
+        1. Install RevenueCat UI SDK (`@revenuecat/purchases-ui-react-native`)
+        2. Replace custom PaywallScreen with RevenueCat template
+        3. Configure template with your offerings
+        4. Add restore purchases (built into template)
+        5. Handle purchase completion callbacks
+      - Note: Template handles loading states, error handling, and purchase flows automatically
+    - [ ] 35.3. Implement Basic Subscription State Management
+      - File: `context/SubscriptionContext.tsx` (to be created)
+      - Branch Name: `feat/subscription-state`
       - Dependencies: Task 35.2
       - Tasks:
-        1. Create TrialStateContext
-        2. Implement trial start/end date tracking
-        3. Add trial status checks
-        4. Handle trial expiration logic
-        5. Implement trial state persistence
-      - Note: Trial logic needs to be in place before route protection
-    - [ ] 35.4. Create PaywallGuard for route protection
-      - File: `components/ui/guards/PaywallGuard.tsx` (to be created)
+        1. Create simple subscription context
+        2. Track active subscription status
+        3. Listen for purchase events from paywall
+        4. Persist subscription state locally
+      - Note: Keep it minimal - just track active/inactive status
+    - [ ] 35.4. Add Route Protection
       - File: `app/(app)/(protected)/_layout.tsx` (to be modified)
-      - Branch Name: `feat/subscription-route-protection`
-      - Dependencies: Tasks 35.2, 35.3
+      - Branch Name: `feat/subscription-protection`
+      - Dependencies: Task 35.3
       - Tasks:
-        1. Create PaywallGuard component that reuses PaywallScreen
-        2. Implement subscription status check hook
-        3. Add route protection logic
-        4. Handle trial and subscription status checks
-        5. Add redirection logic
-      - Note: Uses enhanced PaywallScreen for blocking access
-    - [ ] 35.5. Add offline support and edge case handling
-      - File: `lib/services/subscription-service.ts`
-      - File: `context/TrialStateContext.tsx`
-      - Branch Name: `feat/subscription-resilience`
-      - Dependencies: Tasks 35.1-35.4
-      - Tasks:
-        1. Implement offline subscription status caching
-        2. Add retry logic for failed network requests
-        3. Handle app reinstall scenarios
-        4. Add error boundaries for subscription components
-        5. Implement fallback states
-      - Note: Final polish to ensure robust subscription handling
+        1. Check subscription status in protected layout
+        2. Redirect to paywall if subscription inactive
+        3. Allow access if subscription active
+      - Note: Simple boolean check, no complex trial logic initially
 
 ## Bugs
 // FIXME:
