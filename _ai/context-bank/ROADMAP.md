@@ -303,28 +303,76 @@ Step-by-Step Tasks:
   - [x] 34 Implement drink quantity management in settings
     - File: `components/ui/settings/SettingsDrinkQuantityContainer.tsx` (to be expanded)
     - Branch Name: `feat/settings-drink-quantity-screen`
-  - [ ] 35. Implement freemium model with 3-day trial
-    - [ ] 35.1. Configure Expo `expo-in-app-purchases` for Apple App Store subscriptions
-      - File: `config/in-app-purchases.ts` (to be created)
-      - Branch Name: `feat/iap-subscription-setup`
-    - [ ] 35.2. Set 3-day trial expiration in local storage (AsyncStorage)
+  - [ ] 35. Implement freemium model with 3-day trial and RevenueCat integration
+    - [ ] 35.1. Configure RevenueCat SDK and server-side validation
+      - File: `config/revenuecat.ts` (to be created)
+      - File: `lib/services/subscription-service.ts` (to be created)
+      - Branch Name: `feat/revenuecat-setup`
+      - Dependencies: RevenueCat SDK
+      - Tasks:
+        1. Set up RevenueCat project and API keys
+        2. Install and configure RevenueCat SDK
+        3. Create subscription service layer
+        4. Configure webhook endpoints
+        5. Implement server-side receipt validation
+        6. Add monitoring and error handling
+      - Note: This is the foundation for all subscription functionality
+    - [ ] 35.2. Enhance existing PaywallScreen with RevenueCat
+      - File: `components/ui/onboarding/PaywallScreen.tsx`
+      - Branch Name: `feat/paywall-revenuecat`
+      - Dependencies: Task 35.1
+      - Tasks:
+        1. Replace placeholder purchase functions with RevenueCat hooks
+        2. Add subscription product fetching
+        3. Implement restore purchases functionality
+        4. Add loading states during purchase
+        5. Enhance error handling
+        6. Make component context-aware (onboarding vs post-trial)
+      - Note: Enhances existing component to work in both onboarding and post-trial contexts
+    - [ ] 35.3. Implement trial state management
       - File: `context/TrialStateContext.tsx` (to be created)
-      - Branch Name: `feat/trial-expiration`
-    - [ ] 35.3. Implement paywall display post-trial, blocking access to protected screens
-      - File: `components/ui/paywall/Paywall.tsx` (to be created)
-      - Branch Name: `feat/paywall-display`
-      - Note: If trial has ended and no subscription is active, redirect users to the paywall screen instead of allowing access to protected routes (e.g., home screen).
-    - [ ] 35.4. Handle trial persistence using local storage
+      - Branch Name: `feat/trial-state`
+      - Dependencies: Task 35.2
+      - Tasks:
+        1. Create TrialStateContext
+        2. Implement trial start/end date tracking
+        3. Add trial status checks
+        4. Handle trial expiration logic
+        5. Implement trial state persistence
+      - Note: Trial logic needs to be in place before route protection
+    - [ ] 35.4. Create PaywallGuard for route protection
+      - File: `components/ui/guards/PaywallGuard.tsx` (to be created)
+      - File: `app/(app)/(protected)/_layout.tsx` (to be modified)
+      - Branch Name: `feat/subscription-route-protection`
+      - Dependencies: Tasks 35.2, 35.3
+      - Tasks:
+        1. Create PaywallGuard component that reuses PaywallScreen
+        2. Implement subscription status check hook
+        3. Add route protection logic
+        4. Handle trial and subscription status checks
+        5. Add redirection logic
+      - Note: Uses enhanced PaywallScreen for blocking access
+    - [ ] 35.5. Add offline support and edge case handling
+      - File: `lib/services/subscription-service.ts`
       - File: `context/TrialStateContext.tsx`
-      - Branch Name: `feat/trial-persistence`
-      - Note: Trial state is stored locally in AsyncStorage. If the app is deleted and reinstalled, the trial will reset (i.e., a new 3-day trial starts), as there is no remote storage (Supabase) to persist trial state across installs. This can be addressed post-launch with Supabase integration.
+      - Branch Name: `feat/subscription-resilience`
+      - Dependencies: Tasks 35.1-35.4
+      - Tasks:
+        1. Implement offline subscription status caching
+        2. Add retry logic for failed network requests
+        3. Handle app reinstall scenarios
+        4. Add error boundaries for subscription components
+        5. Implement fallback states
+      - Note: Final polish to ensure robust subscription handling
 
 ## Bugs
 // FIXME:
+- [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
+
+<!-- FIXED -->
 - [x] "Scrolling to the bottom on the calendar grid does not fetch new future dates and displays them. But if I scroll to the top and get historical dates, when I scroll back to the very bottom to fetch new dates, it does fetch it. So there seems to be some sort of discrepancy there."
   - [x] why didnt the test catch this?
 
-<!-- FIXED -->
 - [x] When I do an onboarding with the existing data and enter a value for the drink quantity and store it into the persistent storage, it doesn't reflect accurately when I tap the day cell. (eg. i entered 7 for weekly drink amount, complete the onboarding, tap day cell, the previous data [14 weekly drinks] is what shows up in the financial counter component)
   - [x] when i refresh the app and enter 21 for weekly amount, this time it will show the amount i had entered before (7 weekly). There's something glitchy about this data storage.
   - [x] The savings counter component does not recalculate after the user edits their value in the drink quantity settings modal.
