@@ -318,16 +318,16 @@ Step-by-Step Tasks:
         7. [x] Set up products in App Store Connect
         8. [x] Configure RevenueCat UI SDK template for paywall
       - Note: Skip Android setup, webhooks, and server-side validation for now
-    - [ ] 35.2. Replace PaywallScreen with RevenueCat UI SDK Template
-      - File: `components/ui/onboarding/PaywallScreen.tsx` (to be replaced)
+    - [x] 35.2. Replace PaywallScreen with RevenueCat UI SDK Template
+      - File: `components/ui/onboarding/PaywallScreen.tsx` (completed)
       - Branch Name: `feat/revenuecat-ui-paywall`
       - Dependencies: Task 35.1
       - Tasks:
-        1. Install RevenueCat UI SDK (`@revenuecat/purchases-ui-react-native`)
-        2. Replace custom PaywallScreen with RevenueCat template
-        3. Configure template with your offerings
-        4. Add restore purchases (built into template)
-        5. Handle purchase completion callbacks
+        1. [x] Install RevenueCat UI SDK (`react-native-purchases-ui`)
+        2. [x] Replace custom PaywallScreen with RevenueCat template
+        3. [x] Configure template with your offerings
+        4. [x] Add restore purchases (built into template)
+        5. [x] Handle purchase completion callbacks
       - Note: Template handles loading states, error handling, and purchase flows automatically
     - [ ] 35.3. Implement Basic Subscription State Management
       - File: `context/SubscriptionContext.tsx` (to be created)
@@ -352,6 +352,11 @@ Step-by-Step Tasks:
 ## Bugs
 // FIXME:
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
+- [ ] RevenueCat paywall only shows red rectangle instead of proper paywall UI
+  - Issue: The RevenueCat UI SDK paywall component is not rendering correctly, only displaying a red rectangle
+  - File: `components/ui/onboarding/PaywallScreen.tsx`
+  - Priority: High (blocks monetization flow)
+  - Investigation needed: Check RevenueCat configuration, offerings setup, and component integration
 
 <!-- FIXED -->
 - [x] "Scrolling to the bottom on the calendar grid does not fetch new future dates and displays them. But if I scroll to the top and get historical dates, when I scroll back to the very bottom to fetch new dates, it does fetch it. So there seems to be some sort of discrepancy there."
