@@ -329,6 +329,12 @@ Step-by-Step Tasks:
         4. [x] Add restore purchases (built into template)
         5. [x] Handle purchase completion callbacks
       - Note: Template handles loading states, error handling, and purchase flows automatically
+      - TESTS:
+        - working (iphone Physical device with testing account `virtualhenry+appleTester1@gmail.com`):
+          - I was able to buy a subscription, the $2.99 a month subscription that's only available right now. I need to add more later.
+          - And I was able to restore the purchase successfully.
+          - i was not able to test on simulator
+            - Both of those tests, I was able to access the protected routes, which is the calendar grade view successfully.
     - [ ] 35.3. Implement Basic Subscription State Management
       - File: `context/SubscriptionContext.tsx` (to be created)
       - Branch Name: `feat/subscription-state`
@@ -348,6 +354,7 @@ Step-by-Step Tasks:
         2. Redirect to paywall if subscription inactive
         3. Allow access if subscription active
       - Note: Simple boolean check, no complex trial logic initially
+    - [ ] 36. Display the revenue cat status of the user to show what subscription they are and include a deep link to the settings in the OS to manage or unsubscribe.
 
 ## Bugs
 // FIXME:
@@ -357,6 +364,7 @@ Step-by-Step Tasks:
   - File: `components/ui/onboarding/PaywallScreen.tsx`
   - Priority: High (blocks monetization flow)
   - Investigation needed: Check RevenueCat configuration, offerings setup, and component integration
+- [ ] Currently in the onboarding experience, the user can easily swipe past entering the drink quantity. And so when the user completes the onboarding experience and starts the free trial, the drink quantity amount will be zero. And so the savings counter will not be calculating anything and will always show zero.
 
 <!-- FIXED -->
 - [x] "Scrolling to the bottom on the calendar grid does not fetch new future dates and displays them. But if I scroll to the top and get historical dates, when I scroll back to the very bottom to fetch new dates, it does fetch it. So there seems to be some sort of discrepancy there."

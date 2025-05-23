@@ -1,5 +1,53 @@
 # MEMORY.md
 
+## [May 23, 2025 12:36 PM] RevenueCat Paywall Integration: Bundle Identifier Mismatch Resolution
+Context: Fixed RevenueCat paywall displaying as red rectangle instead of proper subscription UI by resolving bundle identifier mismatch and implementing proper SDK initialization.
+Lesson:
+- Bundle Identifier Synchronization:
+  - Bundle identifier must match exactly across Expo configuration (`app.json`), RevenueCat dashboard, and App Store Connect
+  - Xcode builds can cache old bundle identifiers even after updating Expo configuration
+  - Force regenerating iOS project (`rm -rf ios/ && npx expo prebuild --platform ios`) ensures bundle ID changes take effect
+  - Clean Build Folder (Cmd+Shift+K) in Xcode is essential after bundle ID changes
+  - Verify bundle ID in build logs: look for `[bundleId.debug.dylib]` messages to confirm changes applied
+- RevenueCat SDK Initialization:
+  - SDK must be initialized before any paywall components render
+  - Initialize in root layout (`app/_layout.tsx`) using `useEffect` on component mount
+  - Add comprehensive error handling to prevent app crashes from SDK initialization failures
+  - Implement verification functions to test SDK connectivity and offerings availability
+  - Enhanced logging with emojis and structured messages improves debugging experience
+- Error Diagnosis Patterns:
+  - "offerings-empty" error typically indicates configuration mismatch, not code issues
+  - Customer info retrieval success + offerings failure = bundle ID or product configuration problem
+  - Red rectangle in RevenueCat UI component = SDK not properly initialized or no offerings available
+  - Build logs showing old bundle identifier = Xcode using cached project files
+- PaywallScreen Component Architecture:
+  - Implement loading states and error boundaries around RevenueCat UI components
+  - Add retry functionality for transient network issues
+  - Provide fallback UI when offerings unavailable
+  - Include "Continue Without Subscription" option for development/testing
+  - Comprehensive logging of all paywall lifecycle events for debugging
+- Development Workflow:
+  - Test on both simulator and physical device to ensure consistency
+  - Use separate git branches for testing configuration changes
+  - Backup working builds before making bundle ID changes
+  - Force clean builds when configuration changes don't appear to take effect
+  - Verify changes in multiple environments (simulator, device, different iOS versions)
+Related Methods/Concepts:
+- Expo configuration management
+- RevenueCat SDK integration
+- Bundle identifier management
+- iOS build configuration
+- Error boundary implementation
+- React Context API for SDK initialization
+- Xcode project regeneration
+- Development environment consistency
+Future Improvements:
+- Create automated checks for bundle identifier consistency across platforms
+- Implement comprehensive integration tests for RevenueCat functionality
+- Add bundle identifier validation in CI/CD pipeline
+- Consider implementing feature flags for paywall testing
+- Document platform-specific configuration requirements for team onboarding
+
 ## [May 20, 2025 01:37 PM] Calendar Future Dates Loading: Optimizing Scroll and Load Behavior
 Context: Fixed issues with future dates loading in the calendar by improving programmatic scrolling and load trigger coordination.
 Lesson:

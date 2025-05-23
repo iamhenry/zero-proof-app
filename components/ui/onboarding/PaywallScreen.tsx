@@ -208,7 +208,15 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 	}
 
 	return (
-		<View style={{ flex: 1, backgroundColor: "#fff" }}>
+		<View
+			style={{
+				flex: 1,
+				width: "100%",
+				paddingBottom: 90,
+				// height: "80%",
+				// minHeight: 400,
+			}}
+		>
 			<RevenueCatUI.Paywall
 				options={{
 					displayCloseButton: false, // No close button since onboarding handles navigation
