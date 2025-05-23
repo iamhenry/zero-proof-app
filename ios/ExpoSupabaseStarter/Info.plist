@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>expo-supabase-starter</string>
-          <string>com.anonymous.ExpoSupabaseStarter</string>
+          <string>com.zeroproof.hmoran</string>
         </array>
       </dict>
     </array>

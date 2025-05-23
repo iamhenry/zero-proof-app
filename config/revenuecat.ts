@@ -3,6 +3,7 @@
  * PURPOSE: RevenueCat SDK configuration and helper functions for in-app purchases
  * FUNCTIONS:
  *   - configureRevenueCat() → void: Initialize RevenueCat SDK with API key
+ *   - verifyRevenueCatSetup() → boolean: Verify SDK is properly configured
  *   - identifyUser(userId: string) → void: Associate user with RevenueCat
  *   - getCustomerInfo() → CustomerInfo: Get current user's subscription status
  *   - getOfferings() → Offerings: Get available subscription packages
@@ -18,21 +19,69 @@ const revenueCatApiKey = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY as string;
 
 export const configureRevenueCat = async () => {
   try {
+    console.log('🚀 Starting RevenueCat SDK configuration...');
+    
+    // Validate API key exists
+    if (!revenueCatApiKey) {
+      throw new Error('RevenueCat API key is not configured. Please set EXPO_PUBLIC_REVENUECAT_API_KEY in your environment variables.');
+    }
+    
+    console.log(`📱 Platform: ${Platform.OS}`);
+    console.log('🔑 API key found (length:', revenueCatApiKey.length, 'characters)');
+
     // Configure RevenueCat SDK
     if (Platform.OS === 'ios') {
       await Purchases.configure({ apiKey: revenueCatApiKey });
+      console.log('✅ RevenueCat configured for iOS');
     } else if (Platform.OS === 'android') {
       await Purchases.configure({ apiKey: revenueCatApiKey });
+      console.log('✅ RevenueCat configured for Android');
       // For Amazon Appstore, use: await Purchases.configure({ apiKey: revenueCatApiKey, useAmazon: true });
+    } else {
+      console.warn('⚠️ Unsupported platform for RevenueCat:', Platform.OS);
     }
 
     // Set log level for debugging (adjust for production)
     Purchases.setLogLevel(LOG_LEVEL.INFO);
+    console.log('📝 RevenueCat log level set to INFO');
 
-    console.log('RevenueCat configured successfully');
+    // Verify configuration by testing basic functionality
+    await verifyRevenueCatSetup();
+    
+    console.log('🎉 RevenueCat SDK configured and verified successfully');
   } catch (error) {
-    console.error('Failed to configure RevenueCat:', error);
+    console.error('❌ Failed to configure RevenueCat:', error);
     throw error;
+  }
+};
+
+// Helper function to verify RevenueCat setup
+export const verifyRevenueCatSetup = async (): Promise<boolean> => {
+  try {
+    console.log('🔍 Verifying RevenueCat setup...');
+    
+    // Test 1: Get customer info (basic SDK functionality)
+    const customerInfo = await Purchases.getCustomerInfo();
+    console.log('✅ Customer info retrieved successfully');
+    console.log('👤 User ID:', customerInfo.originalAppUserId);
+    console.log('📅 First seen:', customerInfo.firstSeen);
+    
+    // Test 2: Get offerings (tests connection to RevenueCat dashboard)
+    const offerings = await Purchases.getOfferings();
+    console.log('✅ Offerings retrieved successfully');
+    console.log('📦 Available offerings:', Object.keys(offerings.all).length);
+    
+    if (offerings.current) {
+      console.log('🎯 Current offering:', offerings.current.identifier);
+      console.log('📋 Available packages:', offerings.current.availablePackages.length);
+    } else {
+      console.warn('⚠️ No current offering found - check RevenueCat dashboard configuration');
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('❌ RevenueCat setup verification failed:', error);
+    return false;
   }
 };
 

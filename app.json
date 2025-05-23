@@ -26,7 +26,7 @@
           "image": "./assets/splash-dark.png"
         }
       },
-      "bundleIdentifier": "com.anonymous.ExpoSupabaseStarter"
+      "bundleIdentifier": "com.zeroproof.hmoran"
     },
     "android": {
       "adaptiveIcon": {
@@ -42,7 +42,7 @@
           "image": "./assets/splash-dark.png"
         }
       },
-      "package": "com.anonymous.ExpoSupabaseStarter"
+      "package": "com.zeroproof.hmoran"
     },
     "experiments": {
       "typedRoutes": true
