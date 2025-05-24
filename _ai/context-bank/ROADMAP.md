@@ -357,7 +357,6 @@ Step-by-Step Tasks:
     - [ ] 36. Display the revenue cat status of the user to show what subscription they are and include a deep link to the settings in the OS to manage or unsubscribe.
 
 ## Bugs
-// FIXME:
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
 - [ ] RevenueCat paywall only shows red rectangle instead of proper paywall UI
   - Issue: The RevenueCat UI SDK paywall component is not rendering correctly, only displaying a red rectangle
@@ -365,6 +364,22 @@ Step-by-Step Tasks:
   - Priority: High (blocks monetization flow)
   - Investigation needed: Check RevenueCat configuration, offerings setup, and component integration
 - [ ] Currently in the onboarding experience, the user can easily swipe past entering the drink quantity. And so when the user completes the onboarding experience and starts the free trial, the drink quantity amount will be zero. And so the savings counter will not be calculating anything and will always show zero.
+// FIXME:
+- [ ] when signing up for a new account, the signup modal sheet does not dismiss and there's not toast to notify the user that they have to verify their email
+  - [ ] file: `sign-up.tsx`
+  - [ ] prompt: "i beleive this use to dismiss but i havent worked or modified any of this code recently help me debug what could be this issue"
+  - [ ] cursor mode: "debug"
+  - [ ] **is this being cause by the onboarding experience not being implementing in the correct position?**
+  - [ ] **root cause:**
+    - [ ] file: `supabase-provider.tsx`
+    - [ ] No Session Created: When a user signs up, Supabase doesn't immediately create a session (because email verification is required), so no auth state change occurs, and no navigation is triggered
+    - [ ] Missing User Feedback: There's no toast notification or UI feedback to tell the user they need to verify their email
+      - [ ] toast should show after the signup screen hides and show it in the welcome screen for 5 seconds
+    - [ ] The sign-up modal wasn't dismissing because:
+    - [ ] No session created: Supabase requires email verification, so no immediate session is created
+    - [ ] No user feedback: There was no toast notification system to inform users about email verification
+    - [ ] No modal dismissal logic: The component didn't handle the email verification flow
+  
 
 <!-- FIXED -->
 - [x] "Scrolling to the bottom on the calendar grid does not fetch new future dates and displays them. But if I scroll to the top and get historical dates, when I scroll back to the very bottom to fetch new dates, it does fetch it. So there seems to be some sort of discrepancy there."
