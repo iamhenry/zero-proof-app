@@ -339,6 +339,7 @@ Step-by-Step Tasks:
       - File: `context/SubscriptionContext.tsx` (to be created)
       - Branch Name: `feat/subscription-state`
       - Dependencies: Task 35.2
+      - Purpose: Currently the app has no way to track subscription status across the app, meaning users could access premium features without paying. This creates a centralized subscription state that all components can reference.
       - Tasks:
         1. Create simple subscription context
         2. Track active subscription status
@@ -349,12 +350,25 @@ Step-by-Step Tasks:
       - File: `app/(app)/(protected)/_layout.tsx` (to be modified)
       - Branch Name: `feat/subscription-protection`
       - Dependencies: Task 35.3
+      - Purpose: The protected layout currently shows onboarding but never validates if users have active subscriptions. Without this, users can bypass payment and access the full app indefinitely, making the subscription model ineffective.
       - Tasks:
         1. Check subscription status in protected layout
         2. Redirect to paywall if subscription inactive
         3. Allow access if subscription active
       - Note: Simple boolean check, no complex trial logic initially
-    - [ ] 36. Display the revenue cat status of the user to show what subscription they are and include a deep link to the settings in the OS to manage or unsubscribe.
+    - [ ] 36. Display subscription status and management options
+      - File: `app/(app)/(protected)/settings.tsx` (to be created/expanded)
+      - Branch Name: `feat/subscription-status-display`
+      - Dependencies: Task 35.3
+      - Purpose: Users need visibility into their subscription status and easy access to manage/cancel subscriptions. This reduces customer support burden and improves user experience by providing transparency about billing and subscription details.
+      - Tasks:
+        1. Display current subscription tier and renewal date
+        2. Show subscription status (active, expired, billing retry)
+        3. Add deep link to iOS Settings for subscription management
+        4. Include "Manage Subscription" button using RevenueCat's showManageSubscriptions()
+        5. Display subscription history and next billing date
+      - Note: Focus on transparency and easy subscription management to reduce churn and support requests
+    - [ ] 37. Write unit test on revenuecat working code
 
 ## Bugs
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
