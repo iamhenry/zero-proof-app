@@ -1,6 +1,6 @@
 /**
  * FILE: __tests__/settingsSubscriptionProfile/pro-badge-display.test.tsx
- * PURPOSE: Failing tests for Scenario 2 – Display Pro Badge Based on Subscription Status
+ * PURPOSE: Failing tests for Scenario 2 - Display Pro Badge Based on Subscription Status
  */
 
 import React from "react";
@@ -12,7 +12,7 @@ import * as SubscriptionHook from "@/components/ui/settings/subscriptionProfile/
 // Mock the yet-to-be-implemented hook so we can simulate different subscription states.
 jest.mock("@/components/ui/settings/subscriptionProfile/useSubscriptionStatus");
 
-describe("Settings Subscription Profile – ProBadge", () => {
+describe("Settings Subscription Profile - ProBadge", () => {
   const mockedHook = SubscriptionHook as jest.Mocked<typeof SubscriptionHook>;
 
   beforeEach(() => {

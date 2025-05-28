@@ -1,6 +1,6 @@
 /**
  * FILE: __tests__/settingsSubscriptionProfile/subscription-deep-link.test.ts
- * PURPOSE: Failing tests for Scenario 4 – Navigate to iOS Subscription Management via deep link.
+ * PURPOSE: Failing tests for Scenario 4 - Navigate to iOS Subscription Management via deep link.
  */
 
 import { Linking, Platform } from "react-native";

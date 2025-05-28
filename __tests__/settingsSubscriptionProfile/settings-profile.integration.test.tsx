@@ -30,7 +30,7 @@ jest.mock("react-native", () => {
   };
 });
 
-describe("SettingsSubscriptionProfileScreen – integration", () => {
+describe("SettingsSubscriptionProfileScreen - integration", () => {
   const mockedHook = SubscriptionHook as jest.Mocked<typeof SubscriptionHook>;
 
   beforeEach(() => {
