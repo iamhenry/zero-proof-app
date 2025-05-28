@@ -7,6 +7,10 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 ## Account Management
 - [x] US-01: As a user, I want to create an account so that my sobriety data can be preserved if I delete and reinstall the app.
 - [x] US-02: As a user, I want to log in with my credentials so I can access my sobriety data in case I need to reinstall the app.
+- [ ] as a user i want to see my subscription type (eg. weekly, monthly, etc) in the settings view with a deeplink to the OS settings to manange my subscriptions
+  - [ ] it should have the email address i used to sign up.
+  - [ ] a deeplink to the ios subscripton settings screen
+  - [ ] a green "Pro" badge to indicate the user has subscribed
 
 ## Calendar Interaction and Visualization
 - [x] US-03: As a user, I want to view a calendar-style activity graph (like github activity graph) on the main screen so I can visualize my sobriety progress at a glance.
