@@ -2,6 +2,46 @@
 
 This file contains documentation headers extracted from component files to provide a quick reference for the codebase structure.
 
+## Configuration Files
+
+### revenuecat.ts
+```
+/**
+ * FILE: config/revenuecat.ts
+ * PURPOSE: RevenueCat SDK configuration and helper functions for in-app purchases
+ * FUNCTIONS:
+ *   - configureRevenueCat() → void: Initialize RevenueCat SDK with API key
+ *   - verifyRevenueCatSetup() → boolean: Verify SDK is properly configured
+ *   - identifyUser(userId: string) → void: Associate user with RevenueCat
+ *   - getCustomerInfo() → CustomerInfo: Get current user's subscription status
+ *   - getOfferings() → Offerings: Get available subscription packages
+ *   - makePurchase(packageToPurchase: any) → CustomerInfo: Process a purchase
+ *   - restorePurchases() → CustomerInfo: Restore previous purchases
+ * DEPENDENCIES: react-native-purchases, react-native Platform
+ */
+```
+
+### revenuecat-example.ts
+```
+/**
+ * FILE: config/revenuecat-example.ts
+ * PURPOSE: Example implementations and patterns for integrating RevenueCat into React Native app components
+ * FUNCTIONS:
+ *   - initializeRevenueCat() → void: Initialize RevenueCat in app lifecycle
+ *   - useSubscriptionStatus() → { isSubscribed: boolean, loading: boolean }: Custom hook for subscription status
+ *   - useRevenueCatOfferings() → { packages: PurchasesPackage[], loading: boolean }: Custom hook for available packages
+ *   - handlePurchase(packageToPurchase: any) → { success: boolean, customerInfo?: any, error?: any }: Purchase handler with error handling
+ *   - handleRestorePurchases() → { success: boolean, customerInfo?: any, error?: any }: Restore purchases handler
+ * KEY FEATURES:
+ *   - Complete integration examples for subscription management
+ *   - Custom React hooks for subscription state and offerings
+ *   - Error handling patterns for purchase operations
+ *   - Step-by-step integration guide with code examples
+ *   - Environment variable configuration guidance
+ * DEPENDENCIES: react, react-native-purchases, ./revenuecat
+ */
+```
+
 ## Repository & Context Files
 
 ### CalendarDataContext.tsx

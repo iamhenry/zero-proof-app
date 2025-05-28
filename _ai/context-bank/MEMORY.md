@@ -1,5 +1,179 @@
 # MEMORY.md
 
+## [May 28, 2025 10:39 AM] Subscription Management Planning: Centralizing State and User Experience
+Context: Updated project roadmap with detailed subscription management tasks to ensure proper access control and user transparency for premium features.
+Lesson:
+- Subscription State Architecture:
+  - Centralized subscription state management prevents unauthorized access to premium features
+  - Subscription context should be available throughout the app hierarchy for consistent access control
+  - Protected layouts need subscription status verification before rendering premium content
+  - User visibility into subscription status enhances transparency and reduces confusion
+- Access Control Patterns:
+  - Implement subscription checks in protected route layouts
+  - Provide clear subscription management options for users
+  - Display subscription status prominently in user interface
+  - Handle subscription state changes gracefully with proper UI updates
+- User Experience Considerations:
+  - Users need clear visibility into their subscription status
+  - Subscription management options should be easily accessible
+  - Premium feature access should be clearly communicated
+  - Graceful degradation for users without active subscriptions
+Related Methods/Concepts:
+- React Context API for subscription state
+- Protected route patterns
+- User interface design for subscription transparency
+- Access control implementation
+Future Improvements:
+- Implement automated subscription state validation
+- Create comprehensive subscription management UI
+- Add analytics for subscription interaction patterns
+- Develop subscription onboarding flows
+
+## [May 24, 2025 09:09 AM] User Feedback and Onboarding Issues: Improving Email Verification Flow
+Context: Documented critical user experience issues in the signup process, specifically around email verification feedback and modal dismissal problems.
+Lesson:
+- Supabase Session Management:
+  - Email verification process requires proper session handling and user feedback
+  - Modal dismissal issues can occur when session creation doesn't complete properly
+  - Toast notifications are essential for communicating verification status to users
+  - Missing user feedback creates confusion during the onboarding process
+- User Experience Patterns:
+  - Clear feedback mechanisms are crucial for email verification workflows
+  - Users need immediate confirmation of actions taken during signup
+  - Modal state management must coordinate with authentication state changes
+  - Onboarding flow should provide clear next steps after email verification
+- Error Handling Strategy:
+  - Implement comprehensive error handling for authentication flows
+  - Provide clear error messages for different verification scenarios
+  - Add fallback UI states for when verification is pending
+  - Log authentication events for debugging and improvement
+Related Methods/Concepts:
+- Supabase authentication flows
+- React Native modal management
+- User feedback systems
+- Email verification workflows
+Future Improvements:
+- Implement comprehensive toast notification system
+- Add authentication state debugging tools
+- Create fallback UI for verification edge cases
+- Develop user feedback analytics for onboarding flows
+
+## [May 23, 2025 02:48 PM] RevenueCat Integration Success: Bundle Identifier Resolution and SDK Setup
+Context: Successfully resolved RevenueCat paywall display issues and documented comprehensive integration insights for future development.
+Lesson:
+- Integration Documentation Value:
+  - Detailed documentation of integration challenges saves significant future debugging time
+  - Step-by-step resolution guides become valuable team resources
+  - Error pattern documentation helps identify similar issues quickly
+  - Success stories provide confidence and reference points for similar integrations
+- Configuration Management:
+  - Bundle identifier consistency across all platforms is critical for successful integrations
+  - Project identity updates require coordinated changes across multiple configuration files
+  - Testing procedures should verify configuration changes take effect properly
+  - Documentation should include verification steps for configuration changes
+- Development Workflow Improvements:
+  - Clear commit messages help track configuration changes over time
+  - Testing on multiple environments ensures configuration robustness
+  - Integration milestones should be documented for future reference
+  - Team knowledge sharing prevents repeated configuration issues
+Related Methods/Concepts:
+- RevenueCat SDK integration patterns
+- Bundle identifier management
+- iOS project configuration
+- Development workflow documentation
+Future Improvements:
+- Create automated bundle identifier validation tools
+- Implement integration testing pipelines for RevenueCat functionality
+- Develop configuration change checklists for team use
+- Add integration success metrics and monitoring
+
+## [May 23, 2025 01:17 PM] Project Identity Updates: Bundle Identifier and Dependency Management
+Context: Successfully updated project identity with new bundle identifier and streamlined dependencies for RevenueCat integration.
+Lesson:
+- Project Configuration Coordination:
+  - Bundle identifier changes require updates across app.json, Info.plist, and build configurations
+  - Dependency upgrades should be coordinated with feature integration requirements
+  - iOS simulator testing confirms configuration changes are properly applied
+  - Project structure simplification improves maintainability during major integrations
+- Development Focus Strategy:
+  - Removing obsolete platform configurations (Android) reduces complexity during critical integrations
+  - iOS-first development approach allows for more focused testing and debugging
+  - Streamlined project structure reduces potential configuration conflicts
+  - Clear project identity facilitates third-party service integrations
+- Build Process Optimization:
+  - New prebuild processes should be tested thoroughly before committing
+  - iOS simulator integration testing validates configuration changes
+  - Dependency compatibility should be verified after upgrades
+  - Clean build processes help identify configuration issues early
+Related Methods/Concepts:
+- Expo prebuild configuration
+- iOS project management
+- Dependency version management
+- Platform-specific development focus
+Future Improvements:
+- Implement automated configuration validation
+- Create platform-specific build verification processes
+- Add dependency compatibility testing
+- Develop configuration change documentation standards
+
+## [May 23, 2025 12:45 PM] RevenueCat UI Component Integration: Native Component Benefits
+Context: Successfully replaced custom paywall implementation with RevenueCat's native UI components for improved user experience and functionality.
+Lesson:
+- Native Component Advantages:
+  - RevenueCat UI components provide professional, tested paywall interfaces
+  - Native components handle platform-specific UI patterns and behaviors automatically
+  - Integration with react-native-purchases-ui reduces custom implementation overhead
+  - iOS project file updates are essential for proper native dependency integration
+- Development Strategy Evolution:
+  - Moving from custom implementations to proven third-party solutions accelerates development
+  - Native component integration requires careful iOS project configuration
+  - Podfile.lock updates ensure consistent dependency versions across team members
+  - Component replacement should maintain existing functionality while improving user experience
+- Integration Testing Approach:
+  - iOS build verification confirms native dependencies integrate properly
+  - UI component testing should verify all paywall functionality works as expected
+  - Integration success should be documented for future reference and troubleshooting
+  - Project roadmap updates help track integration milestones and next steps
+Related Methods/Concepts:
+- React Native native module integration
+- RevenueCat UI component library
+- iOS project dependency management
+- Third-party component integration patterns
+Future Improvements:
+- Create standardized native component integration procedures
+- Implement automated testing for native UI components
+- Develop integration verification checklists
+- Add native component performance monitoring
+
+## [May 22, 2025 02:04 PM] RevenueCat SDK Foundation: Subscription Management Architecture
+Context: Implemented comprehensive RevenueCat SDK integration with configuration utilities and example implementations for subscription-based app monetization.
+Lesson:
+- SDK Integration Architecture:
+  - Centralized configuration in dedicated files (config/revenuecat.ts) provides reusable setup patterns
+  - Helper functions for subscription management, purchase handling, and status checking streamline development
+  - Example implementations (config/revenuecat-example.ts) serve as documentation and development guides
+  - Freemium model focus on iOS platform allows for targeted implementation and testing
+- Configuration Management Strategy:
+  - Dedicated configuration files make SDK setup maintainable and testable
+  - Helper utilities abstract complex SDK operations into simple, reusable functions
+  - Example code provides clear implementation patterns for team members
+  - Platform-specific focus (iOS) reduces complexity during initial implementation
+- Development Documentation:
+  - ROADMAP updates reflect actual implementation progress and next steps
+  - Example code serves as both documentation and validation of integration success
+  - Simplified implementation steps make the integration accessible to team members
+  - Clear completion tracking helps maintain project momentum
+Related Methods/Concepts:
+- SDK integration patterns
+- Subscription management architecture
+- Configuration management
+- Documentation-driven development
+Future Improvements:
+- Add automated testing for RevenueCat integration
+- Implement subscription analytics and monitoring
+- Create comprehensive error handling for subscription workflows
+- Develop subscription state management patterns
+
 ## [May 23, 2025 12:36 PM] RevenueCat Paywall Integration: Bundle Identifier Mismatch Resolution
 Context: Fixed RevenueCat paywall displaying as red rectangle instead of proper subscription UI by resolving bundle identifier mismatch and implementing proper SDK initialization.
 Lesson:
@@ -415,7 +589,6 @@ Future Improvements:
 - Refine and standardize the `renderWithProviders` test utility to handle common context combinations easily.
 - Add integration tests that cover the interaction flow from `SavingsCounter` through `SavingsDataContext` to `FinancialService` and underlying contexts/repositories.
 
-
 ## [Apr 10, 2025 2:45 PM] Context Architecture Impact on Remote Storage Integration
 Context: Evaluated the implications of maintaining the current Context-heavy architecture when implementing Supabase remote storage integration.
 Lesson:
@@ -538,7 +711,6 @@ Future Improvements:
 - Ensure functions triggering recalculations wait for the results before enacting side effects like stopping timers, unless the action inherently requires an immediate stop.
 - Add integration tests specifically verifying that actions on non-current streak days do not affect the running timer display.
 
-
 ## [Apr 9, 2025 10:51 AM] Data Loading Range & Initial Scroll Timing
 Context: Debugged issues where past calendar day statuses weren't persisting on refresh, and the calendar didn't scroll to today correctly on initial load, followed by a regression where toggling any day caused a scroll.
 Lesson:
@@ -556,7 +728,6 @@ Future Improvements:
 - Ensure initial data generation logic always considers the full extent of persisted data.
 - When implementing effects triggered by loading states, carefully consider if they should run only once or on every relevant state change, using refs or other state to manage one-time actions.
 - Add integration tests verifying both data persistence across refreshes and correct initial scroll behavior.
-
 
 ## [Apr 8, 2025 11:37 AM] Component Integration Enhances User Experience
 Context: Implemented scroll to today functionality in the calendar and integrated it with the SobrietyTimer component.
