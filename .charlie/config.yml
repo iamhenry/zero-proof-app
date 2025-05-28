@@ -1,0 +1,13 @@
+version: 1
+
+jobs:
+  tests:
+    description: Run Jest test suite
+    triggers:
+      - push
+      - pull_request
+    env:
+      NODE_ENV: test
+    steps:
+      - run: npm ci        # install project dependencies
+      - run: npm test      # execute Jest tests using the existing jest.config.js
