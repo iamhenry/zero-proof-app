@@ -1,0 +1,3 @@
+## Commands Charlie can use to verify changes
+checkCommands:
+  test: npm test
