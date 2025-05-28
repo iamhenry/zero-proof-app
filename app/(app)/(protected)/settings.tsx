@@ -1,6 +1,7 @@
 import { View } from "react-native";
 
 import { Button } from "@/components/ui/button";
+import ProfileSection from "@/components/ui/settings/ProfileSection";
 import { Text } from "@/components/ui/text";
 import { H1, Muted } from "@/components/ui/typography";
 import { useSupabase } from "@/context/supabase-provider";
@@ -10,6 +11,9 @@ export default function Settings() {
 
 	return (
 		<View className="flex-1 items-center justify-center bg-background p-4 gap-y-4">
+			{/* Profile / subscription information */}
+			<ProfileSection />
+
 			<H1 className="text-center">Sign Out</H1>
 			<Muted className="text-center">
 				Sign out and return to the welcome screen.
