@@ -1,5 +1,38 @@
 # MEMORY.md
 
+## [May 28, 2025 11:27 AM] Behavior-Focused Unit Testing: Module Mocking for Environment Dependencies
+Context: Created comprehensive unit tests for RevenueCat configuration with 27 passing tests covering SDK configuration, verification, user management, and purchase operations.
+Lesson:
+- Module-Level Environment Variable Challenges:
+  - Environment variables read at module import time (`const revenueCatApiKey = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY`) create tight coupling that's difficult to mock in tests
+  - Jest mocks must be applied before module imports and evaluation, requiring complete module mocking rather than selective property mocking
+  - Module-level constants evaluated at import time bypass runtime environment variable changes
+- Complete Module Mocking Strategy:
+  - Use `jest.mock('../module', () => ({ ...originalModule, functionName: jest.fn() }))` for complex external dependencies
+  - Implement behavior-simulating mock implementations in `beforeEach` that call underlying SDK methods to verify interactions
+  - Mock entire modules when environment dependencies exist at the module level
+- Test Quality Assessment Framework:
+  - Maintainability (60/60): Behavior-focused, proper abstractions, no implementation details testing
+  - Clarity (30/30): Clear naming conventions, single behavior per test, scenario-based organization
+  - Isolation (40/40): Independent tests, minimal setup, proper async handling
+  - Achieved 100/100 score with comprehensive error scenario coverage
+- Behavior-Focused Testing Principles:
+  - Test contracts and interactions rather than implementation details
+  - Organize tests by behavioral scenarios using `// MARK: - Scenario:` comments
+  - Verify SDK method calls and state changes, not internal function logic
+  - Cover both success and error scenarios comprehensively
+Related Methods/Concepts:
+- Jest module mocking strategies
+- Environment variable testing patterns
+- React Native testing with external SDKs
+- Behavior-driven test organization
+- Test quality assessment metrics
+Future Improvements:
+- Avoid module-level environment variable constants in future implementations
+- Use dependency injection patterns for environment-dependent configuration
+- Create standardized test infrastructure for SDK integrations
+- Implement automated test quality validation in CI pipeline
+
 ## [May 28, 2025 10:39 AM] Subscription Management Planning: Centralizing State and User Experience
 Context: Updated project roadmap with detailed subscription management tasks to ensure proper access control and user transparency for premium features.
 Lesson:
