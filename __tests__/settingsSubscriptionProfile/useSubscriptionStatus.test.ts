@@ -1,6 +1,6 @@
 /**
  * FILE: __tests__/settingsSubscriptionProfile/useSubscriptionStatus.test.ts
- * PURPOSE: Failing tests for Scenarios 5 & 6 – Async loading states and error handling
+ * PURPOSE: Failing tests for Scenarios 5 & 6 - Async loading states and error handling
  *           for the custom useSubscriptionStatus hook.
  */
 
@@ -20,7 +20,7 @@ describe("useSubscriptionStatus hook", () => {
     jest.resetAllMocks();
   });
 
-  // MARK: – Scenario 5.1: Returns active when entitlements exist
+  // MARK: - Scenario 5.1: Returns active when entitlements exist
   it("returns 'active' status when an entitlement is active", async () => {
     mockPurchases.getCustomerInfo.mockResolvedValue({
       entitlements: { active: { premium: {} } },
@@ -39,7 +39,7 @@ describe("useSubscriptionStatus hook", () => {
     expect(result.current.error).toBeNull();
   });
 
-  // MARK: – Scenario 5.2: Returns inactive when no entitlements
+  // MARK: - Scenario 5.2: Returns inactive when no entitlements
   it("returns 'inactive' status when no active entitlements are present", async () => {
     mockPurchases.getCustomerInfo.mockResolvedValue({
       entitlements: { active: {} },
@@ -53,7 +53,7 @@ describe("useSubscriptionStatus hook", () => {
     expect(result.current.error).toBeNull();
   });
 
-  // MARK: – Scenario 6: Handles SDK failure gracefully
+  // MARK: - Scenario 6: Handles SDK failure gracefully
   it("sets error state when RevenueCat SDK call fails", async () => {
     const networkError = new Error("Network failure");
     mockPurchases.getCustomerInfo.mockRejectedValue(networkError);

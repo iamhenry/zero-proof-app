@@ -1,6 +1,6 @@
 /**
  * FILE: __tests__/settingsSubscriptionProfile/avatar-first-letter.test.tsx
- * PURPOSE: Failing tests for Scenario 1 – Extract and Display First Letter from User Email
+ * PURPOSE: Failing tests for Scenario 1 - Extract and Display First Letter from User Email
  * This suite renders the (future) Avatar component and asserts that it shows the
  * first letter of the authenticated user’s e-mail address in uppercase.
  *
@@ -14,9 +14,9 @@ import { render, screen } from "@testing-library/react-native";
 import Avatar from "@/components/ui/settings/subscriptionProfile/Avatar";
 import { withSupabaseProvider } from "./testUtils";
 
-// MARK: – Scenario 1: Extract first letter from user e-mail
+// MARK: - Scenario 1: Extract first letter from user e-mail
 
-describe("Settings Subscription Profile – Avatar", () => {
+describe("Settings Subscription Profile - Avatar", () => {
   it("displays the uppercase first letter of the user email", () => {
     const Wrapper = withSupabaseProvider("henry@example.com");
 
