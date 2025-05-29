@@ -7,6 +7,15 @@ This iOS app empowers individuals aiming to reduce or eliminate alcohol consumpt
 ## Account Management
 - [x] US-01: As a user, I want to create an account so that my sobriety data can be preserved if I delete and reinstall the app.
 - [x] US-02: As a user, I want to log in with my credentials so I can access my sobriety data in case I need to reinstall the app.
+- [ ] US-SUB-01: As a user, I want the app to automatically detect my current subscription status from RevenueCat/Apple Connect when I open the app, so that I can access premium features if I have an active subscription.
+- [ ] US-SUB-02: As a user, I want my subscription status to be remembered locally so that I don't need to re-verify every time I open the app (within reasonable timeframes).
+- [ ] US-SUB-03: As a user, when I complete a purchase through the paywall, I want my subscription status to update immediately so that I can access the app immediately.
+- [ ] US-SUB-04: As an existing user who has deleted and reinstalled the app, I want to bypass the onboarding flow and go directly to the main app (if I have an active subscription) so that I can immediately access my premium features.
+- [ ] US-SUB-05: As a new user, I want my onboarding completion to be tracked so that I don't see the onboarding flow again on subsequent app sessions.
+- [ ] US-SUB-06: As a user, I want premium features to be protected by subscription status so that only paying users can access the full app experience.
+- [ ] US-SUB-07: As a user whose subscription has expired, I want to be redirected to the paywall so that I can renew my subscription to continue using premium features.
+- [ ] US-SUB-08: As a user without internet connection, I want to access the app based on my last known subscription status so that temporary connectivity issues don't lock me out.
+- [ ] US-SUB-09: As a user, I want my subscription status to sync reliably with RevenueCat so that my payment and access status remain consistent.
 - [ ] as a user i want to see my subscription type (eg. weekly, monthly, etc) in the settings view with a deeplink to the OS settings to manange my subscriptions
   - [ ] it should have the email address i used to sign up.
   - [ ] a deeplink to the ios subscripton settings screen
