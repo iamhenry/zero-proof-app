@@ -17,7 +17,7 @@ alwaysApply: true
 
 # Context Bank Directory
 ==========================
-- Context Bank =  `_ai/context-bank/*`
+- Context Bank =  `_ai/context-bank/FILEMAP.md`
 
 # Tool
 ==========================

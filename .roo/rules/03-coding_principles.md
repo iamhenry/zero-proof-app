@@ -13,6 +13,7 @@ alwaysApply: true
 - ALWAYS ensure minimal edits to existing logic
 - ALWAYS indent the code blocks
 - Always generate descriptive names
+- Ensure your code is minimal and terse. Avoid over engineer.
 
 ### DRY (Don't Repeat Yourself)
 - Extract reusable components into separate files

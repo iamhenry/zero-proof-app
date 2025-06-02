@@ -62,4 +62,8 @@ export interface ISobrietyDataRepository {
   // Settings Data
   saveDrinkCost(cost: number): Promise<void>;
   loadDrinkCost(): Promise<number | null>;
+
+  // Onboarding Data
+  saveOnboardingCompletion(completed: boolean): Promise<void>;
+  loadOnboardingCompletion(): Promise<boolean>;
 }

@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import RevenueCatUI from "react-native-purchases-ui";
 import { getOfferings, getCustomerInfo } from "@/config/revenuecat";
+import { useSubscription } from "@/context/SubscriptionContext";
 
 // Define props interface including the onDone callback
 interface PaywallScreenProps {
@@ -20,6 +21,7 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [hasOfferings, setHasOfferings] = useState(false);
+	const { handlePurchaseEvent } = useSubscription();
 
 	useEffect(() => {
 		// Verify RevenueCat is ready and has offerings
@@ -227,6 +229,8 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 						"✅ PaywallScreen: Purchase completed:",
 						customerInfo.entitlements,
 					);
+					// Update subscription context with purchase info
+					handlePurchaseEvent(customerInfo);
 					onDone();
 				}}
 				onRestoreCompleted={({ customerInfo }) => {
@@ -238,6 +242,8 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 						console.log(
 							"✅ PaywallScreen: Restore completed with active entitlements",
 						);
+						// Update subscription context with restored info
+						handlePurchaseEvent(customerInfo);
 						onDone();
 					} else {
 						console.log(

@@ -335,7 +335,7 @@ Step-by-Step Tasks:
           - And I was able to restore the purchase successfully.
           - i was not able to test on simulator
             - Both of those tests, I was able to access the protected routes, which is the calendar grade view successfully.
-    - [ ] 35.3. Implement Basic Subscription State Management
+    - [x] 35.3. Implement Basic Subscription State Management
       - File: `context/SubscriptionContext.tsx` (to be created)
       - Branch Name: `feat/subscription-state`
       - Dependencies: Task 35.2
@@ -345,6 +345,19 @@ Step-by-Step Tasks:
         2. Track active subscription status
         3. Listen for purchase events from paywall
         4. Persist subscription state locally
+        5. Integrate SubscriptionProvider into app layout
+        <!-- So I did a quick test by signing out and signing back in and the onboarding experience does not show which is expected behavior. I also went through the onboarding experience in a second test, accessed the app once I paid, forced closed the app and relaunched it and no onboarding experience was shown which is also working as expected. These are with the changes that are not in stage yet but under the work in progress "changes" panel within the source control panel. -->
+        6. Verify context accessibility in app components
+           - Integration Requirements:
+             - Add `SubscriptionProvider` to `app/_layout.tsx` provider hierarchy
+             - Ensure proper provider order (after SupabaseProvider, before app routes)
+             - Verify `useSubscription()` hook is accessible throughout app
+           - Testing Checklist:
+             - [x] Unit tests pass (17 scenarios covered)
+             - [x] Provider integrated without app crashes
+             - [x] Hook accessible in real app components
+             - [x] Subscription state updates correctly on device
+             - [x] Cache persists between app sessions
       - Note: Keep it minimal - just track active/inactive status
     - [ ] 35.4. Add Route Protection
       - File: `app/(app)/(protected)/_layout.tsx` (to be modified)
@@ -368,15 +381,10 @@ Step-by-Step Tasks:
         4. Include "Manage Subscription" button using RevenueCat's showManageSubscriptions()
         5. Display subscription history and next billing date
       - Note: Focus on transparency and easy subscription management to reduce churn and support requests
-    - [ ] 37. Write unit test on revenuecat working code
+    - [x] 37. Write unit test on revenuecat working code
 
 ## Bugs
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
-- [ ] RevenueCat paywall only shows red rectangle instead of proper paywall UI
-  - Issue: The RevenueCat UI SDK paywall component is not rendering correctly, only displaying a red rectangle
-  - File: `components/ui/onboarding/PaywallScreen.tsx`
-  - Priority: High (blocks monetization flow)
-  - Investigation needed: Check RevenueCat configuration, offerings setup, and component integration
 - [ ] Currently in the onboarding experience, the user can easily swipe past entering the drink quantity. And so when the user completes the onboarding experience and starts the free trial, the drink quantity amount will be zero. And so the savings counter will not be calculating anything and will always show zero.
 // FIXME:
 - [ ] when signing up for a new account, the signup modal sheet does not dismiss and there's not toast to notify the user that they have to verify their email
@@ -398,7 +406,11 @@ Step-by-Step Tasks:
 <!-- FIXED -->
 - [x] "Scrolling to the bottom on the calendar grid does not fetch new future dates and displays them. But if I scroll to the top and get historical dates, when I scroll back to the very bottom to fetch new dates, it does fetch it. So there seems to be some sort of discrepancy there."
   - [x] why didnt the test catch this?
-
+- [x] RevenueCat paywall only shows red rectangle instead of proper paywall UI
+  - Issue: The RevenueCat UI SDK paywall component is not rendering correctly, only displaying a red rectangle
+  - File: `components/ui/onboarding/PaywallScreen.tsx`
+  - Priority: High (blocks monetization flow)
+  - Investigation needed: Check RevenueCat configuration, offerings setup, and component integration
 - [x] When I do an onboarding with the existing data and enter a value for the drink quantity and store it into the persistent storage, it doesn't reflect accurately when I tap the day cell. (eg. i entered 7 for weekly drink amount, complete the onboarding, tap day cell, the previous data [14 weekly drinks] is what shows up in the financial counter component)
   - [x] when i refresh the app and enter 21 for weekly amount, this time it will show the amount i had entered before (7 weekly). There's something glitchy about this data storage.
   - [x] The savings counter component does not recalculate after the user edits their value in the drink quantity settings modal.

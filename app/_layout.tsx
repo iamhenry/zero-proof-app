@@ -16,6 +16,7 @@ import { RepositoryProvider } from "@/context/RepositoryContext";
 import { TimerStateProvider } from "@/context/TimerStateContext";
 import { CalendarDataProvider } from "@/context/CalendarDataContext";
 import { SavingsDataProvider } from "@/context/SavingsDataContext"; // Import the new provider
+import { SubscriptionProvider } from "@/context/SubscriptionContext";
 import { configureRevenueCat } from "@/config/revenuecat";
 
 export default function AppLayout() {
@@ -41,7 +42,9 @@ export default function AppLayout() {
 				<CalendarDataProvider>
 					<SavingsDataProvider>
 						<SupabaseProvider>
-							<Slot />
+							<SubscriptionProvider>
+								<Slot />
+							</SubscriptionProvider>
 						</SupabaseProvider>
 					</SavingsDataProvider>
 				</CalendarDataProvider>

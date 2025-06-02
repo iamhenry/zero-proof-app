@@ -11,6 +11,8 @@
  *   - loadTimerState() → Promise<TimerState | null>: Loads timer state.
  *   - saveDrinkCost(cost) → Promise<void>: Saves drink cost setting.
  *   - loadDrinkCost() → Promise<number | null>: Loads drink cost setting.
+ *   - saveOnboardingCompletion(completed) → Promise<void>: Saves onboarding completion status.
+ *   - loadOnboardingCompletion() → Promise<boolean>: Loads onboarding completion status.
  * KEY FEATURES:
  *   - Robust error handling for all storage operations
  *   - Data migration support for backward compatibility
@@ -41,6 +43,7 @@ const DAY_STATUS_KEY = '@SobrietyApp:dayStatus';
 const STREAK_DATA_KEY = '@SobrietyApp:streakData';
 const TIMER_STATE_KEY = '@SobrietyApp:timerState';
 const DRINK_COST_KEY = '@SobrietyApp:drinkCost';
+const ONBOARDING_COMPLETION_KEY = '@SobrietyApp:onboardingCompleted';
 
 // Debug log the keys at initialization
 console.log('[LocalStorageSobrietyRepository] Using AsyncStorage keys:', {
@@ -48,6 +51,7 @@ console.log('[LocalStorageSobrietyRepository] Using AsyncStorage keys:', {
   STREAK_DATA_KEY,
   TIMER_STATE_KEY,
   DRINK_COST_KEY,
+  ONBOARDING_COMPLETION_KEY,
 });
 
 export class LocalStorageSobrietyRepository
@@ -184,6 +188,31 @@ export class LocalStorageSobrietyRepository
     } catch (e) {
       console.error('Failed to load drink cost.', e);
       return null;
+    }
+  }
+
+  // --- Onboarding Data ---
+
+  async saveOnboardingCompletion(completed: boolean): Promise<void> {
+    try {
+      console.log(`[Repository:saveOnboardingCompletion] Saving onboarding completion: ${completed}`);
+      await AsyncStorage.setItem(ONBOARDING_COMPLETION_KEY, String(completed));
+      console.log(`[Repository:saveOnboardingCompletion] Successfully saved onboarding completion`);
+    } catch (e) {
+      console.error('Failed to save onboarding completion.', e);
+    }
+  }
+
+  async loadOnboardingCompletion(): Promise<boolean> {
+    try {
+      console.log(`[Repository:loadOnboardingCompletion] Loading onboarding completion from key: ${ONBOARDING_COMPLETION_KEY}`);
+      const value = await AsyncStorage.getItem(ONBOARDING_COMPLETION_KEY);
+      const completed = value === 'true';
+      console.log(`[Repository:loadOnboardingCompletion] Loaded onboarding completion: ${completed}`);
+      return completed;
+    } catch (e) {
+      console.error('Failed to load onboarding completion.', e);
+      return false; // Default to not completed on error
     }
   }
 }
