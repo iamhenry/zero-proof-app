@@ -532,3 +532,24 @@ This file contains documentation headers extracted from component files to provi
  * DEPENDENCIES: react, ./DrinkQuantityInput, @/context/RepositoryContext
  */
 ```
+
+### Subscription Management System
+
+#### SubscriptionContext.tsx
+```
+/**
+ * FILE: context/SubscriptionContext.tsx
+ * PURPOSE: Provides centralized subscription state management across the application to track active subscription status and enable premium feature access control.
+ * FUNCTIONS:
+ *   - SubscriptionProvider({ children }: SubscriptionProviderProps): JSX.Element -> Context provider for subscription state management.
+ *   - useSubscription(): SubscriptionContextType -> Hook providing access to subscription state and management functions.
+ * KEY FEATURES:
+ *   - Centralized subscription status tracking
+ *   - Active subscription state management
+ *   - Premium feature access control
+ *   - Subscription state persistence
+ *   - Real-time subscription status updates
+ *   - Context-based state sharing across components
+ * DEPENDENCIES: react, react-native
+ */
+```

@@ -1,5 +1,70 @@
 # MEMORY.md
 
+## [June 2, 2025 12:04 PM] Subscription Management Architecture: Centralized State for Premium Features
+Context: Implemented comprehensive subscription management system with SubscriptionContext for centralized state management and premium feature access control.
+Lesson:
+- Centralized Subscription State Management:
+  - SubscriptionContext provides single source of truth for subscription status across the application
+  - Context-based architecture enables consistent premium feature access control
+  - Subscription state persistence ensures continuity between app sessions
+  - Real-time subscription status updates maintain current user access levels
+- Premium Feature Access Control:
+  - Subscription checks in protected layouts prevent unauthorized access to premium features
+  - Clear subscription management options provide transparency for users
+  - Subscription status display in user interface enhances user awareness
+  - Seamless integration with onboarding flow improves user experience
+- Testing Strategy for Subscription Management:
+  - Comprehensive test coverage for subscription context functionality
+  - Behavior-driven test scenarios validate subscription lifecycle
+  - Mock implementations ensure testing isolation and reliability
+  - Error handling verification covers edge cases and failure scenarios
+- Project Cleanliness and Maintenance:
+  - Updated .gitignore and .rooignore files prevent unnecessary file tracking
+  - Removed outdated system prompt files to reduce technical debt
+  - Streamlined codebase improves maintainability and focus
+  - Enhanced project organization supports sustainable development
+Related Methods/Concepts:
+- React Context API for subscription state
+- Premium feature access patterns
+- Subscription lifecycle management
+- Test-driven development for subscription features
+- Project maintenance and technical debt reduction
+Future Improvements:
+- Implement automated subscription state validation
+- Add subscription analytics for usage patterns
+- Develop comprehensive subscription onboarding flows
+- Create subscription management UI components
+
+## [May 29, 2025 10:37 AM] User Interface Enhancement: Avatar and Badge Components for Settings
+Context: Introduced Avatar and Badge components in settings screen for improved user profile display and subscription status visualization.
+Lesson:
+- User Profile Enhancement Strategy:
+  - Avatar component provides professional visual representation of user profiles
+  - Badge component displays subscription status and user information clearly
+  - Settings screen integration improves user interface engagement
+  - Multiple size variants and status types support flexible UI design
+- Documentation and Collaboration Improvements:
+  - Enhanced git usage guidelines emphasize grouping related changes in commit messages
+  - Expanded user stories documentation provides clearer requirements for subscription features
+  - Improved team collaboration through better documentation standards
+  - Development workflow optimization through enhanced guidelines
+- Component Design Principles:
+  - Reusable components support consistent visual design across the application
+  - Clear separation of concerns between avatar display and status indication
+  - Integration with subscription management enables dynamic status display
+  - Professional appearance enhances overall user experience
+Related Methods/Concepts:
+- Component-based UI architecture
+- User interface design patterns
+- Subscription status visualization
+- Documentation-driven development
+- Team collaboration practices
+Future Improvements:
+- Add animation transitions for status changes
+- Implement accessibility features for avatar and badge components
+- Create comprehensive design system documentation
+- Add user customization options for profile display
+
 ## [May 28, 2025 11:27 AM] Behavior-Focused Unit Testing: Module Mocking for Environment Dependencies
 Context: Created comprehensive unit tests for RevenueCat configuration with 27 passing tests covering SDK configuration, verification, user management, and purchase operations.
 Lesson:
