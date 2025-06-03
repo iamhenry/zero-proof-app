@@ -5,14 +5,19 @@ import OnboardingComponent from "@/components/ui/onboarding/OnboardingComponent"
 import { colors } from "@/constants/colors";
 import { useColorScheme } from "@/lib/useColorScheme";
 import { useRepository } from "@/context/RepositoryContext";
+import { useSubscription } from "@/context/SubscriptionContext";
 
 export default function ProtectedLayout() {
 	const { colorScheme } = useColorScheme();
 	const repository = useRepository();
+	const subscription = useSubscription();
 	const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null); // null = loading
 	const [isLoading, setIsLoading] = useState(true);
 
 	// Load onboarding completion status on mount
+	// Potential Issue: isLoading flag never resets on effect re-runs.
+	// UI may flash incorrect content because isLoading stays false while async work is still ongoing.
+	// I think this happend on the welcome screen. NEED TO TEST.
 	useEffect(() => {
 		const loadOnboardingStatus = async () => {
 			try {
@@ -20,7 +25,13 @@ export default function ProtectedLayout() {
 				console.log(
 					`[ProtectedLayout] Onboarding completion status: ${completed}`,
 				);
-				setShowOnboarding(!completed); // Show onboarding if NOT completed
+				console.log(
+					`[ProtectedLayout] Subscription access: ${subscription.hasAccess}`,
+				);
+
+				// Show onboarding if NOT completed OR if no subscription access
+				// This ensures users without subscription go through the paywall in onboarding
+				setShowOnboarding(!completed || !subscription.hasAccess);
 			} catch (error) {
 				console.error(
 					"[ProtectedLayout] Error loading onboarding status:",
@@ -33,30 +44,43 @@ export default function ProtectedLayout() {
 		};
 
 		loadOnboardingStatus();
-	}, [repository]);
+	}, [repository, subscription.hasAccess]);
 
 	// Handle onboarding completion
 	const handleDone = async () => {
 		try {
 			console.log("[ProtectedLayout] Onboarding completed, saving to storage");
 			await repository.saveOnboardingCompletion(true);
-			setShowOnboarding(false);
+
+			// Only hide onboarding if user has subscription access
+			// This ensures users without subscription stay in onboarding/paywall flow
+			if (subscription.hasAccess) {
+				setShowOnboarding(false);
+			} else {
+				// Keep showing onboarding if no subscription - user needs to purchase
+				console.log(
+					"[ProtectedLayout] No subscription access, keeping onboarding visible",
+				);
+				setShowOnboarding(true);
+			}
 		} catch (error) {
 			console.error(
 				"[ProtectedLayout] Error saving onboarding completion:",
 				error,
 			);
-			// Still hide onboarding even if save fails
-			setShowOnboarding(false);
+			// Still check subscription access even if save fails
+			if (subscription.hasAccess) {
+				setShowOnboarding(false);
+			}
 		}
 	};
 
-	// Show loading state while checking onboarding status
-	if (isLoading || showOnboarding === null) {
+	// Show loading state while checking onboarding status or subscription loading
+	if (isLoading || showOnboarding === null || subscription.isLoading) {
 		return null; // Or a loading spinner if you prefer
 	}
 
-	// Show onboarding if not completed
+	// Show onboarding if not completed OR no subscription access
 	if (showOnboarding) {
 		return <OnboardingComponent onDone={handleDone} />;
 	}

@@ -12,6 +12,7 @@ web-build/
 
 .env
 
+.repomix/bundles.json
 
 # macOS
 .DS_Store

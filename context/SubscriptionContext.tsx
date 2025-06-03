@@ -37,6 +37,8 @@ export interface SubscriptionContextProps {
 	isSubscriptionActive: boolean;
 	isLoading: boolean;
 	lastVerified: number | null;
+	hasAccess: boolean;
+	subscriptionStatus: "active" | "inactive" | "unknown";
 	checkSubscriptionStatus: () => Promise<boolean>;
 	handlePurchaseEvent: (customerInfo: any) => void;
 	getCachedSubscriptionStatus: () => boolean | null;
@@ -62,6 +64,14 @@ export const SubscriptionProvider = ({
 	const [cachedStatus, setCachedStatus] = useState<SubscriptionStatus | null>(
 		null,
 	);
+
+	// Computed properties for integration tests
+	const hasAccess = isSubscriptionActive;
+	const subscriptionStatus: "active" | "inactive" | "unknown" = isLoading
+		? "unknown"
+		: isSubscriptionActive
+			? "active"
+			: "inactive";
 
 	const checkSubscriptionStatus = async (): Promise<boolean> => {
 		setIsLoading(true);
@@ -188,6 +198,8 @@ export const SubscriptionProvider = ({
 				isSubscriptionActive,
 				isLoading,
 				lastVerified,
+				hasAccess,
+				subscriptionStatus,
 				checkSubscriptionStatus,
 				handlePurchaseEvent,
 				getCachedSubscriptionStatus,
