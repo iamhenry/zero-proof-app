@@ -369,7 +369,7 @@ Step-by-Step Tasks:
         2. Redirect to paywall if subscription inactive
         3. Allow access if subscription active
       - Note: Simple boolean check, no complex trial logic initially
-    - [ ] 36. Display subscription status and management options
+    - [x] 36. Display subscription status and management options
       - File: `app/(app)/(protected)/settings.tsx` (to be created/expanded)
       - Branch Name: `feat/subscription-status-display`
       - Dependencies: Task 35.3
@@ -503,25 +503,9 @@ Step-by-Step Tasks:
     - File: `components/ui/timer/SobrietyTimer.tsx`, `context/CalendarDataContext.tsx`
     - Branch Name: `feat/timer-tap-to-today`
     - Completed: April 16, 2025
-- [ ] 11.4. (Future Enhancement) Implement drink quantity management in settings
+- [x] 11.4. (Future Enhancement) Implement drink quantity management in settings
     - File: `app/(app)/(protected)/settings.tsx` (to be expanded)
     - Branch Name: `feat/settings-drink-quantity-management`
-
-#### Onboarding
-- [ ] 35. (Post-Launch) Integrate Superwall for remote paywall management
-    - [ ] 35.1. Set up Superwall SDK
-      - File: `config/superwall.ts` (to be created)
-      - Branch Name: `feat/superwall-integration`
-    - [ ] 35.2. Configure remote paywall updates
-      - Branch Name: `feat/remote-paywall-config`
-  - [ ] 36. (Post-Launch) Add trial expiration notifications
-    - [ ] 36.1. Implement push notification for trial nearing end
-      - File: `lib/services/notification-service.ts` (to be created)
-      - Branch Name: `feat/trial-expiration-notifications`
-  - [ ] 37. (Post-Launch) Add analytics for onboarding and monetization
-    - [ ] 37.1. Track onboarding completion, trial conversions, and subscriptions
-      - File: `lib/services/analytics-service.ts` (to be created)
-      - Branch Name: `feat/analytics-monetization`
 
 ---
 
