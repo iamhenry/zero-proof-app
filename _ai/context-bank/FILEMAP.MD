@@ -98,6 +98,27 @@ This file contains documentation headers extracted from component files to provi
  */
 ```
 
+### SubscriptionContext.tsx
+```
+/**
+ * FILE: context/SubscriptionContext.tsx
+ * PURPOSE: Centralized subscription state management for tracking active subscription status across the app
+ * FUNCTIONS:
+ *   - SubscriptionProvider({ children: ReactNode }): JSX.Element -> Context provider managing subscription state
+ *   - useSubscription(): SubscriptionContextProps -> Hook to consume subscription context
+ *   - checkSubscriptionStatus(): Promise<boolean> -> Verify current subscription status with RevenueCat
+ *   - handlePurchaseEvent(customerInfo: any): void -> Process purchase completion events from paywall
+ *   - getCachedSubscriptionStatus(): boolean | null -> Get locally cached subscription status
+ * KEY FEATURES:
+ *   - Centralized subscription state accessible throughout app
+ *   - Tracks active/inactive subscription status
+ *   - Listens for purchase events from paywall
+ *   - Persists subscription state locally with 24-hour cache
+ *   - Background sync with RevenueCat for status updates
+ * DEPENDENCIES: react, AsyncStorage for persistence, react-native-purchases
+ */
+```
+
 ### TimerStateContext.tsx
 ```
 /**

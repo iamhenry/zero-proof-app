@@ -359,7 +359,7 @@ Step-by-Step Tasks:
              - [x] Subscription state updates correctly on device
              - [x] Cache persists between app sessions
       - Note: Keep it minimal - just track active/inactive status
-    - [ ] 35.4. Add Route Protection
+    - [x] 35.4. Add Route Protection
       - File: `app/(app)/(protected)/_layout.tsx` (to be modified)
       - Branch Name: `feat/subscription-protection`
       - Dependencies: Task 35.3

@@ -2,14 +2,14 @@
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: June 2, 2025, 12:04 PM
+- Last Update: June 4, 2025, 2:22 PM
 - Current Phase: Phase 2 - Frontend Implementation  
-- Overall Progress: ~93%
+- Overall Progress: ~95%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
-- Current Branch: main
-- Latest Release: Version 0.1.27
+- Current Branch: reviewAndTest/feat/subscription-protection
+- Latest Release: Version 0.1.29
 
 ## Key Metrics
 - Features Completed: ~75/82 (~91% based on sub-tasks)
@@ -18,6 +18,48 @@
 - Current Focus: Subscription management implementation and user experience enhancements
 
 ---
+
+## Version 0.1.29 - June 4, 2025 2:22 PM
+
+### Enhanced
+
+- Project Configuration and Documentation
+  - Description: Updated `.gitignore` to include `project.pbxproj` for better project cleanliness and enhanced `ROADMAP.md` to document issues found in the In-App Purchase flow.
+  - Why: To prevent unnecessary files from being tracked in the repository and improve clarity on user experience issues during onboarding.
+  - Impact: Better project cleanliness and improved tracking of onboarding flow problems.
+  - Reference: Commit cb2d9f4.
+
+- iOS Development Configuration
+  - Description: Added development team and provisioning style settings in `project.pbxproj`.
+  - Why: To ensure proper code signing and development team configuration for iOS builds.
+  - Impact: Improved iOS build configuration and development workflow.
+  - Reference: Commit cb2d9f4.
+
+## Version 0.1.28 - June 3, 2025 3:19 PM
+
+### Added
+
+- Protected Layout Integration Tests
+  - Description: Introduced new integration tests for `ProtectedLayout` to validate subscription-based access control.
+  - Why: To ensure users without subscriptions are correctly routed to onboarding, enhancing user experience.
+  - Impact: Improved test coverage for subscription flow and better validation of access control logic.
+  - Reference: Commit df5f085.
+
+### Enhanced
+
+- Subscription Context Improvements
+  - Description: Enhanced `SubscriptionContext` to include computed properties for access control and updated `ProtectedLayout` to conditionally display onboarding based on subscription status.
+  - Why: To improve tracking of subscription status and streamline onboarding logic, ensuring users without subscriptions are guided through the onboarding process effectively.
+  - Impact: More robust subscription management and improved user onboarding experience.
+  - Reference: Commit df5f085.
+
+### Changed
+
+- Project Repository Configuration
+  - Description: Updated `.gitignore` to include `.repomix/bundles.json` for better project cleanliness.
+  - Why: To prevent unnecessary files from being tracked in the repository.
+  - Impact: Cleaner repository state and better development environment.
+  - Reference: Commit df5f085.
 
 ## Version 0.1.27 - June 2, 2025 12:04 PM
 

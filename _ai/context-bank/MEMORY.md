@@ -1,5 +1,69 @@
 # MEMORY.md
 
+## [June 4, 2025 2:22 PM] Project Configuration and iOS Development Setup: Code Signing and Repository Cleanliness
+Context: Enhanced project configuration by updating gitignore rules and iOS development settings, along with documenting In-App Purchase flow issues in the roadmap.
+Lesson:
+- Project Configuration Management:
+  - Updated .gitignore to include project.pbxproj files to prevent unnecessary tracking of Xcode project changes
+  - Project cleanliness improves repository maintainability and reduces merge conflicts
+  - Configuration file management requires careful consideration of what should be tracked vs. ignored
+  - Documentation of issues in roadmap helps maintain visibility of user experience problems
+- iOS Development Team Configuration:
+  - Added development team and provisioning style settings in project.pbxproj for proper code signing
+  - Development team configuration is essential for iOS builds and app distribution
+  - Provisioning style settings ensure proper code signing workflow during development
+  - iOS build configuration requires coordination between project settings and developer accounts
+- In-App Purchase Flow Documentation:
+  - Enhanced ROADMAP.md to document issues found in the In-App Purchase flow
+  - User experience issues during onboarding need clear documentation for prioritization
+  - IAP flow problems can significantly impact user acquisition and retention
+  - Systematic documentation of UX issues enables better product development planning
+Related Methods/Concepts:
+- iOS project configuration management
+- Git repository maintenance patterns
+- Code signing and provisioning workflows
+- User experience documentation practices
+- Development environment optimization
+Future Improvements:
+- Implement automated project configuration validation
+- Create documentation templates for user experience issues
+- Develop standardized code signing workflow documentation
+- Add automated checks for repository cleanliness
+
+## [June 3, 2025 3:19 PM] Subscription Protection and Onboarding Integration: Access Control with User Experience Focus
+Context: Enhanced subscription management with protected layout integration tests and improved SubscriptionContext for better access control and onboarding flow.
+Lesson:
+- Subscription-Based Access Control Testing:
+  - Integration tests for ProtectedLayout validate subscription-based routing and ensure users without subscriptions are correctly directed to onboarding
+  - Test coverage for subscription flows is crucial for maintaining proper access control across app updates
+  - Subscription status validation must be thoroughly tested to prevent unauthorized access to premium features
+  - User routing based on subscription status requires comprehensive testing scenarios
+- Enhanced Subscription Context Architecture:
+  - SubscriptionContext with computed properties provides cleaner access control logic throughout the application
+  - Centralized subscription state management enables consistent behavior across different app screens
+  - Computed properties in subscription context reduce code duplication and improve maintainability
+  - Context-based subscription management supports scalable premium feature implementation
+- Onboarding Flow Integration:
+  - Conditional onboarding display based on subscription status improves user experience for non-subscribers
+  - Subscription-aware onboarding ensures users understand premium features and subscription benefits
+  - Streamlined onboarding logic reduces complexity in protected layout components
+  - User guidance through onboarding process based on subscription status enhances conversion rates
+- Repository Configuration Improvements:
+  - Updated .gitignore to include .repomix/bundles.json for better project cleanliness
+  - Repository maintenance practices contribute to overall development workflow efficiency
+  - Consistent file tracking policies reduce repository noise and improve collaboration
+Related Methods/Concepts:
+- Integration testing for subscription flows
+- React Context API for subscription management
+- Conditional rendering based on subscription status
+- User onboarding optimization patterns
+- Repository maintenance best practices
+Future Improvements:
+- Implement automated subscription status monitoring
+- Add analytics for onboarding conversion tracking
+- Develop subscription status debugging tools
+- Create comprehensive subscription testing framework
+
 ## [June 2, 2025 12:04 PM] Subscription Management Architecture: Centralized State for Premium Features
 Context: Implemented comprehensive subscription management system with SubscriptionContext for centralized state management and premium feature access control.
 Lesson:
