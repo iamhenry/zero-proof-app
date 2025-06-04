@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, View, KeyboardAvoidingView, Platform } from "react-native";
 import * as z from "zod";
 
 import { SafeAreaView } from "@/components/safe-area-view";
@@ -39,8 +39,13 @@ export default function SignIn() {
 		}
 	}
 
-	return (
-		<SafeAreaView className="flex-1 bg-background p-4" edges={["bottom"]}>
+        return (
+                <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : undefined}
+                        keyboardVerticalOffset={100}
+                        style={{ flex: 1 }}
+                >
+                        <SafeAreaView className="flex-1 bg-background p-4" edges={["bottom"]}>
 			<View className="flex-1 gap-4 web:m-4">
 				<H1 className="self-start ">Sign In</H1>
 				<Form {...form}>
@@ -89,7 +94,8 @@ export default function SignIn() {
 				) : (
 					<Text>Sign In</Text>
 				)}
-			</Button>
-		</SafeAreaView>
-	);
+                        </Button>
+                </SafeAreaView>
+                </KeyboardAvoidingView>
+        );
 }
