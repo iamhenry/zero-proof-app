@@ -401,6 +401,16 @@ Step-by-Step Tasks:
     - [ ] No session created: Supabase requires email verification, so no immediate session is created
     - [ ] No user feedback: There was no toast notification system to inform users about email verification
     - [ ] No modal dismissal logic: The component didn't handle the email verification flow
+
+### Issues Found (In App Purchase Flow):
+[List any issues or unexpected behavior]
+1. I created a new sandbox Apple tester email account.
+2. Signed in to the iOS settings developer settings with the new email account.
+3. Registered with that email for the zero proof app.
+4. Verified my email in the gmail I received for that tester account.
+5. Launch the app, zero proof.
+6. Then I was able to bypass the onboarding and it automatically showed me the protected routes and dropped me into the calendar view.
+7. I presume this is because I didn't uninstall the app and so the local storage was still persistent.
   
 
 <!-- FIXED -->
