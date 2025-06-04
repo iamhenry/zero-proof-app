@@ -21,7 +21,7 @@ export function Avatar({ className, text }: AvatarProps) {
 	return (
 		<View
 			className={cn(
-				"h-10 w-10 rounded-full bg-gray-200 items-center justify-center",
+				"h-10 w-10 rounded-full bg-gray-100 items-center justify-center",
 				className,
 			)}
 		>

@@ -40,42 +40,46 @@ export default function Settings() {
 			title: "Manage Subscription",
 			onPress: handleManageSubscription,
 		},
+		{
+			id: "sign-out",
+			title: "Sign Out",
+			onPress: signOut,
+		},
 	];
 
 	return (
-		<View className="flex-1 items-center justify-center bg-background p-4 gap-y-4">
+		<View className="flex-1 bg-background p-4">
+			{/* Spacer to push content to center */}
+			<View className="flex-1" />
+
 			{/* User profile section */}
 			<View className="w-full items-center space-y-4 mb-8">
 				<Avatar className="h-20 w-20" text={avatarText} />
-				<Badge text="Pro" />
 				<Text className="text-xl">{email}</Text>
+				<Badge text="Pro" />
 			</View>
 
-			{/* Subscription management list */}
+			{/* Settings actions list */}
 			<FlatList
 				data={items}
 				keyExtractor={(item) => item.id}
 				scrollEnabled={false}
 				renderItem={({ item }) => (
-					<Button className="w-full" onPress={item.onPress}>
-						<Text>{item.title}</Text>
+					<Button
+						className="w-full bg-white px-4 py-4 justify-start items-start rounded-none border-b border-gray-100"
+						variant="ghost"
+						onPress={item.onPress}
+					>
+						<Text className="text-left text-gray-900 text-base w-full">
+							{item.title}
+						</Text>
 					</Button>
 				)}
-				ItemSeparatorComponent={() => <View className="h-2" />}
-				className="w-full"
+				className="w-full rounded-lg overflow-hidden"
 			/>
 
-			{/* Sign out section */}
-			<View className="w-full space-y-4">
-				<Button
-					className="w-full"
-					size="default"
-					variant="default"
-					onPress={signOut}
-				>
-					<Text>Sign Out</Text>
-				</Button>
-			</View>
+			{/* Spacer to push content to center */}
+			<View className="flex-1" />
 		</View>
 	);
 }
