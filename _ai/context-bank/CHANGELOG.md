@@ -2,14 +2,14 @@
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: June 4, 2025, 2:22 PM
+- Last Update: June 4, 2025, 3:32 PM
 - Current Phase: Phase 2 - Frontend Implementation  
-- Overall Progress: ~95%
+- Overall Progress: ~96%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
 - Current Branch: reviewAndTest/feat/subscription-protection
-- Latest Release: Version 0.1.29
+- Latest Release: Version 0.1.30
 
 ## Key Metrics
 - Features Completed: ~75/82 (~91% based on sub-tasks)
@@ -18,6 +18,28 @@
 - Current Focus: Subscription management implementation and user experience enhancements
 
 ---
+
+## Version 0.1.30 - June 4, 2025 3:32 PM
+
+### Enhanced
+
+- Subscription Management and Roadmap Updates
+  - Description: Marked tasks 36 and 11.4 as completed in the roadmap, reflecting progress on displaying subscription status and implementing drink quantity management in settings.
+  - Why: To reflect actual progress on subscription features and settings improvements, providing accurate project status tracking.
+  - Impact: Better project progress tracking and streamlined roadmap focusing on current priorities.
+  - Reference: Commit 9bc66d4.
+
+- Settings User Experience Improvements
+  - Description: Introduced a "Sign Out" option in the settings menu and updated the layout for better content organization and visual appeal.
+  - Why: To enhance user experience by providing clear sign-out functionality and improving overall settings interface.
+  - Impact: More intuitive settings navigation and improved user control over their session.
+  - Reference: Commit fa8d094.
+
+- UI Component Consistency
+  - Description: Adjusted the Avatar component's background color and improved subscription list label in settings.
+  - Why: To ensure visual consistency across UI elements and provide clearer subscription information display.
+  - Impact: More cohesive design language and better user understanding of subscription status.
+  - Reference: Commits fa8d094, 2b7e883.
 
 ## Version 0.1.29 - June 4, 2025 2:22 PM
 
