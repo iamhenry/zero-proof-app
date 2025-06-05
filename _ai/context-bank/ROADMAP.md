@@ -385,6 +385,7 @@ Step-by-Step Tasks:
 
 ## Bugs
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
+- [ ] how do i handle URL's in supabase in prod when the user has to verify their email. (right now it uses localhost and the site fails because domain doesnt exist even tho they can still verify their email)
 - [ ] Currently in the onboarding experience, the user can easily swipe past entering the drink quantity. And so when the user completes the onboarding experience and starts the free trial, the drink quantity amount will be zero. And so the savings counter will not be calculating anything and will always show zero.
 // FIXME:
 - [ ] when signing up for a new account, the signup modal sheet does not dismiss and there's not toast to notify the user that they have to verify their email
