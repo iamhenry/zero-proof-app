@@ -756,3 +756,8 @@ Step-by-Step Tasks:
   - [ ] 30.3. Add performance monitoring for slow operations
     - File: `lib/services/analytics-service.ts` (to be expanded)
     - Branch Name: `feat/analytics-performance-monitoring`
+
+### RevenueCat 
+- [ ] implement the RevenueCat Customer Center (https://www.revenuecat.com/docs/tools/customer-center)
+  - [ ] This allows them to have and manage subscriptions without leaving the app.
+  - [ ] It also has the ability to ask a few questions if a user decides to cancel.
