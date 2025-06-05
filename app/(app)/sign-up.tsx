@@ -1,6 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, View, KeyboardAvoidingView, Platform } from "react-native";
+import {
+	ActivityIndicator,
+	View,
+	KeyboardAvoidingView,
+	Platform,
+} from "react-native";
 import * as z from "zod";
 
 import { SafeAreaView } from "@/components/safe-area-view";
@@ -59,78 +64,78 @@ export default function SignUp() {
 		}
 	}
 
-        return (
-                <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : undefined}
-                        keyboardVerticalOffset={100}
-                        style={{ flex: 1 }}
-                >
-                        <SafeAreaView className="flex-1 bg-background p-4" edges={["bottom"]}>
-			<View className="flex-1 gap-4 web:m-4">
-				<H1 className="self-start">Sign Up</H1>
+	return (
+		<KeyboardAvoidingView
+			behavior={Platform.OS === "ios" ? "padding" : undefined}
+			keyboardVerticalOffset={100}
+			style={{ flex: 1 }}
+		>
+			<SafeAreaView className="flex-1 bg-background p-4" edges={["bottom"]}>
+				<View className="flex-1 gap-4 web:m-4">
+					<H1 className="self-start">Sign Up</H1>
 
-				<Form {...form}>
-					<View className="gap-4">
-						<FormField
-							control={form.control}
-							name="email"
-							render={({ field }) => (
-								<FormInput
-									label="Email"
-									placeholder="Email"
-									autoCapitalize="none"
-									autoComplete="email"
-									autoCorrect={false}
-									keyboardType="email-address"
-									{...field}
-								/>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="password"
-							render={({ field }) => (
-								<FormInput
-									label="Password"
-									placeholder="Password"
-									autoCapitalize="none"
-									autoCorrect={false}
-									secureTextEntry
-									{...field}
-								/>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="confirmPassword"
-							render={({ field }) => (
-								<FormInput
-									label="Confirm Password"
-									placeholder="Confirm password"
-									autoCapitalize="none"
-									autoCorrect={false}
-									secureTextEntry
-									{...field}
-								/>
-							)}
-						/>
-					</View>
-				</Form>
-			</View>
-			<Button
-				size="default"
-				variant="default"
-				onPress={form.handleSubmit(onSubmit)}
-				disabled={form.formState.isSubmitting}
-				className="web:m-4"
-			>
-				{form.formState.isSubmitting ? (
-					<ActivityIndicator size="small" />
-				) : (
-					<Text>Sign Up</Text>
-				)}
-                        </Button>
-                </SafeAreaView>
-                </KeyboardAvoidingView>
-        );
+					<Form {...form}>
+						<View className="gap-4">
+							<FormField
+								control={form.control}
+								name="email"
+								render={({ field }) => (
+									<FormInput
+										label="Email"
+										placeholder="Email"
+										autoCapitalize="none"
+										autoComplete="email"
+										autoCorrect={false}
+										keyboardType="email-address"
+										{...field}
+									/>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="password"
+								render={({ field }) => (
+									<FormInput
+										label="Password"
+										placeholder="Password"
+										autoCapitalize="none"
+										autoCorrect={false}
+										secureTextEntry
+										{...field}
+									/>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="confirmPassword"
+								render={({ field }) => (
+									<FormInput
+										label="Confirm Password"
+										placeholder="Confirm password"
+										autoCapitalize="none"
+										autoCorrect={false}
+										secureTextEntry
+										{...field}
+									/>
+								)}
+							/>
+						</View>
+					</Form>
+					<Button
+						size="default"
+						variant="default"
+						onPress={form.handleSubmit(onSubmit)}
+						disabled={form.formState.isSubmitting}
+						className="web:m-4"
+					>
+						{form.formState.isSubmitting ? (
+							<ActivityIndicator size="small" />
+						) : (
+							<Text>Sign Up</Text>
+						)}
+					</Button>
+				</View>
+			</SafeAreaView>
+		</KeyboardAvoidingView>
+	);
 }

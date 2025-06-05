@@ -1,6 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, View, KeyboardAvoidingView, Platform } from "react-native";
+import {
+	ActivityIndicator,
+	View,
+	KeyboardAvoidingView,
+	Platform,
+} from "react-native";
 import * as z from "zod";
 
 import { SafeAreaView } from "@/components/safe-area-view";
@@ -39,63 +44,63 @@ export default function SignIn() {
 		}
 	}
 
-        return (
-                <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : undefined}
-                        keyboardVerticalOffset={100}
-                        style={{ flex: 1 }}
-                >
-                        <SafeAreaView className="flex-1 bg-background p-4" edges={["bottom"]}>
-			<View className="flex-1 gap-4 web:m-4">
-				<H1 className="self-start ">Sign In</H1>
-				<Form {...form}>
-					<View className="gap-4">
-						<FormField
-							control={form.control}
-							name="email"
-							render={({ field }) => (
-								<FormInput
-									label="Email"
-									placeholder="Email"
-									autoCapitalize="none"
-									autoComplete="email"
-									autoCorrect={false}
-									keyboardType="email-address"
-									{...field}
-								/>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="password"
-							render={({ field }) => (
-								<FormInput
-									label="Password"
-									placeholder="Password"
-									autoCapitalize="none"
-									autoCorrect={false}
-									secureTextEntry
-									{...field}
-								/>
-							)}
-						/>
-					</View>
-				</Form>
-			</View>
-			<Button
-				size="default"
-				variant="default"
-				onPress={form.handleSubmit(onSubmit)}
-				disabled={form.formState.isSubmitting}
-				className="web:m-4"
-			>
-				{form.formState.isSubmitting ? (
-					<ActivityIndicator size="small" />
-				) : (
-					<Text>Sign In</Text>
-				)}
-                        </Button>
-                </SafeAreaView>
-                </KeyboardAvoidingView>
-        );
+	return (
+		<KeyboardAvoidingView
+			behavior={Platform.OS === "ios" ? "padding" : undefined}
+			keyboardVerticalOffset={100}
+			style={{ flex: 1 }}
+		>
+			<SafeAreaView className="flex-1 bg-background p-4" edges={["bottom"]}>
+				<View className="flex-1 gap-4 web:m-4">
+					<H1 className="self-start ">Sign In</H1>
+					<Form {...form}>
+						<View className="gap-4">
+							<FormField
+								control={form.control}
+								name="email"
+								render={({ field }) => (
+									<FormInput
+										label="Email"
+										placeholder="Email"
+										autoCapitalize="none"
+										autoComplete="email"
+										autoCorrect={false}
+										keyboardType="email-address"
+										{...field}
+									/>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="password"
+								render={({ field }) => (
+									<FormInput
+										label="Password"
+										placeholder="Password"
+										autoCapitalize="none"
+										autoCorrect={false}
+										secureTextEntry
+										{...field}
+									/>
+								)}
+							/>
+						</View>
+					</Form>
+					<Button
+						size="default"
+						variant="default"
+						onPress={form.handleSubmit(onSubmit)}
+						disabled={form.formState.isSubmitting}
+						className="web:m-4"
+					>
+						{form.formState.isSubmitting ? (
+							<ActivityIndicator size="small" />
+						) : (
+							<Text>Sign In</Text>
+						)}
+					</Button>
+				</View>
+			</SafeAreaView>
+		</KeyboardAvoidingView>
+	);
 }
