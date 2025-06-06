@@ -574,3 +574,40 @@ This file contains documentation headers extracted from component files to provi
  * DEPENDENCIES: react, react-native
  */
 ```
+
+## Toast Notification Components
+
+### ToastProvider.tsx
+```
+/**
+ * FILE: components/ui/toast/ToastProvider.tsx
+ * PURPOSE: React Context provider for centralized toast notification state management across the application
+ * FUNCTIONS:
+ *   - ToastProvider({ children: ReactNode }): JSX.Element -> Context provider managing toast notification state
+ *   - useToast(): ToastContextProps -> Hook to consume toast context and show notifications
+ *   - showToast(message: string, type?: 'success' | 'error' | 'info'): void -> Display toast notification with optional type
+ * KEY FEATURES:
+ *   - Centralized notification state management
+ *   - Support for different notification types (success, error, info)
+ *   - Automatic notification dismissal with configurable duration
+ *   - Queue management for multiple simultaneous notifications
+ * DEPENDENCIES: react, Context API for state management
+ */
+```
+
+### ToastContainer.tsx
+```
+/**
+ * FILE: components/ui/toast/ToastContainer.tsx
+ * PURPOSE: UI component for displaying and managing toast notifications with automatic dismissal and visual styling
+ * FUNCTIONS:
+ *   - ToastContainer(): JSX.Element -> Renders active toast notifications with proper styling and animations
+ * KEY FEATURES:
+ *   - Visual representation of toast notifications
+ *   - Automatic dismissal timer management
+ *   - Type-based styling (success, error, info)
+ *   - Non-intrusive overlay positioning
+ *   - Animation support for show/hide transitions
+ * DEPENDENCIES: react, toast context, React Native styling components
+ */
+```

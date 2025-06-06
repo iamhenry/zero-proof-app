@@ -138,6 +138,16 @@ Step-by-Step Tasks:
 ### Phase 2: Frontend Implementation Bugs
 - [x] bug-07. today is april 10, 2025, and it has not been marked as sober. however the timer still indicates a running elpase time as it was (81d, 10h, 38m, 01s). this should not be the case. the user must explicitly toggle the current day in order to keep the timer elapse time running. (screenshot on my desktop). This only occurs the following day when i come back to the app.
   - Fixed in commit 7a84c5c (Apr 21, 2025): Added verification step in TimerStateContext to check if today is actually marked as sober, and enhanced SobrietyTimer to display zero when today is not sober.
+- [x] bug-09. Enhanced User Feedback System for Authentication Processes
+  - [x] bug-09.1. As a user, I want to receive immediate feedback when authentication actions succeed or fail.
+    - Resolution: Implemented comprehensive toast notification system with ToastProvider and ToastContainer for centralized user feedback management.
+    - File: Toast notification components and integration in authentication screens
+  - [x] bug-09.2. As a user, I want clear notification when email verification is required.
+    - Resolution: Added toast notification for email verification in WelcomeScreen to ensure users understand next steps.
+    - File: WelcomeScreen with integrated email verification feedback
+  - [x] bug-09.3. As a user, I want the signup screen to dismiss automatically after successful submission.
+    - Resolution: Enhanced signup flow with automatic screen dismissal upon form submission for improved user flow continuity.
+    - File: SignUp component with automatic dismissal functionality
 
 
 <!-- FIXED -->
@@ -386,25 +396,10 @@ Step-by-Step Tasks:
 ## Bugs
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
 - [ ] how do i handle URL's in supabase in prod when the user has to verify their email. (right now it uses localhost and the site fails because domain doesnt exist even tho they can still verify their email)
-- [ ] Currently in the onboarding experience, the user can easily swipe past entering the drink quantity. And so when the user completes the onboarding experience and starts the free trial, the drink quantity amount will be zero. And so the savings counter will not be calculating anything and will always show zero.
 // FIXME:
-- [ ] when signing up for a new account, the signup modal sheet does not dismiss and there's not toast to notify the user that they have to verify their email
-  - [ ] file: `sign-up.tsx`
-  - [ ] prompt: "i beleive this use to dismiss but i havent worked or modified any of this code recently help me debug what could be this issue"
-  - [ ] cursor mode: "debug"
-  - [ ] **is this being cause by the onboarding experience not being implementing in the correct position?**
-  - [ ] **root cause:**
-    - [ ] file: `supabase-provider.tsx`
-    - [ ] No Session Created: When a user signs up, Supabase doesn't immediately create a session (because email verification is required), so no auth state change occurs, and no navigation is triggered
-    - [ ] Missing User Feedback: There's no toast notification or UI feedback to tell the user they need to verify their email
-      - [ ] toast should show after the signup screen hides and show it in the welcome screen for 5 seconds
-    - [ ] The sign-up modal wasn't dismissing because:
-    - [ ] No session created: Supabase requires email verification, so no immediate session is created
-    - [ ] No user feedback: There was no toast notification system to inform users about email verification
-    - [ ] No modal dismissal logic: The component didn't handle the email verification flow
+- [ ] Currently in the onboarding experience, the user can easily swipe past entering the drink quantity. And so when the user completes the onboarding experience and starts the free trial, the drink quantity amount will be zero. And so the savings counter will not be calculating anything and will always show zero.
 
-### Issues Found (In App Purchase Flow):
-[List any issues or unexpected behavior]
+### Minor Issue Found (In App Purchase Flow):
 1. I created a new sandbox Apple tester email account.
 2. Signed in to the iOS settings developer settings with the new email account.
 3. Registered with that email for the zero proof app.
@@ -426,6 +421,7 @@ Step-by-Step Tasks:
   - [x] when i refresh the app and enter 21 for weekly amount, this time it will show the amount i had entered before (7 weekly). There's something glitchy about this data storage.
   - [x] The savings counter component does not recalculate after the user edits their value in the drink quantity settings modal.
     - [x] why didnt the test catch this?
+- [x] when signing up for a new account, the signup modal sheet does not dismiss and there's not toast to notify the user that they have to verify their email
 
 ## Phase 4: UI Polish & Optimization
 Enhance user experience with animations and optimizations.
