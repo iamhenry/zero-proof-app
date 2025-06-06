@@ -17,6 +17,7 @@ import { TimerStateProvider } from "@/context/TimerStateContext";
 import { CalendarDataProvider } from "@/context/CalendarDataContext";
 import { SavingsDataProvider } from "@/context/SavingsDataContext"; // Import the new provider
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
+import { ToastProvider } from "@/context/toast-provider";
 import { configureRevenueCat } from "@/config/revenuecat";
 
 export default function AppLayout() {
@@ -37,18 +38,20 @@ export default function AppLayout() {
 	}, []);
 
 	return (
-		<RepositoryProvider>
-			<TimerStateProvider>
-				<CalendarDataProvider>
-					<SavingsDataProvider>
-						<SupabaseProvider>
-							<SubscriptionProvider>
-								<Slot />
-							</SubscriptionProvider>
-						</SupabaseProvider>
-					</SavingsDataProvider>
-				</CalendarDataProvider>
-			</TimerStateProvider>
-		</RepositoryProvider>
+		<ToastProvider>
+			<RepositoryProvider>
+				<TimerStateProvider>
+					<CalendarDataProvider>
+						<SavingsDataProvider>
+							<SupabaseProvider>
+								<SubscriptionProvider>
+									<Slot />
+								</SubscriptionProvider>
+							</SupabaseProvider>
+						</SavingsDataProvider>
+					</CalendarDataProvider>
+				</TimerStateProvider>
+			</RepositoryProvider>
+		</ToastProvider>
 	);
 }

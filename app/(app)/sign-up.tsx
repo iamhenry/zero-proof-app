@@ -7,6 +7,7 @@ import {
 	Platform,
 } from "react-native";
 import * as z from "zod";
+import { useRouter } from "expo-router";
 
 import { SafeAreaView } from "@/components/safe-area-view";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ import { Form, FormField, FormInput } from "@/components/ui/form";
 import { Text } from "@/components/ui/text";
 import { H1 } from "@/components/ui/typography";
 import { useSupabase } from "@/context/supabase-provider";
+import { useToast } from "@/context/toast-provider";
 
 const formSchema = z
 	.object({
@@ -44,6 +46,8 @@ const formSchema = z
 
 export default function SignUp() {
 	const { signUp } = useSupabase();
+	const router = useRouter();
+	const { showToast } = useToast();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -59,8 +63,14 @@ export default function SignUp() {
 			await signUp(data.email, data.password);
 
 			form.reset();
+
+			// Navigate back to welcome screen with a parameter to show toast
+			router.replace("/welcome?showEmailVerification=true");
 		} catch (error: Error | any) {
 			console.log(error.message);
+			// Show error feedback to user
+			showToast("Sign up failed. Please try again.", "error", 5000);
+			// Don't dismiss modal on error - keep user on signup screen
 		}
 	}
 
