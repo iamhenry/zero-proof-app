@@ -1,10 +1,8 @@
-# Expo Supabase Starter
-
-![social-preview-dark](https://github.com/user-attachments/assets/bcee6db2-6dd0-435f-8255-3f4b36b4cfdc)
+# Zero Proof
 
 ## Introduction
 
-This repository serves as a comprehensive starter project for developing React Native and Expo applications with Supabase as the backend. It integrates various technologies such as Expo Router for navigation, Tailwind CSS for styling, React-Hook-Form for form handling, Zod for schema validation, and TypeScript for type safety. By leveraging these powerful tools, this starter template provides a robust foundation for building modern, scalable, and efficient mobile applications.
+Zero Proof is a sobriety tracking mobile application built with React Native and Expo. The app helps users track their sobriety journey through beautiful calendar visualization, streak tracking, financial savings calculations, and real-time progress monitoring. Built with modern technologies including Expo Router for navigation, Tailwind CSS for styling, React-Hook-Form for form handling, Zod for schema validation, and TypeScript for type safety.
 
 ### Running on iOS
 
@@ -16,22 +14,16 @@ npx expo run:ios --device
 
 > **Note:** The `ios` and `android` folders are not committed to GitHub, as the project is managed entirely through Expo. Native code is not tracked in version control unless the project is ejected.
 
-#### Disclaimer
+## Features
 
-This is not supposed to be a template, boilerplate or a framework. It is an opinionated guide that shows how to do some things in a certain way. You are not forced to do everything exactly as it is shown here, decide what works best for you and your team and stay consistent with your style.
-
-## Table of Contents
-
-- [💻 Application Overview](docs/application-overview.md)
-- [⚙️ Project Configuration](docs/project-configuration.md)
-- [🗄️ Project Structure](docs/project-structure.md)
-- [🧱 Components And Styling](docs/components-and-styling.md)
-- [🗃️ State Management](docs/state-management.md)
-
-## Contributing
-
-Contributions to this starter project are highly encouraged and welcome! If you have any suggestions, bug reports, or feature requests, please feel free to create an issue or submit a pull request. Let's work together to enhance the developer experience and make it easier for everyone to build exceptional Expo applications with Supabase.
+- **Calendar Visualization**: Beautiful heatmap-style calendar showing sobriety progress
+- **Streak Tracking**: Real-time streak counter with current and best streak metrics
+- **Financial Tracking**: Calculate money saved based on personal drink costs
+- **Timer Display**: Live timer showing exact time since last drink
+- **Onboarding Flow**: Guided setup with drink quantity input and subscription management
+- **Offline Support**: Full functionality with local data persistence
+- **iOS Optimized**: Native iOS experience with proper subscription integration
 
 ## License
 
-This repository is licensed under the MIT License. You are granted the freedom to use, modify, and distribute the code for personal or commercial purposes. For more details, please refer to the [LICENSE](https://github.com/FlemingVincent/supabase-starter/blob/main/LICENSE) file.
+This repository is licensed under the MIT License.
