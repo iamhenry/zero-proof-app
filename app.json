@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ExpoSupabaseStarter",
-    "slug": "ExpoSupabaseStarter",
-    "scheme": "expo-supabase-starter",
+    "name": "Zero Proof",
+    "slug": "zero-proof",
+    "scheme": "zero-proof",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
