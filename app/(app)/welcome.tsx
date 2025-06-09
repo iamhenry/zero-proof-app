@@ -41,6 +41,7 @@ export default function WelcomeScreen() {
 				<Button
 					size="default"
 					variant="default"
+					className="rounded-full"
 					onPress={() => {
 						router.push("/sign-up");
 					}}
@@ -50,6 +51,7 @@ export default function WelcomeScreen() {
 				<Button
 					size="default"
 					variant="secondary"
+					className="rounded-full"
 					onPress={() => {
 						router.push("/sign-in");
 					}}

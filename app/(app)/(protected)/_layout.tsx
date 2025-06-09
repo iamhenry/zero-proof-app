@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import React, { useState, useEffect } from "react";
+import { Feather } from "@expo/vector-icons";
 
 import OnboardingComponent from "@/components/ui/onboarding/OnboardingComponent"; // Import OnboardingComponent
 import { colors } from "@/constants/colors";
@@ -100,11 +101,27 @@ export default function ProtectedLayout() {
 					colorScheme === "dark"
 						? colors.dark.foreground
 						: colors.light.foreground,
-				tabBarShowLabel: false,
+				tabBarShowLabel: true,
 			}}
 		>
-			<Tabs.Screen name="index" options={{ title: "Home" }} />
-			<Tabs.Screen name="settings" options={{ title: "Settings" }} />
+			<Tabs.Screen
+				name="index"
+				options={{
+					title: "Home",
+					tabBarIcon: ({ color, size }) => (
+						<Feather name="calendar" size={size - 3} color={color} />
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="settings"
+				options={{
+					title: "Settings",
+					tabBarIcon: ({ color, size }) => (
+						<Feather name="user" size={size - 3} color={color} />
+					),
+				}}
+			/>
 		</Tabs>
 	);
 }

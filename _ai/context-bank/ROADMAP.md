@@ -426,44 +426,6 @@ Step-by-Step Tasks:
 ## Phase 4: UI Polish & Optimization
 Enhance user experience with animations and optimizations.
 
-### Milestone 11: Visual Enhancements
-Objective: Add visual polish and animations to improve user experience.
-
-Data Flow:
-- Animation triggers flow through component state changes
-- Loading state data flows through dedicated loading components
-- Error data is handled through error components
-
-Acceptance Criteria:
-- Animations and transitions are implemented throughout the app
-- Loading states and error handling are implemented
-- UI is visually polished and consistent
-
-Step-by-Step Tasks:
-- [ ] 26. Add animations and transitions
-  - [ ] 26.1. Implement smooth animations for calendar day selections
-    - File: `components/ui/calendar/CalendarGrid.tsx` (to be expanded)
-    - Branch Name: `feat/ui-calendar-animations`
-  - [ ] 26.2. Add celebration animations when reaching streak milestones
-    - File: `lib/animations/index.ts` (to be created)
-    - Branch Name: `feat/ui-streak-celebration-animations`
-  - [ ] 26.3. Create smooth timer countdown animations
-    - File: `components/ui/timer/SobrietyTimer.tsx` (to be expanded)
-    - Branch Name: `feat/ui-timer-animations`
-  - [ ] 26.4. Implement fluid page transitions between screens
-    - File: `app/(app)/_layout.tsx` (to be expanded)
-    - Branch Name: `feat/ui-page-transitions`
-- [ ] 27. Implement loading states and error handling
-  - [ ] 27.1. Create skeleton screens for data loading states
-    - File: `components/ui/loading/Skeleton.tsx` (to be created)
-    - Branch Name: `feat/ui-skeleton-loaders`
-  - [ ] 27.2. Add user-friendly error messages with retry options
-    - File: `components/ui/feedback/ErrorMessage.tsx` (to be created)
-    - Branch Name: `feat/ui-error-messages`
-  - [ ] 27.3. Implement loading indicators for all async operations
-    - File: `components/ui/loading/Spinner.tsx` (to be created)
-    - Branch Name: `feat/ui-loading-spinners`
-
 ### Milestone 13: Final Testing & Launch Prep
 Objective: Prepare the application for launch on app stores.
 
@@ -479,7 +441,7 @@ Acceptance Criteria:
 
 Step-by-Step Tasks:
 - [ ] 31. App store preparation
-  - [ ] 31.1. Create screenshots showing key features on various device sizes
+  - [x] 31.1. Create screenshots showing key features on various device sizes
     - File: `assets/store/screenshots/` (to be created)
     - Branch Name: `chore/release-screenshots`
   - [ ] 31.2. Write compelling app description highlighting unique benefits
@@ -708,6 +670,44 @@ Step-by-Step Tasks:
     - Branch Name: `test/e2e-data-sync`
 - [ ] 25. Integrate E2E tests into CI pipeline
     - Branch Name: `ci/integrate-e2e-tests`
+
+### Milestone 11: Visual Enhancements
+Objective: Add visual polish and animations to improve user experience.
+
+Data Flow:
+- Animation triggers flow through component state changes
+- Loading state data flows through dedicated loading components
+- Error data is handled through error components
+
+Acceptance Criteria:
+- Animations and transitions are implemented throughout the app
+- Loading states and error handling are implemented
+- UI is visually polished and consistent
+
+Step-by-Step Tasks:
+- [ ] 26. Add animations and transitions
+  - [ ] 26.1. Implement smooth animations for calendar day selections
+    - File: `components/ui/calendar/CalendarGrid.tsx` (to be expanded)
+    - Branch Name: `feat/ui-calendar-animations`
+  - [ ] 26.2. Add celebration animations when reaching streak milestones
+    - File: `lib/animations/index.ts` (to be created)
+    - Branch Name: `feat/ui-streak-celebration-animations`
+  - [x] 26.3. Create smooth timer countdown animations
+    - File: `components/ui/timer/SobrietyTimer.tsx` (to be expanded)
+    - Branch Name: `feat/ui-timer-animations`
+  - [ ] 26.4. Implement fluid page transitions between screens
+    - File: `app/(app)/_layout.tsx` (to be expanded)
+    - Branch Name: `feat/ui-page-transitions`
+- [ ] 27. Implement loading states and error handling
+  - [ ] 27.1. Create skeleton screens for data loading states
+    - File: `components/ui/loading/Skeleton.tsx` (to be created)
+    - Branch Name: `feat/ui-skeleton-loaders`
+  - [ ] 27.2. Add user-friendly error messages with retry options
+    - File: `components/ui/feedback/ErrorMessage.tsx` (to be created)
+    - Branch Name: `feat/ui-error-messages`
+  - [ ] 27.3. Implement loading indicators for all async operations
+    - File: `components/ui/loading/Spinner.tsx` (to be created)
+    - Branch Name: `feat/ui-loading-spinners`
 
 ### Milestone 12: Performance Optimization
 Objective: Optimize application performance for a smooth user experience.
