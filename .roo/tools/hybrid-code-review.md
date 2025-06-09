@@ -100,6 +100,15 @@ For each issue identified:
 - Issue: Brief description of the problem
 - Why This Severity: Explain impact or potential harm
 - Suggestion: Recommend a specific fix or approach
+- Include the relevant lines of code illustrating the issue.
+- Code Snippet Example (adapt to other languages if when necessary) 
+```typescript
+// File: utils/formatter.ts  Line: 12–14
+export function formatDate(date: Date) {
+  return date.toISOString().split('T')[0];
+// Missing timezone offset handling
+}
+```
 
 ---
 
@@ -143,6 +152,15 @@ The implementation successfully addresses screen dismissal and email verificatio
 - Issue: Hardcoded 300ms timeout for toast display  
 - Why This Severity: Could create race conditions or timing issues on slower devices  
 - Suggestion: Use navigation state listener or Promise.resolve().then() for more reliable timing
+- Code Snippet:
+    ~~~typescript
+    // File: utils/formatter.ts  Line: 12–14
+    export function formatDate(date: Date) {
+      return date.toISOString().split('T')[0];
+    // Missing timezone offset handling
+    }
+    ~~~
+
 
 ---
 
@@ -160,6 +178,14 @@ The implementation successfully addresses screen dismissal and email verificatio
 - Issue: Switch statement could benefit from a color mapping object  
 - Why This Severity: Minor maintainability improvement, doesn't affect functionality  
 - Suggestion: Extract color mapping to constants for easier maintenance
+- Code Snippet:
+    ~~~typescript
+    // File: utils/formatter.ts  Line: 12–14
+    export function formatDate(date: Date) {
+      return date.toISOString().split('T')[0];
+    // Missing timezone offset handling
+    }
+    ~~~
 
 ---
 
@@ -179,6 +205,14 @@ The implementation successfully addresses screen dismissal and email verificatio
 - Issue: ToastContainer only added to welcome screen, not consistently across app  
 - Why This Severity: Limits toast functionality to single screen, breaks expected behavior  
 - Suggestion: Consider adding ToastContainer to main layout or implement global toast positioning
+- Code Snippet:
+    ~~~typescript
+      // File: utils/formatter.ts  Line: 12–14
+      export function formatDate(date: Date) {
+        return date.toISOString().split('T')[0];
+      // Missing timezone offset handling
+      }
+    ~~~
 
 ---
 

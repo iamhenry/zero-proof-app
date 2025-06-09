@@ -136,7 +136,7 @@ export default function SignUp() {
 						variant="default"
 						onPress={form.handleSubmit(onSubmit)}
 						disabled={form.formState.isSubmitting}
-						className="web:m-4"
+						className="rounded-full web:m-4"
 					>
 						{form.formState.isSubmitting ? (
 							<ActivityIndicator size="small" />
