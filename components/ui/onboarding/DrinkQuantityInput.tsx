@@ -16,7 +16,6 @@ import {
 } from "react-native";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Controller } from "react-hook-form";
 import { useDrinkQuantityForm } from "@/components/ui/onboarding/hooks/useDrinkQuantityForm";
 import { DrinkQuantityInputProps } from "@/components/ui/onboarding/types";
@@ -58,13 +57,13 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 			style={{ flex: 1 }}
 		>
 			<View className="flex flex-1 justify-center p-4" accessible={true}>
-				<Label
+				<Text
 					nativeID="drinkQuantityLabel"
 					testID="drink-quantity-label"
-					className="pb-2 text-lg font-semibold text-center"
+					className="pb-6 text-center text-3xl font-bold"
 				>
 					{label}
-				</Label>
+				</Text>
 				<Controller
 					control={control}
 					name="quantity"
@@ -80,7 +79,8 @@ const DrinkQuantityInput: React.FC<DrinkQuantityInputProps> = ({
 							}}
 							value={value}
 							keyboardType="numeric"
-							className="mb-4 text-8xl border-0 text-center"
+							className="mb-4 border-0 text-center text-8xl"
+							style={{ fontSize: 48 }}
 							aria-labelledby="drinkQuantityLabel"
 							aria-describedby={errors.quantity ? "quantityError" : undefined}
 							editable={!isLoading && !disabled}
