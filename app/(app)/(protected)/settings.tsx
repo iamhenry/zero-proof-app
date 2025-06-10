@@ -12,6 +12,9 @@ import { Muted } from "@/components/ui/typography";
 import { useSupabase } from "@/context/supabase-provider";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Feather } from "@expo/vector-icons";
+
+const defaultIconSize = 16;
 
 export default function Settings() {
 	const { signOut, user } = useSupabase();
@@ -34,16 +37,47 @@ export default function Settings() {
 		}
 	};
 
+	const handleSendFeedback = async () => {
+		const userEmail = user?.email;
+		const subject = "Feedback%20for%20App";
+		const mailtoUri = userEmail
+			? `mailto:${userEmail}?subject=${subject}`
+			: `mailto:?subject=${subject}`;
+
+		try {
+			const canOpen = await Linking.canOpenURL(mailtoUri);
+			if (canOpen) {
+				await Linking.openURL(mailtoUri);
+			} else {
+				// TODO: Maybe show an alert that no email app is available
+				console.warn("Cannot open mailto link");
+			}
+		} catch (err) {
+			console.warn("Unable to open email client", err);
+		}
+	};
+
 	const items = [
+		{
+			id: "send-feedback",
+			title: "Send Feedback",
+			onPress: handleSendFeedback,
+			icon: "mail",
+			iconSize: defaultIconSize,
+		},
 		{
 			id: "manage-sub",
 			title: "Manage Subscription",
 			onPress: handleManageSubscription,
+			icon: "credit-card",
+			iconSize: defaultIconSize,
 		},
 		{
 			id: "sign-out",
 			title: "Sign Out",
 			onPress: signOut,
+			icon: "log-out",
+			iconSize: defaultIconSize,
 		},
 	];
 
@@ -68,11 +102,19 @@ export default function Settings() {
 					<Button
 						className="w-full bg-white px-4 py-4 justify-start items-start rounded-none border-b border-gray-100"
 						variant="ghost"
+						size={"lg"}
 						onPress={item.onPress}
 					>
-						<Text className="text-left text-gray-900 text-base w-full">
-							{item.title}
-						</Text>
+						<View className="flex-row items-center gap-x-4">
+							<Feather
+								name={item.icon as any}
+								size={item.iconSize || defaultIconSize}
+								color="#1f2937"
+							/>
+							<Text className="text-left text-gray-900 text-base w-full">
+								{item.title}
+							</Text>
+						</View>
 					</Button>
 				)}
 				className="w-full rounded-lg overflow-hidden"
