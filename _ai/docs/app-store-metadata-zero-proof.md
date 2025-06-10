@@ -56,6 +56,25 @@ Download Zero Proof, tap today, and watch your first tile glow. Return tomorrow 
 
 ---
 
+## App Store Screenshot Copy
+
+### Screenshot 1 (Welcome/Overview)
+See Your Entire Sobriety Journey at Once
+
+### Screenshot 2 (Calendar View)
+Turn Every Sober Day Into a Victory
+
+### Screenshot 3 (Timer Focus)
+Watch Your Sobriety Time Grow in Real-Time
+
+### Screenshot 4 (Calendar + Streak)
+Feel the Power of Building Momentum
+
+### Screenshot 5 (Savings Counter)
+Keep More Money in Your Pocket
+
+---
+
 ### Localization Roadmap
 Next locales to tackle: Spanish (ES-MX), German (DE-DE), French (FR-FR) — each with culturally adapted keywords (e.g., "dejar de beber", "alkoholfrei", "arrêt alcool").
 
