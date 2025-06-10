@@ -519,18 +519,21 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/onboarding/DrinkQuantityInput.tsx
- * PURPOSE: Reusable form component for inputting drink quantity with validation and customizable button text.
+ * PURPOSE: Reusable form component for inputting drink quantity with enhanced accessibility and improved visual hierarchy.
  * FUNCTIONS:
  *   - DrinkQuantityInput({ onSubmit, buttonText, defaultValue }: DrinkQuantityInputProps): JSX.Element -> Renders the drink quantity input form.
  * KEY FEATURES:
  *   - Form handling with React Hook Form
  *   - Zod validation for input values (positive integers only)
+ *   - Enhanced accessibility with Text component for semantic labeling
+ *   - Improved visual hierarchy with optimized label styling
  *   - Customizable button text ("Save" or "Next" depending on context)
  *   - Support for default/initial values
  *   - Clear error message display
  *   - Number pad input optimization
  *   - Concise, user-friendly labels ("How many drinks per week?")
  *   - Reusable across onboarding and settings contexts
+ *   - Screen reader compatibility improvements
  * DEPENDENCIES: react, react-hook-form, zod, react-native
  */
 ```
