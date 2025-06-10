@@ -222,7 +222,7 @@ Step-by-Step Tasks:
     - File: `components/ui/timer/SobrietyTimer.tsx`, `context/CalendarDataContext.tsx`
   - [x] 10.6. Improve timer state management with conditional side effects
     - File: `context/TimerStateContext.tsx`, `context/CalendarDataContext.tsx`
-- [ ] 11. Implement financial tracking system 
+- [x] 11. Implement financial tracking system 
   - [x] 11.1. Create savings calculator based on days sober × drink cost
     - File: `components/ui/settings/hooks/useFinancialSettings.ts`
   - [x] 11.2. Implement financial service for savings calculations
@@ -313,7 +313,7 @@ Step-by-Step Tasks:
   - [x] 34 Implement drink quantity management in settings
     - File: `components/ui/settings/SettingsDrinkQuantityContainer.tsx` (to be expanded)
     - Branch Name: `feat/settings-drink-quantity-screen`
-  - [ ] 35. Implement freemium model with RevenueCat integration (iOS-focused, simplified)
+  - [x] 35. Implement freemium model with RevenueCat integration (iOS-focused, simplified)
     - [x] 35.1. Install and Configure RevenueCat SDK (iOS-only)
       - File: `config/revenuecat.ts` (completed)
       - Branch Name: `feat/revenuecat-ios-setup`
@@ -447,9 +447,6 @@ Step-by-Step Tasks:
   - [ ] 31.2. Write compelling app description highlighting unique benefits
     - File: `docs/app-store/description.md` (to be created)
     - Branch Name: `docs/release-app-description`
-  - [ ] 31.3. Prepare promotional graphics and videos for store listings
-    - File: `assets/store/promotional/` (to be created)
-    - Branch Name: `chore/release-promo-assets`
 
 ------------------------
 

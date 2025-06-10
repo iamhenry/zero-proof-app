@@ -2,14 +2,14 @@
 
 ## Quick Status
 - Project Start Date: March 10, 2025
-- Last Update: June 10, 2025, 9:27 AM
+- Last Update: June 10, 2025, 11:31 AM
 - Current Phase: Phase 2 - Frontend Implementation  
-- Overall Progress: ~98%
+- Overall Progress: ~99%
 - Completed Milestones: 2/7
 - Completed Phase: 1/4
 - Next Milestone: Milestone 3 - State Management & Data Handling
-- Current Branch: feat/prepare-assets-for-app-release-v1-ui-polish
-- Latest Release: Version 0.1.34
+- Current Branch: main
+- Latest Release: Version 0.1.36
 
 ## Key Metrics
 - Features Completed: ~78/82 (~95% based on sub-tasks)
@@ -18,6 +18,26 @@
 - Current Focus: App release preparation with UI polish and accessibility improvements
 
 ---
+
+## Version 0.1.36 - June 10, 2025 11:31 AM
+
+### Merged
+
+- Send Feedback Feature Branch
+  - Description: Successfully merged feat/send-feedback-link branch into main, completing the integration of feedback functionality into the settings screen.
+  - Why: To consolidate feedback feature development and prepare for release deployment.
+  - Impact: Streamlined codebase with integrated feedback functionality ready for user testing and deployment.
+  - Reference: Commit 3e8fc89.
+
+## Version 0.1.35 - June 10, 2025 11:22 AM
+
+### Enhanced
+
+- Settings Screen Visual Improvements
+  - Description: Added icons to all settings options including 'Send Feedback', 'Manage Subscription', and 'Sign Out' with a consistent default icon size for uniform appearance.
+  - Why: To improve visual clarity and user experience by providing recognizable icons alongside text options, creating better visual hierarchy and alignment with modern design standards.
+  - Impact: Enhanced user interface with improved accessibility and visual appeal, making settings navigation more intuitive and professional.
+  - Reference: Commit a136dd9.
 
 ## Version 0.1.34 - June 10, 2025 9:27 AM
 
