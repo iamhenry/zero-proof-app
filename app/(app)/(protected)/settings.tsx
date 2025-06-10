@@ -34,7 +34,32 @@ export default function Settings() {
 		}
 	};
 
+	const handleSendFeedback = async () => {
+		const userEmail = user?.email;
+		const subject = "Feedback%20for%20App";
+		const mailtoUri = userEmail
+			? `mailto:${userEmail}?subject=${subject}`
+			: `mailto:?subject=${subject}`;
+
+		try {
+			const canOpen = await Linking.canOpenURL(mailtoUri);
+			if (canOpen) {
+				await Linking.openURL(mailtoUri);
+			} else {
+				// TODO: Maybe show an alert that no email app is available
+				console.warn("Cannot open mailto link");
+			}
+		} catch (err) {
+			console.warn("Unable to open email client", err);
+		}
+	};
+
 	const items = [
+		{
+			id: "send-feedback",
+			title: "Send Feedback",
+			onPress: handleSendFeedback,
+		},
 		{
 			id: "manage-sub",
 			title: "Manage Subscription",
