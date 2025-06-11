@@ -28,17 +28,14 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 		const checkRevenueCatStatus = async () => {
 			try {
 				console.log("🔍 PaywallScreen: Checking RevenueCat status...");
+				const customerInfo = await getCustomerInfo(); // Initial check
+				console.log("✅ PaywallScreen: Customer info retrieved for initial check.", customerInfo.entitlements.active);
 
-				// Test 1: Check if we can get customer info
-				const customerInfo = await getCustomerInfo();
-				console.log("✅ PaywallScreen: Customer info available");
-
-				// Test 2: Check if offerings are available
 				const offerings = await getOfferings();
-				console.log("✅ PaywallScreen: Offerings check complete");
+				console.log("✅ PaywallScreen: Offerings check complete.");
 				console.log(
 					"📦 Available offerings:",
-					Object.keys(offerings.all).length,
+					JSON.stringify(offerings.all, null, 2), // Log all offerings details
 				);
 
 				if (
@@ -46,7 +43,14 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 					offerings.current.availablePackages.length > 0
 				) {
 					setHasOfferings(true);
-					console.log("🎯 PaywallScreen: Current offering found with packages");
+					console.log("🎯 PaywallScreen: Current offering found with packages. Identifier:", offerings.current.identifier);
+					// Log details of packages in the current offering
+					offerings.current.availablePackages.forEach(pkg => {
+						console.log(`  Package: ${pkg.identifier}, Product: ${pkg.product.identifier}, Type: ${pkg.packageType}`);
+						if (pkg.product.introductoryPrice) {
+							console.log(`    Introductory Price: ${JSON.stringify(pkg.product.introductoryPrice)}`);
+						}
+					});
 				} else {
 					setError(
 						"No subscription packages available. Please check RevenueCat dashboard configuration.",
@@ -134,8 +138,10 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 										offerings.current.availablePackages.length > 0
 									) {
 										setHasOfferings(true);
+										console.log("🎯 PaywallScreen (Retry): Current offering found.");
 									} else {
 										setError("Still no subscription packages available.");
+										console.warn("⚠️ PaywallScreen (Retry): Still no offerings.");
 									}
 								} catch (err) {
 									setError(
@@ -209,60 +215,59 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 		);
 	}
 
+	console.log("🚀 PaywallScreen: Rendering RevenueCatUI.Paywall component.");
 	return (
 		<View
 			style={{
 				flex: 1,
 				width: "100%",
 				paddingBottom: 90,
-				// height: "80%",
-				// minHeight: 400,
 			}}
 		>
 			<RevenueCatUI.Paywall
 				options={{
-					displayCloseButton: false, // No close button since onboarding handles navigation
+					displayCloseButton: false,
 				}}
-				onPurchaseCompleted={({ customerInfo }) => {
-					// Purchase successful - user now has subscription access
+				onPurchaseCompleted={async ({ customerInfo }) => {
 					console.log(
-						"✅ PaywallScreen: Purchase completed:",
-						customerInfo.entitlements,
+						"✅ PaywallScreen: Purchase completed. CustomerInfo entitlements:",
+						JSON.stringify(customerInfo.entitlements.active, null, 2),
 					);
-					// Update subscription context with purchase info
-					handlePurchaseEvent(customerInfo);
+					await handlePurchaseEvent(customerInfo); // Ensure this is awaited if it's async
 					onDone();
 				}}
-				onRestoreCompleted={({ customerInfo }) => {
-					// Check if user now has active entitlements
+				onRestoreCompleted={async ({ customerInfo }) => {
+					console.log(
+						"ℹ️ PaywallScreen: Restore attempt completed. CustomerInfo entitlements:",
+						JSON.stringify(customerInfo.entitlements.active, null, 2),
+					);
 					if (
 						customerInfo.entitlements.active &&
 						Object.keys(customerInfo.entitlements.active).length > 0
 					) {
 						console.log(
-							"✅ PaywallScreen: Restore completed with active entitlements",
+							"✅ PaywallScreen: Restore completed with active entitlements.",
 						);
-						// Update subscription context with restored info
-						handlePurchaseEvent(customerInfo);
+						await handlePurchaseEvent(customerInfo); // Ensure this is awaited
 						onDone();
 					} else {
 						console.log(
-							"ℹ️ PaywallScreen: Restore completed but no active entitlements found",
+							"ℹ️ PaywallScreen: Restore completed but no active entitlements found.",
 						);
+						// Optionally, you might want to inform the user here or let SubscriptionContext handle it.
 					}
 				}}
 				onDismiss={() => {
-					// This shouldn't be called since displayCloseButton is false
-					// But handle it just in case
-					console.log("ℹ️ PaywallScreen: Paywall dismissed without purchase");
+					console.log("ℹ️ PaywallScreen: Paywall dismissed. This should not happen with displayCloseButton:false.");
 				}}
 				onPurchaseError={(error) => {
-					// Handle purchase errors
 					console.error("❌ PaywallScreen: Purchase error:", error);
 				}}
 				onPurchaseCancelled={() => {
-					// Handle purchase cancellation
-					console.log("ℹ️ PaywallScreen: Purchase cancelled by user");
+					console.log("ℹ️ PaywallScreen: Purchase cancelled by user.");
+				}}
+				onPurchaseStarted={(purchaseParams) => {
+					console.log("🚀 PaywallScreen: Purchase started for package:", purchaseParams.packageIdentifier);
 				}}
 			/>
 		</View>
