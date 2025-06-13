@@ -47,6 +47,40 @@ const createMockCustomerInfo = (
 	requestDate: new Date().toISOString(),
 });
 
+// Mock customer info responses for trial scenarios
+const createMockTrialCustomerInfo = (
+	isTrialActive: boolean,
+	trialExpirationDate?: string,
+	isTrialConverted?: boolean,
+) => ({
+	activeSubscriptions: isTrialActive ? ["zp_weekly_free_trial_offer"] : [],
+	allPurchasedProductIdentifiers: isTrialActive
+		? ["zp_weekly_free_trial_offer"]
+		: [],
+	entitlements: {
+		active: isTrialActive
+			? {
+					premium: {
+						isActive: true,
+						productIdentifier: "zp_weekly_free_trial_offer",
+						willRenew: true,
+						expirationDate: trialExpirationDate
+							? new Date(trialExpirationDate)
+							: null,
+					},
+				}
+			: {},
+		all: {},
+	},
+	latestExpirationDate: trialExpirationDate
+		? new Date(trialExpirationDate)
+		: null,
+	originalApplicationVersion: "1.0.0",
+	originalPurchaseDate: new Date().toISOString(),
+	requestDate: new Date().toISOString(),
+	isTrialConversion: isTrialConverted || false,
+});
+
 describe("SubscriptionContext", () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -110,6 +144,447 @@ describe("SubscriptionContext", () => {
 		// Then: User should have access to premium features
 		expect(result.current.isSubscriptionActive).toBe(true);
 		expect(result.current.isLoading).toBe(false);
+	});
+
+	// MARK: - Scenario: Trial Initiation from Paywall
+
+	it("should detect active free trial and grant immediate access", async () => {
+		// Given: User has active 7-day free trial
+		const sevenDaysFromNow = new Date(
+			Date.now() + 7 * 24 * 60 * 60 * 1000,
+		).toISOString();
+		const mockTrialCustomerInfo = createMockTrialCustomerInfo(
+			true,
+			sevenDaysFromNow,
+			false,
+		);
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockTrialCustomerInfo);
+
+		// When: Subscription status is checked after trial activation
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: User should have access during trial
+		expect(result.current.isSubscriptionActive).toBe(true);
+		expect(result.current.hasAccess).toBe(true);
+		expect(result.current.isTrialActive).toBe(true);
+		expect(result.current.trialExpirationDate).toBeTruthy();
+	});
+
+	it("should treat trial users identically to paid subscribers for access", async () => {
+		// Given: User has active trial subscription
+		const sevenDaysFromNow = new Date(
+			Date.now() + 7 * 24 * 60 * 60 * 1000,
+		).toISOString();
+		const mockTrialCustomerInfo = createMockTrialCustomerInfo(
+			true,
+			sevenDaysFromNow,
+			false,
+		);
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockTrialCustomerInfo);
+
+		// When: App checks subscription status
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Trial user should have identical access to paid subscriber
+		expect(result.current.hasAccess).toBe(true);
+		expect(result.current.subscriptionStatus).toBe("active");
+		expect(result.current.isSubscriptionActive).toBe(true);
+	});
+
+	// MARK: - Scenario: Premium Access During Active Trial
+
+	it("should persist trial access across app sessions", async () => {
+		// Given: User has cached active trial status
+		const sevenDaysFromNow = Date.now() + 7 * 24 * 60 * 60 * 1000;
+		const cachedTrialStatus = {
+			isActive: true,
+			isTrialActive: true,
+			trialExpirationDate: sevenDaysFromNow,
+			lastVerified: Date.now() - 1 * 60 * 60 * 1000, // 1 hour ago
+			cacheExpiry: Date.now() + 23 * 60 * 60 * 1000, // 23 hours from now
+		};
+		mockedAsyncStorage.getItem.mockResolvedValue(
+			JSON.stringify(cachedTrialStatus),
+		);
+
+		// When: App loads and checks cached status
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		// Wait for useEffect to load cached data
+		await act(async () => {
+			await new Promise((resolve) => setTimeout(resolve, 0));
+		});
+
+		// Then: Should maintain trial access from cache
+		expect(result.current.isSubscriptionActive).toBe(true);
+		expect(result.current.isTrialActive).toBe(true);
+		expect(result.current.hasAccess).toBe(true);
+	});
+
+	// MARK: - Scenario: Trial Conversion to Paid Subscription
+
+	it("should detect seamless trial to paid conversion", async () => {
+		// Given: User's trial has converted to paid subscription
+		const mockConvertedCustomerInfo = createMockTrialCustomerInfo(
+			true,
+			null,
+			true,
+		);
+		mockConvertedCustomerInfo.activeSubscriptions = ["premium_weekly"];
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(
+			mockConvertedCustomerInfo,
+		);
+
+		// When: Subscription status is checked after conversion
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: User should maintain uninterrupted access
+		expect(result.current.isSubscriptionActive).toBe(true);
+		expect(result.current.hasAccess).toBe(true);
+		expect(result.current.isTrialConverted).toBe(true);
+	});
+
+	it("should maintain access during trial to paid transition", async () => {
+		// Given: User was on trial and now has paid subscription
+		const mockConvertedInfo = createMockTrialCustomerInfo(true, null, true);
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockConvertedInfo);
+
+		// When: Conversion is processed
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			result.current.handlePurchaseEvent(mockConvertedInfo);
+		});
+
+		// Then: Access should remain uninterrupted
+		expect(result.current.isSubscriptionActive).toBe(true);
+		expect(result.current.hasAccess).toBe(true);
+	});
+
+	// MARK: - Scenario: Trial Cancellation During Trial Period
+
+	it("should maintain access after cancellation until trial expires", async () => {
+		// Given: User cancelled trial but it hasn't expired yet
+		const twoDaysFromNow = new Date(
+			Date.now() + 2 * 24 * 60 * 60 * 1000,
+		).toISOString();
+		const mockCancelledTrialInfo = createMockTrialCustomerInfo(
+			true,
+			twoDaysFromNow,
+			false,
+		);
+		mockCancelledTrialInfo.entitlements.active.premium.willRenew = false; // Cancelled
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockCancelledTrialInfo);
+
+		// When: Subscription status is checked
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Should still have access until expiration
+		expect(result.current.isSubscriptionActive).toBe(true);
+		expect(result.current.hasAccess).toBe(true);
+		expect(result.current.isTrialCancelled).toBe(true);
+		expect(result.current.trialExpirationDate).toBeTruthy();
+	});
+
+	// MARK: - Scenario: Expired Trial Without Conversion
+
+	it("should revoke access when trial expires without conversion", async () => {
+		// Given: User had trial that has now expired
+		const yesterdayDate = new Date(
+			Date.now() - 24 * 60 * 60 * 1000,
+		).toISOString();
+		const mockExpiredTrialInfo = createMockTrialCustomerInfo(
+			false,
+			yesterdayDate,
+			false,
+		);
+		mockExpiredTrialInfo.entitlements.active = {}; // No active entitlements
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockExpiredTrialInfo);
+
+		// When: Subscription status is checked after expiration
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Access should be revoked
+		expect(result.current.isSubscriptionActive).toBe(false);
+		expect(result.current.hasAccess).toBe(false);
+		expect(result.current.isTrialExpired).toBe(true);
+	});
+
+	// MARK: - Scenario: hasPurchasedTrial Logic Tests
+
+	it("should detect expired trial when user has trial in allPurchasedProductIdentifiers but not activeSubscriptions", async () => {
+		// Given: User previously had trial but it's now expired
+		const yesterdayDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+		const mockExpiredTrialInfo = {
+			activeSubscriptions: [], // Trial no longer active
+			allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer"], // But was purchased before
+			entitlements: {
+				active: {}, // No active entitlements
+				all: {
+					premium: {
+						isActive: false,
+						expirationDate: yesterdayDate,
+						willRenew: false,
+					},
+				},
+			},
+			latestExpirationDate: yesterdayDate,
+			isTrialConversion: false,
+		};
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockExpiredTrialInfo);
+
+		// When: Subscription status is checked
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Should detect as expired trial (not just inactive)
+		expect(result.current.isSubscriptionActive).toBe(false);
+		expect(result.current.hasAccess).toBe(false);
+		expect(result.current.isTrialActive).toBe(false);
+		expect(result.current.isTrialExpired).toBe(true);
+	});
+
+	it("should NOT mark as trial expired for users who never had trial", async () => {
+		// Given: User never had any trial
+		const mockNeverTrialInfo = {
+			activeSubscriptions: [],
+			allPurchasedProductIdentifiers: [], // Never purchased trial
+			entitlements: {
+				active: {},
+				all: {},
+			},
+			latestExpirationDate: null,
+			isTrialConversion: false,
+		};
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockNeverTrialInfo);
+
+		// When: Subscription status is checked
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Should NOT be marked as trial expired
+		expect(result.current.isSubscriptionActive).toBe(false);
+		expect(result.current.hasAccess).toBe(false);
+		expect(result.current.isTrialActive).toBe(false);
+		expect(result.current.isTrialExpired).toBe(false); // Key difference
+	});
+
+	it("should correctly identify expired trial vs never-had-trial users with ambiguous RevenueCat data", async () => {
+		// Given: Edge case - RevenueCat might return similar data for both scenarios
+		// This user HAD a trial but RevenueCat doesn't provide latestExpirationDate
+		const mockAmbiguousExpiredTrialInfo = {
+			activeSubscriptions: [], // No active subscriptions
+			allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer"], // BUT they did purchase trial
+			entitlements: {
+				active: {}, // No active entitlements
+				all: {}, // No historical entitlements data
+			},
+			latestExpirationDate: null, // RevenueCat sometimes doesn't provide this
+			isTrialConversion: false,
+		};
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockAmbiguousExpiredTrialInfo);
+
+		// When: Subscription status is checked
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Should detect as expired trial based on purchase history
+		// This test will FAIL without hasPurchasedTrial logic
+		expect(result.current.isSubscriptionActive).toBe(false);
+		expect(result.current.hasAccess).toBe(false);
+		expect(result.current.isTrialActive).toBe(false);
+		expect(result.current.isTrialExpired).toBe(true); // Should detect expired trial
+	});
+
+	it("should handle edge case where trial is in activeSubscriptions but not allPurchasedProductIdentifiers", async () => {
+		// Given: Edge case scenario (shouldn't happen but test defensively)
+		const sevenDaysFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+		const mockEdgeCaseInfo = {
+			activeSubscriptions: ["zp_weekly_free_trial_offer"], // Active trial
+			allPurchasedProductIdentifiers: [], // But not in purchase history (unusual)
+			entitlements: {
+				active: {
+					premium: {
+						isActive: true,
+						expirationDate: sevenDaysFromNow,
+						willRenew: true,
+					},
+				},
+				all: {
+					premium: {
+						isActive: true,
+						expirationDate: sevenDaysFromNow,
+						willRenew: true,
+					},
+				},
+			},
+			latestExpirationDate: sevenDaysFromNow,
+			isTrialConversion: false,
+		};
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockEdgeCaseInfo);
+
+		// When: Subscription status is checked
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Should still treat as active trial (prioritize activeSubscriptions)
+		expect(result.current.isSubscriptionActive).toBe(true);
+		expect(result.current.hasAccess).toBe(true);
+		expect(result.current.isTrialActive).toBe(true);
+		expect(result.current.isTrialExpired).toBe(false);
+	});
+
+	it("should distinguish between converted trial and expired trial", async () => {
+		// Given: User had trial that converted to paid subscription
+		const mockConvertedTrialInfo = {
+			activeSubscriptions: ["premium_weekly"], // Now has paid subscription
+			allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer", "premium_weekly"], // Trial + paid
+			entitlements: {
+				active: {
+					premium: {
+						isActive: true,
+						expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+						willRenew: true,
+					},
+				},
+				all: {
+					premium: {
+						isActive: true,
+						expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+						willRenew: true,
+					},
+				},
+			},
+			latestExpirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+			isTrialConversion: true, // Key: this indicates conversion
+		};
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockConvertedTrialInfo);
+
+		// When: Subscription status is checked
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Should be active subscription, not expired trial
+		expect(result.current.isSubscriptionActive).toBe(true);
+		expect(result.current.hasAccess).toBe(true);
+		expect(result.current.isTrialActive).toBe(false); // No longer trial
+		expect(result.current.isTrialConverted).toBe(true); // Was converted
+		expect(result.current.isTrialExpired).toBe(false); // Not expired, converted
+	});
+
+	it("should show paywall after expired trial", async () => {
+		// Given: User with expired trial
+		const mockExpiredTrialInfo = createMockTrialCustomerInfo(
+			false,
+			null,
+			false,
+		);
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockExpiredTrialInfo);
+
+		// When: User tries to access premium features
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Should indicate paywall is needed
+		expect(result.current.hasAccess).toBe(false);
+		expect(result.current.shouldShowPaywall).toBe(true);
+		expect(result.current.subscriptionStatus).toBe("inactive");
+	});
+
+	// MARK: - Scenario: Trial State Detection on App Launch
+
+	it("should accurately detect trial state on app launch", async () => {
+		// Given: User with active trial launches app
+		const fiveDaysFromNow = new Date(
+			Date.now() + 5 * 24 * 60 * 60 * 1000,
+		).toISOString();
+		const mockTrialInfo = createMockTrialCustomerInfo(
+			true,
+			fiveDaysFromNow,
+			false,
+		);
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockTrialInfo);
+
+		// When: App initializes subscription context
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await result.current.checkSubscriptionStatus();
+		});
+
+		// Then: Should correctly identify trial state
+		expect(result.current.isTrialActive).toBe(true);
+		expect(result.current.trialDaysRemaining).toBe(5);
+		expect(result.current.hasAccess).toBe(true);
+	});
+
+	// MARK: - Scenario: Network Connectivity Edge Cases
+
+	it("should maintain trial access during network outages", async () => {
+		// Given: User has cached active trial and network fails
+		const threeDaysFromNow = Date.now() + 3 * 24 * 60 * 60 * 1000;
+		const cachedTrialStatus = {
+			isActive: true,
+			isTrialActive: true,
+			trialExpirationDate: threeDaysFromNow,
+			lastVerified: Date.now() - 2 * 60 * 60 * 1000, // 2 hours ago
+			cacheExpiry: Date.now() + 22 * 60 * 60 * 1000, // 22 hours from now
+		};
+		mockedAsyncStorage.getItem.mockResolvedValue(
+			JSON.stringify(cachedTrialStatus),
+		);
+		mockedRevenueCat.getCustomerInfo.mockRejectedValue(
+			new Error("Network error"),
+		);
+
+		// When: App tries to verify subscription during outage
+		const { result } = renderHook(() => useSubscription(), { wrapper });
+
+		await act(async () => {
+			await new Promise((resolve) => setTimeout(resolve, 0));
+		});
+
+		// Then: Should use cached trial status
+		expect(result.current.isTrialActive).toBe(true);
+		expect(result.current.hasAccess).toBe(true);
 	});
 
 	// MARK: - Scenario: Local Subscription Status Persistence
@@ -200,9 +675,9 @@ describe("SubscriptionContext", () => {
 			result.current.handlePurchaseEvent(mockActiveCustomerInfo);
 		});
 
-		// Then: Subscription status should update immediately
+		// Then: Subscription status should be updated immediately
 		expect(result.current.isSubscriptionActive).toBe(true);
-		expect(result.current.lastVerified).toBeTruthy();
+		expect(result.current.hasAccess).toBe(true);
 	});
 
 	it("should grant instant access to premium features after purchase confirmation", async () => {

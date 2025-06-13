@@ -21,7 +21,7 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [hasOfferings, setHasOfferings] = useState(false);
-	const { handlePurchaseEvent } = useSubscription();
+	const { handlePurchaseEvent, hasAccess, shouldShowPaywall } = useSubscription();
 
 	useEffect(() => {
 		// Verify RevenueCat is ready and has offerings
@@ -30,7 +30,7 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 				console.log("🔍 PaywallScreen: Checking RevenueCat status...");
 
 				// Test 1: Check if we can get customer info
-				const customerInfo = await getCustomerInfo();
+				await getCustomerInfo();
 				console.log("✅ PaywallScreen: Customer info available");
 
 				// Test 2: Check if offerings are available
@@ -67,6 +67,11 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 
 		checkRevenueCatStatus();
 	}, []);
+
+	// If user already has access, don't show paywall
+	if (hasAccess || !shouldShowPaywall) {
+		return null;
+	}
 
 	// Loading state
 	if (isLoading) {
@@ -219,6 +224,7 @@ const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDone }) => {
 				// minHeight: 400,
 			}}
 		>
+			
 			<RevenueCatUI.Paywall
 				options={{
 					displayCloseButton: false, // No close button since onboarding handles navigation
