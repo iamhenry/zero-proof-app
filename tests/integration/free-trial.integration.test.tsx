@@ -107,7 +107,7 @@ const setupTrialState = ({
 
 	// Mock complete RevenueCat CustomerInfo response
 	mockGetCustomerInfo.mockResolvedValue({
-		activeSubscriptions: isActive ? ["zp_weekly_free_trial_offer"] : [],
+		activeSubscriptions: isActive ? ["zeroproof.hmoran.com.Weekly"] : [],
 		entitlements: {
 			active: isActive
 				? {
@@ -126,7 +126,7 @@ const setupTrialState = ({
 				},
 			},
 		},
-		allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer"],
+		allPurchasedProductIdentifiers: ["zeroproof.hmoran.com.Weekly"],
 		isTrialConversion: isConverted,
 		latestExpirationDate: expirationDate.toISOString(),
 	} as any);
@@ -165,7 +165,8 @@ const mockGetOfferings = getOfferings as jest.MockedFunction<
 >;
 
 // Mock PaywallScreen implementation
-const MockPaywallScreen = require("@/components/ui/onboarding/PaywallScreen").default as jest.MockedFunction<any>;
+const MockPaywallScreen = require("@/components/ui/onboarding/PaywallScreen")
+	.default as jest.MockedFunction<any>;
 
 // Provider wrapper matching app/_layout.tsx
 const TestAppProviders: React.FC<{ children: React.ReactNode }> = ({
@@ -186,8 +187,9 @@ const TestAppProviders: React.FC<{ children: React.ReactNode }> = ({
 
 // Helper: Render PaywallScreen in full provider context
 const renderPaywall = (onDone = jest.fn()) => {
-	const PaywallScreen = require("@/components/ui/onboarding/PaywallScreen").default;
-	
+	const PaywallScreen =
+		require("@/components/ui/onboarding/PaywallScreen").default;
+
 	return render(
 		<TestAppProviders>
 			<PaywallScreen onDone={onDone} />
@@ -212,96 +214,110 @@ describe("7-Day Free Trial Feature Integration (Red Phase)", () => {
 		mockGetOfferings.mockResolvedValue({
 			current: {
 				availablePackages: [
-					{ identifier: "zp_weekly_free_trial_offer" },
+					{ identifier: "zeroproof.hmoran.com.Weekly" },
 				] as any,
 			},
-			all: { zp_weekly_free_trial_offer: {} as any },
+			all: { "zeroproof.hmoran.com.Weekly": {} as any },
 		} as any);
 
 		// Setup PaywallScreen mock implementation
-		MockPaywallScreen.mockImplementation(({ onDone }: { onDone?: () => void }) => {
-			const React = require("react");
-			const { View, TouchableOpacity } = require("react-native");
-			const { useSubscription } = require("@/context/SubscriptionContext");
-			
-			const subscription = useSubscription();
-			
-			// If user has access, don't show paywall
-			if (subscription.hasAccess) {
-				return null;
-			}
-			
-			// Mock trial purchase event
-			const handleTrialPurchase = () => {
-				const mockTrialCustomerInfo = {
-					activeSubscriptions: ["zp_weekly_free_trial_offer"],
-					entitlements: {
-						active: {
-							premium: {
-								isActive: true,
-								expirationDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-								willRenew: true,
+		MockPaywallScreen.mockImplementation(
+			({ onDone }: { onDone?: () => void }) => {
+				const React = require("react");
+				const { View, TouchableOpacity } = require("react-native");
+				const { useSubscription } = require("@/context/SubscriptionContext");
+
+				const subscription = useSubscription();
+
+				// If user has access, don't show paywall
+				if (subscription.hasAccess) {
+					return null;
+				}
+
+				// Mock trial purchase event
+				const handleTrialPurchase = () => {
+					const mockTrialCustomerInfo = {
+						activeSubscriptions: ["zeroproof.hmoran.com.Weekly"],
+						entitlements: {
+							active: {
+								premium: {
+									isActive: true,
+									expirationDate: new Date(
+										Date.now() + 7 * 24 * 60 * 60 * 1000,
+									).toISOString(),
+									willRenew: true,
+								},
+							},
+							all: {
+								premium: {
+									isActive: true,
+									expirationDate: new Date(
+										Date.now() + 7 * 24 * 60 * 60 * 1000,
+									).toISOString(),
+									willRenew: true,
+								},
 							},
 						},
-						all: {
-							premium: {
-								isActive: true,
-								expirationDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-								willRenew: true,
-							},
-						},
-					},
-					allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer"],
-					isTrialConversion: false,
-					latestExpirationDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+						allPurchasedProductIdentifiers: ["zeroproof.hmoran.com.Weekly"],
+						isTrialConversion: false,
+						latestExpirationDate: new Date(
+							Date.now() + 7 * 24 * 60 * 60 * 1000,
+						).toISOString(),
+					};
+
+					subscription.handlePurchaseEvent(mockTrialCustomerInfo);
+					if (onDone) onDone();
 				};
-				
-				subscription.handlePurchaseEvent(mockTrialCustomerInfo);
-				if (onDone) onDone();
-			};
-			
-			// Mock regular plan purchase
-			const handlePlanPurchase = () => {
-				const mockPaidCustomerInfo = {
-					activeSubscriptions: ["zp_weekly_subscription"],
-					entitlements: {
-						active: {
-							premium: {
-								isActive: true,
-								expirationDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-								willRenew: true,
+
+				// Mock regular plan purchase
+				const handlePlanPurchase = () => {
+					const mockPaidCustomerInfo = {
+						activeSubscriptions: ["zp_weekly_subscription"],
+						entitlements: {
+							active: {
+								premium: {
+									isActive: true,
+									expirationDate: new Date(
+										Date.now() + 7 * 24 * 60 * 60 * 1000,
+									).toISOString(),
+									willRenew: true,
+								},
+							},
+							all: {
+								premium: {
+									isActive: true,
+									expirationDate: new Date(
+										Date.now() + 7 * 24 * 60 * 60 * 1000,
+									).toISOString(),
+									willRenew: true,
+								},
 							},
 						},
-						all: {
-							premium: {
-								isActive: true,
-								expirationDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-								willRenew: true,
-							},
-						},
-					},
-					allPurchasedProductIdentifiers: ["zp_weekly_subscription"],
-					isTrialConversion: false,
-					latestExpirationDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+						allPurchasedProductIdentifiers: ["zp_weekly_subscription"],
+						isTrialConversion: false,
+						latestExpirationDate: new Date(
+							Date.now() + 7 * 24 * 60 * 60 * 1000,
+						).toISOString(),
+					};
+
+					subscription.handlePurchaseEvent(mockPaidCustomerInfo);
+					if (onDone) onDone();
 				};
-				
-				subscription.handlePurchaseEvent(mockPaidCustomerInfo);
-				if (onDone) onDone();
-			};
-			
-			return React.createElement(View, { testID: "paywall" }, [
-				React.createElement(TouchableOpacity, {
-					key: "trial-button",
-					testID: "weekly-trial-button",
-					onPress: handleTrialPurchase,
-				}),
-				React.createElement(TouchableOpacity, {
-					key: "plan-button", 
-					testID: "weekly-plan-button",
-					onPress: handlePlanPurchase,
-				}),
-			]);
-		});
+
+				return React.createElement(View, { testID: "paywall" }, [
+					React.createElement(TouchableOpacity, {
+						key: "trial-button",
+						testID: "weekly-trial-button",
+						onPress: handleTrialPurchase,
+					}),
+					React.createElement(TouchableOpacity, {
+						key: "plan-button",
+						testID: "weekly-plan-button",
+						onPress: handlePlanPurchase,
+					}),
+				]);
+			},
+		);
 	});
 
 	// SCENARIO 1: Trial Initiation from Paywall
@@ -326,7 +342,7 @@ describe("7-Day Free Trial Feature Integration (Red Phase)", () => {
 
 			// And: Purchase completes successfully (simulate RevenueCat purchase event)
 			const mockSuccessfulTrialPurchase = {
-				activeSubscriptions: ["zp_weekly_free_trial_offer"],
+				activeSubscriptions: ["zeroproof.hmoran.com.Weekly"],
 				entitlements: {
 					active: {
 						premium: {
@@ -347,7 +363,7 @@ describe("7-Day Free Trial Feature Integration (Red Phase)", () => {
 						},
 					},
 				},
-				allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer"],
+				allPurchasedProductIdentifiers: ["zeroproof.hmoran.com.Weekly"],
 				isTrialConversion: false,
 				latestExpirationDate: new Date(
 					Date.now() + 7 * 24 * 60 * 60 * 1000,
@@ -402,9 +418,12 @@ describe("7-Day Free Trial Feature Integration (Red Phase)", () => {
 			const { queryByTestId } = renderPaywall();
 
 			// Wait for subscription context to load in PaywallScreen
-			await waitFor(() => {
-				expect(queryByTestId("paywall")).toBeNull();
-			}, { timeout: 3000 });
+			await waitFor(
+				() => {
+					expect(queryByTestId("paywall")).toBeNull();
+				},
+				{ timeout: 3000 },
+			);
 
 			// And: User experience should be identical to paid subscriber
 			expect(result.current.subscriptionStatus).toBe("active");
@@ -439,9 +458,12 @@ describe("7-Day Free Trial Feature Integration (Red Phase)", () => {
 			const { queryByTestId } = renderPaywall();
 
 			// Wait for subscription context to load in PaywallScreen
-			await waitFor(() => {
-				expect(queryByTestId("paywall")).toBeNull();
-			}, { timeout: 3000 });
+			await waitFor(
+				() => {
+					expect(queryByTestId("paywall")).toBeNull();
+				},
+				{ timeout: 3000 },
+			);
 		});
 	});
 
@@ -556,9 +578,12 @@ describe("7-Day Free Trial Feature Integration (Red Phase)", () => {
 			const { queryByTestId } = renderPaywall();
 
 			// Wait for subscription context to load in PaywallScreen
-			await waitFor(() => {
-				expect(queryByTestId("paywall")).toBeNull();
-			}, { timeout: 3000 });
+			await waitFor(
+				() => {
+					expect(queryByTestId("paywall")).toBeNull();
+				},
+				{ timeout: 3000 },
+			);
 		});
 	});
 
@@ -590,10 +615,13 @@ describe("7-Day Free Trial Feature Integration (Red Phase)", () => {
 			const { queryByText, queryByTestId } = renderPaywall();
 
 			// Wait for subscription context to load in PaywallScreen
-			await waitFor(() => {
-				expect(queryByTestId("paywall")).toBeNull();
-			}, { timeout: 3000 });
-			
+			await waitFor(
+				() => {
+					expect(queryByTestId("paywall")).toBeNull();
+				},
+				{ timeout: 3000 },
+			);
+
 			// Then: No trial-specific messaging or limitations should be visible
 			expect(queryByTestId("trial-status-banner")).toBeNull();
 
@@ -647,9 +675,12 @@ describe("7-Day Free Trial Feature Integration (Red Phase)", () => {
 			const { queryByTestId } = renderPaywall();
 
 			// Wait for subscription context to load in PaywallScreen
-			await waitFor(() => {
-				expect(queryByTestId("paywall")).toBeNull();
-			}, { timeout: 3000 });
+			await waitFor(
+				() => {
+					expect(queryByTestId("paywall")).toBeNull();
+				},
+				{ timeout: 3000 },
+			);
 
 			// When: Connectivity returns (reset mock to succeed)
 			setupTrialState({ isActive: true, daysElapsed: 3 });

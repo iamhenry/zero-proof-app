@@ -53,16 +53,16 @@ const createMockTrialCustomerInfo = (
 	trialExpirationDate?: string,
 	isTrialConverted?: boolean,
 ) => ({
-	activeSubscriptions: isTrialActive ? ["zp_weekly_free_trial_offer"] : [],
+	activeSubscriptions: isTrialActive ? ["zeroproof.hmoran.com.Weekly"] : [],
 	allPurchasedProductIdentifiers: isTrialActive
-		? ["zp_weekly_free_trial_offer"]
+		? ["zeroproof.hmoran.com.Weekly"]
 		: [],
 	entitlements: {
 		active: isTrialActive
 			? {
 					premium: {
 						isActive: true,
-						productIdentifier: "zp_weekly_free_trial_offer",
+						productIdentifier: "zeroproof.hmoran.com.Weekly",
 						willRenew: true,
 						expirationDate: trialExpirationDate
 							? new Date(trialExpirationDate)
@@ -334,10 +334,12 @@ describe("SubscriptionContext", () => {
 
 	it("should detect expired trial when user has trial in allPurchasedProductIdentifiers but not activeSubscriptions", async () => {
 		// Given: User previously had trial but it's now expired
-		const yesterdayDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+		const yesterdayDate = new Date(
+			Date.now() - 24 * 60 * 60 * 1000,
+		).toISOString();
 		const mockExpiredTrialInfo = {
 			activeSubscriptions: [], // Trial no longer active
-			allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer"], // But was purchased before
+			allPurchasedProductIdentifiers: ["zeroproof.hmoran.com.Weekly"], // But was purchased before
 			entitlements: {
 				active: {}, // No active entitlements
 				all: {
@@ -400,7 +402,7 @@ describe("SubscriptionContext", () => {
 		// This user HAD a trial but RevenueCat doesn't provide latestExpirationDate
 		const mockAmbiguousExpiredTrialInfo = {
 			activeSubscriptions: [], // No active subscriptions
-			allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer"], // BUT they did purchase trial
+			allPurchasedProductIdentifiers: ["zeroproof.hmoran.com.Weekly"], // BUT they did purchase trial
 			entitlements: {
 				active: {}, // No active entitlements
 				all: {}, // No historical entitlements data
@@ -408,7 +410,9 @@ describe("SubscriptionContext", () => {
 			latestExpirationDate: null, // RevenueCat sometimes doesn't provide this
 			isTrialConversion: false,
 		};
-		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockAmbiguousExpiredTrialInfo);
+		mockedRevenueCat.getCustomerInfo.mockResolvedValue(
+			mockAmbiguousExpiredTrialInfo,
+		);
 
 		// When: Subscription status is checked
 		const { result } = renderHook(() => useSubscription(), { wrapper });
@@ -427,9 +431,11 @@ describe("SubscriptionContext", () => {
 
 	it("should handle edge case where trial is in activeSubscriptions but not allPurchasedProductIdentifiers", async () => {
 		// Given: Edge case scenario (shouldn't happen but test defensively)
-		const sevenDaysFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+		const sevenDaysFromNow = new Date(
+			Date.now() + 7 * 24 * 60 * 60 * 1000,
+		).toISOString();
 		const mockEdgeCaseInfo = {
-			activeSubscriptions: ["zp_weekly_free_trial_offer"], // Active trial
+			activeSubscriptions: ["zeroproof.hmoran.com.Weekly"], // Active trial
 			allPurchasedProductIdentifiers: [], // But not in purchase history (unusual)
 			entitlements: {
 				active: {
@@ -470,24 +476,33 @@ describe("SubscriptionContext", () => {
 		// Given: User had trial that converted to paid subscription
 		const mockConvertedTrialInfo = {
 			activeSubscriptions: ["premium_weekly"], // Now has paid subscription
-			allPurchasedProductIdentifiers: ["zp_weekly_free_trial_offer", "premium_weekly"], // Trial + paid
+			allPurchasedProductIdentifiers: [
+				"zeroproof.hmoran.com.Weekly",
+				"premium_weekly",
+			], // Trial + paid
 			entitlements: {
 				active: {
 					premium: {
 						isActive: true,
-						expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+						expirationDate: new Date(
+							Date.now() + 30 * 24 * 60 * 60 * 1000,
+						).toISOString(),
 						willRenew: true,
 					},
 				},
 				all: {
 					premium: {
 						isActive: true,
-						expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+						expirationDate: new Date(
+							Date.now() + 30 * 24 * 60 * 60 * 1000,
+						).toISOString(),
 						willRenew: true,
 					},
 				},
 			},
-			latestExpirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+			latestExpirationDate: new Date(
+				Date.now() + 30 * 24 * 60 * 60 * 1000,
+			).toISOString(),
 			isTrialConversion: true, // Key: this indicates conversion
 		};
 		mockedRevenueCat.getCustomerInfo.mockResolvedValue(mockConvertedTrialInfo);

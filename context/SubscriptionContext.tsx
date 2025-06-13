@@ -94,13 +94,13 @@ export const SubscriptionProvider = ({
 		// Check if user has trial offer active
 		const hasTrialProduct =
 			customerInfo.activeSubscriptions?.includes(
-				"zp_weekly_free_trial_offer",
+				"zeroproof.hmoran.com.Weekly",
 			) || false;
 
 		// Check if user ever purchased the trial (for expired trial detection)
 		const hasPurchasedTrial =
 			customerInfo.allPurchasedProductIdentifiers?.includes(
-				"zp_weekly_free_trial_offer",
+				"zeroproof.hmoran.com.Weekly",
 			) || false;
 
 		const activeEntitlements = customerInfo.entitlements?.active || {};
@@ -116,13 +116,16 @@ export const SubscriptionProvider = ({
 			premiumEntitlement?.expirationDate ||
 			customerInfo.latestExpirationDate ||
 			null;
-		
+
 		// Convert to Date object if we have a string
-		const trialExpirationDate = trialExpirationDateString ? new Date(trialExpirationDateString) : null;
+		const trialExpirationDate = trialExpirationDateString
+			? new Date(trialExpirationDateString)
+			: null;
 
 		// Check if trial is currently active
 		// Trial is active if: has trial product AND premium is active AND not yet converted
-		const isTrialActive = hasTrialProduct && premiumEntitlement?.isActive && !isTrialConverted;
+		const isTrialActive =
+			hasTrialProduct && premiumEntitlement?.isActive && !isTrialConverted;
 
 		// Check if trial is cancelled (has expiration but won't renew)
 		const isTrialCancelled =
@@ -131,11 +134,11 @@ export const SubscriptionProvider = ({
 		// Check if trial is expired
 		const now = new Date();
 		let isTrialExpired = false;
-		
+
 		// Enhanced logic for expired trial detection
 		if (!isTrialActive && !isTrialConverted) {
 			// Check for expired trial in two ways:
-			
+
 			// Method 1: User has purchase history but trial not active
 			if (hasPurchasedTrial) {
 				if (trialExpirationDate) {

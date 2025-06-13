@@ -3,6 +3,23 @@
 ## Project Overview
 Zero Proof is a React Native/Expo sobriety tracking application that helps users monitor their sobriety journey with features like timer tracking, calendar visualization, savings calculation, and subscription management through RevenueCat.
 
+### Mandatory Code Quality Protocol
+BEFORE any code generation, creation, or modification:
+1. Display verification: Show "🎯 QUALITY-CHECKED" to confirm guidelines reviewed
+2. Reference `.roo/tools/code-quality-guidelines.md` for prevention patterns
+3. Analyze existing codebase patterns to avoid amplifying technical debt
+4. Apply complexity triggers: Functions >30 lines, >5 conditions, >3 nesting levels
+5. Design for separation: Extract concerns before implementation, not after
+6. Use prevention checklist: Type safety, error handling, performance, testing
+7. When in doubt: Extract logic to focused functions/services from start
+
+Triggers for Enhanced Review:
+- Any function/component creation or modification
+- State management changes
+- Business logic implementation
+- Integration with external services
+- Performance-critical code paths
+
 ## Key Technologies
 - React Native with Expo
 - TypeScript

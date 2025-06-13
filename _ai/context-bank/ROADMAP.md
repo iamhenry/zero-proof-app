@@ -447,10 +447,10 @@ Step-by-Step Tasks:
   - [x] 31.2. Write compelling app description highlighting unique benefits
     - File: `docs/app-store/description.md` (to be created)
     - Branch Name: `docs/release-app-description`
-  - [ ] Enable free trials using revenucat sdk
+  - [x] Enable free trials using revenucat sdk
   - [ ] submit to testflight
-    - [ ] add privacy policy doc (gist)
-    - [ ] include app website
+    - [x] add privacy policy doc (gist)
+    - [x] include app website
 
 ------------------------
 
