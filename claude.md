@@ -74,46 +74,46 @@ Triggers for Enhanced Review:
 
 ### Enhanced Delegation Triggers
 
-**Intent + Semantic Framework:** Triggers now use semantic understanding and intent analysis rather than keyword matching for improved accuracy.
+Intent + Semantic Framework: Triggers now use semantic understanding and intent analysis rather than keyword matching for improved accuracy.
 
-**Always Delegate:**
+Always Delegate:
 - Deep codebase analysis requiring extensive file exploration
 - Complex implementations that would pollute main context
 - Multi-perspective tasks (design, accessibility, performance, security)
 - Research requiring specialized domain knowledge
-- **Semantic Enhancement:** Detect complexity through integration language ("connect", "sync", "workflow"), multiple system touchpoints, and specialized domain terminology
+- Semantic Enhancement: Detect complexity through integration language ("connect", "sync", "workflow"), multiple system touchpoints, and specialized domain terminology
 
-**TDD Implementation (Auto-delegate to `agents/01-tdd-orchestrator.claude.md`):**
-- **Build Intent Patterns:** 
+TDD Implementation (Auto-delegate to `agents/01-tdd-orchestrator.claude.md`):
+- Build Intent Patterns: 
   - "Users should be able to [action] so that [outcome]"
   - "I need [system] that [capabilities]"
   - "Build [feature] for [users/production]"
   - "Implement [functionality]" + quality indicators ("secure", "scalable", "robust")
-- **Semantic Complexity Indicators:** Multiple actors, integration requirements, production/quality context
-- **Legacy Patterns (enhanced):** "Create feature", "Develop [component]", "Add [capability]"
-- **Test-Required Patterns:** "Fix [bug] with tests", "TDD workflow"
+- Semantic Complexity Indicators: Multiple actors, integration requirements, production/quality context
+- Legacy Patterns (enhanced): "Create feature", "Develop [component]", "Add [capability]"
+- Test-Required Patterns: "Fix [bug] with tests", "TDD workflow"
 
-**Research & Analysis:**
-- **Explore Intent Patterns:**
+Research & Analysis:
+- Explore Intent Patterns:
   - "How should we...", "What's the best approach...", "Should we..."
   - "Analyze [codebase/patterns]", "Review [architecture/performance]"
   - "Compare [approaches]", "Audit [accessibility/security]"
   - "Explore [implementation options]"
-- **Semantic Indicators:** Question words, comparison language ("vs", "versus", "better"), exploratory tone
+- Semantic Indicators: Question words, comparison language ("vs", "versus", "better"), exploratory tone
 
-**Parallel Analysis Patterns:**
+Parallel Analysis Patterns:
 - Multiple expert perspectives on same problem
 - Concurrent investigation of different solutions  
 - Specialized reviews (design, mobile, accessibility, performance)
-- **Semantic Enhancement:** Detect when multiple viewpoints needed through language suggesting complexity or ambiguity
+- Semantic Enhancement: Detect when multiple viewpoints needed through language suggesting complexity or ambiguity
 
 ### Opt-out Signals
-**Enhanced Semantic Detection:** Skip delegation for:
-- **Low Complexity Intent:** "quick implementation", "prototype only", "without tests"
-- **Simple Action Patterns:** "Change [specific thing] to [specific value]", "Add [simple element] to [location]"
-- **Modifiers Indicating Simplicity:** "just", "only", "simple", "quick fix"
-- **Single-scope Operations:** Simple documentation updates, single-file edits, rapid prototyping requests
-- **Direct Fix Patterns:** "Fix [specific bug] in [file]" (unless explicitly requesting tests)
+Enhanced Semantic Detection: Skip delegation for:
+- Low Complexity Intent: "quick implementation", "prototype only", "without tests"
+- Simple Action Patterns: "Change [specific thing] to [specific value]", "Add [simple element] to [location]"
+- Modifiers Indicating Simplicity: "just", "only", "simple", "quick fix"
+- Single-scope Operations: Simple documentation updates, single-file edits, rapid prototyping requests
+- Direct Fix Patterns: "Fix [specific bug] in [file]" (unless explicitly requesting tests)
 
 ### Sub-Agent Coordination
 1. Acknowledge delegation with brief rationale
