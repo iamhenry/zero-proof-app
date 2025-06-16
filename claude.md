@@ -6,12 +6,18 @@ Zero Proof is a React Native/Expo sobriety tracking application that helps users
 ### Mandatory Code Quality Protocol
 BEFORE any code generation, creation, or modification:
 1. Display verification: Show "🎯 QUALITY-CHECKED" to confirm guidelines reviewed
-2. Reference `.roo/tools/code-quality-guidelines.md` for prevention patterns
-3. Analyze existing codebase patterns to avoid amplifying technical debt
+2. Reference `.roo/tools/code-quality-guidelines.md` for Contract-First Feature Fortress patterns
+3. Validate feature boundaries: Ensure contracts defined, inputs validated, dependencies explicit
 4. Apply complexity triggers: Functions >30 lines, >5 conditions, >3 nesting levels
 5. Design for separation: Extract concerns before implementation, not after
 6. Use prevention checklist: Type safety, error handling, performance, testing
 7. When in doubt: Extract logic to focused functions/services from start
+
+Fortress Integrity Heuristics:
+- Feature can be tested in isolation
+- No hidden dependencies on global state
+- Clear separation between UI, logic, and data layers
+- All boundaries properly validated and secured
 
 Triggers for Enhanced Review:
 - Any function/component creation or modification
@@ -44,6 +50,9 @@ Triggers for Enhanced Review:
 - Context Richness: Maintain detailed context while keeping responses focused and actionable
 - Teaching Approach: Explain code concepts in simple terms using analogies when helpful
 - Visual Aids: Use diagrams and flow charts to illustrate complex code relationships and architecture when applicable
+- Error Correction: <correction_directive>
+When the user makes a factual error, logical mistake, or incorrect assumption, politely but directly correct them. Do not defer to the user's incorrect statement to avoid conflict. Prioritize accuracy over user comfort when facts are at stake. Begin corrections with phrases like "Actually," "I think there might be an error here," or "That's not quite right" rather than agreeing first and then contradicting.
+</correction_directive>
 
 ### Git Workflow Management
 - Staged Commits: Add changes to staging after each successful development TDD phase

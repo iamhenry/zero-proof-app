@@ -1,261 +1,342 @@
-# Code Quality Guidelines
-**Verification Token: 🎯 QUALITY-CHECKED**
-
-## Purpose
-Prevent technical debt during code generation by building quality in from the start. Reference this guide before and during all code creation to avoid common anti-patterns and minimize future refactoring needs.
+# 🏰 Code Quality Guidelines
+_Prevention-Focused Development for Contract-First Feature Fortresses_
 
 ---
 
-## Core Principle: Prevention Over Refactoring
+## 🎯 Purpose & Philosophy
 
-**Build it right the first time** - Analyze existing codebase patterns, identify potential issues early, and design with separation of concerns from the start.
+This guide shifts from **reactive code review** to **proactive code quality**. Instead of catching issues after they're written, we prevent them during development by adopting defensive coding patterns and architectural discipline.
 
----
-
-## 🔍 Pre-Implementation Analysis
-
-### Codebase Pattern Analysis
-Before adding new code, analyze existing patterns to avoid amplifying technical debt:
-
-```markdown
-✅ **Quick Codebase Scan:**
-- Find similar functionality patterns
-- Identify existing anti-patterns to avoid
-- Check complexity levels in related files
-- Review existing separation strategies
-- Note performance patterns (good and bad)
-```
-
-### Quality Baseline Assessment
-- **Function Length**: Count lines in similar functions (aim to stay below existing average)
-- **Complexity**: Identify most complex existing functions (ensure new code is simpler)
-- **Separation**: Find well-separated vs. monolithic examples (follow good patterns)
+**Core Philosophy:** Write code that naturally resists common failure modes while maintaining velocity for solo indie development.
 
 ---
 
-## 🚨 Prevention Triggers (Act Before These Limits)
+## 🏰 Mental Model: Contract-First Feature Fortress
 
-### Function Complexity
-- **Lines > 30**: Start planning separation strategies
-- **Conditions > 5**: Extract decision logic to separate functions
-- **Nested Levels > 3**: Flatten with early returns or guard clauses
-- **Parameters > 4**: Consider object parameters or function splitting
+Think of each vertical slice as a **fortress** with clear **contracts** governing all interactions:
 
-### Module/File Boundaries
-- **File > 200 lines**: Plan module separation
-- **Class/Context > 150 lines**: Extract specialized services
-- **Multiple Responsibilities**: Identify and separate concerns immediately
+### The Fortress Mindset
+- **Walls** = Clear boundaries between features
+- **Gates** = Well-defined interfaces with validation
+- **Guards** = Error handling and input sanitization
+- **Keep** = Core business logic protected inside
+- **Contracts** = Explicit agreements about what goes in/out
 
-### Performance Red Flags
-- **Expensive Operations in Loops**: Extract and optimize
-- **Repeated Calculations**: Memoize or cache from start
-- **Heavy Functions Called Frequently**: Design for performance upfront
+### Contract-First Approach
+1. **Define the contract** before writing implementation
+2. **Validate at boundaries** - never trust external data
+3. **Fail fast and visibly** when contracts are violated
+4. **Keep internals private** - only expose what's necessary
+5. **Design for replaceability** - any fortress should be swappable
 
 ---
 
-## 🏗️ Design-Time Separation Strategies
+## ⚖️ Core Principles
 
-### Function Design
+### 🎯 Single Responsibility per Fortress
+Each vertical slice owns exactly one business capability and its complete stack (UI → Logic → Data).
+
+### 🔒 Security by Default
+Every boundary is a potential attack vector. Validate, sanitize, and authenticate at every gate.
+
+### 🚀 Fail Fast, Fail Visible
+Surface problems immediately with clear error messages rather than letting them cascade silently.
+
+### 🧩 Composition over Configuration
+Build with small, focused pieces that combine cleanly rather than large configurable components.
+
+### 📊 Explicit over Implicit
+Make dependencies, side effects, and data flows obvious in the code structure.
+
+### ⚡ Performance Consciousness
+Every operation has a cost. Consider the performance implications of architectural decisions.
+
+---
+
+## 🚧 Boundaries
+
+### Defining Clean Boundaries
+
+#### ✅ Good Boundary Patterns
 ```typescript
-// ❌ Avoid: Monolithic functions
-const handleComplexOperation = (data) => {
-  // 50+ lines of mixed concerns
+// Clear interface definition
+interface UserService {
+  authenticate(credentials: LoginCredentials): Promise<AuthResult>
+  getCurrentUser(): Promise<User | null>
+  logout(): Promise<void>
 }
 
-// ✅ Prefer: Composed functions
-const handleComplexOperation = (data) => {
-  const validated = validateInput(data);
-  const processed = processData(validated);
-  return formatOutput(processed);
-}
-```
-
-### State Management
-```typescript
-// ❌ Avoid: Complex nested state
-const [complexState, setComplexState] = useState({
-  // 10+ properties with interdependencies
-});
-
-// ✅ Prefer: Focused state groupings
-const [userState, setUserState] = useState(/* user-related only */);
-const [uiState, setUIState] = useState(/* UI-related only */);
-```
-
-### Business Logic Separation
-```typescript
-// ❌ Avoid: Logic mixed with components/context
-const MyContext = () => {
-  // 100+ lines of business logic mixed with React state
-}
-
-// ✅ Prefer: Extracted services
-const MyContext = () => {
-  const businessLogic = useBusinessService();
-  // Clean context focused on state management
+// Input validation at boundary
+export async function authenticateUser(input: unknown): Promise<AuthResult> {
+  const credentials = LoginCredentialsSchema.parse(input) // Validate first
+  return userService.authenticate(credentials)
 }
 ```
 
----
-
-## 🎯 Type Safety & Error Handling
-
-### Proactive Typing
-- **No `any` Types**: Define proper interfaces from start
-- **Union Types**: Use specific unions instead of loose types
-- **Error Types**: Define expected error shapes upfront
-
+#### ❌ Boundary Violations
 ```typescript
-// ❌ Avoid
-const processData = (input: any) => { /* ... */ }
+// Direct database access across features
+const user = await db.users.findFirst({ where: { id: userId } })
 
-// ✅ Prefer
-interface InputData { /* specific shape */ }
-interface ProcessResult { /* expected output */ }
-const processData = (input: InputData): ProcessResult => { /* ... */ }
+// Implicit dependencies
+function calculateSavings() {
+  const user = useUser() // Hidden dependency on auth context
+  const purchases = usePurchases() // Hidden dependency on purchase context
+}
 ```
 
-### Error Boundaries
-- Design error handling at architecture level
-- Plan fallback strategies before implementation
-- Separate error types by domain/severity
+### Boundary Enforcement Rules
 
----
+1. **No Direct Database Access** - Always go through service layer
+2. **No Cross-Feature Imports** - Use dependency injection or events
+3. **Validate All Inputs** - Use runtime validation (Zod, io-ts)
+4. **Handle All Outputs** - Wrap external calls in Result/Either types
+5. **Explicit Dependencies** - Make all dependencies injectable/mockable
 
-## 🧪 Testing Architecture
+### Inter-Fortress Communication
 
-### Test-Driven Boundaries
-- Write failing tests to define interfaces first
-- Test complex logic in isolation
-- Mock external dependencies from start
-- Plan test data factories early
+#### Preferred: Events/Messages
+```typescript
+// Publisher doesn't know about subscribers
+eventBus.emit('user.authenticated', { userId, timestamp })
 
-### Coverage Strategy
-- **Unit Tests**: Core business logic (aim for 90%+)
-- **Integration Tests**: Cross-component interactions
-- **Edge Cases**: Error conditions and boundary values
-
----
-
-## 📐 Architecture Guidelines
-
-### Separation of Concerns
-```markdown
-**Clear Boundaries:**
-- Business Logic ➜ Services/Utilities
-- State Management ➜ Contexts/Stores  
-- UI Logic ➜ Components
-- Data Access ➜ Repositories
-- Side Effects ➜ Hooks/Effects
+// Subscriber handles its own concerns
+eventBus.on('user.authenticated', (event) => {
+  analytics.track('login', event)
+})
 ```
 
-### Dependency Direction
-- High-level modules should not depend on low-level modules
-- Use interfaces/abstractions for external dependencies
-- Inject dependencies rather than hardcode
+#### Acceptable: Service Interfaces
+```typescript
+// Well-defined contract
+interface NotificationService {
+  sendWelcomeEmail(userId: string): Promise<Result<void, EmailError>>
+}
 
-### Module Communication
-- Prefer explicit interfaces over implicit coupling
-- Use events/callbacks for loose coupling
-- Minimize shared mutable state
+// Dependency injection
+class AuthService {
+  constructor(private notifications: NotificationService) {}
+}
+```
 
----
-
-## ⚡ Performance by Design
-
-### Early Optimization Patterns
-- **Memoization**: For expensive calculations
-- **Virtualization**: For large lists from start
-- **Code Splitting**: Plan bundle boundaries early
-- **Lazy Loading**: Design async boundaries upfront
-
-### Resource Management
-- Plan cleanup strategies (subscriptions, listeners, timers)
-- Design with memory usage in mind
-- Consider network request patterns
+#### Avoid: Direct Coupling
+```typescript
+// Tight coupling - auth knows about analytics
+async function login(credentials) {
+  const user = await authenticate(credentials)
+  analytics.track('login', user) // ❌ Boundary violation
+  return user
+}
+```
 
 ---
 
-## 🚀 Quick Prevention Checklist
+## 🧭 Prevention Heuristics
 
-### Before Writing Code
-- [ ] Analyzed similar existing patterns
-- [ ] Identified potential complexity hotspots
-- [ ] Planned separation of concerns
-- [ ] Designed interfaces and types
-- [ ] Considered error handling strategy
-- [ ] Planned testing approach
+### 🧠 Functionality Heuristics
+- **Before writing logic:** Define expected inputs, outputs, and edge cases
+- **Before async operations:** Plan error scenarios and timeout handling
+- **Before state changes:** Consider race conditions and rollback strategies
 
-### During Implementation
-- [ ] Function staying under 30 lines?
-- [ ] Single responsibility per function?
-- [ ] Proper typing throughout?
-- [ ] Error handling in place?
-- [ ] Performance considerations addressed?
-- [ ] Test coverage planned?
+### 🧾 Readability Heuristics  
+- **Function naming:** Should read like a sentence describing what it does
+- **Variable scope:** Keep variables as close to usage as possible
+- **Magic numbers:** Extract to named constants with explanatory comments
 
-### Before Completion
-- [ ] No obvious refactoring needed?
-- [ ] Follows existing good patterns?
-- [ ] Improves upon existing anti-patterns?
-- [ ] Documentation/comments where needed?
-- [ ] Integration points clean?
+### 📐 Consistency Heuristics
+- **New patterns:** Check if similar problems exist and reuse solutions
+- **Import styles:** Follow existing import organization in the codebase
+- **Error handling:** Use consistent Result/Either patterns across features
 
----
+### ⚡ Performance Heuristics
+- **Before loops:** Consider if operation can be batched or memoized
+- **Before API calls:** Check if data can be cached or deduplicated
+- **Before re-renders:** Verify dependencies are properly memoized
 
-## 🔄 Incremental Improvement Strategy
+### 💡 Best Practices Heuristics
+- **Before copying code:** Extract shared logic to utilities
+- **Before adding state:** Consider if it can be derived or computed
+- **Before adding dependencies:** Evaluate if lighter alternatives exist
 
-### When Touching Existing Code
-1. **Leave it better**: Small improvements to surrounding code
-2. **Extract patterns**: Pull reusable logic into utilities
-3. **Add types**: Improve type safety in touched areas
-4. **Add tests**: Cover new functionality thoroughly
+### 🧪 Testing Heuristics
+- **Before implementation:** Write test cases for expected behavior
+- **Complex logic:** Ensure multiple input scenarios are covered
+- **External dependencies:** Verify mocks match actual service contracts
 
-### Anti-Pattern Migration
-- Don't replicate existing anti-patterns
-- Extract common logic when adding similar features
-- Introduce better patterns gradually
-- Document architectural decisions
+### 🧯 Error Handling Heuristics
+- **At boundaries:** Always validate and sanitize inputs
+- **Async operations:** Handle network failures, timeouts, and partial failures
+- **User feedback:** Provide actionable error messages, not technical details
 
 ---
 
-## 📊 Quality Metrics
+## 🚨 Complexity Triggers
 
-### Measurable Goals
-- **Function Complexity**: Aim for 80% of functions under 20 lines
-- **Type Coverage**: 100% TypeScript strict mode compliance
-- **Test Coverage**: 90%+ for business logic, 70%+ overall
-- **Performance**: No obvious bottlenecks in critical paths
+Stop and refactor when you encounter:
 
-### Code Review Focus
-- Separation of concerns clear?
-- Performance implications considered?
-- Error handling comprehensive?
-- Testing strategy adequate?
-- Future maintainability?
+### Function-Level Triggers
+- **Lines:** >30 lines in a single function
+- **Conditions:** >5 conditional branches
+- **Nesting:** >3 levels of indentation
+- **Parameters:** >4 function parameters
 
----
+### Component-Level Triggers
+- **Props:** >8 props passed to a component
+- **State:** >5 pieces of local state
+- **Effects:** >3 useEffect hooks
+- **Renders:** Conditional rendering >3 levels deep
 
-## 🎯 Technology-Specific Patterns
+### Architecture-Level Triggers
+- **Dependencies:** Circular imports between features
+- **Coupling:** Feature depends on >3 other features
+- **Duplication:** Same logic in >2 places
+- **State:** Global state modified by >3 features
 
-### React/React Native
-- Custom hooks for reusable logic
-- Context for global state only
-- Components focused on rendering
-- Use of proper lifecycle patterns
-
-### TypeScript
-- Strict mode compliance
-- Interface over type for public APIs
-- Generic types for reusability
-- Proper null/undefined handling
-
-### State Management
-- Normalized state structure
-- Immutable update patterns
-- Selector patterns for derived state
-- Action/event-driven updates
+### Action Required
+When triggers are hit:
+1. **Pause implementation**
+2. **Extract smaller functions/components**
+3. **Introduce abstraction layers**
+4. **Simplify data flow**
+5. **Write tests before continuing**
 
 ---
 
-**Remember**: The goal is to write maintainable, performant, well-tested code from the start. Use this guide to catch issues during design and implementation, not after deployment.
+## 📐 Implementation Guidelines
+
+### Starting a New Feature
+
+1. **Define the Contract**
+   ```typescript
+   // Define types first
+   interface FeatureState { }
+   interface FeatureActions { }
+   interface FeatureService { }
+   ```
+
+2. **Create Boundaries**
+   ```typescript
+   // Input validation
+   const InputSchema = z.object({ })
+   
+   // Error types
+   type FeatureError = 
+     | ValidationError 
+     | NetworkError 
+     | BusinessLogicError
+   ```
+
+3. **Build from Outside-In**
+   ```typescript
+   // API layer first
+   export const featureApi = { }
+   
+   // Service layer
+   export const featureService = { }
+   
+   // Component layer last
+   export const FeatureComponent = { }
+   ```
+
+### Modifying Existing Code
+
+1. **Understand Current Contracts**
+   - Read existing interfaces and types
+   - Check how feature is currently used
+   - Identify existing validation patterns
+
+2. **Maintain Backward Compatibility**
+   - Add new functionality alongside old
+   - Deprecate gradually with clear migration paths
+   - Version breaking changes explicitly
+
+3. **Test Contract Changes**
+   - Update types and see what breaks
+   - Run integration tests across boundaries
+   - Verify error scenarios still work
+
+### Cross-Feature Integration
+
+1. **Use Event-Driven Architecture**
+   ```typescript
+   // Publisher
+   eventBus.emit('order.completed', orderData)
+   
+   // Subscriber
+   eventBus.on('order.completed', handleOrderCompletion)
+   ```
+
+2. **Dependency Injection**
+   ```typescript
+   // Service interface
+   interface PaymentService {
+     processPayment(amount: Money): Promise<PaymentResult>
+   }
+   
+   // Implementation injection
+   const orderService = new OrderService(paymentService)
+   ```
+
+3. **Shared Utilities Only**
+   ```typescript
+   // ✅ Shared utility functions
+   export const formatCurrency = (amount: number) => { }
+   
+   // ❌ Shared business logic
+   export const calculateOrderTotal = (items: Item[]) => { }
+   ```
+
+---
+
+## 🎯 Quality Checkpoints
+
+Before committing code, verify:
+
+### Contract Compliance
+- [ ] All inputs validated with runtime checks
+- [ ] All outputs properly typed and documented
+- [ ] Error cases handled with specific error types
+- [ ] No direct access to other feature internals
+
+### Fortress Integrity
+- [ ] Feature can be tested in isolation
+- [ ] No hidden dependencies on global state
+- [ ] External services properly mocked/stubbed
+- [ ] Clear separation between UI, logic, and data layers
+
+### Security Posture
+- [ ] User inputs sanitized and validated
+- [ ] Sensitive data not logged or exposed
+- [ ] Authentication/authorization properly enforced
+- [ ] No hardcoded secrets or configuration
+
+### Performance Baseline
+- [ ] No unnecessary re-renders or recomputations
+- [ ] Expensive operations properly memoized
+- [ ] Database queries optimized and bounded
+- [ ] Bundle size impact considered
+
+### Maintainability Standards
+- [ ] Code reads like well-structured prose
+- [ ] Business logic separate from framework code
+- [ ] Configuration externalized and documented
+- [ ] Deprecation path planned for breaking changes
+
+### Testing Coverage
+- [ ] Happy path scenarios covered
+- [ ] Edge cases and error scenarios tested
+- [ ] Integration points properly mocked
+- [ ] Performance characteristics verified
+
+---
+
+## 🔄 Continuous Improvement
+
+This guide evolves with the codebase. When you notice patterns that should be prevented:
+
+1. **Add to Prevention Heuristics** - Turn reactive findings into proactive rules
+2. **Update Complexity Triggers** - Adjust thresholds based on actual pain points  
+3. **Refine Boundaries** - Improve interface patterns based on integration challenges
+4. **Enhance Checkpoints** - Add verification steps for recurring issues
+
+Remember: **Prevention is cheaper than cure**, especially for solo developers who wear all the hats.
