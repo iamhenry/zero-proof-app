@@ -468,6 +468,13 @@ Step-by-Step Tasks:
   - [x] submit to testflight
     - [x] add privacy policy doc (gist)
     - [x] include app website
+    - [x] Set up EAS (Expo Application Services) build pipeline for automated iOS TestFlight deployment
+      - [x] Configure eas.json with production build profile using Node.js 20.18.0
+      - [x] Implement NPM_CONFIG_LEGACY_PEER_DEPS to resolve dependency conflicts
+      - [x] Set up m-medium resource class for cost-optimized builds within EAS free tier
+      - [x] Configure automated submission to App Store Connect without manual .ipa handling
+      - [x] Successfully deploy Zero Proof app to TestFlight for beta testing
+      - Reference: Commit 3e2b8c0 - Production-ready iOS distribution pipeline established
   - [ ] Ensure app build is only compatible on iOS
   - [ ] Investigate crashing issue upon immediately installing from test flight.
 

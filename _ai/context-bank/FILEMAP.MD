@@ -4,6 +4,48 @@ This file contains documentation headers extracted from component files to provi
 
 ## Configuration Files
 
+### eas.json
+```
+/**
+ * FILE: eas.json
+ * PURPOSE: EAS (Expo Application Services) build configuration for iOS TestFlight deployment
+ * CONFIGURATION:
+ *   - cli.version: ">= 10.0.0" - Minimum EAS CLI version requirement
+ *   - build.development: Internal distribution with development client and m-medium resource class
+ *   - build.preview: Internal distribution with m-medium resource class for testing
+ *   - build.production: Production build with Node.js 20.18.0 and legacy peer deps enabled
+ *   - submit.production: Automated submission to App Store Connect for TestFlight distribution
+ * KEY FEATURES:
+ *   - Automated iOS build pipeline from code to TestFlight
+ *   - Resource class optimization (m-medium) to stay within EAS free tier
+ *   - Legacy peer deps configuration to resolve @testing-library/react-hooks dependency conflicts
+ *   - Direct submission to App Store Connect without manual .ipa download
+ *   - End-to-end deployment pipeline for production iOS builds
+ * DEPENDENCIES: EAS CLI, Apple Developer account credentials, App Store Connect access
+ */
+```
+
+### app.json
+```
+/**
+ * FILE: app.json
+ * PURPOSE: Expo app configuration with EAS project integration and iOS/Android platform settings
+ * CONFIGURATION:
+ *   - expo.extra.eas.projectId: "f8635520-cb7f-490f-8b32-f6c52d10419c" - EAS project identifier
+ *   - expo.ios.bundleIdentifier: "com.zeroproof.hmoran" - iOS app bundle identifier
+ *   - expo.android.package: "com.zeroproof.hmoran" - Android package name
+ *   - expo.newArchEnabled: true - Enables React Native new architecture
+ *   - expo.experiments.typedRoutes: true - Enables typed route generation
+ * KEY FEATURES:
+ *   - EAS project integration for build and deployment services
+ *   - Cross-platform configuration for iOS and Android
+ *   - Modern React Native architecture support
+ *   - Automatic splash screen handling with dark mode support
+ *   - Expo Router and Secure Store plugin integration
+ * DEPENDENCIES: Expo SDK, EAS services, expo-router, expo-secure-store
+ */
+```
+
 ### revenuecat.ts
 ```
 /**

@@ -1,5 +1,46 @@
 # MEMORY.md
 
+## [June 16, 2025 2:45 PM] EAS TestFlight Deployment: Production-Ready iOS Distribution Pipeline
+Context: Successfully implemented and deployed EAS (Expo Application Services) build configuration for iOS TestFlight distribution, establishing end-to-end automated deployment pipeline from code to app store.
+Lesson:
+- EAS Build Configuration Architecture:
+  - eas.json configuration with multiple build profiles (development, preview, production) enables flexible deployment strategies
+  - Resource class optimization (m-medium) balances build performance with cost efficiency within EAS free tier
+  - Environment-specific configuration (Node.js version, environment variables) ensures consistent build environments
+  - Direct submission configuration eliminates manual App Store Connect workflows
+- Dependency Management in Production Builds:
+  - NPM_CONFIG_LEGACY_PEER_DEPS resolves React 18 compatibility issues with @testing-library/react-hooks
+  - Legacy peer deps configuration prevents build failures from dependency resolution conflicts
+  - Node.js version pinning (20.18.0) ensures consistent build environment across deployments
+  - Production build environment variables enable different behavior from development builds
+- Apple Developer Integration Patterns:
+  - EAS CLI interactive credential management simplifies Apple Developer account integration
+  - Automated credential handling reduces manual setup overhead and improves security
+  - Direct App Store Connect submission from EAS eliminates .ipa download and manual upload steps
+  - Bundle identifier consistency across eas.json, app.json, and Apple Developer portal prevents build failures
+- Deployment Pipeline Optimization:
+  - End-to-end automation from git commit to TestFlight availability reduces deployment friction
+  - Resource class selection impacts build time and cost - m-medium provides good balance for small teams
+  - Automated submission enables rapid iteration cycles and reduces human error in deployment process
+  - Build artifact management handled automatically by EAS without local storage requirements
+- Production Deployment Best Practices:
+  - Separate build profiles for different environments enable staged deployment approaches
+  - Automated submission pipelines reduce deployment overhead and enable consistent release processes
+  - Cost optimization through resource class selection makes professional deployment accessible
+  - Configuration management through version control ensures reproducible deployments
+Related Methods/Concepts:
+- EAS Build and Submit services architecture and configuration
+- Apple Developer Program integration and credential management
+- iOS app distribution through TestFlight and App Store Connect
+- CI/CD pipeline optimization for mobile app deployment
+- Production build configuration and environment management
+- Dependency resolution strategies for React Native applications
+Future Improvements:
+- Implement automated testing integration before builds to prevent broken deployments
+- Add build status notifications and monitoring for deployment pipeline visibility
+- Create branch-based deployment strategies for feature testing and staging environments
+- Develop deployment analytics and success rate tracking for pipeline optimization
+
 ## [June 16, 2025 2:30 PM] Free Trial Implementation: Comprehensive Subscription Management with RevenueCat Integration
 Context: Successfully implemented 7-day free trial for weekly subscription (commit a249607) using TDD approach with comprehensive test coverage and RevenueCat integration for subscription flow management.
 Lesson:

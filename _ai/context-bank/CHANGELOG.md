@@ -19,6 +19,29 @@
 
 ---
 
+## Version 0.1.41 - June 16, 2025 02:45 PM
+
+### Added
+
+- EAS TestFlight Build Pipeline Setup
+  - Description: Successfully implemented and deployed comprehensive EAS (Expo Application Services) build configuration for iOS TestFlight distribution with end-to-end automated deployment pipeline.
+  - Why: To establish production-ready iOS app distribution workflow enabling beta testing through TestFlight and preparing for App Store release, eliminating manual build and submission processes.
+  - Implementation Details:
+    - Created eas.json configuration with development, preview, and production build profiles
+    - Configured production build with Node.js 20.18.0 and NPM_CONFIG_LEGACY_PEER_DEPS to resolve dependency conflicts
+    - Set up m-medium resource class to optimize build costs within EAS free tier limits
+    - Implemented direct submission to App Store Connect from EAS CLI without manual .ipa handling
+    - Enhanced app.json with EAS project ID integration and proper bundle identifier configuration
+    - Successfully built and submitted app to TestFlight with automated Apple Developer credential handling
+  - Technical Decisions:
+    - Used legacy peer deps configuration to resolve @testing-library/react-hooks compatibility with React 18
+    - Leveraged EAS CLI interactive mode for simplified Apple Developer credential management
+    - Configured automated submission pipeline to eliminate manual App Store Connect workflows
+    - Optimized resource allocation to balance build performance with cost efficiency
+  - Impact: Zero Proof app is now available in TestFlight for beta testing with fully automated build-to-distribution pipeline. Development team can deploy iOS builds efficiently without manual intervention, significantly reducing deployment overhead and enabling rapid iteration cycles.
+  - Files Modified: `eas.json`, `app.json` (EAS project configuration)
+  - Reference: Commit 3e2b8c0.
+
 ## Version 0.1.40 - June 11, 2025 09:00 PM
 
 ### Added
