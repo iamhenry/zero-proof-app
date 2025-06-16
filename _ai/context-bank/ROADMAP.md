@@ -268,7 +268,7 @@ Step-by-Step Tasks:
 
 ### Milestone 7: Onboarding and Monetization (MVP Focus) ✅ COMPLETED
 - Objective: Implement onboarding flow with drink quantity input and a freemium model with 7-day free trial for MVP launch. [100% Complete]
-- **🎯 MILESTONE ACHIEVEMENT**: Core monetization feature successfully implemented with 7-day free trial functionality, comprehensive BDD test coverage, and production-ready subscription management.
+- 🎯 MILESTONE ACHIEVEMENT: Core monetization feature successfully implemented with 7-day free trial functionality, comprehensive BDD test coverage, and production-ready subscription management.
 - Data Flow:
   - Onboarding data (e.g., drink quantity) flows through form components to local storage.
   - Drink quantity data feeds into savings calculations for display in the `SavingsCounter`.
@@ -351,7 +351,7 @@ Step-by-Step Tasks:
       - Branch Name: `feat/subscription-state`
       - Dependencies: Task 35.2
       - Purpose: Centralized subscription state management with 7-day free trial functionality and comprehensive trial state tracking.
-      - **🎯 FREE TRIAL FEATURES IMPLEMENTED**:
+      - 🎯 FREE TRIAL FEATURES IMPLEMENTED:
         1. [x] 7-day trial state management with async handling
         2. [x] Trial activation and expiration logic
         3. [x] PaywallScreen improvements with proper async operations
@@ -382,7 +382,7 @@ Step-by-Step Tasks:
       - Branch Name: `feat/subscription-protection`
       - Dependencies: Task 35.3
       - Purpose: Complete route protection with 7-day free trial integration and comprehensive subscription validation.
-      - **🎯 ENHANCED TRIAL PROTECTION**:
+      - 🎯 ENHANCED TRIAL PROTECTION:
         1. [x] Check subscription and trial status in protected layout
         2. [x] Handle trial expiration with graceful paywall redirect
         3. [x] Allow access during active trial period
@@ -392,7 +392,7 @@ Step-by-Step Tasks:
         1. [x] Check subscription and trial status in protected layout
         2. [x] Redirect to paywall if subscription inactive and trial expired
         3. [x] Allow access if subscription active or trial active
-      - **ENHANCEMENT**: Complex trial logic implemented with comprehensive state management
+      - ENHANCEMENT: Complex trial logic implemented with comprehensive state management
     - [x] 36. Display subscription status and management options
       - File: `app/(app)/(protected)/settings.tsx` (to be created/expanded)
       - Branch Name: `feat/subscription-status-display`
@@ -462,12 +462,14 @@ Step-by-Step Tasks:
     - File: `docs/app-store/description.md` (to be created)
     - Branch Name: `docs/release-app-description`
   - [x] Enable free trials using revenucat sdk
-    - **🎯 7-DAY FREE TRIAL**: Successfully implemented with comprehensive BDD test coverage
-    - **FEATURES**: Trial state management, async handling, integration tests
-    - **COMMIT**: a249607 - feat: Implement 7-day free trial for weekly subscription
-  - [ ] submit to testflight
+    - 🎯 7-DAY FREE TRIAL: Successfully implemented with comprehensive BDD test coverage
+    - FEATURES: Trial state management, async handling, integration tests
+    - COMMIT: a249607 - feat: Implement 7-day free trial for weekly subscription
+  - [x] submit to testflight
     - [x] add privacy policy doc (gist)
     - [x] include app website
+  - [ ] Ensure app build is only compatible on iOS
+  - [ ] Investigate crashing issue upon immediately installing from test flight.
 
 ------------------------
 
