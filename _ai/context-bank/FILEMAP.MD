@@ -102,19 +102,25 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: context/SubscriptionContext.tsx
- * PURPOSE: Centralized subscription state management for tracking active subscription status across the app
+ * PURPOSE: Centralized subscription state management for tracking active subscription status and 7-day free trial state across the app
  * FUNCTIONS:
  *   - SubscriptionProvider({ children: ReactNode }): JSX.Element -> Context provider managing subscription state
  *   - useSubscription(): SubscriptionContextProps -> Hook to consume subscription context
  *   - checkSubscriptionStatus(): Promise<boolean> -> Verify current subscription status with RevenueCat
  *   - handlePurchaseEvent(customerInfo: any): void -> Process purchase completion events from paywall
  *   - getCachedSubscriptionStatus(): boolean | null -> Get locally cached subscription status
+ *   - initializeFreeTrialState(): Promise<void> -> Initialize free trial state from storage
+ *   - hasValidFreeTrial(): boolean -> Check if user has an active 7-day free trial
+ *   - startFreeTrial(): Promise<void> -> Start a new 7-day free trial period
  * KEY FEATURES:
  *   - Centralized subscription state accessible throughout app
  *   - Tracks active/inactive subscription status
+ *   - Manages 7-day free trial state with persistent storage
+ *   - Free trial eligibility tracking to prevent multiple trials
  *   - Listens for purchase events from paywall
  *   - Persists subscription state locally with 24-hour cache
  *   - Background sync with RevenueCat for status updates
+ *   - Enhanced logging for trial state management
  * DEPENDENCIES: react, AsyncStorage for persistence, react-native-purchases
  */
 ```
@@ -502,16 +508,23 @@ This file contains documentation headers extracted from component files to provi
 ```
 /**
  * FILE: components/ui/onboarding/PaywallScreen.tsx
- * PURPOSE: Implements the paywall screen shown at the end of onboarding, presenting premium features and subscription options.
+ * PURPOSE: Implements the paywall screen shown at the end of onboarding, presenting premium features and subscription options with 7-day free trial support.
  * FUNCTIONS:
- *   - PaywallScreen({ onComplete }: PaywallScreenProps): JSX.Element -> Renders the paywall interface.
+ *   - PaywallScreen({ onComplete }: PaywallScreenProps): JSX.Element -> Renders the paywall interface with trial management.
+ *   - handleStartFreeTrial(): Promise<void> -> Initiates the 7-day free trial period
+ *   - handlePurchase(packageId: string): Promise<void> -> Processes subscription purchases
+ *   - logPurchaseAttempt(action: string, details: any): void -> Enhanced logging for purchase tracking
  * KEY FEATURES:
  *   - Premium feature showcase
- *   - Subscription options display
- *   - Trial period information
- *   - Clear call-to-action
+ *   - 7-day free trial with clear messaging and eligibility checking
+ *   - Subscription options display with weekly pricing
+ *   - Enhanced debugging capabilities with comprehensive logging
+ *   - Trial period information with countdown display
+ *   - Clear call-to-action buttons for trial vs purchase
+ *   - Integration with SubscriptionContext for trial state management
  *   - Integration with onboarding flow
- * DEPENDENCIES: react, react-native, expo-in-app-purchases
+ *   - Error handling for purchase failures
+ * DEPENDENCIES: react, react-native, expo-in-app-purchases, @/context/SubscriptionContext
  */
 ```
 

@@ -1,5 +1,214 @@
 # MEMORY.md
 
+## [June 16, 2025 2:30 PM] Free Trial Implementation: Comprehensive Subscription Management with RevenueCat Integration
+Context: Successfully implemented 7-day free trial for weekly subscription (commit a249607) using TDD approach with comprehensive test coverage and RevenueCat integration for subscription flow management.
+Lesson:
+- TDD Approach for Complex Subscription Logic:
+  - BDD scenario development for subscription states (active, trial, expired, cancelled) provides clear behavioral specifications
+  - Test-first approach for subscription management enables reliable state transitions and user experience validation
+  - Comprehensive test coverage despite external SDK dependencies (RevenueCat) through strategic mocking patterns
+  - Integration testing strategies for subscription flows validate end-to-end user experiences
+- RevenueCat Integration Challenges and Solutions:
+  - External SDK testing requires careful mocking of react-native-purchases methods to simulate trial states
+  - RevenueCat trial state management through subscription status tracking (active, trial, expired)
+  - PaywallScreen logging improvements provide essential debugging capabilities for subscription flow issues
+  - SubscriptionContext architecture with isTrialActive computed property enables clean UI state management
+- Subscription State Architecture:
+  - SubscriptionContext enhanced with trial-specific state management (isTrialActive, subscriptionStatus)
+  - Clear separation between subscription validation logic and UI presentation through computed properties
+  - Trial activation and expiration flow implementation with proper state transitions
+  - Integration with existing subscription management without breaking current functionality
+- Testing Strategies for External Dependencies:
+  - Mock implementation challenges with react-native-purchases SDK require comprehensive mocking strategies
+  - BDD scenarios translated to unit tests provide behavior validation despite mocking complexity
+  - Integration test approaches for subscription flows balance mocking with realistic user experience validation
+  - Test environment setup considerations for subscription-dependent features
+- Technical Implementation Highlights:
+  - Enhanced SubscriptionContext with trial state tracking and validation logic
+  - PaywallScreen improvements for trial display and user guidance
+  - Comprehensive error handling for trial activation and subscription state changes
+  - Integration testing framework for complex subscription workflows with external dependencies
+Related Methods/Concepts:
+- Test-driven development for subscription management systems
+- RevenueCat SDK integration patterns and best practices
+- React Context API for subscription state management
+- External SDK mocking strategies and testing approaches
+- Subscription lifecycle management and state transitions
+- BDD scenario development for complex business logic
+Future Improvements:
+- Implement automated subscription state monitoring and alerting
+- Add analytics tracking for trial conversion and subscription engagement
+- Create comprehensive subscription testing framework for easier future feature development
+- Develop subscription state debugging tools for better development experience
+
+
+## [June 16, 2025 11:19 AM] Next Steps Decision Framework: Structured Post-Review Action Planning
+Context: Added comprehensive decision framework to hybrid code review guidelines for determining appropriate follow-up actions after code review completion.
+Lesson:
+- Code Review Action Categorization Framework:
+  - Action Decision Matrix with severity-based categorization prevents important issues from being overlooked
+  - Immediate actions (Critical/High severity) ensure production stability and security
+  - Next Sprint actions (Medium severity) maintain code quality without blocking delivery
+  - Future Backlog (Low severity) enables technical debt tracking without overwhelming current work
+  - Clear severity thresholds (9-10: Critical, 7-8: High, 5-6: Medium, 3-4: Low) create consistent decision-making
+- Structured Follow-up Process:
+  - Post-review decision framework prevents the common issue of reviews identifying problems but lacking clear next steps
+  - Time-based categorization (Immediate, Next Sprint, Future Backlog) aligns technical improvements with business priorities
+  - Enhanced reviewer accountability through clear action ownership and timing expectations
+  - Integration with existing sprint planning processes ensures quality improvements are properly resourced
+- Quality Assurance Through Process:
+  - Decision framework bridges the gap between code review feedback and actual implementation improvements
+  - Systematic approach to technical debt prevents accumulation of unaddressed quality issues
+  - Clear escalation paths for critical issues ensure rapid response to security or stability concerns
+  - Documentation of action decisions creates audit trail for quality improvement efforts
+Related Methods/Concepts:
+- Code review best practices and structured feedback
+- Technical debt management and prioritization frameworks
+- Agile sprint planning integration with quality assurance
+- Risk assessment and categorization methodologies
+- Post-review action tracking and accountability systems
+Future Improvements:
+- Implement automated tooling to track action item completion rates
+- Add metrics dashboard for review effectiveness and follow-through
+- Create integration with project management tools for seamless action tracking
+- Develop template responses for common action categories to improve reviewer efficiency
+
+## [June 16, 2025 10:01 AM] TDD Orchestrator Documentation: Comprehensive Testing Framework Implementation
+Context: Introduced extensive TDD orchestrator documentation system with specialized agents for different phases of test-driven development workflow.
+Lesson:
+- Comprehensive TDD Workflow Documentation:
+  - Created dedicated agents for each TDD phase (Red, Green, Refactor) with specific responsibilities and guidelines
+  - Separation of Unit and Integration testing phases provides clear guidance for different testing levels
+  - SUT (System Under Test) structure creation agent ensures consistent test architecture from the start
+  - Gherkin scenarios agent standardizes behavior-driven development approach across the project
+- Contract-First Feature Fortress Implementation:
+  - Enhanced code quality guidelines with fortress integrity heuristics focusing on feature boundary definition
+  - Mandatory quality protocol requires contract definition before implementation to prevent architectural drift
+  - Clear triggers for enhanced review (>30 lines, >5 conditions, >3 nesting levels) provide objective quality gates
+  - Prevention checklist ensures type safety, error handling, performance, and testing considerations are addressed upfront
+- Specialized Agent System Architecture:
+  - Each TDD phase has dedicated documentation with specific focus areas and quality criteria
+  - Modular agent system allows for specialized expertise while maintaining workflow coherence
+  - Experimental agent structure enables iteration on TDD processes without disrupting main development flow
+  - Documentation-driven approach ensures consistent application of TDD principles across team members
+- Quality Assurance Integration:
+  - TDD orchestrator integrates with existing code quality guidelines to create comprehensive development framework
+  - Clear quality verification checkpoints prevent technical debt accumulation during feature development
+  - Structured approach to refactoring ensures improvements are systematic rather than ad-hoc
+  - Integration testing agents focus on system-level behavior validation beyond unit testing scope
+Related Methods/Concepts:
+- Test-driven development methodology and best practices
+- Behavior-driven development with Gherkin scenario writing
+- Agent-based documentation systems and specialized expertise
+- Contract-first development and API design principles
+- Quality gate implementation and automated quality assurance
+- Feature boundary definition and architectural discipline
+Future Improvements:
+- Implement automated quality gate validation based on documented criteria
+- Create integration between TDD agents and development environment for real-time guidance
+- Add metrics tracking for TDD workflow adherence and quality outcomes
+- Develop training materials based on agent documentation for team onboarding
+
+## [June 13, 2025 11:20 PM] Security Configuration Management: Controlled Command Execution Framework
+Context: Implemented settings configuration for Bash command permissions to establish security boundaries for development environment.
+Lesson:
+- Development Security Framework:
+  - Explicit allow-list approach for Bash commands prevents unauthorized or dangerous command execution
+  - Granular permission system (find, grep, ls, mkdir, git commands) balances functionality with security
+  - Configuration-driven security enables easy adjustment of permissions without code changes
+  - Centralized permission management in .claude/settings.json provides single source of truth for security policies
+- Command Execution Control:
+  - Limited command set focuses on essential development operations (testing, version control, basic file operations)
+  - Git operations (branch, log, show, status, checkout, diff) support standard development workflow while maintaining security
+  - Package manager commands (npm test, yarn test) enable testing without broader system access
+  - GitHub CLI integration (gh issue) supports issue tracking while maintaining security boundaries
+- Development Environment Hardening:
+  - Settings-based configuration prevents accidental execution of system-level commands
+  - Clear documentation of allowed commands improves development team understanding of boundaries
+  - Security-first approach to development tooling reduces risk of environment compromise
+  - Configuration file versioning ensures security settings are tracked and auditable
+Related Methods/Concepts:
+- Development environment security best practices
+- Allow-list security model implementation
+- Configuration management for development tools
+- Principle of least privilege in development environments
+- Command execution sandboxing and permission control
+Future Improvements:
+- Implement logging and monitoring of command execution for security auditing
+- Add role-based permissions for different types of development activities
+- Create automated validation of security configuration changes
+- Develop documentation for secure development environment setup
+
+## [June 13, 2025 10:57 PM] Semantic Detection Enhancement: Intent-Based Task Delegation Optimization
+Context: Enhanced delegation triggers with semantic understanding and intent analysis for improved accuracy in automated task routing.
+Lesson:
+- Semantic Task Analysis Framework:
+  - Intent pattern recognition ("Users should be able to...", "I need [system] that...") provides better delegation accuracy than keyword matching
+  - Semantic complexity indicators (integration language, multiple system touchpoints) enable smarter task routing
+  - Build intent patterns combined with quality indicators ("secure", "scalable", "robust") trigger appropriate specialized handling
+  - Enhanced opt-out signals ("quick implementation", "prototype only") prevent over-engineering of simple tasks
+- Context-Aware Delegation Strategy:
+  - TDD implementation auto-delegation based on semantic patterns rather than rigid keyword matching
+  - Research and analysis intent detection through question patterns and exploratory language
+  - Parallel analysis patterns for complex problems requiring multiple expert perspectives
+  - Delegation rationale explanation improves transparency and learning from automation decisions
+- Intelligent Task Categorization:
+  - Complexity assessment through language analysis rather than simple pattern matching
+  - Production context detection influences delegation to ensure appropriate quality standards
+  - Multiple actor scenarios automatically trigger coordination-focused delegation approaches
+  - Specialized domain terminology recognition routes tasks to appropriate expertise areas
+- Process Optimization Benefits:
+  - Reduced manual task categorization overhead through improved semantic understanding
+  - Better matching of task complexity with appropriate expertise levels
+  - Enhanced parallel execution opportunities through intelligent task decomposition
+  - Improved context preservation through smarter sub-agent coordination
+Related Methods/Concepts:
+- Natural language processing for intent recognition
+- Semantic analysis and pattern matching algorithms
+- Task delegation frameworks and automation strategies
+- Context management and preservation techniques
+- Multi-agent coordination and parallel processing
+Future Improvements:
+- Implement machine learning feedback loop to improve semantic pattern recognition
+- Add confidence scoring for delegation decisions to enable manual override when needed
+- Create analytics dashboard for delegation effectiveness and accuracy measurement
+- Develop custom semantic patterns based on project-specific terminology and workflows
+
+## [June 13, 2025 4:24 PM] Code Quality Framework Evolution: Prevention-Focused Development Approach
+Context: Enhanced code quality guidelines with Contract-First Feature Fortress methodology and updated subscription management identifiers for consistency.
+Lesson:
+- Contract-First Architecture Implementation:
+  - Fortress mindset for feature development emphasizes clear boundaries, validation, and error handling
+  - Contract definition before implementation prevents integration issues and architectural drift
+  - Boundary validation approach ("never trust external data") improves system reliability and security
+  - Explicit interface design with proper error handling creates more maintainable and testable code
+- Prevention-Focused Quality Assurance:
+  - Proactive code quality approach prevents issues during development rather than catching them in review
+  - Quality gates based on complexity metrics (function length, condition count, nesting depth) provide objective standards
+  - Fail-fast approach with visible error messages improves debugging and system reliability
+  - Composition over configuration principle enables better testability and maintainability
+- Subscription Management Consistency:
+  - Updated subscription identifiers across codebase (context, tests, integration tests) ensures consistent naming
+  - Comprehensive test coverage updates maintain reliability during identifier refactoring
+  - Integration test updates ensure end-to-end functionality remains intact after changes
+  - Cleanup of outdated dependency files (yarn.lock removal) improves project maintenance
+- Development Workflow Integration:
+  - Code quality protocol integration with existing development processes ensures adoption
+  - Clear quality verification steps prevent technical debt accumulation
+  - Documentation-driven quality standards improve team consistency and onboarding
+  - Fortress integrity heuristics provide practical guidelines for feature development
+Related Methods/Concepts:
+- Contract-first development and API design principles
+- Prevention-focused quality assurance methodologies
+- Feature boundary definition and architectural discipline
+- Subscription management patterns and consistency practices
+- Technical debt prevention and quality gate implementation
+Future Improvements:
+- Implement automated quality gate validation based on fortress integrity heuristics
+- Create development environment integration for real-time quality feedback
+- Add metrics tracking for quality standard adherence and outcomes
+- Develop training materials and workshops based on Contract-First Feature Fortress methodology
+
 ## [June 10, 2025 11:31 AM] Feature Integration and Branch Management: Send Feedback Feature Merge Completion
 Context: Successfully merged feat/send-feedback-link branch into main branch, completing the integration of feedback functionality into the settings screen.
 Lesson:
@@ -1348,3 +1557,5 @@ Future Improvements:
    - Lessons Learned:
      - Clear and consistent terminology improves team communication.
      - Regular refinement of development processes leads to better efficiency.
+
+---

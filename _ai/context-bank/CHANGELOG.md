@@ -19,6 +19,69 @@
 
 ---
 
+## Version 0.1.40 - June 11, 2025 09:00 PM
+
+### Added
+
+- 7-Day Free Trial for Weekly Subscription
+  - Description: Implemented comprehensive free trial support for the weekly subscription offering (zp_weekly_free_trial_offer) with trial state management, proper UI integration, and extensive testing coverage.
+  - Why: To provide users with a risk-free opportunity to experience premium features before committing to a paid subscription, improving conversion rates and user acquisition per issue #13.
+  - Implementation Details:
+    - Updated SubscriptionContext with isTrialActive state tracking and "trial" subscriptionStatus enum
+    - Enhanced PaywallScreen with improved logging and proper async handling for trial activation
+    - Added comprehensive BDD scenarios covering trial activation, expiration, and edge cases
+    - Implemented unit tests for SubscriptionContext (with noted test environment challenges)
+    - Added passing integration tests validating free trial lifecycle from activation to expiration
+    - Follows TDD principles (Red/Green/Refactor methodology)
+    - Leverages RevenueCatUI.Paywall for native trial information display and user experience
+  - Impact: Users can now access a 7-day free trial on the weekly subscription, providing a seamless onboarding experience that reduces barriers to premium feature adoption while maintaining proper subscription state management.
+  - Files Modified: `_ai/scenarios/bdd-free-trial.md`, `components/ui/onboarding/PaywallScreen.tsx`, `context/SubscriptionContext.tsx`, `context/__tests__/SubscriptionContext.test.tsx`, `tests/integration/FreeTrial.integration.test.tsx`
+  - Reference: Commit a249607.
+
+## Version 0.1.39 - June 16, 2025 11:19 AM
+
+### Added
+
+- Next Steps Decision Framework in Code Review Guidelines
+  - Description: Introduced a comprehensive "Next Steps Decision Framework" section in `hybrid-code-review.md` to guide reviewers on determining appropriate actions post-code review.
+  - Why: To enhance the code review process by providing a structured approach for categorizing issues and defining follow-up actions based on severity ratings, ensuring critical issues are addressed promptly while planning for future improvements.
+  - Impact: Streamlined review process with clear Action Decision Matrix and categorized action items into Immediate, Next Sprint, and Future Backlog priorities.
+  - Reference: Commit bc36d74.
+
+## Version 0.1.38 - June 16, 2025 10:01 AM
+
+### Enhanced
+
+- Code Quality Guidelines and TDD Infrastructure
+  - Description: Enhanced `claude.md` with new Fortress Integrity Heuristics and updated the Mandatory Code Quality Protocol to include contract-first principles with comprehensive TDD orchestrator documentation.
+  - Why: To improve code quality and maintainability by establishing clearer guidelines for developers, ensuring contracts are defined and validated while providing comprehensive guidance on TDD workflows and integration processes.
+  - Impact: Improved code quality standards with better understanding and implementation of test-driven development practices through new documentation files for TDD Orchestrator, SUT Structure Creation, Gherkin Scenarios, and various testing phases.
+  - Reference: Commit 8cf9814.
+
+## Version 0.1.37 - June 13, 2025 11:20 PM
+
+### Added
+
+- Bash Command Permissions Configuration
+  - Description: Introduced a new `settings.json` file in the `.claude` directory to define permissions for various Bash commands with specific allowed command configurations.
+  - Why: To establish a clear set of allowed commands for improved security and functionality within the application, enhancing control over command execution.
+  - Impact: Enhanced security framework with controlled command execution, ensuring only specified commands can be run within the development environment.
+  - Reference: Commit 59b9613.
+
+### Enhanced
+
+- Semantic Detection and Delegation Framework
+  - Description: Updated the delegation triggers section in `claude.md` to incorporate enhanced semantic understanding and intent analysis for improved accuracy in task delegation with new patterns for TDD implementation and research analysis.
+  - Why: To refine the delegation process by utilizing semantic indicators and intent patterns, ensuring more effective handling of complex tasks and research while providing clearer guidelines for auto-delegation.
+  - Impact: Improved overall efficiency of task processing with better semantic detection capabilities and more effective delegation strategies.
+  - Reference: Commit f67eaa0.
+
+- Subscription Management System Architecture
+  - Description: Added a comprehensive code quality protocol in `claude.md` and updated subscription identifiers across `SubscriptionContext.tsx`, test files, and integration tests to reflect new naming conventions.
+  - Why: To prevent technical debt and improve code maintainability by establishing clear guidelines for developers while ensuring consistency across the codebase and improving clarity in subscription management.
+  - Impact: Professional codebase with cohesive subscription management architecture and cleaner project structure with removal of outdated dependencies.
+  - Reference: Commit a39e8c4.
+
 ## Version 0.1.36 - June 10, 2025 11:31 AM
 
 ### Merged

@@ -75,11 +75,12 @@ When the user makes a factual error, logical mistake, or incorrect assumption, p
 ## Sub-Agent Delegation Strategy
 
 ### Core Principles
-- Context Protection: Main agent coordinates, sub-agents handle complex work
-- Parallel Execution: Spawn concurrent sub-agents when possible
-- Specialized Expertise: Delegate to focused perspectives
-- Clean Aggregation: Results integrated back to main context
-- PARALLEL BY DEFAULT: Always use parallel Task method for efficiency
+- **PARALLEL FIRST**: Always prioritize spawning parallel sub-agents as the default approach for maximum efficiency
+- Context Protection: Main agent coordinates, sub-agents handle complex work to prevent main context pollution
+- Concurrent Execution: Spawn multiple specialized sub-agents simultaneously whenever tasks can be parallelized
+- Specialized Expertise: Delegate to focused perspectives for optimal results
+- Clean Aggregation: Results integrated back to main context without contamination
+- Efficiency Mandate: Use parallel Task method by default - sequential execution only when dependencies require it
 
 ### Enhanced Delegation Triggers
 

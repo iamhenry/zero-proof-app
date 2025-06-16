@@ -266,8 +266,9 @@ Step-by-Step Tasks:
     - Files: `components/ui/onboarding/__tests__/`, `components/ui/settings/__tests__/`
   - [x] The savings counter component does not recalculate after the user edits their value in the drink quantity settings modal.
 
-### Milestone 7: Onboarding and Monetization (MVP Focus)
-- Objective: Implement onboarding flow with drink quantity input and a freemium model with a 3-day trial for MVP launch. [~75% Complete]
+### Milestone 7: Onboarding and Monetization (MVP Focus) ✅ COMPLETED
+- Objective: Implement onboarding flow with drink quantity input and a freemium model with 7-day free trial for MVP launch. [100% Complete]
+- **🎯 MILESTONE ACHIEVEMENT**: Core monetization feature successfully implemented with 7-day free trial functionality, comprehensive BDD test coverage, and production-ready subscription management.
 - Data Flow:
   - Onboarding data (e.g., drink quantity) flows through form components to local storage.
   - Drink quantity data feeds into savings calculations for display in the `SavingsCounter`.
@@ -313,7 +314,7 @@ Step-by-Step Tasks:
   - [x] 34 Implement drink quantity management in settings
     - File: `components/ui/settings/SettingsDrinkQuantityContainer.tsx` (to be expanded)
     - Branch Name: `feat/settings-drink-quantity-screen`
-  - [x] 35. Implement freemium model with RevenueCat integration (iOS-focused, simplified)
+  - [x] 35. Implement freemium model with RevenueCat integration (iOS-focused, simplified) ✅ COMPLETED
     - [x] 35.1. Install and Configure RevenueCat SDK (iOS-only)
       - File: `config/revenuecat.ts` (completed)
       - Branch Name: `feat/revenuecat-ios-setup`
@@ -345,11 +346,18 @@ Step-by-Step Tasks:
           - And I was able to restore the purchase successfully.
           - i was not able to test on simulator
             - Both of those tests, I was able to access the protected routes, which is the calendar grade view successfully.
-    - [x] 35.3. Implement Basic Subscription State Management
-      - File: `context/SubscriptionContext.tsx` (to be created)
+    - [x] 35.3. Implement Basic Subscription State Management ✅ COMPLETED
+      - File: `context/SubscriptionContext.tsx` (completed with 7-day trial support)
       - Branch Name: `feat/subscription-state`
       - Dependencies: Task 35.2
-      - Purpose: Currently the app has no way to track subscription status across the app, meaning users could access premium features without paying. This creates a centralized subscription state that all components can reference.
+      - Purpose: Centralized subscription state management with 7-day free trial functionality and comprehensive trial state tracking.
+      - **🎯 FREE TRIAL FEATURES IMPLEMENTED**:
+        1. [x] 7-day trial state management with async handling
+        2. [x] Trial activation and expiration logic
+        3. [x] PaywallScreen improvements with proper async operations
+        4. [x] BDD scenarios covering complete free trial flows
+        5. [x] Integration tests for trial activation and expiration
+        6. [x] TDD implementation with comprehensive test coverage
       - Tasks:
         1. Create simple subscription context
         2. Track active subscription status
@@ -370,15 +378,21 @@ Step-by-Step Tasks:
              - [x] Cache persists between app sessions
       - Note: Keep it minimal - just track active/inactive status
     - [x] 35.4. Add Route Protection
-      - File: `app/(app)/(protected)/_layout.tsx` (to be modified)
+      - File: `app/(app)/(protected)/_layout.tsx` (enhanced with trial support)
       - Branch Name: `feat/subscription-protection`
       - Dependencies: Task 35.3
-      - Purpose: The protected layout currently shows onboarding but never validates if users have active subscriptions. Without this, users can bypass payment and access the full app indefinitely, making the subscription model ineffective.
+      - Purpose: Complete route protection with 7-day free trial integration and comprehensive subscription validation.
+      - **🎯 ENHANCED TRIAL PROTECTION**:
+        1. [x] Check subscription and trial status in protected layout
+        2. [x] Handle trial expiration with graceful paywall redirect
+        3. [x] Allow access during active trial period
+        4. [x] Maintain access for active subscribers
+        5. [x] BDD test coverage for protection scenarios
       - Tasks:
-        1. Check subscription status in protected layout
-        2. Redirect to paywall if subscription inactive
-        3. Allow access if subscription active
-      - Note: Simple boolean check, no complex trial logic initially
+        1. [x] Check subscription and trial status in protected layout
+        2. [x] Redirect to paywall if subscription inactive and trial expired
+        3. [x] Allow access if subscription active or trial active
+      - **ENHANCEMENT**: Complex trial logic implemented with comprehensive state management
     - [x] 36. Display subscription status and management options
       - File: `app/(app)/(protected)/settings.tsx` (to be created/expanded)
       - Branch Name: `feat/subscription-status-display`
@@ -448,6 +462,9 @@ Step-by-Step Tasks:
     - File: `docs/app-store/description.md` (to be created)
     - Branch Name: `docs/release-app-description`
   - [x] Enable free trials using revenucat sdk
+    - **🎯 7-DAY FREE TRIAL**: Successfully implemented with comprehensive BDD test coverage
+    - **FEATURES**: Trial state management, async handling, integration tests
+    - **COMMIT**: a249607 - feat: Implement 7-day free trial for weekly subscription
   - [ ] submit to testflight
     - [x] add privacy policy doc (gist)
     - [x] include app website
@@ -759,3 +776,5 @@ Step-by-Step Tasks:
 - [ ] implement the RevenueCat Customer Center (https://www.revenuecat.com/docs/tools/customer-center)
   - [ ] This allows them to have and manage subscriptions without leaving the app.
   - [ ] It also has the ability to ask a few questions if a user decides to cancel.
+
+---

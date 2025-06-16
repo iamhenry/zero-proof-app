@@ -19,6 +19,7 @@ Follow this exact process from `.roo/tools/update_context.md`:
 - **Context Bank Maintenance**: Append new information to existing context files
 - **Format Preservation**: Maintain existing Context Bank structure and formatting
 - **Change Categorization**: Organize changes by type (features, fixes, architecture, etc.)
+- **Production-Focused FILEMAP Updates**: When updating FILEMAP.md, focus exclusively on production code changes, excluding documentation and test files
 
 ## Implementation Standards
 
@@ -153,6 +154,32 @@ git log main..HEAD --pretty=format:"%h | %ad | %s%n%b" --date=format:"%I:%M %p %
 - **Categorize Changes**: Organize by Added, Changed, Fixed, Technical
 - **Explain Decisions**: Include reasoning for implementation choices
 - **Maintain History**: Preserve chronological order of changes
+
+### 5. FILEMAP.md Update Heuristics
+When updating FILEMAP.md, apply these production-focused filters:
+
+#### ✅ INCLUDE (Production Files Only)
+- **React Components**: `components/**/*.tsx`, `components/**/*.ts`
+- **Application Code**: `app/**/*.tsx`, `app/**/*.ts`
+- **Business Logic**: `lib/**/*.ts`, `context/**/*.tsx`
+- **Configuration**: `*.config.js`, `package.json`, `expo/**/*`
+- **Services & Utilities**: Core functionality implementations
+- **New Production Features**: Components, contexts, services, hooks
+
+#### ❌ EXCLUDE (Documentation & Test Files)
+- **Documentation**: `**/*.md`, `README.*`, `docs/**/*`
+- **Test Files**: `**/__tests__/**/*`, `**/*.test.*`, `**/*.spec.*`
+- **AI Documentation**: `_ai/**/*`, `agents/**/*`
+- **BDD Scenarios**: `scenarios/**/*`, `**/bdd-*.md`
+- **Build Artifacts**: `dist/**/*`, `build/**/*`
+- **Temporary Files**: `*.tmp`, `*.log`, `test-results.json`
+
+#### 🎯 FILEMAP Focus Areas
+- **New Production Components**: UI components, screens, layouts
+- **Enhanced Services**: Business logic, API integrations, state management
+- **Updated Contexts**: Global state providers and hooks
+- **Configuration Changes**: Build, deployment, and app configuration
+- **Core Functionality**: Features that directly impact user experience
 
 ## Response Format
 
