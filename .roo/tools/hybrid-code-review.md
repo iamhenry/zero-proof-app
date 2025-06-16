@@ -127,12 +127,98 @@ export function formatDate(date: Date) {
 - [ ] Blockers listed with severity
 - [ ] Summary of feedback and top action items
 
+---
+
+## 🎯 Next Steps Decision Framework
+
+After completing the code review, use this framework to determine the appropriate next actions:
+
+### 🚦 Action Decision Matrix
+
+**Based on Overall Rating:**
+- **9-10/10**: ✅ **Ready to Merge** - Optional minor improvements only
+- **7-8/10**: ⚠️ **Address Medium Issues** - Fix before merge, low issues optional  
+- **5-6/10**: 🔄 **Requires Rework** - Address high and medium issues, consider architectural changes
+- **1-4/10**: 🛑 **Major Revision Needed** - Significant rework required before re-review
+
+### 📋 Action Categories
+
+#### 🔥 IMMEDIATE (Before Merge)
+_Must address before code can be merged_
+
+- [ ] **HIGH Severity Issues** - All high severity issues must be resolved
+- [ ] **Breaking Changes** - Any changes that break existing functionality
+- [ ] **Security Vulnerabilities** - Security-related issues require immediate attention
+- [ ] **Test Failures** - All tests must pass
+- [ ] **Memory/Race Conditions** - Critical system stability issues
+
+#### ⏰ NEXT SPRINT (Within 1-2 Sprints)
+_Should be addressed soon to prevent technical debt_
+
+- [ ] **MEDIUM Severity Issues** - Architectural concerns and performance issues
+- [ ] **Test Coverage Gaps** - Missing test coverage for critical functionality
+- [ ] **Documentation Updates** - Code comments and documentation improvements
+- [ ] **Consistency Issues** - Architectural or style inconsistencies
+
+#### 🔮 FUTURE BACKLOG (Nice to Have)
+_Improvements that can be scheduled for later_
+
+- [ ] **LOW Severity Issues** - Style, naming, minor code smells
+- [ ] **Optimization Opportunities** - Performance improvements without urgent need
+- [ ] **Code Refactoring** - Non-critical structural improvements
+- [ ] **Enhancement Ideas** - Suggestions for feature improvements
+
+### 🛠️ Implementation Actions
+
+#### For Code Author:
+1. **Address Immediate Issues** - Fix all high severity and blocking issues
+2. **Update Tests** - Ensure test coverage for any new functionality
+3. **Update Documentation** - Revise comments and docs as needed
+4. **Request Re-review** - If significant changes were made
+
+#### For Reviewer:
+1. **Verify Fixes** - Confirm that immediate issues have been resolved
+2. **Approve or Request Changes** - Based on remaining issue severity
+3. **Create Follow-up Tickets** - For next sprint and backlog items
+4. **Update Team Knowledge** - Share insights or patterns discovered
+
+### 📊 Follow-up Template
+
+```markdown
+## 🎯 Review Follow-up Actions
+
+### ✅ Immediate Actions (Required before merge):
+- [ ] Fix security vulnerability in auth.ts:42
+- [ ] Add error handling for async operations
+- [ ] Resolve failing test in user-service.test.ts
+
+### ⏰ Next Sprint Actions:
+- [ ] JIRA-123: Improve test coverage for payment flow
+- [ ] JIRA-124: Refactor user state management for consistency
+- [ ] JIRA-125: Add performance monitoring to critical paths
+
+### 🔮 Future Backlog:
+- [ ] Consider extracting shared utilities to reduce duplication
+- [ ] Explore alternative state management patterns
+- [ ] Add comprehensive error logging throughout app
+
+### 📝 Notes:
+- Author estimated 2-3 hours for immediate fixes
+- Medium issues align with existing technical debt initiatives
+- Consider scheduling architecture review session for consistency issues
+```
+
+---
+
 ## Output Example
 ```markdown
 ## 📊 Overall Rating: 8.5/10 🟢
 
 ### Brief Summary
 The implementation successfully addresses screen dismissal and email verification feedback issues by introducing a robust toast notification system and improving authentication flow UX. The code demonstrates solid architecture with proper error handling, animation, and lifecycle management.
+
+### 🎯 Recommended Next Steps: ⚠️ Address Medium Issues
+_Rating: 8.5/10 - Fix 2 medium severity issues before merge, low severity optional_
 
 ---
 
@@ -154,13 +240,12 @@ The implementation successfully addresses screen dismissal and email verificatio
 - Suggestion: Use navigation state listener or Promise.resolve().then() for more reliable timing
 - Code Snippet:
     ~~~typescript
-    // File: utils/formatter.ts  Line: 12–14
-    export function formatDate(date: Date) {
-      return date.toISOString().split('T')[0];
-    // Missing timezone offset handling
-    }
+    // File: app/(app)/sign-up.tsx  Line: 69-71
+    setTimeout(() => {
+      showToast('Please check your email to verify your account', 'info');
+      router.dismissAll();
+    }, 300); // Hardcoded timeout - potential race condition
     ~~~
-
 
 ---
 
@@ -180,11 +265,13 @@ The implementation successfully addresses screen dismissal and email verificatio
 - Suggestion: Extract color mapping to constants for easier maintenance
 - Code Snippet:
     ~~~typescript
-    // File: utils/formatter.ts  Line: 12–14
-    export function formatDate(date: Date) {
-      return date.toISOString().split('T')[0];
-    // Missing timezone offset handling
-    }
+    // File: components/ui/toast.tsx  Line: 52-60
+    switch (type) {
+      case 'success': return 'bg-green-500';
+      case 'error': return 'bg-red-500';
+      case 'info': return 'bg-blue-500';
+      default: return 'bg-gray-500';
+    } // Consider extracting to TOAST_COLORS constant
     ~~~
 
 ---
@@ -207,15 +294,29 @@ The implementation successfully addresses screen dismissal and email verificatio
 - Suggestion: Consider adding ToastContainer to main layout or implement global toast positioning
 - Code Snippet:
     ~~~typescript
-      // File: utils/formatter.ts  Line: 12–14
-      export function formatDate(date: Date) {
-        return date.toISOString().split('T')[0];
-      // Missing timezone offset handling
-      }
+    // File: app/(app)/welcome.tsx  Line: 16
+    <ToastContainer /> {/* Only on welcome screen - should be global */}
     ~~~
 
 ---
 
-[Contininue with the rest of the categories]
+### 🎯 Follow-up Actions Required
+
+#### ✅ Immediate Actions (Before merge):
+- [ ] None - no high severity issues identified
+
+#### ⏰ Next Sprint Actions:
+- [ ] Fix hardcoded timeout in sign-up.tsx (Medium severity)
+- [ ] Add consistent toast feedback to sign-in flow (Medium severity)  
+- [ ] Move ToastContainer to global layout (Medium severity)
+
+#### 🔮 Future Backlog:
+- [ ] Refactor toast color mapping to constants (Low severity)
+- [ ] Consider comprehensive toast notification strategy across app
+
+### 📝 Review Notes:
+- Strong implementation overall with good architecture
+- Focus on consistency improvements to enhance user experience
+- No blocking issues, safe to merge after addressing medium severity items
 ```
 </hybrid-code-review>
