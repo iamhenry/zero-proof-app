@@ -17,7 +17,7 @@ import { Platform } from 'react-native';
 
 const revenueCatApiKey = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY as string;
 
-export const configureRevenueCat = async () => {
+export const configureRevenueCat = async (): Promise<boolean> => {
   try {
     console.log('🚀 Starting RevenueCat SDK configuration...');
     
@@ -49,9 +49,10 @@ export const configureRevenueCat = async () => {
     await verifyRevenueCatSetup();
     
     console.log('🎉 RevenueCat SDK configured and verified successfully');
+    return true;
   } catch (error) {
     console.error('❌ Failed to configure RevenueCat:', error);
-    throw error;
+    return false;
   }
 };
 

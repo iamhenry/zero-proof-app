@@ -4,8 +4,5 @@ alwaysApply: false
 ---
 
 <DebugError>
-   1. explain
-   2. debate concisely
-   3. reflect
-   4. fix using kiss & dry princples
+Reflect on 5-7 different possible sources of the problem, distill those down to 1-2 most likely sources, and then add logs to validate your assumptions. Explicitly ask the user to confirm the diagnosis before fixing the problem.
 </DebugError>

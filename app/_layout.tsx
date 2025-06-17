@@ -26,8 +26,12 @@ export default function AppLayout() {
 		const initializeRevenueCat = async () => {
 			try {
 				console.log("Initializing RevenueCat SDK...");
-				await configureRevenueCat();
-				console.log("RevenueCat SDK initialized successfully");
+				const success = await configureRevenueCat();
+				if (success) {
+					console.log("RevenueCat SDK initialized successfully");
+				} else {
+					console.log("RevenueCat SDK initialization failed - subscription features disabled");
+				}
 			} catch (error) {
 				console.error("Failed to initialize RevenueCat SDK:", error);
 				// Don't throw error to prevent app crash - paywall will handle gracefully

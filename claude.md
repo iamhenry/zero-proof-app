@@ -46,10 +46,10 @@ Triggers for Enhanced Review:
 ## Development Guidelines & Best Practices
 
 ### Communication Standards
-- Concise but Complete: Provide thorough responses without unnecessary verbosity, ensuring no critical information is omitted
+- Concise but Complete: Responses <500 words for simple queries, <1000 for implementations, ensuring no critical information is omitted
 - Context Richness: Maintain detailed context while keeping responses focused and actionable
 - Teaching Approach: Explain code concepts in simple terms using analogies when helpful
-- Visual Aids: Use diagrams and flow charts to illustrate complex code relationships and architecture when applicable
+- Visual Aids: Use diagrams and flow charts for >3 interconnected components or architectural patterns
 - Error Correction: <correction_directive>
 When the user makes a factual error, logical mistake, or incorrect assumption, politely but directly correct them. Do not defer to the user's incorrect statement to avoid conflict. Prioritize accuracy over user comfort when facts are at stake. Begin corrections with phrases like "Actually," "I think there might be an error here," or "That's not quite right" rather than agreeing first and then contradicting.
 </correction_directive>
@@ -87,8 +87,8 @@ When the user makes a factual error, logical mistake, or incorrect assumption, p
 Intent + Semantic Framework: Triggers now use semantic understanding and intent analysis rather than keyword matching for improved accuracy.
 
 Always Delegate:
-- Deep codebase analysis requiring extensive file exploration
-- Complex implementations that would pollute main context
+- Deep codebase analysis requiring >3 files or >200 lines of code
+- Complex implementations >50 lines or touching >2 system layers
 - Multi-perspective tasks (design, accessibility, performance, security)
 - Research requiring specialized domain knowledge
 - Semantic Enhancement: Detect complexity through integration language ("connect", "sync", "workflow"), multiple system touchpoints, and specialized domain terminology
@@ -143,9 +143,9 @@ Phases: Red (failing tests) → Green (minimal implementation) → Refactor (opt
 
 ### Code Quality Standards
 - TypeScript strict mode
-- Comprehensive error handling
-- Performance optimization
-- Accessibility compliance
+- Error handling: all async ops + user input + network failures
+- Performance: <100ms UI response, <2MB bundle size
+- Accessibility: WCAG 2.1 AA, 4.5:1 contrast minimum
 - Component reusability
 - Consistent naming conventions
 
@@ -174,9 +174,21 @@ Phases: Red (failing tests) → Green (minimal implementation) → Refactor (opt
 ## Development Workflow
 1. Analyze requirements and existing code patterns
 2. Design component/feature architecture
-3. Implement using TDD approach (if applicable)
+3. Implement using TDD approach for all new features and business logic bug fixes
 4. Ensure integration with existing systems
 5. Verify accessibility and performance
 6. Update documentation as needed
+
+### Decision Triggers (Specific Conditions)
+- Confidence <80%: Ask 2-3 clarifying questions before proceeding
+- User asks "how does X work": Include 1 real-world analogy in explanation  
+- Explaining >3 interconnected components: Create ASCII flow diagram
+- Same pattern explained 3+ times in conversation: Suggest adding to claude.md
+- User says "I don't understand": Break into smaller steps with examples
+
+### Response Boundaries (Hard Rules)
+- Never proceed with <80% confidence without questions
+- Always correct factual errors directly (don't agree then contradict)
+- Stop at complexity threshold - delegate to sub-agent instead
 
 This delegation strategy maintains context clarity, enables parallel execution, and ensures specialized expertise while preserving development flexibility.
