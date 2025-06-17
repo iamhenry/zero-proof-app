@@ -2,7 +2,7 @@ import { Session, User } from "@supabase/supabase-js";
 import { useRouter, useSegments, SplashScreen } from "expo-router";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { supabase } from "@/config/supabase";
+import { supabase, isSupabaseAvailable } from "@/config/supabase";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,6 +38,9 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 	const [initialized, setInitialized] = useState<boolean>(false);
 
 	const signUp = async (email: string, password: string) => {
+		if (!supabase) {
+			throw new Error('Supabase is not available - check environment configuration');
+		}
 		const { error } = await supabase.auth.signUp({
 			email,
 			password,
@@ -48,6 +51,9 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 	};
 
 	const signInWithPassword = async (email: string, password: string) => {
+		if (!supabase) {
+			throw new Error('Supabase is not available - check environment configuration');
+		}
 		const { error } = await supabase.auth.signInWithPassword({
 			email,
 			password,
@@ -58,6 +64,9 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 	};
 
 	const signOut = async () => {
+		if (!supabase) {
+			throw new Error('Supabase is not available - check environment configuration');
+		}
 		const { error } = await supabase.auth.signOut();
 		if (error) {
 			throw error;
@@ -65,6 +74,12 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 	};
 
 	useEffect(() => {
+		if (!supabase) {
+			console.warn('⚠️ Supabase not available - authentication disabled');
+			setInitialized(true);
+			return;
+		}
+
 		supabase.auth.getSession().then(({ data: { session } }) => {
 			setSession(session);
 			setUser(session ? session.user : null);
