@@ -149,6 +149,12 @@ Phases: Red (failing tests) → Green (minimal implementation) → Refactor (opt
 - Component reusability
 - Consistent naming conventions
 
+### Build & Deployment Guidelines
+- **Always increment build number** before TestFlight submission: Update `expo.ios.buildNumber` in app.json
+- **Service initialization safety**: Services should return boolean success/failure, not throw errors
+- **Environment variable handling**: All external services must gracefully handle missing configuration
+- **TestFlight preparation**: Test locally with missing env vars before EAS build submission
+
 ## Component Development Guidelines
 
 ### UI Components
