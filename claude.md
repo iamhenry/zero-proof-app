@@ -26,6 +26,9 @@ Triggers for Enhanced Review:
 - Integration with external services
 - Performance-critical code paths
 
+## Critical Development Memories
+- CRITICAL: when fixing bugs never request or expose security secrets or api keys or commands!
+
 ## Key Technologies
 - React Native with Expo
 - TypeScript
