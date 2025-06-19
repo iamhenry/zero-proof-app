@@ -158,6 +158,19 @@ Phases: Red (failing tests) → Green (minimal implementation) → Refactor (opt
 - **Environment variable handling**: All external services must gracefully handle missing configuration
 - **TestFlight preparation**: Test locally with missing env vars before EAS build submission
 
+### Solution Evaluation Framework
+- **Structured Decision Making**: Reference `.roo/tools/propose_solution.md` for complex architectural decisions
+- **Scoring Metrics**: Use when comparing multiple implementation approaches (Module Independence, Code Clarity, Component Reusability, Test Coverage)
+- **Actionable Triggers**: 
+  - Requirements Definition: "Let's define requirements and use cases for..."
+  - Solution Exploration: "Brainstorm", "propose solutions", "what are our options"
+  - Idea Generation: "Need ideas for...", "how should we approach..."
+  - Architecture Decisions: New features touching >2 system layers
+  - Integration Planning: External service connections or data flow changes
+  - User Experience Design: Feedback mechanisms, state transitions, error handling
+  - Semantic Enhancement: Detect uncertainty language ("not sure", "best way"), comparison needs ("vs", "better"), or complexity indicators (multiple actors, system touchpoints)
+
+
 ## Component Development Guidelines
 
 ### UI Components

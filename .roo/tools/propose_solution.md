@@ -6,17 +6,15 @@ alwaysApply: false
 <ProposeSolution>
 
   1. Dont write any code.
-  2. Clearly Define the Problem/Feature.
-  3. List specific, verifiable assumptions.
-  4. List acceptance criteria
-  5. List affected files and sub files using tools to identify indirect impacts.
+  2. Apple OODA framework (Observe, Orient, Decide, Act)
   6. Does this create or reduce technical debt?
-  7. Propose a range of potential solutions
+  7. Propose a 3-5 potential solutions
   8. Solution Comparison:
      - Create a table comparing solutions based on:
-       - Pros and cons
+       - Tradeoffs
        - Adherence to KISS, DRY, YAGNI.
        - Performance implications
+       - Architectural implications
        - Scalability concerns.
        - Maintainability and readability.
        - Security considerations.
@@ -33,4 +31,5 @@ alwaysApply: false
     - Component Reusability (1-5): Higher score = code is easily reused.
     - Test Coverage (1-5): Higher score = more code is tested.
   - Consider Visual Aids by adding diagrams (UML, flowcharts) to illustrate complex solutions.
+  - ALWAYS use the task tool to spawn off 3-5 agents to propose solutions based on complexity of the task.
 </ProposeSolution>

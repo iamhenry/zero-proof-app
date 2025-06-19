@@ -406,25 +406,17 @@ Step-by-Step Tasks:
         5. Display subscription history and next billing date
       - Note: Focus on transparency and easy subscription management to reduce churn and support requests
     - [x] 37. Write unit test on revenuecat working code
+    - [ ] add deeplink for user authentication whenn the click the verify link in their email upon registering
+      - [ ] as a user i want to get taken back to the app upon tapping the "verify" link in my email
 
 ## Bugs
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
-- [ ] how do i handle URL's in supabase in prod when the user has to verify their email. (right now it uses localhost and the site fails because domain doesnt exist even tho they can still verify their email)
-- [ ] **AUTHENTICATION: Sign-in Error with Valid Credentials** (TestFlight Build 3 - June 17, 2025)
+- [x] how do i handle URL's in supabase in prod when the user has to verify their email. (right now it uses localhost and the site fails because domain doesnt exist even tho they can still verify their email)
+  - **Resolution**: Authentication flow resolved in latest build - email verification working correctly despite localhost redirect
+- [x] **AUTHENTICATION: Sign-in Error with Valid Credentials** (TestFlight Build 3 - June 17, 2025) ✅ RESOLVED
   - **Issue**: User receives "sign in failed. please check your credentials" error when submitting valid, verified credentials from Supabase database using existing tester account
-  - **Scope**: Affects TestFlight build, verified credentials work in development
-  - **Environment**: TestFlight iOS build with production configuration
-  - **Impact**: Blocks user access to authenticated features in production
-  - **Priority**: High - Authentication is core functionality
-  - **Potential Root Cause**: No proper site URL configured for Supabase email verification (currently uses localhost)
-  - **Next Steps**: 
-    - Create separate branch for authentication debugging
-    - Investigate differences between development and production Supabase configuration
-    - Check environment variables and authentication flow in production builds
-    - Verify Supabase client configuration in production environment
-    - Configure proper site URL for Supabase email verification in production
-    - Test authentication flow with production-ready email verification URLs
-  - **Branch**: `fix/testflight-authentication-error`
+  - **Resolution**: Authentication issues resolved in latest TestFlight build - users can now successfully sign in with verified credentials
+  - **Next Phase**: Implement deep linking for email verification to improve user experience by eliminating localhost redirect
 // FIXME:
 - [ ] Currently in the onboarding experience, the user can easily swipe past entering the drink quantity. And so when the user completes the onboarding experience and starts the free trial, the drink quantity amount will be zero. And so the savings counter will not be calculating anything and will always show zero.
 
