@@ -3,14 +3,25 @@ description: Defines Git commit message format, types, and scope conventions
 alwaysApply: true
 ---
 
+==========================
 # Git Usage
 ==========================
-IMPORTANT: Use concise but context-rich messages. Group related changes. Start with a brief summary of the changes followed by a bulleted list of each change.
+IMPORTANT: Use concise but context-rich messages. Start with a brief summary of the changes followed by a bulleted list of each change.
 Use the following prefixes for commit messages:
 
 ## Format
 ```
 <type>(<scope>): <subject>
+```
+
+## Example
+```
+  <type>(<scope>): <subject>
+
+  - What: Added Button in src/components/button.js with size props.
+  - Why: Enable dynamic size adjustments for a customizable UI.
+  - What: Created tests in tests/button.test.js.
+  - Why: Ensure reliable rendering and detect potential regressions.
 ```
 
 ## Types
