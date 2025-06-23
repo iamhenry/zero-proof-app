@@ -42,12 +42,12 @@ When generating Gherkin scenarios, follow these guidelines:
 
   <!-- How can we verify this works without knowing implementation? What's non-negotiable? -->
   ## Acceptance Criteria:
-  * [Measurable/observable criterion that verifies success]
-  * [Boundary condition handling]
-  * [Performance aspect if relevant] 
-  * [Accessibility consideration if relevant]
-  * [Error state handling if relevant]
-  * [State persistence aspect if relevant]
+  - [ ] [Measurable/observable criterion that verifies success]
+  - [ ] [Boundary condition handling]
+  - [ ] [Performance aspect if relevant] 
+  - [ ] [Accessibility consideration if relevant]
+  - [ ] [Error state handling if relevant]
+  - [ ] [State persistence aspect if relevant]
 
   <!-- 
   Which patterns actually apply? What could go wrong from user's perspective? 
