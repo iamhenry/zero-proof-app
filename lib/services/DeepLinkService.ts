@@ -46,17 +46,74 @@ export class DeepLinkService implements IDeepLinkService {
     const parsedData = this.parseVerificationUrl(url);
     
     if (parsedData && parsedData.type === 'verification') {
-      // Use helper functions to access mocked modules
-      const { showToast } = getToast();
-      const router = getRouter();
-      
-      showToast('Email verified successfully!', 'success', 5000);
-      router.push('/(app)/welcome');
+      this.handleVerificationSuccess(getRouter());
     } else {
-      // Handle invalid deep link
-      const { showToast } = getToast();
-      showToast('Verification failed. Please try again.', 'error', 5000);
+      this.handleVerificationFailure(getToast());
     }
+  }
+
+  /**
+   * Handles successful verification UI/navigation concerns
+   * @param router - Router instance for navigation
+   */
+  private handleVerificationSuccess(router: any): void {
+    const { showToast } = getToast();
+    showToast('Email verified successfully!', 'success', 5000);
+    router.push('/(app)/welcome');
+  }
+
+  /**
+   * Handles verification failure UI/error concerns
+   * @param toast - Toast instance for error display
+   */
+  private handleVerificationFailure(toast: any): void {
+    const { showToast } = toast;
+    showToast('Verification failed. Please try again.', 'error', 5000);
+  }
+
+  /**
+   * Validates if the given URL is a valid deep link URL
+   * @param url - The URL to validate
+   * @returns true if valid deep link URL, false otherwise
+   */
+  private validateDeepLinkUrl(url: string): boolean {
+    // Basic URL validation
+    if (!url || typeof url !== 'string') {
+      return false;
+    }
+
+    // Check for malformed URL patterns
+    if (url === 'not-a-valid-url') {
+      return false;
+    }
+
+    // Check for valid URL format
+    if (!url.startsWith('zeroproof://')) {
+      return false;
+    }
+
+    // Check if it's a verification path
+    const parts = url.split('?');
+    const baseUrl = parts[0];
+    return baseUrl.includes('verify');
+  }
+
+  /**
+   * Extracts URL parameters from query string
+   * @param queryString - The query string to parse
+   * @returns Object containing parsed parameters
+   */
+  private extractUrlParameters(queryString: string): Record<string, string> {
+    const params: Record<string, string> = {};
+    if (queryString) {
+      queryString.split('&').forEach(param => {
+        const [key, value] = param.split('=');
+        if (key && value) {
+          params[decodeURIComponent(key)] = decodeURIComponent(value);
+        }
+      });
+    }
+    return params;
   }
 
   /**
@@ -66,41 +123,17 @@ export class DeepLinkService implements IDeepLinkService {
    */
   parseVerificationUrl(url: string): DeepLinkData | null {
     try {
-      // Basic URL validation
-      if (!url || typeof url !== 'string') {
-        return null;
-      }
-
-      // Check for malformed URL patterns
-      if (url === 'not-a-valid-url') {
-        return null;
-      }
-
-      // Check for valid URL format
-      if (!url.startsWith('zeroproof://')) {
+      // Use existing validation method
+      if (!this.validateDeepLinkUrl(url)) {
         return null;
       }
 
       // Manual parsing for custom scheme URLs since URL constructor may not work
       const parts = url.split('?');
-      const baseUrl = parts[0];
       const queryString = parts[1] || '';
 
-      // Check if it's a verification path
-      if (!baseUrl.includes('verify')) {
-        return null;
-      }
-
-      // Extract parameters from query string
-      const params: Record<string, string> = {};
-      if (queryString) {
-        queryString.split('&').forEach(param => {
-          const [key, value] = param.split('=');
-          if (key && value) {
-            params[decodeURIComponent(key)] = decodeURIComponent(value);
-          }
-        });
-      }
+      // Extract parameters using dedicated method
+      const params = this.extractUrlParameters(queryString);
 
       // Determine type based on parameters
       let type: DeepLinkType = 'verification';
