@@ -15,6 +15,8 @@ export interface DeepLinkData {
   params: Record<string, string>;
   /** The original URL that was processed */
   originalUrl: string;
+  /** Error message if parsing failed */
+  error?: string;
 }
 
 /**
@@ -50,6 +52,8 @@ export interface VerificationToken {
   expiresAt?: Date;
   /** Associated email address */
   email?: string;
+  /** Error message if token parsing/validation failed */
+  error?: string;
 }
 
 /**

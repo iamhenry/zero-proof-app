@@ -3,6 +3,14 @@ description: TDD workflow for Unit and Integration Testing
 alwaysApply: false
 ---
 
+<tdd-complete-workflow>
+When building a new feature or fixing a bug:
+1. `tdd-unit-workflow`
+2. `tdd-integration-workflow`
+3. Review
+4. Merge
+</tdd-complete-workflow>
+
 <tdd-unit-workflow>
 1. User Stories → BDD Scenarios: _ai/tools/tdd/generate_bdd_scenarios.md
 2. Scenarios → SUT Scaffold: _ai/tools/tdd/generate-unit-sut-scaffold.md
@@ -16,3 +24,10 @@ alwaysApply: false
 2. Red Phase → Green Phase: _ai/tools/tdd/green-phase-integration.md
 3. Green Phase → Refactor: _ai/tools/tdd/refactor_phase.md
 </tdd-integration-workflow>
+
+<update-docs>
+1. Update filemap.md: _ai/tools/generators/generate_filemap_documentation.md
+2. Update changelog.md
+3. Update memory.md
+4. Update roadmap.md
+</update-docs>

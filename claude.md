@@ -1,17 +1,25 @@
 # Zero Proof App - Claude Context File
 
+## MANDATORY: Codebase Context Initialization
+**CRITICAL FOR EVERY NEW CHAT SESSION:**
+1. IMMEDIATELY reference `/_ai/context-bank/FILEMAP.MD` to understand existing codebase architecture
+2. This file contains comprehensive documentation headers, function signatures, and component relationships
+3. Use this context to inform ALL development decisions and avoid duplicating existing functionality
+4. Before creating ANY new components or services, verify similar functionality doesn't already exist
+
 ## Project Overview
 Zero Proof is a React Native/Expo sobriety tracking application that helps users monitor their sobriety journey with features like timer tracking, calendar visualization, savings calculation, and subscription management through RevenueCat.
 
 ### Mandatory Code Quality Protocol
 BEFORE any code generation, creation, or modification:
-1. Display verification: Show "🎯 QUALITY-CHECKED" to confirm guidelines reviewed
+1. Reference `/_ai/context-bank/FILEMAP.MD` to understand existing codebase architecture
 2. Reference `.roo/tools/code-quality-guidelines.md` for Contract-First Feature Fortress patterns
-3. Validate feature boundaries: Ensure contracts defined, inputs validated, dependencies explicit
-4. Apply complexity triggers: Functions >30 lines, >5 conditions, >3 nesting levels
-5. Design for separation: Extract concerns before implementation, not after
-6. Use prevention checklist: Type safety, error handling, performance, testing
-7. When in doubt: Extract logic to focused functions/services from start
+3. Display verification: Show "🎯 QUALITY-CHECKED" to confirm guidelines reviewed
+4. Validate feature boundaries: Ensure contracts defined, inputs validated, dependencies explicit
+5. Apply complexity triggers: Functions >30 lines, >5 conditions, >3 nesting levels
+6. Design for separation: Extract concerns before implementation, not after
+7. Use prevention checklist: Type safety, error handling, performance, testing
+8. When in doubt: Extract logic to focused functions/services from start
 
 Fortress Integrity Heuristics:
 - Feature can be tested in isolation

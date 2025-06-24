@@ -29,6 +29,8 @@ flowchart TD
 ### Critical Guidelines
 - ALL tests must fail - no exceptions.
 - After writing tests, verify that 100% of tests fail due to missing business logic in the SUT, not due to test setup errors.
+- **ONE EXPECTATION PER TEST** - Each test must have exactly one assertion/expectation. No contradictory assertions.
+- **NO PROGRESSIVE ASSERTIONS** - Do not write multiple assertions in a single test that expect different outcomes from the same result.
 - Mock external dependencies (e.g., APIs, databases, system services) to isolate the unit under test.
 - Use realistic data structures in mocks and SUT stubs that cause behavioral failures, not undefined/null returns where a structure is expected (or equivalent nil/empty optionals in typed languages).
 
@@ -157,9 +159,35 @@ test("scenario_PaymentFails_ShowsError", () => {
 - Use dynamic and descriptive assertions.
 - Follow naming convention: `test_[Scenario]_[Condition]_[ExpectedResult]` or `it_should_[ExpectedResult]_when_[Condition]_given_[ScenarioContext]` (adapt to platform).
 - Scenario Grouping: Use `// MARK: - Scenario: [Scenario Name]` comments to group test cases within files, aligning with BDD scenarios.
-- One distinct behavior per test.
+- **One distinct behavior per test with ONE expectation/assertion only.**
+- **FORBIDDEN: Multiple assertions testing the same result but expecting different outcomes.**
 - Maintain test isolation.
 - Handle asynchronous operations correctly.
+
+#### ❌ ANTI-PATTERN: Contradictory Assertions
+```javascript
+// NEVER DO THIS - Impossible to satisfy both expectations
+it('should_handle_invalid_input', () => {
+  const result = service.parse('invalid');
+  expect(result).toBeNull();              // Expectation A
+  expect(result).toEqual({ error: '...' }); // Expectation B (contradicts A)
+});
+```
+
+#### ✅ CORRECT PATTERN: Separate Tests for Different Behaviors
+```javascript
+// One test, one expectation
+it('should_return_null_for_invalid_input', () => {
+  const result = service.parse('invalid');
+  expect(result).toBeNull(); // Will fail until implemented
+});
+
+// Separate test for advanced error handling (if needed later)
+it('should_return_error_details_for_invalid_input', () => {
+  const result = service.parseWithDetails('invalid');
+  expect(result).toEqual({ error: 'Invalid format' });
+});
+```
 
 ### 4. Test Organization
 - Group tests by SUT, feature, or BDD scenario.
@@ -179,6 +207,8 @@ test("scenario_PaymentFails_ShowsError", () => {
 # ❌ Bad failures (setup issues, SUT stubs not defined, or test errors):
 ✗ TypeError: Cannot read property 'items' of undefined (Bad mock or SUT stub contract)
 ✗ OrderService.getOrderHistory is not a function (SUT stub missing signature)
+✗ expect(received).toEqual(expected) - Contradictory assertions in same test
+✗ expect(received).toBe(true) when previous assertion expected false
 ```
 
 ### Expected Test Suite Output
@@ -291,6 +321,8 @@ Purpose: Assumptions, questions for Green phase.
 - Passing Tests.
 - Implementation of Business Logic in SUT Files.
 - Tests Failing Due to "Bad Reasons" (test syntax/setup errors, SUT stubs missing signatures).
+- **Multiple Contradictory Assertions in Single Test** (e.g., expecting both `null` AND an error object).
+- **Progressive Assertions** that encode current and future states in one test.
 - Modification of Unrelated Code.
 - Incomplete Test Coverage for Agreed BDD Scenarios/Requirements.
 - Vague or Unrealistic Mock Contracts for External Dependencies.
