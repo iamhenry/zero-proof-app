@@ -406,8 +406,31 @@ Step-by-Step Tasks:
         5. Display subscription history and next billing date
       - Note: Focus on transparency and easy subscription management to reduce churn and support requests
     - [x] 37. Write unit test on revenuecat working code
-    - [ ] add deeplink for user authentication whenn the click the verify link in their email upon registering
-      - [ ] as a user i want to get taken back to the app upon tapping the "verify" link in my email
+    - [x] 38. Add deeplink for user authentication when the click the verify link in their email upon registering ✅ COMPLETED
+      - [x] As a user I want to get taken back to the app upon tapping the "verify" link in my email
+      - **Implementation Details:**
+        - Created comprehensive deep link service architecture with `DeepLinkService` and `EmailVerificationService`
+        - Implemented URL scheme handling for email verification deep links
+        - Added robust error handling and toast notifications for user feedback
+        - Enhanced Supabase provider integration with automatic sign-in post-verification
+        - Created dedicated interfaces (`IDeepLinkService`, `IEmailVerificationService`) for maintainable architecture
+        - Added comprehensive BDD test scenarios covering email verification flows
+        - Implemented deep link parsing and validation with proper type safety
+      - **Files Modified:**
+        - `app/_layout.tsx` - Deep link URL handling integration
+        - `app/(app)/welcome.tsx` - Enhanced welcome screen with verification feedback
+        - `context/supabase-provider.tsx` - Email verification processing
+        - `lib/services/DeepLinkService.ts` - Core deep link service implementation
+        - `lib/services/EmailVerificationService.ts` - Email verification handling
+        - `lib/interfaces/IDeepLinkService.ts` - Service interface definition
+        - `lib/interfaces/IEmailVerificationService.ts` - Verification interface
+        - `lib/types/DeepLinkTypes.ts` - Type definitions for deep link data structures
+        - `lib/services/__tests__/DeepLinkService.test.ts` - Comprehensive unit tests
+      - **Key Commits:**
+        - `3257e03` - feat(deepLink): Refactor DeepLinkService for improved readability and functionality
+        - `2eb732e` - feat: complete green phase - fix contradictory test assertions
+        - `6cb7a82` - feat(bdd): Add email verification deep link scenarios
+      - **Testing Coverage:** Full BDD scenarios and unit tests implemented for deep link parsing, email verification flows, and error handling
 
 ## Bugs
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)

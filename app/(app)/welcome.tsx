@@ -1,3 +1,12 @@
+/*
+FILE: app/(app)/welcome.tsx
+PURPOSE: Welcome screen component for Zero Proof app with authentication navigation and email verification handling
+FUNCTIONS:
+  - WelcomeScreen() → JSX.Element: Main welcome screen with sign-up/sign-in navigation and email verification toast
+  - useEffect(showEmailVerification) → void: Handles legacy email verification parameter and displays toast notification
+DEPENDENCIES: expo-router, react, react-native, custom UI components, toast context
+*/
+
 import { useRouter, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { View } from "react-native";
@@ -16,6 +25,10 @@ export default function WelcomeScreen() {
 	const { showToast } = useToast();
 
 	useEffect(() => {
+		// Handle legacy showEmailVerification parameter for backward compatibility
+		// This maintains support for existing sign-up flow
+		// Note: Deep link email verification is handled by DeepLinkService in root layout
+		// which shows success/error toasts and navigates to this screen
 		if (showEmailVerification === "true") {
 			showToast("Check your email to verify your account", "info", 5000);
 			// Clean up the URL parameter

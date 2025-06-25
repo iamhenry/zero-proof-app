@@ -3,13 +3,14 @@ description: TDD workflow for Unit and Integration Testing
 alwaysApply: false
 ---
 
-<tdd-complete-workflow>
+<full-tdd-workflow>
 When building a new feature or fixing a bug:
 1. `tdd-unit-workflow`
 2. `tdd-integration-workflow`
-3. Review
-4. Merge
-</tdd-complete-workflow>
+3. Code Review: `_ai/tools/quality/hybrid-code-review.md`
+4. Update Docs: `update-docs`
+5. Merge Branch
+</full-tdd-workflow>
 
 <tdd-unit-workflow>
 1. User Stories → BDD Scenarios: _ai/tools/tdd/generate_bdd_scenarios.md

@@ -1,7 +1,12 @@
 /**
  * FILE: lib/services/EmailVerificationService.ts
  * PURPOSE: Email verification services using Supabase
- * FUNCTIONS: Token verification, parsing, and expiration checking
+ * FUNCTIONS:
+ *   - constructor() → EmailVerificationService: Initializes email verification service instance
+ *   - verifyEmailToken(token: string) → Promise<VerificationResult>: Verifies email token with Supabase and returns verification result
+ *   - updateVerificationStatus() → Promise<boolean>: Updates user verification status in Supabase auth system
+ *   - parseVerificationToken(token: string) → VerificationToken | null: Parses and validates verification token structure
+ *   - isTokenExpired(token: VerificationToken) → boolean: Checks if verification token has expired based on timestamp
  * DEPENDENCIES: IEmailVerificationService interface, DeepLinkTypes, Supabase
  */
 

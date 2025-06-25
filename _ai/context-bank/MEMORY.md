@@ -1,5 +1,61 @@
 # MEMORY.md
 
+## [June 24, 2025 11:36 AM] Deep Link Email Verification Implementation: React Native URL Scheme Integration and TDD Workflow Excellence
+
+Context: Successfully implemented comprehensive deep link functionality for email verification using React Native Linking API, Supabase OTP verification, and TDD methodology. Achieved complete BDD scenario coverage with 100% test success rate (24/24 tests passing) across DeepLinkService and EmailVerificationService implementations.
+
+Lesson:
+- React Native Deep Link Architecture Patterns:
+  - URL scheme registration in app.json (`zero-proof://`) enables custom protocol handling for email verification flows
+  - React Native Linking API provides both event listener registration and initial URL detection for cold app launches
+  - Service architecture with DeepLinkService orchestrating URL parsing, validation, and navigation while EmailVerificationService handles Supabase integration
+  - Proper lifecycle management with registerDeepLinkListener() and cleanup prevents memory leaks and ensures reliable deep link processing
+  - URL fragment parsing crucial for Supabase error handling (success: clean URL, error: fragments with error_code/error_description)
+
+- Supabase Email Verification Integration:
+  - emailRedirectTo parameter in supabase.auth.signUp() enables custom URL scheme redirects instead of localhost
+  - Supabase handles token verification server-side, client receives success/error feedback through URL fragments
+  - OTP verification through supabase.auth.verifyOtp() with token_hash provides secure email verification
+  - Additional Redirect URLs configuration in Supabase dashboard required for custom schemes
+  - Error handling pattern: check URL fragments for error_code/error_description rather than client-side token validation
+
+- TDD Workflow Excellence with Contradictory Test Assertions:
+  - Red phase: Created failing tests expecting specific behaviors before implementation existed
+  - Green phase challenge: Initial tests had contradictory assertions expecting both null returns and valid data parsing
+  - Resolution: Fixed test logic to properly distinguish between valid and invalid URL patterns
+  - Refactor phase: Enhanced error handling and validation logic based on comprehensive test scenarios
+  - Test-first approach enabled catching edge cases like malformed URLs, concurrent requests, and fragment-based error handling
+
+- Service Architecture for URL Processing:
+  - DeepLinkService responsibility: URL parsing, validation, listener management, UI feedback (toasts)
+  - EmailVerificationService responsibility: Supabase integration, token verification, status updates
+  - Clear separation of concerns enables independent testing and future service extensibility
+  - Dependency injection pattern with optional toast function allows flexible service composition
+  - Error boundary implementation prevents app crashes during deep link processing failures
+
+- URL Scheme Validation and Parameter Extraction:
+  - Robust URL validation checks scheme prefix, path structure, and parameter presence
+  - Parameter extraction handles both query string (?param=value) and URL fragments (#error=code)
+  - URL decoding with decodeURIComponent() ensures proper handling of encoded error messages
+  - Edge case handling for malformed URLs, missing parameters, and invalid schemes
+  - Deterministic parsing behavior enables reliable testing and debugging
+
+Related Methods/Concepts:
+- React Native Linking API and URL scheme handling
+- Supabase authentication and OTP verification flows
+- Test-driven development with BDD scenario validation
+- Service layer architecture and dependency injection
+- URL parsing and validation in mobile applications
+- React Native app lifecycle and listener management
+- Toast notification integration and error handling patterns
+
+Future Improvements:
+- Implement deep link analytics tracking for verification success rates and user journey analysis
+- Add retry mechanism for failed network requests during email verification process
+- Create automated testing pipeline for deep link integration across different app states
+- Develop comprehensive deep link debugging tools and validation utilities
+- Consider expanding deep link functionality for other app features like password reset and social sharing
+
 ## [June 16, 2025 2:45 PM] EAS TestFlight Deployment: Production-Ready iOS Distribution Pipeline
 Context: Successfully implemented and deployed EAS (Expo Application Services) build configuration for iOS TestFlight distribution, establishing end-to-end automated deployment pipeline from code to app store.
 Lesson:

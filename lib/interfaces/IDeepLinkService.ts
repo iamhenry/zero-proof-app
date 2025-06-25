@@ -1,7 +1,11 @@
 /**
  * FILE: lib/interfaces/IDeepLinkService.ts
  * PURPOSE: Defines the contract for deep link processing services, including URL parsing and routing
- * FUNCTIONS: Interface definitions for deep link handling
+ * FUNCTIONS:
+ *   - handleDeepLink(url: string) → Promise<void>: Processes incoming deep link URLs and routes them to appropriate handlers
+ *   - parseVerificationUrl(url: string) → DeepLinkData | null: Extracts verification data from deep link URLs, returns null for invalid URLs
+ *   - registerDeepLinkListener() → void: Sets up application-wide deep link event listener for incoming URLs
+ *   - unregisterDeepLinkListener() → void: Removes deep link event listener to prevent memory leaks
  * DEPENDENCIES: DeepLinkTypes
  */
 

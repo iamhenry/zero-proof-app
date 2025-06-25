@@ -669,3 +669,124 @@ This file contains documentation headers extracted from component files to provi
  * DEPENDENCIES: react, toast context, React Native styling components
  */
 ```
+
+## Deep Link Services
+
+### IDeepLinkService.ts
+```
+/**
+ * FILE: lib/interfaces/IDeepLinkService.ts
+ * PURPOSE: Defines the contract for deep link processing services, including URL parsing and routing
+ * FUNCTIONS:
+ *   - handleDeepLink(url: string) → Promise<void>: Processes incoming deep link URLs and routes them to appropriate handlers
+ *   - parseVerificationUrl(url: string) → DeepLinkData | null: Extracts verification data from deep link URLs, returns null for invalid URLs
+ *   - registerDeepLinkListener() → void: Sets up application-wide deep link event listener for incoming URLs
+ *   - unregisterDeepLinkListener() → void: Removes deep link event listener to prevent memory leaks
+ * DEPENDENCIES: DeepLinkTypes
+ */
+```
+
+### IEmailVerificationService.ts
+```
+/**
+ * FILE: lib/interfaces/IEmailVerificationService.ts
+ * PURPOSE: Defines the contract for email verification services using Supabase
+ * FUNCTIONS:
+ *   - verifyEmailToken(token: string) → Promise<VerificationResult>: Verifies an email token with Supabase authentication service
+ *   - updateVerificationStatus() → Promise<boolean>: Updates the user's verification status in the system after successful verification
+ *   - parseVerificationToken(token: string) → VerificationToken | null: Extracts and validates a verification token from parsed deep link data
+ *   - isTokenExpired(token: VerificationToken) → boolean: Checks if a verification token is expired based on timestamp validation
+ * DEPENDENCIES: DeepLinkTypes
+ */
+```
+
+### DeepLinkTypes.ts
+```
+/**
+ * FILE: lib/types/DeepLinkTypes.ts
+ * PURPOSE: Type definitions for deep link processing and email verification
+ * KEY TYPES:
+ *   - DeepLinkData: Interface for parsed deep link URL data with type, params, fragments, and error handling
+ *   - DeepLinkType: Union type defining supported deep link types ('verification' | 'reset-password' | 'unknown')
+ *   - VerificationResult: Interface for email verification attempt results with success status and optional error data
+ *   - VerificationToken: Interface for verification token metadata including token string, type, expiration, and email
+ *   - DeepLinkConfig: Interface for deep link URL scheme configuration with app scheme and supported path handlers
+ * DEPENDENCIES: None
+ */
+```
+
+### DeepLinkService.ts
+```
+/**
+ * FILE: lib/services/DeepLinkService.ts
+ * PURPOSE: Deep link processing services for email verification
+ * FUNCTIONS:
+ *   - constructor(showToast?: function) → DeepLinkService: Initializes service with optional toast notification handler
+ *   - handleDeepLink(url: string) → Promise<void>: Processes incoming deep link URLs and handles verification flow
+ *   - parseVerificationUrl(url: string) → DeepLinkData | null: Parses verification URL into structured data object
+ *   - registerDeepLinkListener() → void: Sets up listener for deep link events and checks for initial URL
+ *   - unregisterDeepLinkListener() → void: Removes deep link listener and cleans up subscriptions
+ *   - validateDeepLinkUrl(url: string) → boolean: Validates URL format and schema for deep link processing
+ *   - extractUrlParameters(queryString: string) → Record<string, string>: Extracts and decodes URL parameters from query string
+ *   - handleVerificationSuccess() → void: Shows success toast and manages UI feedback for successful verification
+ *   - handleVerificationFailure(errorMessage?: string) → void: Shows error toast with custom or default error message
+ * KEY FEATURES:
+ *   - Comprehensive URL parsing for verification deep links
+ *   - Supabase error fragment handling from URL fragments
+ *   - Toast notification integration for user feedback
+ *   - Robust listener management with cleanup
+ *   - Support for both cold start and foreground deep links
+ *   - URL validation and error handling
+ *   - Debug logging throughout the service lifecycle
+ * DEPENDENCIES: IDeepLinkService interface, DeepLinkTypes, React Native Linking
+ */
+```
+
+### EmailVerificationService.ts
+```
+/**
+ * FILE: lib/services/EmailVerificationService.ts
+ * PURPOSE: Email verification services using Supabase
+ * FUNCTIONS:
+ *   - constructor() → EmailVerificationService: Initializes email verification service instance
+ *   - verifyEmailToken(token: string) → Promise<VerificationResult>: Verifies email token with Supabase and returns verification result
+ *   - updateVerificationStatus() → Promise<boolean>: Updates user verification status in Supabase auth system
+ *   - parseVerificationToken(token: string) → VerificationToken | null: Parses and validates verification token structure
+ *   - isTokenExpired(token: VerificationToken) → boolean: Checks if verification token has expired based on timestamp
+ * KEY FEATURES:
+ *   - Supabase authentication integration for email verification
+ *   - OTP token verification with structured error handling
+ *   - User verification status management
+ *   - Token parsing and validation with security checks
+ *   - Expiration checking for verification tokens
+ *   - Graceful degradation when Supabase is unavailable
+ *   - Network error handling with user-friendly messages
+ * DEPENDENCIES: IEmailVerificationService interface, DeepLinkTypes, Supabase
+ */
+```
+
+### DeepLinkService.test.ts
+```
+/**
+ * FILE: lib/services/__tests__/DeepLinkService.test.ts
+ * PURPOSE: Comprehensive test suite for DeepLinkService following TDD methodology
+ * TEST SCENARIOS:
+ *   - Successful email verification via deep link processing
+ *   - Invalid verification link handling with error management
+ *   - Deep link listener registration and management
+ *   - Concurrent deep link processing and app stability
+ *   - URL parsing and parameter extraction validation
+ *   - Error fragment handling from Supabase responses
+ *   - Toast notification integration testing
+ *   - Initial URL handling for cold app starts
+ * KEY FEATURES:
+ *   - TDD-driven test design with failing tests first
+ *   - Comprehensive mock setup for React Native Linking
+ *   - Mock integration for EmailVerificationService
+ *   - Toast notification system testing
+ *   - Concurrent operation testing for stability
+ *   - Edge case testing for malformed URLs
+ *   - Listener lifecycle management testing
+ * DEPENDENCIES: Jest, React Native Linking, DeepLinkService SUT
+ */
+```

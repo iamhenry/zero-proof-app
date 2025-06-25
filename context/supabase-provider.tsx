@@ -1,3 +1,15 @@
+/*
+FILE: context/supabase-provider.tsx
+PURPOSE: Supabase authentication context provider for managing user sessions and auth state throughout the Zero Proof app
+FUNCTIONS:
+  - SupabaseProvider({ children }) → JSX.Element: Context provider component that manages auth state and navigation
+  - useSupabase() → SupabaseContextProps: Hook to access authentication context
+  - signUp(email, password) → Promise<void>: Creates new user account with email verification
+  - signInWithPassword(email, password) → Promise<void>: Authenticates user with email and password
+  - signOut() → Promise<void>: Signs out current user and clears session
+DEPENDENCIES: @supabase/supabase-js, expo-router, react, custom supabase config
+*/
+
 import { Session, User } from "@supabase/supabase-js";
 import { useRouter, useSegments, SplashScreen } from "expo-router";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -44,6 +56,9 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 		const { error } = await supabase.auth.signUp({
 			email,
 			password,
+			options: {
+				emailRedirectTo: 'zero-proof://welcome'
+			}
 		});
 		if (error) {
 			throw error;

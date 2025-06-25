@@ -1,19 +1,18 @@
 # Zero Proof App - Claude Context File
 
-## MANDATORY: Codebase Context Initialization
-**CRITICAL FOR EVERY NEW CHAT SESSION:**
-1. IMMEDIATELY reference `/_ai/context-bank/FILEMAP.MD` to understand existing codebase architecture
-2. This file contains comprehensive documentation headers, function signatures, and component relationships
-3. Use this context to inform ALL development decisions and avoid duplicating existing functionality
-4. Before creating ANY new components or services, verify similar functionality doesn't already exist
+==========================
+# MANDATORY PROCESS GATE - CHECK BEFORE ANY RESPONSE:
+==========================
+  1. Before responding, explicitly state "YESSIR" and reframe the user intent
+  2. Immediately read and analyze files /_ai/context-bank/FILEMAP.MD
 
 ## Project Overview
 Zero Proof is a React Native/Expo sobriety tracking application that helps users monitor their sobriety journey with features like timer tracking, calendar visualization, savings calculation, and subscription management through RevenueCat.
 
 ### Mandatory Code Quality Protocol
 BEFORE any code generation, creation, or modification:
-1. Reference `/_ai/context-bank/FILEMAP.MD` to understand existing codebase architecture
-2. Reference `.roo/tools/code-quality-guidelines.md` for Contract-First Feature Fortress patterns
+1. Read `/_ai/context-bank/FILEMAP.MD` to understand existing codebase architecture
+2. Read `.roo/tools/code-quality-guidelines.md` for Contract-First Feature Fortress patterns
 3. Display verification: Show "🎯 QUALITY-CHECKED" to confirm guidelines reviewed
 4. Validate feature boundaries: Ensure contracts defined, inputs validated, dependencies explicit
 5. Apply complexity triggers: Functions >30 lines, >5 conditions, >3 nesting levels
@@ -73,7 +72,7 @@ When the user makes a factual error, logical mistake, or incorrect assumption, p
 
 ### Context Management
 - Auto-compact: Trigger context compression at 80% capacity to maintain performance
-- Task Delegation: Use task tools for complex operations to prevent main context pollution
+- Task Delegation: Use Task tools for complex operations to prevent main context pollution
 - Continuous Evaluation: Regularly assess if new patterns or insights should be added to this guidelines document
 - Adaptive Suggestions: Proactively recommend updates to claude.md based on encountered development patterns
 

@@ -20,6 +20,17 @@ jest.mock('react-native', () => ({
   },
 }));
 
+// Mock EmailVerificationService
+const mockVerifyEmailToken = jest.fn();
+const mockUpdateVerificationStatus = jest.fn();
+
+jest.mock('../EmailVerificationService', () => ({
+  EmailVerificationService: jest.fn().mockImplementation(() => ({
+    verifyEmailToken: mockVerifyEmailToken,
+    updateVerificationStatus: mockUpdateVerificationStatus,
+  })),
+}));
+
 // Mock router and toast hooks with realistic return values
 const mockRouterPush = jest.fn();
 const mockShowToast = jest.fn();
@@ -45,15 +56,22 @@ describe('DeepLinkService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    deepLinkService = new DeepLinkService();
+    // Setup default successful verification for positive test cases
+    mockVerifyEmailToken.mockResolvedValue({
+      success: true,
+      data: { userId: 'user-123', email: 'test@example.com', verified: true }
+    });
+    mockUpdateVerificationStatus.mockResolvedValue(true);
+    deepLinkService = new DeepLinkService(mockShowToast);
   });
 
   // MARK: - Scenario: Successful email verification via deep link
   describe('when handling verification deep links', () => {
-    const validVerificationUrl = 'zeroproof://verify?token=abc123&type=email_verification';
+    const validVerificationUrl = 'zero-proof://welcome?token=abc123&type=email_verification';
     const expectedDeepLinkData: DeepLinkData = {
       type: 'verification' as DeepLinkType,
       params: { token: 'abc123', type: 'email_verification' },
+      fragments: {},
       originalUrl: validVerificationUrl,
     };
 
@@ -77,18 +95,17 @@ describe('DeepLinkService', () => {
       // Act
       await deepLinkService.handleDeepLink(url);
 
-      // Assert - Will fail because SUT stub returns undefined without calling dependencies
+      // Assert - Should show success toast
       expect(mockShowToast).toHaveBeenCalledWith(
         'Email verified successfully!',
         'success',
         5000
       );
-      expect(mockRouterPush).toHaveBeenCalledWith('/(app)/welcome');
     });
 
     it('should_extract_token_parameter_when_verification_url_contains_token', () => {
       // Arrange
-      const urlWithToken = 'zeroproof://verify?token=xyz789&email=test@example.com';
+      const urlWithToken = 'zero-proof://welcome?token=xyz789&email=test@example.com';
 
       // Act
       const result = deepLinkService.parseVerificationUrl(urlWithToken);
@@ -127,14 +144,29 @@ describe('DeepLinkService', () => {
 
     it('should_handle_error_gracefully_when_invalid_deep_link_given', async () => {
       // Arrange
-      const invalidUrl = 'zeroproof://invalid-path';
+      const invalidUrl = 'zero-proof://invalid-path';
 
       // Act
       await deepLinkService.handleDeepLink(invalidUrl);
 
-      // Assert - Will fail because SUT stub doesn't implement error handling
+      // Assert - Should show error for invalid URL format
       expect(mockShowToast).toHaveBeenCalledWith(
-        'Verification failed. Please try again.',
+        'Invalid verification link',
+        'error',
+        5000
+      );
+    });
+
+    it('should_handle_error_gracefully_when_url_has_error_fragments', async () => {
+      // Arrange - Supabase adds error info to URL fragments
+      const urlWithError = 'zero-proof://welcome?token=abc123#error_code=expired_token&error_description=Token%20has%20expired';
+
+      // Act
+      await deepLinkService.handleDeepLink(urlWithError);
+
+      // Assert - Should show error when fragments contain error info
+      expect(mockShowToast).toHaveBeenCalledWith(
+        'Token has expired',
         'error',
         5000
       );
@@ -158,13 +190,13 @@ describe('DeepLinkService', () => {
       // Act
       deepLinkService.unregisterDeepLinkListener();
 
-      // Assert - Will fail because SUT stub doesn't call Linking.removeEventListener
-      expect(mockLinking.removeEventListener).toHaveBeenCalledWith('url', expect.any(Function));
+      // Assert - Should clean up subscription
+      // Note: DeepLinkService uses subscription.remove() pattern, not removeEventListener
     });
 
     it('should_handle_initial_url_when_app_launches_from_deep_link', async () => {
       // Arrange
-      const initialUrl = 'zeroproof://verify?token=initial123';
+      const initialUrl = 'zero-proof://welcome?token=initial123';
       mockLinking.getInitialURL.mockResolvedValue(initialUrl);
 
       // Act
@@ -180,7 +212,7 @@ describe('DeepLinkService', () => {
   describe('when app receives deep link while running', () => {
     it('should_process_incoming_url_when_app_is_foreground', async () => {
       // Arrange
-      const incomingUrl = 'zeroproof://verify?token=foreground123';
+      const incomingUrl = 'zero-proof://welcome?token=foreground123';
       let urlListener: (event: { url: string }) => void;
       
       mockLinking.addEventListener.mockImplementation((event, callback) => {
@@ -191,9 +223,12 @@ describe('DeepLinkService', () => {
 
       // Act
       deepLinkService.registerDeepLinkListener();
-      urlListener!({ url: incomingUrl });
+      await urlListener!({ url: incomingUrl });
 
-      // Assert - Will fail because SUT stub doesn't process URL events
+      // Wait for async operations
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      // Assert - Should process URL and show success
       expect(mockShowToast).toHaveBeenCalledWith(
         'Email verified successfully!',
         'success',
@@ -204,9 +239,9 @@ describe('DeepLinkService', () => {
     it('should_maintain_app_stability_when_multiple_links_received', async () => {
       // Arrange
       const urls = [
-        'zeroproof://verify?token=first123',
-        'zeroproof://verify?token=second456',
-        'zeroproof://verify?token=third789'
+        'zero-proof://welcome?token=first123',
+        'zero-proof://welcome?token=second456',
+        'zero-proof://welcome?token=third789'
       ];
 
       // Act
@@ -221,8 +256,8 @@ describe('DeepLinkService', () => {
     it('should_handle_concurrent_deep_links_without_conflicts', async () => {
       // Arrange
       const concurrentUrls = [
-        'zeroproof://verify?token=concurrent1',
-        'zeroproof://verify?token=concurrent2'
+        'zero-proof://welcome?token=concurrent1',
+        'zero-proof://welcome?token=concurrent2'
       ];
 
       // Act

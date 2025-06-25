@@ -1,7 +1,11 @@
 /**
  * FILE: lib/interfaces/IEmailVerificationService.ts
  * PURPOSE: Defines the contract for email verification services using Supabase
- * FUNCTIONS: Interface definitions for email verification handling
+ * FUNCTIONS:
+ *   - verifyEmailToken(token: string) → Promise<VerificationResult>: Verifies an email token with Supabase authentication service
+ *   - updateVerificationStatus() → Promise<boolean>: Updates the user's verification status in the system after successful verification
+ *   - parseVerificationToken(token: string) → VerificationToken | null: Extracts and validates a verification token from parsed deep link data
+ *   - isTokenExpired(token: VerificationToken) → boolean: Checks if a verification token is expired based on timestamp validation
  * DEPENDENCIES: DeepLinkTypes
  */
 
