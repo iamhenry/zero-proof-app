@@ -1,4 +1,4 @@
-<hybrid-code-review>
+<code-review>
 # 🧠 Hybrid Code Review  
 _A two-phase approach to balance precision and breadth_
 
@@ -94,8 +94,7 @@ Trigger Phase 2 if any of these are true:
 
 For each issue identified:
 
-- File: `path/to/file.ts`
-- Line: `42–45` or `42`
+- File: `path/to/file.ts:42–45` or `path/to/file.ts:42`
 - Severity: High / Medium / Low
 - Issue: Brief description of the problem
 - Why This Severity: Explain impact or potential harm
@@ -103,7 +102,7 @@ For each issue identified:
 - Include the relevant lines of code illustrating the issue.
 - Code Snippet Example (adapt to other languages if when necessary) 
 ```typescript
-// File: utils/formatter.ts  Line: 12–14
+// File: utils/formatter.ts:42-45
 export function formatDate(date: Date) {
   return date.toISOString().split('T')[0];
 // Missing timezone offset handling
@@ -232,15 +231,14 @@ _Rating: 8.5/10 - Fix 2 medium severity issues before merge, low severity option
 - Router navigation correctly integrated with existing auth flow  
 
 ⚠️ Areas for Improvement:
-- File: `app/(app)/sign-up.tsx`
-- Line: `69-71` 
+- File: `app/(app)/sign-up.tsx:69-71` 
 - Severity: Medium
 - Issue: Hardcoded 300ms timeout for toast display  
 - Why This Severity: Could create race conditions or timing issues on slower devices  
 - Suggestion: Use navigation state listener or Promise.resolve().then() for more reliable timing
 - Code Snippet:
     ~~~typescript
-    // File: app/(app)/sign-up.tsx  Line: 69-71
+    // File: app/(app)/sign-up.tsx:69-71
     setTimeout(() => {
       showToast('Please check your email to verify your account', 'info');
       router.dismissAll();
@@ -257,15 +255,14 @@ _Rating: 8.5/10 - Fix 2 medium severity issues before merge, low severity option
 - Good separation of concerns in toast component and context  
 
 ⚠️ Areas for Improvement:
-- File: `components/ui/toast.tsx`
-- Line: `52-60` 
+- File: `components/ui/toast.tsx:52-60`
 - Severity: Low
 - Issue: Switch statement could benefit from a color mapping object  
 - Why This Severity: Minor maintainability improvement, doesn't affect functionality  
 - Suggestion: Extract color mapping to constants for easier maintenance
 - Code Snippet:
     ~~~typescript
-    // File: components/ui/toast.tsx  Line: 52-60
+    // File: components/ui/toast.tsx:52-60
     switch (type) {
       case 'success': return 'bg-green-500';
       case 'error': return 'bg-red-500';
@@ -279,22 +276,20 @@ _Rating: 8.5/10 - Fix 2 medium severity issues before merge, low severity option
 #### 3. 🔄 Consistency - Score: 6/10 🟡
 ⚠️ Issues Identified:
 
-- File: `app/(app)/sign-in.tsx`
-- Line: `45` 
+- File: `app/(app)/sign-in.tsx:45` 
 - Severity: Medium
 - Issue: Sign-in doesn't provide user feedback like sign-up does  
 - Why This Severity: Inconsistent user experience between auth flows  
 - Suggestion: Add toast notification for successful sign-in or error feedback
 
-- File: `app/(app)/welcome.tsx`
-- Line: `16` 
+- File: `app/(app)/welcome.tsx:16`
 - Severity: Medium
 - Issue: ToastContainer only added to welcome screen, not consistently across app  
 - Why This Severity: Limits toast functionality to single screen, breaks expected behavior  
 - Suggestion: Consider adding ToastContainer to main layout or implement global toast positioning
 - Code Snippet:
     ~~~typescript
-    // File: app/(app)/welcome.tsx  Line: 16
+    // File: app/(app)/welcome.tsx:16
     <ToastContainer /> {/* Only on welcome screen - should be global */}
     ~~~
 
@@ -319,4 +314,4 @@ _Rating: 8.5/10 - Fix 2 medium severity issues before merge, low severity option
 - Focus on consistency improvements to enhance user experience
 - No blocking issues, safe to merge after addressing medium severity items
 ```
-</hybrid-code-review>
+</code-review>
