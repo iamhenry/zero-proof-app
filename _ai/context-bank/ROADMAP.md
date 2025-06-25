@@ -434,12 +434,6 @@ Step-by-Step Tasks:
 
 ## Bugs
 - [ ] Fix midnight transition bug for timer and daycell (see bug report `_ai/bug-report/timer-streak-midnight-sync-bug.md`)
-- [x] how do i handle URL's in supabase in prod when the user has to verify their email. (right now it uses localhost and the site fails because domain doesnt exist even tho they can still verify their email)
-  - **Resolution**: Authentication flow resolved in latest build - email verification working correctly despite localhost redirect
-- [x] **AUTHENTICATION: Sign-in Error with Valid Credentials** (TestFlight Build 3 - June 17, 2025) ✅ RESOLVED
-  - **Issue**: User receives "sign in failed. please check your credentials" error when submitting valid, verified credentials from Supabase database using existing tester account
-  - **Resolution**: Authentication issues resolved in latest TestFlight build - users can now successfully sign in with verified credentials
-  - **Next Phase**: Implement deep linking for email verification to improve user experience by eliminating localhost redirect
 // FIXME:
 - [ ] Currently in the onboarding experience, the user can easily swipe past entering the drink quantity. And so when the user completes the onboarding experience and starts the free trial, the drink quantity amount will be zero. And so the savings counter will not be calculating anything and will always show zero.
 
@@ -466,6 +460,12 @@ Step-by-Step Tasks:
   - [x] The savings counter component does not recalculate after the user edits their value in the drink quantity settings modal.
     - [x] why didnt the test catch this?
 - [x] when signing up for a new account, the signup modal sheet does not dismiss and there's not toast to notify the user that they have to verify their email
+- [x] how do i handle URL's in supabase in prod when the user has to verify their email. (right now it uses localhost and the site fails because domain doesnt exist even tho they can still verify their email)
+  - **Resolution**: Authentication flow resolved in latest build - email verification working correctly despite localhost redirect
+- [x] **AUTHENTICATION: Sign-in Error with Valid Credentials** (TestFlight Build 3 - June 17, 2025) ✅ RESOLVED
+  - **Issue**: User receives "sign in failed. please check your credentials" error when submitting valid, verified credentials from Supabase database using existing tester account
+  - **Resolution**: Authentication issues resolved in latest TestFlight build - users can now successfully sign in with verified credentials
+  - **Next Phase**: Implement deep linking for email verification to improve user experience by eliminating localhost redirect
 
 ## Phase 4: UI Polish & Optimization
 Enhance user experience with animations and optimizations.
