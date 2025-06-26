@@ -1,7 +1,7 @@
 ---
-name: parallel-track
+name: start-parallel-tasks
 description: Create temp .md file for task tracking and spawn parallel subagents
-usage: "/parallel-track \"task description\""
+usage: "/start-parallel-tasks \"task description\""
 category: workflow
 ---
 
