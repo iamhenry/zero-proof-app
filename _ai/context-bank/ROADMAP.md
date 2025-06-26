@@ -505,12 +505,12 @@ Step-by-Step Tasks:
       - [x] Configure automated submission to App Store Connect without manual .ipa handling
       - [x] Successfully deploy Zero Proof app to TestFlight for beta testing
       - Reference: Commit 3e2b8c0 - Production-ready iOS distribution pipeline established
-  - [ ] Ensure app build is only compatible on iOS
-  - [ ] Investigate crashing issue upon immediately installing from test flight.
+  - [x] Ensure app build is only compatible on iOS
+  - [x] Investigate crashing issue upon immediately installing from test flight.
 
 ------------------------
 
-# Backlog
+# 🚨 Backlog
 
 ------------------------
 

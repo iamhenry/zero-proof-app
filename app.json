@@ -12,8 +12,8 @@
     ],
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "buildNumber": "4",
+      "supportsTablet": false,
+      "buildNumber": "5",
       "config": {
         "usesNonExemptEncryption": false
       },
