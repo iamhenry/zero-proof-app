@@ -17,7 +17,9 @@ import { TimerStateProvider } from "@/context/TimerStateContext";
 import { CalendarDataProvider } from "@/context/CalendarDataContext";
 import { SavingsDataProvider } from "@/context/SavingsDataContext"; // Import the new provider
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
+import { AccountDeletionProvider } from "@/context/AccountDeletionContext";
 import { ToastProvider, useToast } from "@/context/toast-provider";
+import { ToastContainer } from "@/components/ui/toast";
 import { configureRevenueCat } from "@/config/revenuecat";
 import { DeepLinkService } from "@/lib/services/DeepLinkService";
 
@@ -103,9 +105,12 @@ export default function AppLayout() {
 					<CalendarDataProvider>
 						<SavingsDataProvider>
 							<SupabaseProvider>
-								<SubscriptionProvider>
-									<Slot />
-								</SubscriptionProvider>
+								<AccountDeletionProvider>
+									<SubscriptionProvider>
+										<Slot />
+										<ToastContainer />
+									</SubscriptionProvider>
+								</AccountDeletionProvider>
 							</SupabaseProvider>
 						</SavingsDataProvider>
 					</CalendarDataProvider>
