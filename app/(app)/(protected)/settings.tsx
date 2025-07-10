@@ -10,14 +10,22 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Muted } from "@/components/ui/typography";
 import { useSupabase } from "@/context/supabase-provider";
+import { useAccountDeletion } from "@/context/AccountDeletionContext";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { AccountDeletionModal } from "@/components/ui/settings";
 import { Feather } from "@expo/vector-icons";
 
 const defaultIconSize = 16;
 
 export default function Settings() {
 	const { signOut, user } = useSupabase();
+	const {
+		state: { isModalVisible, isDeleting, error },
+		deleteAccount,
+		showModal,
+		hideModal,
+	} = useAccountDeletion();
 
 	const email = user?.email ?? "Unknown";
 	const avatarText = user?.email?.[0]?.toUpperCase() ?? "?";
@@ -57,6 +65,10 @@ export default function Settings() {
 		}
 	};
 
+	const handleDeleteAccount = () => {
+		showModal();
+	};
+
 	const items = [
 		{
 			id: "send-feedback",
@@ -70,6 +82,13 @@ export default function Settings() {
 			title: "Manage Subscription",
 			onPress: handleManageSubscription,
 			icon: "credit-card",
+			iconSize: defaultIconSize,
+		},
+		{
+			id: "delete-account",
+			title: "Delete Account...",
+			onPress: handleDeleteAccount,
+			icon: "trash-2",
 			iconSize: defaultIconSize,
 		},
 		{
@@ -109,9 +128,15 @@ export default function Settings() {
 							<Feather
 								name={item.icon as any}
 								size={item.iconSize || defaultIconSize}
-								color="#1f2937"
+								color={item.id === "delete-account" ? "#ef4444" : "#1f2937"}
 							/>
-							<Text className="text-left text-gray-900 text-base w-full">
+							<Text
+								className={`text-left text-base w-full ${
+									item.id === "delete-account"
+										? "text-red-500"
+										: "text-gray-900"
+								}`}
+							>
 								{item.title}
 							</Text>
 						</View>
@@ -122,6 +147,15 @@ export default function Settings() {
 
 			{/* Spacer to push content to center */}
 			<View className="flex-1" />
+
+			{/* Account Deletion Modal */}
+			<AccountDeletionModal
+				visible={isModalVisible}
+				onConfirm={deleteAccount}
+				onCancel={hideModal}
+				isLoading={isDeleting}
+				error={error}
+			/>
 		</View>
 	);
 }

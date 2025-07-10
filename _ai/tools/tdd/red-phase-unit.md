@@ -328,4 +328,14 @@ Purpose: Assumptions, questions for Green phase.
 - Vague or Unrealistic Mock Contracts for External Dependencies.
 - SUT Stubs That Don't Reflect the Intended Contract.
 
+## Appendix: UI Component Testing Patterns
+- Focus on interaction behaviors, not text content
+- Use testID attributes for element identification
+- Test state changes, not visual presentation
+- Examples: Button states, callback invocation, conditional rendering logic
+- What should we test?
+  - Button disabled state (business logic) ✅
+  - Callback invocation (business logic) ✅
+  - Button text content (UI presentation) ❌
+  - Warning message text (UI presentation) ❌
 </tdd-red-phase>
