@@ -5,6 +5,7 @@
 ==========================
   1. Before responding, explicitly state "YESSIR" and reframe the user intent
   2. Immediately read and analyze files `/_ai/context-bank/FILEMAP.MD`
+  3. Only once per chat session
 
 ## Project Overview
 Zero Proof is a React Native/Expo sobriety tracking application that helps users monitor their sobriety journey with features like timer tracking, calendar visualization, savings calculation, and subscription management through RevenueCat.
