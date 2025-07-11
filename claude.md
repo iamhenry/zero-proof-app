@@ -4,7 +4,7 @@
 # MANDATORY PROCESS GATE - CHECK BEFORE ANY RESPONSE:
 ==========================
   1. Before responding, explicitly state "YESSIR" and reframe the user intent
-  2. Immediately read and analyze files /_ai/context-bank/FILEMAP.MD
+  2. Immediately read and analyze files `/_ai/context-bank/FILEMAP.MD`
 
 ## Project Overview
 Zero Proof is a React Native/Expo sobriety tracking application that helps users monitor their sobriety journey with features like timer tracking, calendar visualization, savings calculation, and subscription management through RevenueCat.
@@ -12,10 +12,8 @@ Zero Proof is a React Native/Expo sobriety tracking application that helps users
 ### Mandatory Code Quality Protocol
 BEFORE any code generation, creation, or modification:
 1. Read `/_ai/context-bank/FILEMAP.MD` to understand existing codebase architecture
-2. Read `.roo/tools/code-quality-guidelines.md` for Contract-First Feature Fortress patterns
-3. Display verification: Show "🎯 QUALITY-CHECKED" to confirm guidelines reviewed
+3. Display verification: Show "🎯 FILEMAP-CHECKED" to confirm guidelines reviewed
 4. Validate feature boundaries: Ensure contracts defined, inputs validated, dependencies explicit
-5. Apply complexity triggers: Functions >30 lines, >5 conditions, >3 nesting levels
 6. Design for separation: Extract concerns before implementation, not after
 7. Use prevention checklist: Type safety, error handling, performance, testing
 8. When in doubt: Extract logic to focused functions/services from start
@@ -37,21 +35,60 @@ Triggers for Enhanced Review:
 - CRITICAL: when fixing bugs never request or expose security secrets or api keys or commands!
 
 ## Key Technologies
-- React Native with Expo
-- TypeScript
-- NativeWind (Tailwind CSS for React Native)
+- React Native with Expo (Expo Router for file-based routing)
+- TypeScript with strict mode
+- NativeWind (Tailwind CSS for React Native) with HSL custom properties
 - RevenueCat for subscription management
 - Supabase for backend services
-- Jest for testing
-- React Navigation for routing
+- Jest with React Testing Library
+- AsyncStorage via repository pattern
+
+## Development Commands
+
+### Core Development
+```bash
+npm start              # Start Expo development server
+npm run ios           # Run on iOS simulator  
+npm run android       # Run on Android emulator
+npm test              # Run Jest test suite
+npm run lint          # ESLint with auto-fix
+```
+
+### Build & Deployment
+```bash
+# CRITICAL: Always increment expo.ios.buildNumber in app.json before builds
+eas build --platform ios --profile production  # Production iOS build
+eas submit --platform ios                      # Submit to TestFlight
+```
+
+Build profiles use m-medium resource class. Environment variables handled gracefully - services never throw on missing config.
+
+## Architecture: Context-Driven Feature Fortresses
+
+### State Management Pattern
+React Context hierarchy in `app/_layout.tsx`:
+```
+ToastProvider → RepositoryProvider → TimerStateProvider → CalendarDataProvider 
+→ SavingsDataProvider → SupabaseProvider → AccountDeletionProvider → SubscriptionProvider
+```
+
+### Core Layers
+- Repository Layer: `ISobrietyDataRepository` interface → `LocalStorageSobrietyRepository` (AsyncStorage)
+- Service Layer: `/lib/services/` - business logic with interface-first design
+- Context Layer: Feature-specific providers with custom hooks (`useTimerState`, `useCalendarContext`)
+- UI Layer: `/components/ui/[feature]/` - NativeWind styled components
+
+### External Integrations
+- RevenueCat: Subscription management with 7-day free trial
+- Supabase: Authentication and account deletion
+- Expo Router: File-based routing with protected routes under `(app)/(protected)/`
 
 ## Project Structure
-- `/app/` - Expo Router app directory structure
-- `/components/` - Reusable UI components with comprehensive test coverage
-- `/context/` - React Context providers for state management
-- `/lib/` - Business logic, services, and utilities
-- `/_ai/` - AI-related documentation and specifications
-- `/tests/` - Test configurations and utilities
+- `/app/` - Expo Router file-based routing
+- `/components/ui/[feature]/` - Component + hooks + types + tests
+- `/lib/services/` - Business logic implementations
+- `/lib/interfaces/` - Service contracts and types
+- `/tests/integration/` - Cross-context integration tests
 
 ## Development Guidelines & Best Practices
 
@@ -60,164 +97,84 @@ Triggers for Enhanced Review:
 - Context Richness: Maintain detailed context while keeping responses focused and actionable
 - Teaching Approach: Explain code concepts in simple terms using analogies when helpful
 - Visual Aids: Use diagrams and flow charts for >3 interconnected components or architectural patterns
-- Error Correction: <correction_directive>
-When the user makes a factual error, logical mistake, or incorrect assumption, politely but directly correct them. Do not defer to the user's incorrect statement to avoid conflict. Prioritize accuracy over user comfort when facts are at stake. Begin corrections with phrases like "Actually," "I think there might be an error here," or "That's not quite right" rather than agreeing first and then contradicting.
-</correction_directive>
+- Error Correction:
+  <correction_directive>
+    When the user makes a factual error, logical mistake, or incorrect assumption, politely but directly correct them. Do not defer to the user's incorrect statement to avoid conflict. Prioritize accuracy over user comfort when facts are at stake. Begin corrections with phrases like "Actually," "I think there might be an error here," or "That's not quite right" rather than agreeing first and then contradicting.
+  </correction_directive>
 
 ### Git Workflow Management
-- Staged Commits: Add changes to staging after each successful development TDD phase
-- Success Criteria: Each TDD phase should have clear, measurable completion criteria before staging
 - History Context: Leverage git history to understand existing implementation patterns and architectural decisions
-- Progressive Integration: Use commit history to track feature evolution and maintain development continuity
 
 ### Context Management
 - Auto-compact: Trigger context compression at 80% capacity to maintain performance
-- Task Delegation: Use Task tools for complex operations to prevent main context pollution
+- Task Delegation: Use parallel `Task` tool for complex operations to prevent main context pollution
 - Continuous Evaluation: Regularly assess if new patterns or insights should be added to this guidelines document
-- Adaptive Suggestions: Proactively recommend updates to claude.md based on encountered development patterns
 
 ### Code Explanation Standards
 - Keep technical explanations accessible without being overly verbose
-- Use real-world analogies to clarify abstract programming concepts
+- Use real-world analogies or examples to clarify abstract programming concepts
 - Focus on the "why" behind code decisions, not just the "what"
 - Provide context for how individual components fit into the larger system architecture
 
-## Sub-Agent Delegation Strategy
-
 ### Core Principles
-- **PARALLEL FIRST**: Always prioritize spawning parallel sub-agents as the default approach for maximum efficiency
+- PARALLEL FIRST: Always prioritize spawning parallel sub-agents as the default approach for maximum efficiency
 - Context Protection: Main agent coordinates, sub-agents handle complex work to prevent main context pollution
 - Concurrent Execution: Spawn multiple specialized sub-agents simultaneously whenever tasks can be parallelized
 - Specialized Expertise: Delegate to focused perspectives for optimal results
 - Clean Aggregation: Results integrated back to main context without contamination
 - Efficiency Mandate: Use parallel Task method by default - sequential execution only when dependencies require it
 
-### Enhanced Delegation Triggers
+## Testing Infrastructure
+```bash
+npm test                    # Run full Jest test suite
+npm test -- --watch        # Watch mode for development
+npm test ComponentName      # Run specific test file
+```
 
-Intent + Semantic Framework: Triggers now use semantic understanding and intent analysis rather than keyword matching for improved accuracy.
-
-Always Delegate:
-- Deep codebase analysis requiring >3 files or >200 lines of code
-- Complex implementations >50 lines or touching >2 system layers
-- Multi-perspective tasks (design, accessibility, performance, security)
-- Research requiring specialized domain knowledge
-- Semantic Enhancement: Detect complexity through integration language ("connect", "sync", "workflow"), multiple system touchpoints, and specialized domain terminology
-
-TDD Implementation (Auto-delegate to `agents/01-tdd-orchestrator.claude.md`):
-- Build Intent Patterns: 
-  - "Users should be able to [action] so that [outcome]"
-  - "I need [system] that [capabilities]"
-  - "Build [feature] for [users/production]"
-  - "Implement [functionality]" + quality indicators ("secure", "scalable", "robust")
-- Semantic Complexity Indicators: Multiple actors, integration requirements, production/quality context
-- Legacy Patterns (enhanced): "Create feature", "Develop [component]", "Add [capability]"
-- Test-Required Patterns: "Fix [bug] with tests", "TDD workflow"
-
-Research & Analysis:
-- Explore Intent Patterns:
-  - "How should we...", "What's the best approach...", "Should we..."
-  - "Analyze [codebase/patterns]", "Review [architecture/performance]"
-  - "Compare [approaches]", "Audit [accessibility/security]"
-  - "Explore [implementation options]"
-- Semantic Indicators: Question words, comparison language ("vs", "versus", "better"), exploratory tone
-
-Parallel Analysis Patterns:
-- Multiple expert perspectives on same problem
-- Concurrent investigation of different solutions  
-- Specialized reviews (design, mobile, accessibility, performance)
-- Semantic Enhancement: Detect when multiple viewpoints needed through language suggesting complexity or ambiguity
-
-### Opt-out Signals
-Enhanced Semantic Detection: Skip delegation for:
-- Low Complexity Intent: "quick implementation", "prototype only", "without tests"
-- Simple Action Patterns: "Change [specific thing] to [specific value]", "Add [simple element] to [location]"
-- Modifiers Indicating Simplicity: "just", "only", "simple", "quick fix"
-- Single-scope Operations: Simple documentation updates, single-file edits, rapid prototyping requests
-- Direct Fix Patterns: "Fix [specific bug] in [file]" (unless explicitly requesting tests)
-
-### Sub-Agent Coordination
-1. Acknowledge delegation with brief rationale
-2. Spawn specialized sub-agents (parallel when applicable)
-3. Transfer context: requirements, existing patterns, project constraints
-4. Aggregate results cleanly in main context
-
-### TDD Workflow Integration
-Phases: Red (failing tests) → Green (minimal implementation) → Refactor (optimize) → Integration (compatibility)
-
-### Testing Conventions
-- Jest for unit and integration tests
-- React Testing Library for component testing
-- Mock implementations for external services
-- Test files co-located with components (`__tests__/` directories)
+Patterns:
+- Jest with React Testing Library integration
+- Comprehensive test utilities in `/lib/test-utils.tsx` with context mocking
 - Factory patterns for test data generation
-
-### Code Quality Standards
-- TypeScript strict mode
-- Error handling: all async ops + user input + network failures
-- Performance: <100ms UI response, <2MB bundle size
-- Accessibility: WCAG 2.1 AA, 4.5:1 contrast minimum
-- Component reusability
-- Consistent naming conventions
-
-### Build & Deployment Guidelines
-- **Always increment build number** before TestFlight submission: Update `expo.ios.buildNumber` in app.json
-- **Service initialization safety**: Services should return boolean success/failure, not throw errors
-- **Environment variable handling**: All external services must gracefully handle missing configuration
-- **TestFlight preparation**: Test locally with missing env vars before EAS build submission
-
-### Solution Evaluation Framework
-- **Structured Decision Making**: Reference `.roo/tools/propose_solution.md` for complex architectural decisions
-- **Scoring Metrics**: Use when comparing multiple implementation approaches (Module Independence, Code Clarity, Component Reusability, Test Coverage)
-- **Actionable Triggers**: 
-  - Requirements Definition: "Let's define requirements and use cases for..."
-  - Solution Exploration: "Brainstorm", "propose solutions", "what are our options"
-  - Idea Generation: "Need ideas for...", "how should we approach..."
-  - Architecture Decisions: New features touching >2 system layers
-  - Integration Planning: External service connections or data flow changes
-  - User Experience Design: Feedback mechanisms, state transitions, error handling
-  - Semantic Enhancement: Detect uncertainty language ("not sure", "best way"), comparison needs ("vs", "better"), or complexity indicators (multiple actors, system touchpoints)
-
+- Integration tests in `/tests/integration/` for cross-context scenarios
+- BDD scenarios documented in `/_ai/scenarios/`
+- Test files: `Component.test.tsx` (unit) + `Component.integration.test.tsx`
 
 ## Component Development Guidelines
 
-### UI Components
-- Use NativeWind for styling
-- Follow existing component patterns in `/components/ui/`
-- Include proper TypeScript interfaces
-- Implement comprehensive test coverage
-- Support dark/light themes where applicable
+### Component Organization Pattern
+```
+components/ui/[feature]/
+├── Component.tsx           # Main component
+├── hooks/useFeature.ts     # Custom hooks
+├── types.ts               # TypeScript interfaces
+├── index.ts               # Barrel exports
+└── __tests__/
+    ├── Component.test.tsx
+    └── Component.integration.test.tsx
+```
 
-### Business Logic
-- Implement in `/lib/services/`
-- Use dependency injection patterns
-- Include comprehensive error handling
-- Follow repository pattern for data access
-- Maintain separation of concerns
+### Service Pattern
+- Interface-first design in `/lib/interfaces/`
+- Implementation in `/lib/services/` with dependency injection
+- Error handling with Result/Either patterns - NEVER throw on missing config
+- Repository pattern: All persistence through `ISobrietyDataRepository`
 
-### State Management
-- Use React Context for global state
-- Implement proper loading and error states
-- Follow existing context patterns
-- Include proper TypeScript typing
+### Context Pattern
+- Provider components with clear separation of concerns
+- Custom hooks for consuming context (`useTimerState`, `useCalendarContext`)
+- Loading states and error handling built into contexts
+- Memoization for performance optimization
 
-## Development Workflow
-1. Analyze requirements and existing code patterns
-2. Design component/feature architecture
-3. Implement using TDD approach for all new features and business logic bug fixes
-4. Ensure integration with existing systems
-5. Verify accessibility and performance
-6. Update documentation as needed
 
-### Decision Triggers (Specific Conditions)
-- Confidence <80%: Ask 2-3 clarifying questions before proceeding
-- User asks "how does X work": Include 1 real-world analogy in explanation  
-- Explaining >3 interconnected components: Create ASCII flow diagram
-- Same pattern explained 3+ times in conversation: Suggest adding to claude.md
-- User says "I don't understand": Break into smaller steps with examples
+## Build & Deployment Workflow
 
-### Response Boundaries (Hard Rules)
-- Never proceed with <80% confidence without questions
-- Always correct factual errors directly (don't agree then contradict)
-- Stop at complexity threshold - delegate to sub-agent instead
+EAS Build Process:
+1. MANDATORY: Increment `expo.ios.buildNumber` in `app.json`
+2. Build profiles: development, preview, production (all use m-medium resource class)
+3. Legacy dependencies: `@testing-library/react-hooks` requires legacy peer deps in `eas.json`
 
-This delegation strategy maintains context clarity, enables parallel execution, and ensures specialized expertise while preserving development flexibility.
+Environment Safety Pattern:
+- All services handle missing env vars gracefully - NEVER throw errors
+- Supabase client creation with null fallback for missing environment variables
+- RevenueCat initialization returns boolean success/failure
+- Test locally with missing env vars before EAS builds to ensure graceful degradation
