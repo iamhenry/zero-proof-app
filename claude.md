@@ -125,6 +125,38 @@ ToastProvider → RepositoryProvider → TimerStateProvider → CalendarDataProv
 - Clean Aggregation: Results integrated back to main context without contamination
 - Efficiency Mandate: Use parallel Task method by default - sequential execution only when dependencies require it
 
+### Planning and Task Management
+Read: `/_ai/templates/plan-task-template.md`
+
+### Plan Documentation Protocol
+When implementing complex features or multi-step tasks:
+1. ALWAYS create a `plan.md` file in the project root
+2. Structure tasks with sufficient detail for junior developers
+3. Use recursive completion tracking as work progresses
+4. Integrate with TodoWrite tool for active session management
+
+#### Task Detail Requirements
+Each task MUST include:
+- Clear objective a junior developer can understand
+- Step-by-step implementation guidance
+- Expected file modifications
+- Dependencies and prerequisites
+- Testing strategy and acceptance criteria
+- Time estimation where applicable
+
+#### Progress Tracking Protocol
+- Update task status immediately upon completion: ⏳ → 🚧 → ✅
+- Mark sub-tasks with checkboxes for granular progress
+- Add completion timestamps and notes
+- Link to related TodoWrite entries for active session tracking
+- Archive completed plan.md files to `/_ai/completed-plans/` directory
+
+#### Integration with TodoWrite
+- Create TodoWrite entries referencing specific plan.md tasks
+- Use consistent task naming: "Plan.md: [Task Title]"
+- Mark TodoWrite items complete when plan.md tasks are finished
+- Maintain bidirectional traceability between tools
+
 ## Testing Infrastructure
 ```bash
 npm test                    # Run full Jest test suite
