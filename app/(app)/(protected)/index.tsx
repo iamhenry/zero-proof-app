@@ -15,7 +15,8 @@
  */
 
 import React, { useEffect, useRef } from "react"; // Import useRef
-import { View, SafeAreaView } from "react-native";
+import { View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { CalendarGrid } from "@/components/ui/calendar";
 import { SobrietyTimer } from "@/components/ui/timer";
 import { SavingsCounter, StreakCounter } from "@/components/ui/statistics";
@@ -139,7 +140,7 @@ export default function Home() {
 				<StreakCounter count={elapsedDays} />
 				<SobrietyTimer />
 				<SavingsCounter />
-				<CalendarGrid />
+				{!isLoadingInitial && <CalendarGrid />}
 			</View>
 		</SafeAreaView>
 	);

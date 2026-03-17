@@ -59,8 +59,8 @@ export const DayCell = React.memo(
 		// Memoize cell class string
 		const cellClass = useMemo(() => {
 			return day.sober
-				? `${intensityColor} rounded-lg outline outline-1 outline-offset-[-1px]`
-				: `rounded-lg outline outline-1 outline-offset-[-1px]`;
+				? `${intensityColor} rounded-lg border border-[1px] border-white/20`
+				: `rounded-lg border border-[1px] border-white/20`;
 		}, [day.sober, intensityColor]);
 
 		// Memoize cell content
