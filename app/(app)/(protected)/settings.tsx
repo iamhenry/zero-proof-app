@@ -1,15 +1,13 @@
 // FILE: app/(app)/(protected)/settings.tsx
-// PURPOSE: Display the authenticated user's profile with options to manage
-// their subscription and sign out.
-// FUNCTIONS:
-//   - Settings(): React component showing profile info, Manage Subscription
-//     button for iOS, and sign out button.
-// DEPENDENCIES: React Native, custom UI components, and Supabase context.
+// PURPOSE: Display settings with options to manage subscription and send feedback.
+// [SUPABASE_AUTH_DISABLED] Auth-related UI (sign out, email display) removed.
+// DEPENDENCIES: React Native, custom UI components.
 import { FlatList, Linking, Platform, View } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Muted } from "@/components/ui/typography";
-import { useSupabase } from "@/context/supabase-provider";
+// [SUPABASE_AUTH_DISABLED] useSupabase import removed
+// import { useSupabase } from "@/context/supabase-provider";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Feather } from "@expo/vector-icons";
@@ -17,10 +15,10 @@ import { Feather } from "@expo/vector-icons";
 const defaultIconSize = 16;
 
 export default function Settings() {
-	const { signOut, user } = useSupabase();
-
-	const email = user?.email ?? "Unknown";
-	const avatarText = user?.email?.[0]?.toUpperCase() ?? "?";
+	// [SUPABASE_AUTH_DISABLED] Auth hook removed
+	// const { signOut, user } = useSupabase();
+	// const email = user?.email ?? "Unknown";
+	// const avatarText = user?.email?.[0]?.toUpperCase() ?? "?";
 
 	const handleManageSubscription = async () => {
 		if (Platform.OS !== "ios") return;
@@ -38,18 +36,15 @@ export default function Settings() {
 	};
 
 	const handleSendFeedback = async () => {
-		const userEmail = user?.email;
-		const subject = "Feedback%20for%20App";
-		const mailtoUri = userEmail
-			? `mailto:${userEmail}?subject=${subject}`
-			: `mailto:?subject=${subject}`;
+		// [SUPABASE_AUTH_DISABLED] Removed user email pre-fill
+		const subject = "Feedback%20for%20Zero%20Proof";
+		const mailtoUri = `mailto:?subject=${subject}`;
 
 		try {
 			const canOpen = await Linking.canOpenURL(mailtoUri);
 			if (canOpen) {
 				await Linking.openURL(mailtoUri);
 			} else {
-				// TODO: Maybe show an alert that no email app is available
 				console.warn("Cannot open mailto link");
 			}
 		} catch (err) {
@@ -72,13 +67,14 @@ export default function Settings() {
 			icon: "credit-card",
 			iconSize: defaultIconSize,
 		},
-		{
-			id: "sign-out",
-			title: "Sign Out",
-			onPress: signOut,
-			icon: "log-out",
-			iconSize: defaultIconSize,
-		},
+		// [SUPABASE_AUTH_DISABLED] Sign Out item removed
+		// {
+		// 	id: "sign-out",
+		// 	title: "Sign Out",
+		// 	onPress: signOut,
+		// 	icon: "log-out",
+		// 	iconSize: defaultIconSize,
+		// },
 	];
 
 	return (
@@ -86,10 +82,10 @@ export default function Settings() {
 			{/* Spacer to push content to center */}
 			<View className="flex-1" />
 
-			{/* User profile section */}
+			{/* [SUPABASE_AUTH_DISABLED] User profile section simplified */}
 			<View className="w-full items-center space-y-4 mb-8">
-				<Avatar className="h-20 w-20" text={avatarText} />
-				<Text className="text-xl">{email}</Text>
+				<Avatar className="h-20 w-20" text="ZP" />
+				<Text className="text-xl">Zero Proof</Text>
 				<Badge text="Pro" />
 			</View>
 

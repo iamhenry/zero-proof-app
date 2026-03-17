@@ -1,26 +1,24 @@
 /*
 FILE: context/supabase-provider.tsx
-PURPOSE: Supabase authentication context provider for managing user sessions and auth state throughout the Zero Proof app
-FUNCTIONS:
-  - SupabaseProvider({ children }) → JSX.Element: Context provider component that manages auth state and navigation
-  - useSupabase() → SupabaseContextProps: Hook to access authentication context
-  - signUp(email, password) → Promise<void>: Creates new user account with email verification
-  - signInWithPassword(email, password) → Promise<void>: Authenticates user with email and password
-  - signOut() → Promise<void>: Signs out current user and clears session
-DEPENDENCIES: @supabase/supabase-js, expo-router, react, custom supabase config
+PURPOSE: [SUPABASE_AUTH_DISABLED] Auth provider disabled. Acts as no-op passthrough.
+  All auth functions return no-op. Navigation always routes to /(app)/(protected).
+  Uncomment original code blocks to re-enable Supabase auth.
+DEPENDENCIES: expo-router, react
 */
 
-import { Session, User } from "@supabase/supabase-js";
+// [SUPABASE_AUTH_DISABLED] Original Supabase imports commented out
+// import { Session, User } from "@supabase/supabase-js";
 import { useRouter, useSegments, SplashScreen } from "expo-router";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { supabase, isSupabaseAvailable } from "@/config/supabase";
+// [SUPABASE_AUTH_DISABLED] Original config import commented out
+// import { supabase, isSupabaseAvailable } from "@/config/supabase";
 
 SplashScreen.preventAutoHideAsync();
 
 type SupabaseContextProps = {
-	user: User | null;
-	session: Session | null;
+	user: null;
+	session: null;
 	initialized?: boolean;
 	signUp: (email: string, password: string) => Promise<void>;
 	signInWithPassword: (email: string, password: string) => Promise<void>;
@@ -45,9 +43,11 @@ export const useSupabase = () => useContext(SupabaseContext);
 export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 	const router = useRouter();
 	const segments = useSegments();
+	const [initialized, setInitialized] = useState<boolean>(false);
+
+	/* [SUPABASE_AUTH_DISABLED] Original auth state commented out
 	const [user, setUser] = useState<User | null>(null);
 	const [session, setSession] = useState<Session | null>(null);
-	const [initialized, setInitialized] = useState<boolean>(false);
 
 	const signUp = async (email: string, password: string) => {
 		if (!supabase) {
@@ -87,10 +87,17 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 			throw error;
 		}
 	};
+	*/
+
+	// [SUPABASE_AUTH_DISABLED] No-op auth functions
+	const signUp = async () => {};
+	const signInWithPassword = async () => {};
+	const signOut = async () => {};
 
 	useEffect(() => {
+		/* [SUPABASE_AUTH_DISABLED] Original session check commented out
 		if (!supabase) {
-			console.warn('⚠️ Supabase not available - authentication disabled');
+			console.warn('Supabase not available - authentication disabled');
 			setInitialized(true);
 			return;
 		}
@@ -105,6 +112,10 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 			setSession(session);
 			setUser(session ? session.user : null);
 		});
+		*/
+
+		// [SUPABASE_AUTH_DISABLED] Immediately mark as initialized
+		setInitialized(true);
 	}, []);
 
 	useEffect(() => {
@@ -113,27 +124,29 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 		const inProtectedGroup =
 			segments && segments.length > 1 && segments[1] === "(protected)";
 
+		/* [SUPABASE_AUTH_DISABLED] Original auth-based routing commented out
 		if (session && !inProtectedGroup) {
 			router.replace("/(app)/(protected)");
 		} else if (!session) {
 			router.replace("/(app)/welcome");
 		}
-
-		/* HACK: Something must be rendered when determining the initial auth state... 
-		instead of creating a loading screen, we use the SplashScreen and hide it after
-		a small delay (500 ms)
 		*/
+
+		// [SUPABASE_AUTH_DISABLED] Always route to protected group (skip welcome/auth)
+		if (!inProtectedGroup) {
+			router.replace("/(app)/(protected)");
+		}
 
 		setTimeout(() => {
 			SplashScreen.hideAsync();
 		}, 500);
-	}, [initialized, session]);
+	}, [initialized]);
 
 	return (
 		<SupabaseContext.Provider
 			value={{
-				user,
-				session,
+				user: null,
+				session: null,
 				initialized,
 				signUp,
 				signInWithPassword,
