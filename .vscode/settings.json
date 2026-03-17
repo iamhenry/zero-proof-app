@@ -1,0 +1,7 @@
+{
+  // SweetPad: path to Xcode workspace (relative to project root)
+  "sweetpad.workspacePath": "ios/ZeroProof.xcworkspace",
+
+  // SweetPad: use xcbeautify for cleaner build logs
+  "sweetpad.build.xcbeautifyEnabled": true
+}
