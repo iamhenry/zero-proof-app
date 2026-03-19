@@ -339,11 +339,14 @@ expect(getWeekItemLayout(undefined, 10)).toEqual({
 
 **Subagent rule:** Assign exactly one subagent to this phase. That subagent may only make the minimal production and test adjustments needed to pass the red tests. It must not do cleanup beyond what is required for passing behavior.
 
+**Anti-cheat rule:** The green subagent must not weaken, bypass, delete, or redefine the red-phase test expectations just to make them pass. If a red test is exposing the real bug, fix production code instead of editing the assertion to be easier. Only update a test in green when the red test itself is objectively incorrect, and if that happens the subagent must explain exactly why the original test was invalid.
+
 **Task 2.1: Remove duplicate Home-level startup scroll ownership**
 
 - [ ] UPDATE: Remove delayed startup `scrollToToday()` timers from `app/(app)/(protected)/index.tsx`
 - [ ] KEEP: Preserve loading gates and existing screen composition in `app/(app)/(protected)/index.tsx`
 - [ ] VERIFY: Home no longer owns initial calendar positioning
+- [ ] VERIFY: Do not alter the red test's core behavioral assertions to hide duplicate startup scrolling
 - [ ] NOTE: Do not change explicit timer-bar recenter behavior
 
 Before/after sketch:
@@ -417,7 +420,7 @@ const getWeekItemLayout = (_: unknown, index: number) => ({
 - [ ] VERIFY: Do not persist manual scroll offset as part of this fix
 - [ ] NOTE: This is intentional because the target behavior is "stay where I left it"
 
-**Implementation notes:** The green subagent should return only the minimal passing diff, tests run, and any assumptions still left rough for refactor.
+**Implementation notes:** The green subagent should return only the minimal passing diff, tests run, any assumptions still left rough for refactor, and an explicit statement confirming it did not make a cheating test edit.
 
 **Phase 3: Refactor - Clarify contracts and reduce future drift (1-2 hours)**
 
@@ -443,39 +446,11 @@ const getWeekItemLayout = (_: unknown, index: number) => ({
 
 **Implementation notes:** The refactor subagent should return only no-behavior-change cleanup, final passing test output, and a short list of invariants preserved.
 
-#### Phase 2: Verification Gate
+#### Phase 2: Commit Changes
 
-Once implementation is complete, verify the task outcome before attempting a commit. Choose the lightest verification mode that can prove the core user flow works:
+Once implementation and your manual device verification are complete, commit the work using the repo's normal commit conventions.
 
-- [ ] **Browser Flow**: Use when the task depends on multi-step UI behavior, async transitions, or end-to-end interaction in the browser
-- [ ] **Browser Static**: Use when screenshots are enough to prove visible UI changes
-- [x] **Non-Browser**: Use when backend, CLI, API, or data checks provide a stronger proof than browser automation
-
-**NOTE**: This phase is SEPARATE from implementation and from commit. The goal is to prove the intended task behavior works end to end, not just to run code quality commands.
-
----
-
-### Verification Gate Plan
-
-Use the `verification-gate` skill to prove the task works before commit. When browser evidence is needed, the verification-gate skill should rely on the `agent-browser` skill for browser actions, screenshots, and recordings.
-
-- **Verification Mode**: `non-browser`
-- **Objective**: Prove that cold launch applies one stable initial calendar position, resume does not auto-recenter, and timer tap still explicitly recenters.
-- **Primary Flow**:
-  1. Run the new cold-launch test and confirm exactly one initial-position path wins.
-  2. Run the resume-preservation test and confirm no foreground-triggered `scrollToToday()` occurs.
-  3. Run the timer interaction test and confirm tap-triggered recenter still occurs.
-  4. Run the focused calendar test suite and confirm `getItemLayout` contract assertions pass.
-- **Regression Check**: Run the nearest existing home/calendar/timer related tests to ensure list loading and timer interaction still pass.
-- **Evidence Plan**: Save terminal outputs only if needed; no screenshots required for this plan.
-- **Pass Criteria**: All targeted tests pass, no Home-level startup scroll timers remain, and no new resume lifecycle recenter logic is introduced.
-- **Blocked Conditions**: Broken test harness, missing mocks for `FlatList`, or inability to simulate resume behavior reliably in the existing Jest setup.
-
-#### Phase 3: Commit Changes
-
-Once verification passes, commit the work using the repo's normal commit conventions.
-
-- [ ] **Create Commit**: Attempt the commit after Phase 2 passes
+- [ ] **Create Commit**: Attempt the commit after implementation and your manual device verification are complete
 - [ ] **Handle Hook Failures**: If commit hooks fail, inspect the output, fix the issues, and retry the commit
 
 **NOTE**: Do not bypass commit hooks. Treat hook failures as feedback that must be resolved before the task is considered complete.
