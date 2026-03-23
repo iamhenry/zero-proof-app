@@ -10,7 +10,8 @@
  * DEPENDENCIES: IEmailVerificationService interface, DeepLinkTypes, Supabase
  */
 
-// Helper function to get supabase instance (will be mocked in tests)
+// [SUPABASE_AUTH_DISABLED] Original getSupabase() commented out
+/*
 function getSupabase() {
   try {
     const { supabase } = require('@/config/supabase');
@@ -23,6 +24,16 @@ function getSupabase() {
       }
     };
   }
+}
+*/
+// [SUPABASE_AUTH_DISABLED] Stub that returns no-op auth methods
+function getSupabase() {
+  return {
+    auth: {
+      verifyOtp: () => Promise.resolve({ data: null, error: { message: 'Supabase auth disabled' } }),
+      updateUser: () => Promise.resolve({ data: null, error: { message: 'Supabase auth disabled' } })
+    }
+  };
 }
 import { IEmailVerificationService } from '../interfaces/IEmailVerificationService';
 import { VerificationResult, VerificationToken } from '../types/DeepLinkTypes';

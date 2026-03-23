@@ -21,7 +21,7 @@
  * DEPENDENCIES: react, react-native, ./WeekdayHeader, ./DayCell, @/context/CalendarDataContext
  */
 
-import React, { useCallback, useEffect } from "react"; // Remove useRef import
+import React, { useCallback, useEffect } from "react";
 import {
 	View,
 	FlatList,
@@ -32,6 +32,7 @@ import { WeekdayHeader } from "./WeekdayHeader";
 import { DayCell } from "./DayCell";
 import { WeekData } from "./types";
 import { useCalendarContext } from "@/context/CalendarDataContext"; // Import the context hook
+import { getWeekItemLayout } from "./calendarMetrics";
 import dayjs from "dayjs";
 
 export function CalendarGrid() {
@@ -71,51 +72,55 @@ export function CalendarGrid() {
 	const [isProgrammaticScrolling, setIsProgrammaticScrolling] =
 		React.useState(false);
 
-	// Track if initial scroll has been done
-	const initialScrollDoneRef = React.useRef(false);
+	// Track if initial position has been applied (one-time, on mount)
+	const hasAppliedInitialPositionRef = React.useRef(false);
+	const [isInitialPositionReady, setIsInitialPositionReady] =
+		React.useState(false);
 
-	// Effect to set initialScrollIndex only once during initial load
+	// Apply initial position exactly once on mount.
+	// The list stays hidden until this settles so the user never sees a startup jump.
 	React.useEffect(() => {
-		// Only perform the initial scroll once and only if we have a valid index
-		if (
-			!initialScrollDoneRef.current &&
-			calendarRef.current &&
-			initialTodayIndex > 0
-		) {
+		if (hasAppliedInitialPositionRef.current || weeks.length === 0) {
+			return;
+		}
+
+		if (!calendarRef.current) {
+			return;
+		}
+
+		let isCancelled = false;
+		hasAppliedInitialPositionRef.current = true;
+		setIsProgrammaticScrolling(true);
+
+		const initialPositionTimeout = setTimeout(() => {
+			if (isCancelled || !calendarRef.current) {
+				setIsProgrammaticScrolling(false);
+				setIsInitialPositionReady(true);
+				return;
+			}
+
 			try {
 				console.log(
 					"[CalendarGrid] Performing one-time initial scroll to today",
 				);
-
-				// Mark as done before performing the scroll
-				initialScrollDoneRef.current = true;
-
-				// For initial load only, scroll to today directly
-				setTimeout(() => {
-					if (calendarRef.current) {
-						setIsProgrammaticScrolling(true);
-						calendarRef.current.scrollToIndex({
-							index: initialTodayIndex,
-							animated: false,
-							viewPosition: 0.5,
-						});
-
-						// Reset the flag and trigger a scroll event after scroll completes
-						setTimeout(() => {
-							setIsProgrammaticScrolling(false);
-							// Manually trigger an end reached event after flag reset
-							if (calendarRef.current) {
-								handleEndReached();
-							}
-						}, 500);
-					}
-				}, 50);
+				calendarRef.current.scrollToIndex({
+					index: initialTodayIndex,
+					animated: false,
+					viewPosition: 0.5,
+				});
 			} catch (error) {
 				console.error("[CalendarGrid] Initial scroll error:", error);
+			} finally {
 				setIsProgrammaticScrolling(false);
+				setIsInitialPositionReady(true);
 			}
-		}
-	}, [calendarRef, initialTodayIndex]); // Only depends on these two props, NOT weeks
+		}, 0);
+
+		return () => {
+			isCancelled = true;
+			clearTimeout(initialPositionTimeout);
+		};
+	}, [calendarRef, initialTodayIndex, weeks.length]);
 
 	// Log calendarRef to verify it's being properly passed and used
 	useEffect(() => {
@@ -195,16 +200,21 @@ export function CalendarGrid() {
 					calendarRef.current.scrollToIndex({
 						index: Math.min(info.index, weeks.length - 1),
 						animated: false,
+						viewPosition: 0.5,
 					});
 
 					// Reset the flag after a brief delay
 					setTimeout(() => {
 						setIsProgrammaticScrolling(false);
+						setIsInitialPositionReady(true);
 					}, 300);
+				} else {
+					setIsProgrammaticScrolling(false);
+					setIsInitialPositionReady(true);
 				}
 			}, 100);
 		},
-		[weeks.length], // Use weeks from hook
+		[calendarRef, weeks.length],
 	);
 
 	return (
@@ -242,21 +252,16 @@ export function CalendarGrid() {
 				windowSize={10}
 				initialNumToRender={10}
 				maxToRenderPerBatch={10}
-				initialScrollIndex={initialTodayIndex} // Set initial scroll to today
 				onEndReached={handleEndReached}
 				onEndReachedThreshold={0.5}
 				onScrollToIndexFailed={handleScrollToIndexFailed}
 				// Add getItemLayout prop to allow scrolling to unmeasured indexes
-				getItemLayout={(data, index) => ({
-					length: 67, // Fixed item height (from the error message)
-					offset: 67 * index, // Calculate position
-					index,
-				})}
+				getItemLayout={getWeekItemLayout}
 				maintainVisibleContentPosition={{
 					minIndexForVisible: 0,
 				}}
 				className="flex-1"
-				contentContainerStyle={{ gap: 1 }}
+				style={{ opacity: isInitialPositionReady ? 1 : 0 }}
 			/>
 		</View>
 	);

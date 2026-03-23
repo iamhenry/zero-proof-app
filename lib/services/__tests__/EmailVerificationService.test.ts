@@ -1,25 +1,19 @@
 /**
  * FILE: lib/services/__tests__/EmailVerificationService.test.ts
- * PURPOSE: Red Phase failing tests for EmailVerificationService following TDD guidelines
- * SCOPE: Tests email verification token handling with Supabase
- * DEPENDENCIES: Jest, Supabase client, EmailVerificationService SUT
+ * PURPOSE: Tests for EmailVerificationService
+ * SCOPE: Tests email verification token handling
+ * [SUPABASE_AUTH_DISABLED] Supabase auth is disabled; verification methods return failure results.
+ *   Token parsing and expiry logic still works as before.
+ * DEPENDENCIES: Jest, EmailVerificationService SUT
  */
 
 import { EmailVerificationService } from '../EmailVerificationService';
 import { VerificationResult, VerificationToken } from '../../types/DeepLinkTypes';
 
-// Mock Supabase with realistic auth response structures
-const mockSupabaseAuth = {
-  verifyOtp: jest.fn(),
-  getUser: jest.fn(),
-  updateUser: jest.fn(),
-};
-
+// [SUPABASE_AUTH_DISABLED] Config now exports null -- mock reflects disabled state
 jest.mock('@/config/supabase', () => ({
-  supabase: {
-    auth: mockSupabaseAuth,
-  },
-  isSupabaseAvailable: true,
+  supabase: null,
+  isSupabaseAvailable: false,
 }));
 
 describe('EmailVerificationService', () => {
@@ -30,36 +24,17 @@ describe('EmailVerificationService', () => {
     emailVerificationService = new EmailVerificationService();
   });
 
-  // MARK: - Scenario: Successful email verification via deep link
-  describe('when verifying valid email tokens', () => {
+  // MARK: - Scenario: Verification returns failure when auth is disabled
+  describe('when verifying tokens with auth disabled', () => {
     const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.valid_token_payload';
-    const expectedSuccessResult: VerificationResult = {
-      success: true,
-      data: {
-        userId: 'user-123',
-        email: 'test@example.com',
-        verified: true,
-      },
-    };
 
-    it('should_verify_token_successfully_when_valid_token_given', async () => {
-      // Arrange
-      mockSupabaseAuth.verifyOtp.mockResolvedValue({
-        data: { user: { id: 'user-123', email: 'test@example.com' } },
-        error: null,
-      });
-
+    it('should_return_failure_when_auth_disabled', async () => {
       // Act
       const result = await emailVerificationService.verifyEmailToken(validToken);
 
-      // Assert - Will fail because SUT stub throws NotImplementedError
-      expect(result).toEqual(expectedSuccessResult);
-      expect(result.success).toBe(true);
-      expect(result.data?.userId).toBe('user-123');
-      expect(mockSupabaseAuth.verifyOtp).toHaveBeenCalledWith({
-        token_hash: validToken,
-        type: 'email',
-      });
+      // Assert - Auth disabled, stub always returns error
+      expect(result.success).toBe(false);
+      expect(result.error).toContain('Invalid');
     });
 
     it('should_parse_verification_token_when_valid_token_string_given', () => {
@@ -74,29 +49,22 @@ describe('EmailVerificationService', () => {
       // Act
       const result = emailVerificationService.parseVerificationToken(tokenString);
 
-      // Assert - Will fail because SUT stub returns null
+      // Assert - Token parsing is local, not affected by auth disable
       expect(result).toEqual(expectedToken);
       expect(result?.token).toBe(tokenString);
       expect(result?.type).toBe('email_verification');
     });
 
-    it('should_update_verification_status_when_verification_succeeds', async () => {
-      // Arrange
-      mockSupabaseAuth.updateUser.mockResolvedValue({
-        data: { user: { email_confirmed_at: new Date().toISOString() } },
-        error: null,
-      });
-
+    it('should_return_false_for_updateVerificationStatus_when_auth_disabled', async () => {
       // Act
       const result = await emailVerificationService.updateVerificationStatus();
 
-      // Assert - Will fail because SUT stub returns false
-      expect(result).toBe(true);
-      expect(mockSupabaseAuth.updateUser).toHaveBeenCalled();
+      // Assert - Auth disabled, stub returns error so result is false
+      expect(result).toBe(false);
     });
   });
 
-  // MARK: - Scenario: Email verification with authentication error
+  // MARK: - Scenario: Error handling with auth disabled
   describe('when handling invalid or expired tokens', () => {
     const invalidToken = 'invalid.token.string';
     const expectedErrorResult: VerificationResult = {
@@ -105,32 +73,20 @@ describe('EmailVerificationService', () => {
     };
 
     it('should_return_error_when_invalid_token_given', async () => {
-      // Arrange
-      mockSupabaseAuth.verifyOtp.mockResolvedValue({
-        data: { user: null },
-        error: { message: 'Invalid token' },
-      });
-
       // Act
       const result = await emailVerificationService.verifyEmailToken(invalidToken);
 
-      // Assert - Will fail because SUT stub throws NotImplementedError
+      // Assert
       expect(result).toEqual(expectedErrorResult);
       expect(result.success).toBe(false);
       expect(result.error).toContain('Invalid');
     });
 
     it('should_return_error_when_expired_token_given', async () => {
-      // Arrange
-      mockSupabaseAuth.verifyOtp.mockResolvedValue({
-        data: { user: null },
-        error: { message: 'Token has expired' },
-      });
-
       // Act
       const result = await emailVerificationService.verifyEmailToken('expired_token');
 
-      // Assert - Will fail because SUT stub throws NotImplementedError
+      // Assert
       expect(result.success).toBe(false);
       expect(result.error).toContain('expired');
     });
@@ -146,7 +102,7 @@ describe('EmailVerificationService', () => {
       // Act
       const result = emailVerificationService.isTokenExpired(expiredToken);
 
-      // Assert - Will fail because SUT stub returns false
+      // Assert
       expect(result).toBe(true);
     });
 
@@ -161,20 +117,17 @@ describe('EmailVerificationService', () => {
       // Act
       const result = emailVerificationService.isTokenExpired(validToken);
 
-      // Assert - Will fail because SUT stub doesn't implement proper expiry logic
+      // Assert
       expect(result).toBe(false);
     });
 
-    it('should_handle_network_errors_gracefully', async () => {
-      // Arrange
-      mockSupabaseAuth.verifyOtp.mockRejectedValue(new Error('Network error'));
-
+    it('should_return_failure_for_any_token_when_auth_disabled', async () => {
       // Act
       const result = await emailVerificationService.verifyEmailToken('any_token');
 
-      // Assert - Will fail because SUT stub throws NotImplementedError, not network errors
+      // Assert - Auth disabled, all verifications fail gracefully
       expect(result.success).toBe(false);
-      expect(result.error).toContain('Network');
+      expect(result.error).toBeDefined();
     });
   });
 
@@ -184,7 +137,7 @@ describe('EmailVerificationService', () => {
       // Act
       const result = emailVerificationService.parseVerificationToken('');
 
-      // Assert - Will fail because SUT stub returns null for all inputs
+      // Assert
       expect(result).toBeNull();
     });
 
@@ -195,7 +148,7 @@ describe('EmailVerificationService', () => {
       // Act
       const result = emailVerificationService.parseVerificationToken(malformedToken);
 
-      // Assert - Will fail because SUT stub returns null for all inputs, but should validate token format
+      // Assert
       expect(result).toBeNull();
     });
 
@@ -210,7 +163,7 @@ describe('EmailVerificationService', () => {
       // Act
       const result = emailVerificationService.isTokenExpired(tokenWithoutExpiry);
 
-      // Assert - Will fail because SUT stub returns false without checking expiry logic
+      // Assert
       expect(result).toBe(false);
     });
 
@@ -221,7 +174,7 @@ describe('EmailVerificationService', () => {
       // Act
       const result = emailVerificationService.parseVerificationToken(originalToken);
 
-      // Assert - Will fail because SUT stub returns null
+      // Assert
       expect(result?.token).toBe(originalToken);
     });
   });

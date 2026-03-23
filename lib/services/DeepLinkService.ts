@@ -43,21 +43,23 @@ export class DeepLinkService implements IDeepLinkService {
     console.log('📊 Parsed deep link data:', JSON.stringify(parsedData, null, 2));
     
     if (parsedData && parsedData.type === 'verification') {
-      // Check for Supabase error fragments in URL
+      // [SUPABASE_AUTH_DISABLED] Supabase error fragment handling disabled
+      /*
       const errorCode = parsedData.fragments.error_code;
       const errorDescription = parsedData.fragments.error_description;
       
-      console.log('🔍 Error fragments check:', { errorCode, errorDescription });
+      console.log('Error fragments check:', { errorCode, errorDescription });
       
       if (errorCode) {
-        // Supabase indicates verification failed
-        console.log('❌ Verification failed, showing error toast');
+        console.log('Verification failed, showing error toast');
         this.handleVerificationFailure(errorDescription);
       } else {
-        // No error fragments means verification was successful
-        console.log('✅ Verification successful, showing success toast');
+        console.log('Verification successful, showing success toast');
         this.handleVerificationSuccess();
       }
+      */
+      // [SUPABASE_AUTH_DISABLED] Deep link verification disabled
+      console.log('[SUPABASE_AUTH_DISABLED] Verification deep link ignored:', parsedData.originalUrl);
     } else {
       console.log('⚠️ Invalid deep link data, showing error');
       this.handleVerificationFailure('Invalid verification link');

@@ -95,12 +95,8 @@ describe('DeepLinkService', () => {
       // Act
       await deepLinkService.handleDeepLink(url);
 
-      // Assert - Should show success toast
-      expect(mockShowToast).toHaveBeenCalledWith(
-        'Email verified successfully!',
-        'success',
-        5000
-      );
+      // Assert - [SUPABASE_AUTH_DISABLED] Verification deep links are now ignored
+      expect(mockShowToast).not.toHaveBeenCalled();
     });
 
     it('should_extract_token_parameter_when_verification_url_contains_token', () => {
@@ -164,12 +160,8 @@ describe('DeepLinkService', () => {
       // Act
       await deepLinkService.handleDeepLink(urlWithError);
 
-      // Assert - Should show error when fragments contain error info
-      expect(mockShowToast).toHaveBeenCalledWith(
-        'Token has expired',
-        'error',
-        5000
-      );
+      // Assert - [SUPABASE_AUTH_DISABLED] Error fragment handling is disabled
+      expect(mockShowToast).not.toHaveBeenCalled();
     });
   });
 
@@ -228,12 +220,9 @@ describe('DeepLinkService', () => {
       // Wait for async operations
       await new Promise(resolve => setTimeout(resolve, 10));
 
-      // Assert - Should process URL and show success
-      expect(mockShowToast).toHaveBeenCalledWith(
-        'Email verified successfully!',
-        'success',
-        5000
-      );
+      // Assert - [SUPABASE_AUTH_DISABLED] Verification deep links are now ignored
+      // No toast shown since Supabase auth is disabled
+      expect(mockShowToast).not.toHaveBeenCalled();
     });
 
     it('should_maintain_app_stability_when_multiple_links_received', async () => {
@@ -249,8 +238,8 @@ describe('DeepLinkService', () => {
         await deepLinkService.handleDeepLink(url);
       }
 
-      // Assert - Will fail because SUT stub doesn't implement proper handling
-      expect(mockShowToast).toHaveBeenCalledTimes(3);
+      // Assert - [SUPABASE_AUTH_DISABLED] Verification deep links are now ignored
+      expect(mockShowToast).not.toHaveBeenCalled();
     });
 
     it('should_handle_concurrent_deep_links_without_conflicts', async () => {
@@ -264,8 +253,8 @@ describe('DeepLinkService', () => {
       const promises = concurrentUrls.map(url => deepLinkService.handleDeepLink(url));
       await Promise.all(promises);
 
-      // Assert - Will fail because SUT stub doesn't handle concurrent operations
-      expect(mockShowToast).toHaveBeenCalledTimes(2);
+      // Assert - [SUPABASE_AUTH_DISABLED] Verification deep links are now ignored
+      expect(mockShowToast).not.toHaveBeenCalled();
     });
   });
 });

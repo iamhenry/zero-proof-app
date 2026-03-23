@@ -143,17 +143,9 @@ jest.mock("@/config/revenuecat", () => ({
 	getOfferings: jest.fn(),
 	configureRevenueCat: jest.fn().mockResolvedValue(undefined),
 }));
+// [SUPABASE_AUTH_DISABLED] Supabase is disabled; mock is simplified
 jest.mock("@supabase/supabase-js", () => ({
-	createClient: jest.fn(() => ({
-		auth: {
-			getSession: jest.fn().mockResolvedValue({
-				data: { session: { user: { id: "test-user" } } },
-			}),
-			onAuthStateChange: jest.fn(() => ({
-				data: { subscription: { unsubscribe: jest.fn() } },
-			})),
-		},
-	})),
+	createClient: jest.fn(() => null),
 }));
 
 const mockAsyncStorage = AsyncStorage as jest.Mocked<typeof AsyncStorage>;

@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-native';
 import { useFinancialSettings } from '../hooks/useFinancialSettings'; // Import the actual hook
 import { ISobrietyDataRepository } from '../../../../lib/types/repositories'; // Use correct path
 import { useRepository } from '@/context/RepositoryContext';

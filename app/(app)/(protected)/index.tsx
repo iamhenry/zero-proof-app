@@ -14,8 +14,9 @@
  * DEPENDENCIES: react, react-native, @/components/ui/calendar/CalendarGrid, @/components/ui/timer/SobrietyTimer, @/components/ui/statistics/StreakCounter, @/components/ui/statistics/SavingsCounter
  */
 
-import React, { useEffect, useRef } from "react"; // Import useRef
-import { View, SafeAreaView } from "react-native";
+import React, { useEffect } from "react";
+import { View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { CalendarGrid } from "@/components/ui/calendar";
 import { SobrietyTimer } from "@/components/ui/timer";
 import { SavingsCounter, StreakCounter } from "@/components/ui/statistics";
@@ -26,10 +27,7 @@ import { useCalendarContext } from "@/context/CalendarDataContext"; // Import Ca
 export default function Home() {
 	const { elapsedDays } = useTimerState(); // Use TimerState context hook
 	const repository = useRepository();
-	const { isLoadingInitial, scrollToToday } = useCalendarContext(); // Get loading state and scroll function
-	const initialScrollDoneRef = useRef(false); // Ref to track initial scroll
-	const initialScrollTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to hold timeout ID
-	const backupScrollTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to hold backup timeout ID
+	const { isLoadingInitial } = useCalendarContext(); // Get loading state
 
 	// Debug function to log all stored day status on component mount
 	useEffect(() => {
@@ -69,69 +67,8 @@ export default function Home() {
 		logStoredData();
 	}, [repository]);
 
-	// Effect to scroll to today when initial loading is done
-	// This only happens once when the app first loads, not when navigating to past dates
-	useEffect(() => {
-		// Clean up any previous timeouts to avoid multiple scrolls
-		if (initialScrollTimeoutRef.current) {
-			clearTimeout(initialScrollTimeoutRef.current);
-			initialScrollTimeoutRef.current = null;
-		}
-
-		if (backupScrollTimeoutRef.current) {
-			clearTimeout(backupScrollTimeoutRef.current);
-			backupScrollTimeoutRef.current = null;
-		}
-
-		if (!isLoadingInitial && !initialScrollDoneRef.current) {
-			// Only scroll if loading is done AND the initial scroll hasn't happened yet
-			// This ensures we only scroll to today on app launch, not when navigating through the calendar
-			initialScrollDoneRef.current = true; // Mark initial scroll as initiated
-
-			// Use a longer delay to ensure FlatList has fully rendered
-			const initialDelay = 300; // Increased from 100ms to 300ms
-
-			console.log(
-				"[Home] Scheduling initial scroll to today with delay:",
-				initialDelay,
-			);
-
-			initialScrollTimeoutRef.current = setTimeout(() => {
-				console.log("[Home] Executing initial scroll to today");
-				scrollToToday();
-
-				// Add a backup scroll after another delay in case the first one failed
-				backupScrollTimeoutRef.current = setTimeout(() => {
-					console.log("[Home] Executing backup scroll to today");
-					scrollToToday();
-					backupScrollTimeoutRef.current = null;
-				}, 500); // Additional 500ms backup scroll
-
-				initialScrollTimeoutRef.current = null;
-			}, initialDelay);
-		}
-
-		// Cleanup function to clear timeouts
-		return () => {
-			if (initialScrollTimeoutRef.current) {
-				clearTimeout(initialScrollTimeoutRef.current);
-				initialScrollTimeoutRef.current = null;
-			}
-
-			if (backupScrollTimeoutRef.current) {
-				clearTimeout(backupScrollTimeoutRef.current);
-				backupScrollTimeoutRef.current = null;
-			}
-		};
-	}, [isLoadingInitial, scrollToToday]);
-
-	// Effect to handle component unmount and cleanup
-	useEffect(() => {
-		return () => {
-			// Reset the ref on unmount so if the component remounts, it will scroll again
-			initialScrollDoneRef.current = false;
-		};
-	}, []);
+	// Home waits for initial data only.
+	// CalendarGrid owns initial positioning via initialScrollIndex.
 
 	return (
 		<SafeAreaView className="flex-1 bg-background">
@@ -139,7 +76,7 @@ export default function Home() {
 				<StreakCounter count={elapsedDays} />
 				<SobrietyTimer />
 				<SavingsCounter />
-				<CalendarGrid />
+				{!isLoadingInitial && <CalendarGrid />}
 			</View>
 		</SafeAreaView>
 	);

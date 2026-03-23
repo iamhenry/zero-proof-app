@@ -50,6 +50,8 @@ const mockSaveTimerState = jest.fn<Promise<void>, [TimerState]>();
 const mockLoadTimerState = jest.fn<Promise<TimerState | null>, []>();
 const mockSaveDrinkCost = jest.fn<Promise<void>, [number]>();
 const mockLoadDrinkCost = jest.fn<Promise<number | null>, []>();
+const mockSaveOnboardingCompletion = jest.fn<Promise<void>, [boolean]>();
+const mockLoadOnboardingCompletion = jest.fn<Promise<boolean>, []>();
 
 const mockRepository: ISobrietyDataRepository = {
 	loadAllDayStatus: mockLoadAllDayStatus,
@@ -61,6 +63,8 @@ const mockRepository: ISobrietyDataRepository = {
 	loadTimerState: mockLoadTimerState,
 	saveDrinkCost: mockSaveDrinkCost,
 	loadDrinkCost: mockLoadDrinkCost,
+	saveOnboardingCompletion: mockSaveOnboardingCompletion,
+	loadOnboardingCompletion: mockLoadOnboardingCompletion,
 };
 
 const mockStartTimer = jest.fn<void, [number]>();
@@ -113,6 +117,8 @@ describe("CalendarGrid", () => {
 		mockLoadTimerState.mockClear();
 		mockSaveDrinkCost.mockClear();
 		mockLoadDrinkCost.mockClear();
+		mockSaveOnboardingCompletion.mockClear();
+		mockLoadOnboardingCompletion.mockClear();
 		mockStartTimer.mockClear();
 		mockStopTimer.mockClear();
 		mockLoadInitialTimerState.mockClear();
@@ -126,6 +132,7 @@ describe("CalendarGrid", () => {
 		mockLoadTimerState.mockResolvedValue({ startTime: null, isRunning: false });
 		mockLoadDayStatus.mockResolvedValue(null);
 		mockLoadDrinkCost.mockResolvedValue(null);
+		mockLoadOnboardingCompletion.mockResolvedValue(true);
 
 		// Spy on loadMoreWeeks and provide mock implementation
 		loadMoreWeeksSpy = jest
@@ -146,6 +153,24 @@ describe("CalendarGrid", () => {
 		renderWithProviders(<CalendarGrid />);
 		await screen.findByTestId("weekday-header-container");
 		expect(screen.getByTestId("weekday-header-container")).toBeTruthy();
+	});
+
+	test("uses a single CalendarGrid-owned startup positioning path", async () => {
+		renderWithProviders(<CalendarGrid />);
+		await screen.findByTestId("calendar-grid-list");
+		const flatList = screen.getByTestId("calendar-grid-list");
+
+		expect(flatList.props.initialScrollIndex).toBeUndefined();
+
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
+
+		await waitFor(() => {
+			expect(screen.getByTestId("calendar-grid-list").props.style).toEqual({
+				opacity: 1,
+			});
+		});
 	});
 
 	test("renders FlatList", async () => {
@@ -228,28 +253,37 @@ describe("CalendarGrid", () => {
 		expect(loadMoreWeeksSpy).toHaveBeenCalledWith(expect.anything(), "past", 4);
 	});
 
+	test("does not auto-load future weeks after initial positioning settles", async () => {
+		renderWithProviders(<CalendarGrid />);
+		await screen.findByTestId("calendar-grid-list");
+
+		act(() => {
+			jest.advanceTimersByTime(1000);
+		});
+
+		expect(loadMoreWeeksSpy).not.toHaveBeenCalledWith(
+			expect.anything(),
+			"future",
+			expect.any(Number),
+		);
+	});
+
 	// MARK: - Scenario: Programmatic Scrolling and Future Date Loading
 	describe("Programmatic Scrolling and Future Date Loading", () => {
-		test("should reset isProgrammaticScrolling flag after initial scroll to today", async () => {
+		test("should allow future loading only after initial scroll settles", async () => {
 			// Arrange
 			renderWithProviders(<CalendarGrid />);
 			const flatList = await screen.findByTestId("calendar-grid-list");
 
 			// Act - simulate completion of initial scroll
 			act(() => {
-				jest.advanceTimersByTime(1000); // advance past the initial scroll timeout
+				jest.advanceTimersByTime(1000);
 			});
 
-			// Simulate user scroll to bottom
-			fireEvent.scroll(flatList, {
-				nativeEvent: {
-					contentOffset: { y: 500 },
-					contentSize: { height: 1000, width: 400 },
-					layoutMeasurement: { height: 500, width: 400 },
-				},
-			});
+			fireEvent(flatList, "onEndReached");
 
-			// Assert - should load future dates since flag should be reset
+			// Assert - future loading only happens from the user-driven event,
+			// not automatically during initial positioning.
 			await waitFor(() => {
 				expect(loadMoreWeeksSpy).toHaveBeenCalledWith(
 					expect.anything(),

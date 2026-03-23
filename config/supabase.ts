@@ -1,3 +1,8 @@
+// [SUPABASE_AUTH_DISABLED] - Authentication disabled for simplified onboarding.
+// Uncomment this file's original code to re-enable Supabase auth.
+// Original imports and client initialization preserved below.
+
+/*
 import "react-native-url-polyfill/auto";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,10 +14,10 @@ const supabaseKey = process.env.EXPO_PUBLIC_API_KEY as string;
 
 // Check if Supabase configuration is available
 if (!supabaseUrl || !supabaseKey) {
-	console.warn('⚠️ Supabase configuration missing. Backend features will be disabled.');
+	console.warn('Supabase configuration missing. Backend features will be disabled.');
 	console.warn('Missing:', {
-		url: !supabaseUrl ? 'EXPO_PUBLIC_API_URL' : '✓',
-		key: !supabaseKey ? 'EXPO_PUBLIC_API_KEY' : '✓'
+		url: !supabaseUrl ? 'EXPO_PUBLIC_API_URL' : 'ok',
+		key: !supabaseKey ? 'EXPO_PUBLIC_API_KEY' : 'ok'
 	});
 }
 
@@ -41,3 +46,8 @@ if (supabase) {
 		}
 	});
 }
+*/
+
+// [SUPABASE_AUTH_DISABLED] Stub exports -- Supabase client is disabled
+export const supabase = null;
+export const isSupabaseAvailable = false;
