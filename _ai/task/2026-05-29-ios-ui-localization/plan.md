@@ -1,20 +1,20 @@
 # iOS UI Localization Execution Plan
 
 ## Goal
-Localize Zero Proof's user-facing iOS app UI strings so supported iPhone app languages render localized UI instead of English-only UI. Scope is iOS only, with English fallback and first-pass support for German, Spanish Spain, Japanese, Korean, and Portuguese Brazil.
+Localize Zero Proof's user-facing iOS app UI strings so supported iPhone app languages render localized UI instead of English-only UI. Scope is iOS only, with English fallback and first-pass support for German, Spanish, Japanese, Korean, and Portuguese.
 
 ## Confirmed Scope
 Platform: iOS only.
 
 Fallback language: English.
 
-Supported runtime locales: `en`, `de-DE`, `es-ES`, `ja-JP`, `ko-KR`, `pt-BR`.
+Supported runtime locales: `en`, `de`, `es`, `ja`, `ko`, `pt`.
 
-Locale matching rule: exact locale first, explicit language fallback second, English final.
+Locale matching rule: convert device locale to its base language first, then fall back to English when unsupported.
 
 Future language rule: add one locale file, one registry entry, one iOS supported locale entry, then fill the same key tree.
 
-Out of scope: Android localization, custom in-app language picker, App Store listing metadata, translating the `Zero Proof` brand name, and RevenueCat dashboard-hosted paywall copy.
+Out of scope: Android localization, custom in-app language picker, App Store listing metadata, translating the `Zero Proof` brand name, RevenueCat dashboard-hosted paywall copy, currency behavior changes, and calendar week-start behavior changes.
 
 No automated tests are required for this task per product direction. Keep existing behavior intact and use manual iOS QA for verification.
 
@@ -99,14 +99,15 @@ Evidence:
 | Package | Finding | Decision |
 | --- | --- | --- |
 | `expo` | Current app uses `expo@~52.0.46` | Keep SDK 52 unchanged |
-| `expo-localization` | Expo SDK 52 bundles `expo-localization@~16.0.1`; package peer deps are `expo: *`, `react: *` | Install with `npx expo install expo-localization` |
+| `expo-localization` | Expo SDK 52 bundled modules source lists `expo-localization@~16.0.1`; package peer deps are `expo: *`, `react: *` | Install with `npx expo install expo-localization` |
 | `i18n-js` | Latest checked version is `4.5.3`; no React Native or Expo peer dependency blocker found | Install `i18n-js@4.5.3` |
 
 Docs alignment:
 
 - Expo localization guide recommends `expo-localization` for device locale and uses `i18n-js` as the example translation layer.
 - Expo CLI docs recommend `npx expo install` for React Native packages that need SDK-compatible versions.
-- Current Expo versioned docs for SDK 52 returned 404, so compatibility was verified through npm metadata and Expo SDK 52 source metadata instead.
+- Current Expo versioned docs for SDK 52 returned 404, so compatibility was verified through npm metadata and Expo SDK 52 bundled modules source instead.
+- SDK 52 source evidence: `https://raw.githubusercontent.com/expo/expo/sdk-52/packages/expo/bundledNativeModules.json`.
 
 Risk: low. `expo-localization` is the only native dependency. `i18n-js` is JS-only for this usage.
 
@@ -146,14 +147,13 @@ Implementation tasks:
 - [ ] Create `lib/i18n/index.ts`.
 - [ ] Create `lib/i18n/supportedLocales.ts` as the single locale registry.
 - [ ] Create `lib/i18n/locales/en.ts`.
-- [ ] Create `lib/i18n/locales/de-DE.ts`.
-- [ ] Create `lib/i18n/locales/es-ES.ts`.
-- [ ] Create `lib/i18n/locales/ja-JP.ts`.
-- [ ] Create `lib/i18n/locales/ko-KR.ts`.
-- [ ] Create `lib/i18n/locales/pt-BR.ts`.
+- [ ] Create `lib/i18n/locales/de.ts`.
+- [ ] Create `lib/i18n/locales/es.ts`.
+- [ ] Create `lib/i18n/locales/ja.ts`.
+- [ ] Create `lib/i18n/locales/ko.ts`.
+- [ ] Create `lib/i18n/locales/pt.ts`.
 - [ ] Export a single `t(key, options?)` helper from `lib/i18n/index.ts`.
-- [ ] Export `getCurrentLocale()` and `getDeviceLocale()` from `lib/i18n/index.ts` for debugging/manual QA.
-- [ ] Export locale-aware helpers from `lib/i18n/index.ts` for weekday, month, and savings amount formatting.
+- [ ] Export `resolveSupportedLocale()` from `lib/i18n/index.ts` for simple fallback behavior.
 
 Use this target `app.json` plugin shape:
 
@@ -165,7 +165,7 @@ Use this target `app.json` plugin shape:
     "expo-localization",
     {
       "supportedLocales": {
-        "ios": ["en", "de-DE", "es-ES", "ja-JP", "ko-KR", "pt-BR"]
+        "ios": ["en", "de", "es", "ja", "ko", "pt"]
       }
     }
   ]
@@ -180,7 +180,6 @@ import { I18n } from "i18n-js";
 
 import {
   defaultLocale,
-  languageFallbacks,
   supportedLocaleTags,
   translations,
   type SupportedLocale,
@@ -189,13 +188,11 @@ import {
 const getLanguageCode = (locale: string) => locale.split("-")[0];
 
 export const resolveSupportedLocale = (deviceLocale: string | null | undefined): SupportedLocale => {
-  if (!deviceLocale) return defaultLocale;
+  const languageCode = deviceLocale ? getLanguageCode(deviceLocale) : defaultLocale;
 
-  if (supportedLocaleTags.includes(deviceLocale as SupportedLocale)) {
-    return deviceLocale as SupportedLocale;
-  }
-
-  return languageFallbacks[getLanguageCode(deviceLocale)] ?? defaultLocale;
+  return supportedLocaleTags.includes(languageCode as SupportedLocale)
+    ? (languageCode as SupportedLocale)
+    : defaultLocale;
 };
 
 const i18n = new I18n(translations);
@@ -205,40 +202,29 @@ i18n.defaultLocale = defaultLocale;
 i18n.enableFallback = true;
 
 export const t = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
-export const getCurrentLocale = () => i18n.locale;
-export const getDeviceLocale = () => getLocales()[0]?.languageTag ?? null;
 ```
 
 Use this locale registry shape as the implementation target:
 
 ```ts
 import en from "./locales/en";
-import deDE from "./locales/de-DE";
-import esES from "./locales/es-ES";
-import jaJP from "./locales/ja-JP";
-import koKR from "./locales/ko-KR";
-import ptBR from "./locales/pt-BR";
+import de from "./locales/de";
+import es from "./locales/es";
+import ja from "./locales/ja";
+import ko from "./locales/ko";
+import pt from "./locales/pt";
 
 export const defaultLocale = "en";
-export const supportedLocaleTags = ["en", "de-DE", "es-ES", "ja-JP", "ko-KR", "pt-BR"] as const;
+export const supportedLocaleTags = ["en", "de", "es", "ja", "ko", "pt"] as const;
 export type SupportedLocale = (typeof supportedLocaleTags)[number];
-
-export const languageFallbacks: Record<string, SupportedLocale> = {
-  en: "en",
-  de: "de-DE",
-  es: "es-ES",
-  ja: "ja-JP",
-  ko: "ko-KR",
-  pt: "pt-BR",
-};
 
 export const translations: Record<SupportedLocale, typeof en> = {
   en,
-  "de-DE": deDE,
-  "es-ES": esES,
-  "ja-JP": jaJP,
-  "ko-KR": koKR,
-  "pt-BR": ptBR,
+  de,
+  es,
+  ja,
+  ko,
+  pt,
 };
 ```
 
@@ -255,6 +241,7 @@ Implementation tasks:
 - [ ] Copy the same key shape into every target locale file before translation fill.
 - [ ] Keep brand text as `common.brandName: "Zero Proof"` and reuse it instead of translating it.
 - [ ] Preserve interpolation names exactly across locales, for example `{ message }`.
+- [ ] Add `calendar.weekdaysShort.*` and `calendar.monthsShort.*` keys so calendar labels use `t()` without extra formatter helpers.
 
 Use this dictionary shape:
 
@@ -280,6 +267,8 @@ export default en;
 Completion signal: English keys exist before replacing strings in feature files.
 
 Maintainability rule: English is the contract. Every locale must match the English key tree. Missing translated values may ship only if English fallback is intentional and documented in the translation source note.
+
+Regional copy rule: use base-language files until product needs region-specific copy, such as separate `pt-BR` and `pt-PT` wording.
 
 ## Milestone 3: Navigation And Auth
 Owner: Navigation/Auth workstream.
@@ -556,10 +545,21 @@ export const drinkQuantitySchema = z.object({
 });
 ```
 
+`components/ui/onboarding/hooks/useDrinkQuantityForm.ts:26-30`
+
+```ts
+export function useDrinkQuantityForm({
+  onSubmit,
+  initialValue = 0,
+  errorMessage = "Please enter a valid quantity",
+}: UseDrinkQuantityFormProps): UseDrinkQuantityFormReturn {
+```
+
 Implementation tasks:
 
 - [ ] Import `t` where drink quantity defaults are set.
 - [ ] Replace `Please enter a valid quantity` with `t("drinkQuantity.error.validQuantity")`.
+- [ ] Replace the `useDrinkQuantityForm` default `errorMessage` with `t("drinkQuantity.error.validQuantity")` from the caller or remove the duplicated default if unused.
 - [ ] Replace `How many drinks per week?` with `t("drinkQuantity.label")`.
 - [ ] Replace `Next` with `t("common.next")`.
 - [ ] Replace `Cancel` visible and accessibility strings with `t("common.cancel")`.
@@ -567,6 +567,20 @@ Implementation tasks:
 - [ ] Replace drink quantity Zod messages with `t("drinkQuantity.validation.required")`, `t("drinkQuantity.validation.validNumber")`, and `t("drinkQuantity.validation.greaterThanZero")`.
 
 ### Evidence: Paywall Wrapper States
+`components/ui/onboarding/PaywallScreen.tsx:51-62`
+
+```tsx
+setError(
+	"No subscription packages available. Please check RevenueCat dashboard configuration.",
+);
+```
+
+```tsx
+const errorMessage =
+	err instanceof Error ? err.message : "Unknown error occurred";
+setError(`RevenueCat setup error: ${errorMessage}`);
+```
+
 `components/ui/onboarding/PaywallScreen.tsx:77-90`
 
 ```tsx
@@ -621,7 +635,8 @@ Implementation tasks:
 - [ ] Import `t` in `components/ui/onboarding/PaywallScreen.tsx`.
 - [ ] Replace loading text with `t("paywall.loading")`.
 - [ ] Replace unavailable title with `t("paywall.unavailable.title")`.
-- [ ] Replace retry/no packages/unknown error strings with `paywall.error.*` keys.
+- [ ] Replace no-packages/setup/retry error strings with generic localized `paywall.error.*` keys.
+- [ ] Keep raw RevenueCat or SDK error details in `console.error`/`console.warn` only, not visible UI.
 - [ ] Replace `Retry`, `Continue Without Subscription`, and `Continue` with common/paywall keys.
 
 Boundary note: do not localize `RevenueCatUI.Paywall` internals in app code. Paywall body copy is RevenueCat-managed.
@@ -717,12 +732,11 @@ const cellContent = useMemo(() => {
 
 Implementation tasks:
 
-- [ ] Add `getLocalizedWeekdayLabels()` in `lib/i18n/index.ts` or equivalent formatting helper.
-- [ ] Replace `WeekdayHeader` hardcoded `weekdays` array with locale-aware labels.
-- [ ] Replace `getMonthName(month)` hardcoded month array with locale-aware `Intl.DateTimeFormat` formatting.
-- [ ] Update `DayCell` dependencies if the localized month helper needs locale as an input.
+- [ ] Replace `WeekdayHeader` hardcoded `weekdays` array with ordered `t("calendar.weekdaysShort.*")` values from the dictionaries.
+- [ ] Replace `getMonthName(month)` hardcoded month array with ordered `t("calendar.monthsShort.*")` values from the dictionaries.
+- [ ] Update `DayCell` dependencies only if the localized month lookup changes its function signature.
 
-Calendar behavior note: preserve Sunday-first ordering unless product explicitly changes calendar start day.
+Calendar behavior note: preserve Sunday-first ordering intentionally for this task. Locale-specific first weekday behavior is out of scope because it changes calendar behavior, not just text.
 
 ### Evidence: Savings Copy And Formatting
 `components/ui/statistics/SavingsCounter.tsx:48-49`
@@ -748,11 +762,11 @@ const formattedAmount = currentSavings.toLocaleString();
 
 Implementation tasks:
 
-- [ ] Import `t` and formatting helper in `components/ui/statistics/SavingsCounter.tsx`.
+- [ ] Import `t` in `components/ui/statistics/SavingsCounter.tsx`.
 - [ ] Replace `Close` with `t("common.close")`.
-- [ ] Replace `currentSavings.toLocaleString()` plus hardcoded `$` with a single formatter helper if currency localization is in scope.
+- [ ] Keep the existing `$` behavior and simple number formatting for now.
 
-Currency note: if currency localization is not in scope, keep `$` behavior and document the limitation in this task folder, not in code.
+Currency note: currency localization is intentionally out of scope. Keep `$` behavior until the product defines user currency settings or region-based currency behavior.
 
 Completion signal: protected tabs, timer status, calendar labels, and savings modal copy no longer depend on hardcoded English strings.
 
@@ -818,8 +832,8 @@ Settings saved successfully!
 Implementation tasks:
 
 - [ ] Import `t` in `components/ui/settings/SettingsDrinkQuantityContainer.tsx`.
-- [ ] Replace load failure prefix with `t("settings.drinkQuantity.loadFailed", { message: error?.message || "" })`.
-- [ ] Replace save failure prefix with `t("settings.drinkQuantity.saveFailed", { message: error?.message || "" })`.
+- [ ] Replace load failure text with generic `t("settings.drinkQuantity.loadFailed")`; log raw `error?.message` only.
+- [ ] Replace save failure text with generic `t("settings.drinkQuantity.saveFailed")`; log raw `error?.message` only.
 - [ ] Replace label with `t("drinkQuantity.label")`.
 - [ ] Replace button text with `t("common.save")`.
 - [ ] Replace success copy with `t("settings.drinkQuantity.saved")`.
@@ -878,14 +892,14 @@ Owner: Translation workstream.
 
 Implementation tasks:
 
-- [ ] Fill `lib/i18n/locales/de-DE.ts`.
-- [ ] Fill `lib/i18n/locales/es-ES.ts`.
-- [ ] Fill `lib/i18n/locales/ja-JP.ts`.
-- [ ] Fill `lib/i18n/locales/ko-KR.ts`.
-- [ ] Fill `lib/i18n/locales/pt-BR.ts`.
+- [ ] Fill `lib/i18n/locales/de.ts`.
+- [ ] Fill `lib/i18n/locales/es.ts`.
+- [ ] Fill `lib/i18n/locales/ja.ts`.
+- [ ] Fill `lib/i18n/locales/ko.ts`.
+- [ ] Fill `lib/i18n/locales/pt.ts`.
 - [ ] Add a plain markdown note in this task folder documenting translation source and whether translations were human-reviewed.
 
-Translation notes: preserve all interpolation variables such as `{ message }` in every locale. Keep `Zero Proof` unchanged in all locales.
+Translation notes: preserve all interpolation variables in every locale. Keep `Zero Proof` unchanged in all locales.
 
 Completion signal: all locale files have the same key tree as English.
 
@@ -894,7 +908,7 @@ Manual verification is required, but it is not an implementation task and theref
 
 Run `npm run lint` to catch syntax/import issues introduced by implementation.
 
-Run the iOS app. For each supported locale, change the iOS app/device language and relaunch: `en`, `de-DE`, `es-ES`, `ja-JP`, `ko-KR`, `pt-BR`.
+Run the iOS app. For each supported locale, change the iOS app/device language and relaunch: `en`, `de`, `es`, `ja`, `ko`, `pt`.
 
 Verify visible copy on welcome, sign-in, sign-up, onboarding, paywall wrapper states, protected tabs, timer, calendar, savings modal, settings, deep-link toasts where reachable, not-found, and modal route.
 
